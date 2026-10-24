@@ -35,9 +35,36 @@
   }
   markVisited();
 
-  // Hamburger menu toggle (mobile)
-  const navToggle = document.getElementById('navToggle');
+  // Module navigation dropdown (replaces crowded module list)
+  const navEl2 = document.querySelector('nav');
+  if (navEl2 && !document.getElementById('moduleSelect')) {
+    const sel = document.createElement('select');
+    sel.id = 'moduleSelect';
+    sel.className = 'module-select';
+    sel.setAttribute('aria-label', 'Navigate to module');
+    const opts = [{ value: 'index.html', label: 'Home' }];
+    MODULES.forEach(m => opts.push({ value: m.file, label: m.id + ' ' + m.title }));
+    opts.push({ value: 'cheat_sheet.html', label: 'Cheat Sheet' });
+    opts.forEach(o => {
+      const opt = document.createElement('option');
+      opt.value = o.value;
+      opt.textContent = o.label;
+      sel.appendChild(opt);
+    });
+    const page = location.pathname.split('/').pop() || 'index.html';
+    sel.value = page;
+    sel.addEventListener('change', () => {
+      const t = (typeof currentTheme === 'function') ? currentTheme() : (localStorage.getItem('theme') || 'light');
+      const url = sel.value + (t ? ('?theme=' + t) : '');
+      window.location.href = url;
+    });
+    // insert before theme toggle
+    const themeBtn = document.getElementById('themeToggle');
+    if (themeBtn) navEl2.insertBefore(sel, themeBtn);
+    else navEl2.appendChild(sel);
+  }
   const navEl = document.querySelector('nav');
+  const navToggle = document.getElementById('navToggle');
   if (navToggle && navEl) {
     navToggle.addEventListener('click', () => {
       const open = navEl.classList.toggle('nav-open');
