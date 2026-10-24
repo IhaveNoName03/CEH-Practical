@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 03: Scanning Networks</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+        <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+        <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+        <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+        <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+        <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+        <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+        <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        </ul>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+
+    <main>
+        <div class="module-header">
+            <span>CEH v12 - Module 03</span>
+            <h2 class="hero-3d">Scanning Networks</h2>
+        </div>
+
+        <p>Scanning is extended reconnaissance: identify live hosts, open ports/services, OS details, and configuration lapses to profile the target. Labs use Parrot Security (10.10.1.13), Windows 11 (10.10.1.11), Windows Server 2022 (10.10.1.22), Windows Server 2019 (10.10.1.19), and Ubuntu (10.10.1.9). Always obtain proper authorization.</p>
+
+        <section class="lab-task">
+            <h3>Lab 1 - Task 1: Perform Host Discovery using Nmap</h3>
+            <div class="section-card">
+                <span class="tool-tag">Nmap</span>
+                <p><strong>What/when:</strong> Discover live hosts in the target network using various host-discovery (ping) techniques: ARP, UDP, ICMP ECHO, ICMP timestamp, ICMP address mask, TCP SYN/ACK, and IP protocol ping. Target host is Windows Server 2022 (10.10.1.22); range sweep covers 10.10.1.10-23. Run on Parrot Security after switching from the default Windows 11 machine and logging in as attacker/toor.</p>
+                <pre><code># ARP ping scan (local subnet) - ARP response means host is active
+nmap -sn -PR 10.10.1.22
+
+# UDP ping scan - UDP response (or ICMP port unreachable) means host is active
+nmap -sn -PU 10.10.1.22
+
+# ICMP ECHO ping scan - ICMP ECHO reply means host is active
+nmap -sn -PE 10.10.1.22
+
+# ICMP ECHO ping sweep across an IP range
+nmap -sn -PE 10.10.1.10-23
+
+# ICMP timestamp ping scan
+nmap -sn -PP 10.10.1.22
+
+# ICMP address mask ping scan (alternative when ECHO is blocked)
+nmap -sn -PM 10.10.1.22
+
+# TCP SYN ping scan - ACK response means host is active
+nmap -sn -PS 10.10.1.22
+
+# TCP ACK ping scan - RST response means host is active
+nmap -sn -PA 10.10.1.22
+
+# IP protocol ping scan - any response to a probe means host is active
+nmap -sn -PO 10.10.1.22</code></pre>
+                <p><strong>Key procedural steps / narrative:</strong> By default Windows 11 is selected; click Parrot Security to switch. Login as attacker (password toor); close Parrot Updater / update pop-ups if shown. Click MATE Terminal, run sudo su then password toor (password not visible). Run each nmap command above against 10.10.1.22 (Windows Server 2022); scan results indicate the target host is up. For the sweep, note Windows 11, Windows Server 2022, Windows Server 2019, and Android machines are in range (reset Android via Resources if down). Close all windows and document acquired information.</p>
+                <p><strong>Notes:</strong> -sn disables port scan (host discovery only). ARP ping probes with ARP request; UDP/ICMP/TCP probes rely on stack responses; values differ by OS/firewall policy.</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 1 - Task 2: Perform Host Discovery using Angry IP Scanner</h3>
+            <div class="section-card">
+                <span class="tool-tag">Angry IP Scanner</span>
+                <p><strong>What/when:</strong> Open-source cross-platform scanner that pings each IP to check if alive, then optionally resolves hostname, MAC, ports. Use to discover active hosts in 10.10.1.0-255. GUI tool on Windows 11.</p>
+                <pre><code># GUI configuration values (no CLI)
+# IP Range: 10.10.1.0  to  10.10.1.255
+# Scanning tab -> Pinging method: Combined UDP+TCP
+# Display tab -> Display in results list: Alive hosts (responding to pings) only
+# Then click Start; note total Hosts alive (here, 7) in Scan Statistics</code></pre>
+                <p><strong>Key procedural steps / narrative:</strong> Click Windows 11 to switch. Search angry, click Open. In Getting Started wizard click Next and follow, then Close (run if security warning). In IP Range - Angry IP Scanner set range 10.10.1.0 to 10.10.1.255, click Preferences icon. Scanning tab: Pinging method Combined UDP+TCP. Display tab: Alive hosts only, OK. Click Start; progress bar shows scan. After completion Scan Statistics pop-up: note total alive (here 7), Close. Results list shows active IPs/hostnames. Other ping sweep tools: SolarWinds Engineer's Toolset, NetScanTools Pro, Colasoft Ping Tool, Visual Ping Tester, OpUtils. Close windows and document.</p>
+                <p><strong>Notes:</strong> Angry IP Scanner simply pings each IP; extensions via plugins (hostname, MAC, ports).</p>
+            </div>
+        </section>
+        <section class="lab-task">
+            <h3>Lab 2 - Task 1: Perform Port and Service Discovery using MegaPing</h3>
+            <div class="section-card">
+                <span class="tool-tag">MegaPing</span>
+                <p><strong>What/when:</strong> Toolkit to detect live hosts and open ports/services of systems in the network; also network troubleshooting utilities (DNS lookup, ping, port scanner, traceroute, Whois, etc.). Scan IP range 10.10.1.5-20 and ports of Windows Server 2022 (10.10.1.22). GUI install/run on Windows 11 from E:\CEH-Tools\CEHv12 Module 03 Scanning Networks\Scanning Tools\MegaPing.</p>
+                <pre><code># GUI workflow values (no CLI)
+# IP Scanner: From 10.10.1.5  To 10.10.1.20 -> Start
+# Port Scanner: Destination Address List 10.10.1.22 -> Add -> select checkbox -> Start
+</code></pre>
+
+                <p><strong>Key procedural steps / narrative:</strong> On Windows 11 navigate to E:\CEH-Tools\CEHv12 Module 03 Scanning Networks\Scanning Tools\MegaPing and double-click megaping_setup.exe (UAC Yes). InstallShield Wizard: Next, follow wizard, Launch program, Finish. About MegaPing: I Agree. GUI shows System Info. Select IP Scanner; enter IP range From 10.10.1.5 To 10.10.1.20; Start. Lists IPs with TTL, Status (dead/alive), dead/alive statistics. Select Port Scanner; Destination Address List 10.10.1.22; Add; select checkbox; Start. Lists ports with number/type, service, description, associated risk. Similarly scan other targets. Concludes. Close windows and document.</p>
+                <p><strong>Notes:</strong> MegaPing scans entire network and can reveal open shared resources, active services/drivers, registry entries, users/groups, trusted domains, printers.</p>
+            </div>
+        </section>
+        <section class="lab-task">
+            <h3>Lab 2 - Task 2: Perform Port and Service Discovery using NetScanTools Pro</h3>
+            <div class="section-card">
+                <span class="tool-tag">NetScanTools Pro</span>
+                <p><strong>What/when:</strong> Integrated collection of utilities to gather information on Internet/network and troubleshoot networks. Discover active hosts and open ports/services on 10.10.1.5-23 / 10.10.1.22. GUI install/run on Windows 11 from E:\CEH-Tools\CEHv12 Module 03 Scanning Networks\Scanning Tools\NetScanTools Pro.</p>
+                <pre><code># GUI workflow values (no CLI)
+# Ping Scanner: Use Default System DNS; Start IP 10.10.1.5 ; End IP 10.10.1.23 -> Start (accept notice)
+# Port Scanner: Target Hostname or IP 10.10.1.22; TCP Full Connect; Scan Range of Ports (accept notice)</code></pre>
+                <p><strong>Key procedural steps / narrative:</strong> On Windows 11 navigate to E:\CEH-Tools\CEHv12 Module 03 Scanning Networks\Scanning Tools\NetScanTools Pro and double-click nstp11demo.exe (UAC Yes). Setup - NetScanTools Pro Demo: Next, follow wizard; if WinPcap 4.1.3 Setup appears click Cancel; in Completing wizard ensure Launch NetScanTools Pro Demo checked, Finish. Reminder: Start the DEMO; A DEMO Version pop-up: Start NetScanTools Pro Demo. Main window appears. Left pane Manual Tools (all): Ping Scanner, dialog OK. Ensure Use Default System DNS selected; enter Start IP 10.10.1.5, End IP 10.10.1.23; Start. Ping Scanner notice: I Accept. After scan results appear in browser (Chrome); close browser and return to NetScanTools Pro. Now click Port Scanner under Manual Tools (all); dialog OK. Target Hostname or IP 10.10.1.22; ensure TCP Full Connect selected; Scan Range of Ports. Port Scanner notice: I Accept. Results show active ports and descriptions. Concludes. Close windows and document.</p>
+                <p><strong>Notes:</strong> Demo version may differ. Port scan reveals open ports/services enabling further ARP poisoning/sniffing.</p>
+            </div>
+        </section>
+        <section class="lab-task">
+            <h3>Lab 2 - Task 3: Perform Port Scanning using sx Tool</h3>
+            <div class="section-card">
+                <span class="tool-tag">sx (CLI network scanner)</span>
+                <p><strong>What/when:</strong> Command-line network scanner for ARP, ICMP, TCP SYN, UDP, and application scans (SOCKS5, Docker, Elasticsearch). Discover open ports in target. Run on Parrot Security as root after switching from Windows 11.</p>
+                <pre><code># ARP scan of subnet
+sx arp 10.10.1.0/24
+
+# Create ARP cache file in JSON (stdin for TCP/UDP scans)
+sx arp 10.10.1.0/24 --json | tee arp.cache
+
+# TCP scan all ports via ARP cache
+cat arp.cache | sx tcp -p 1-65535 10.10.1.11
+
+# Show available commands
+sx help
+# (also sx --help)
+
+# UDP scan of a closed port (expect Destination Unreachable type 3 / code 3)
+cat arp.cache | sx udp --json -p 53 10.10.1.11
+
+# UDP scan of an open port (no code returned)
+cat arp.cache | sx udp --json -p 500 10.10.1.11
+</code></pre>
+                <p><strong>Key procedural steps / narrative:</strong> Click Parrot Security to switch; login attacker/toor; close updater/update pop-ups. Click MATE Terminal; sudo su; password toor (not visible). Run sx arp 10.10.1.0/24 to list IPs/MACs. Run sx arp ... --json | tee arp.cache to create cache. Run cat arp.cache | sx tcp -p 1-65535 10.10.1.11 to list open TCP ports. Run sx help (and sx --help) for commands. For UDP: cat arp.cache | sx udp --json -p 53 10.10.1.11 returns Destination Unreachable type 3 code 3 (closed). cat arp.cache | sx udp --json -p 500 10.10.1.11 returns no code (open). Concludes. Close windows and document.</p>
+                <p><strong>Notes:</strong> sx reads ARP cache from stdin before TCP/UDP scan. RFC1122/RFC792 define ICMP unreachable codes.</p>
+            </div>
+        </section>
+        <section class="lab-task">
+            <h3>Lab 2 - Task 4: Explore Various Network Scanning Techniques using Nmap</h3>
+            <div class="section-card">
+                <span class="tool-tag">Nmap / Zenmap</span>
+                <p><strong>What/when:</strong> Use Nmap (GUI Zenmap) to discover open ports/services/versions and OS details on live hosts. Includes TCP connect, stealth, Xmas, Maimon, ACK probe, UDP, service version, aggressive scans, scan profiles, IDLE/IPID, SCTP INIT/COOKIE ECHO. Targets Windows Server 2022 (10.10.1.22), Ubuntu (10.10.1.9), subnet 10.10.1.*. Run on Windows 11; firewall toggled on Windows Server 2022.</p>
+                <pre><code># TCP connect / full open scan (verbose)
+nmap -sT -v 10.10.1.22
+
+# Stealth / TCP half-open scan
+nmap -sS -v 10.10.1.22
+
+# Xmas scan (FIN, URG, PUSH)
+nmap -sX -v 10.10.1.22
+
+# TCP Maimon scan (FIN/ACK)
+nmap -sM -v 10.10.1.22
+
+# ACK flag probe scan (firewall mapping)
+nmap -sA -v 10.10.1.22
+
+# UDP scan
+nmap -sU -v 10.10.1.22
+
+# Service version detection
+nmap -sV 10.10.1.22
+
+# Aggressive scan (OS, version, scripts, traceroute) over subnet
+nmap -A 10.10.1.*
+
+# Additional techniques
+# IDLE/IPID header scan
+nmap -sI -v [target IP]
+
+# SCTP INIT scan
+nmap -sY -v [target IP]
+
+# SCTP COOKIE ECHO scan
+nmap -sZ -v [target IP]</code></pre>
+                <p><strong>Key procedural steps / narrative:</strong> On Windows 11 search zenmap, open. In Command field run nmap -sT -v 10.10.1.22, click Scan; results show open TCP ports/services. Use Ports/Hosts, Topology (Fisheye), Host Details, Scans, Services tabs. To test firewall: switch to Windows Server 2022, login CEH\Administrator (Pa$$w0rd), enable Windows Defender Firewall. Back to Windows 11: run nmap -sS -v 10.10.1.22 (stealth), nmap -sX -v 10.10.1.22 (Xmas), nmap -sM -v 10.10.1.22 (Maimon), nmap -sA -v 10.10.1.22 (ACK probe). Then disable firewall on Server 2022; run nmap -sU -v 10.10.1.22 (UDP; ~20 min). Close Zenmap.</p>
+                <p><strong>Key procedural steps / narrative (profiles):</strong> Search nmap, open Zenmap. Use Profile drop-down for default profiles. To create profile: Profile -> New Profile or Command (UAC Yes). Profile tab name Null Scan. Scan tab: Null scan (-sN), Non-TCP None, Timing Aggressive (-T4), enable all advanced/aggressive (-A), Save Changes. Target 10.10.1.9, select Null Scan, Scan. Nmap scans and shows results. Additional commands: IDLE/IPID nmap -sI -v [target]; SCTP INIT nmap -sY -v [target]; SCTP COOKIE ECHO nmap -sZ -v [target]. Service versions: nmap -sV 10.10.1.22. Aggressive subnet: nmap -A 10.10.1.* ; choose 10.10.1.22 and Host Details tab for host status, addresses, OS, ports, OS classes. Concludes. Close windows and document.</p>
+                <p><strong>Notes:</strong> TCP connect completes full handshake; stealth resets before completion; Xmas sends FIN/URG/PUSH; Maimon sends FIN/ACK; ACK probe maps firewall state. UDP has no handshake.</p>
+            </div>
+        </section>
+        <section class="lab-task">
+            <h3>Lab 2 - Task 5: Explore Various Network Scanning Techniques using Hping3</h3>
+            <div class="section-card">
+                <span class="tool-tag">Hping3</span>
+                <p><strong>What/when:</strong> Command-line packet crafting/scanning tool supporting TCP, UDP, ICMP, raw-IP. Discover open ports/services and host status on Windows Server 2022 (10.10.1.22). Run on Parrot Security as root.</p>
+                <pre><code># ACK flag scan on port 80, 5 packets
+hping3 -A 10.10.1.22 -p 80 -c 5
+
+# SYN scan ports 0-100, verbose
+hping3 -8 0-100 -S 10.10.1.22 -V
+
+# FIN/PUSH/URG scan on port 80, 5 packets
+hping3 -F -P -U 10.10.1.22 -p 80 -c 5
+
+# SYN stealth scan ports 0-100
+hping3 --scan 0-100 -S 10.10.1.22
+
+# ICMP ping scan, 5 packets on port 80
+hping3 -1 10.10.1.22 -p 80 -c 5
+
+# Additional techniques
+# Entire subnet live host scan
+hping3 -1 [Target Subnet] --rand-dest -I eth0
+
+# UDP scan
+hping3 -2 [Target IP] -p 80 -c 5</code></pre>
+                <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security; login attacker/toor; close pop-ups. Open MATE Terminal; sudo su; password toor; cd (root). Run hping3 -A 10.10.1.22 -p 80 -c 5; equal sent/received indicates port open. Run hping3 -8 0-100 -S 10.10.1.22 -V; shows open ports/services. Run hping3 -F -P -U 10.10.1.22 -p 80 -c 5; equal sent/received indicates port open. Run hping3 --scan 0-100 -S 10.10.1.22; shows open ports/services. Run hping3 -1 10.10.1.22 -p 80 -c 5; ICMP replies indicate host up. Additional: entire subnet hping3 -1 [Subnet] --rand-dest -I eth0; UDP hping3 -2 [IP] -p 80 -c 5. Concludes. Close windows and document.</p>
+                <p><strong>Notes:</strong> ACK scan: no response = filtered; RST = closed. SYN scan uses SYN/ACK/RST. FIN/PUSH/URG: response = open; RST = closed.</p>
+            </div>
+        </section>
+        <section class="lab-task">
+            <h3>Lab 3 - Task 1: Identify Target OS with TTL and TCP Window Sizes using Wireshark</h3>
+            <div class="section-card">
+                <span class="tool-tag">Wireshark</span>
+                <p><strong>What/when:</strong> Passive OS fingerprinting by capturing ICMP replies and reading TTL (and TCP window size) in IP header. TTL 128 = Windows-based; TTL 64 = Linux-based. Target Windows Server 2022 (10.10.1.22) and Ubuntu (10.10.1.9) from Windows 11.</p>
+                <pre><code># On Windows 11 command prompt
+ping 10.10.1.22
+ping 10.10.1.9
+
+# Wireshark display filter (optional)
+icmp</code></pre>
+                <p><strong>Key procedural steps / narrative:</strong> On Windows 11 search wireshark, open. Double-click Ethernet interface to start capture (software update: Remind me later). Open Command Prompt, ping 10.10.1.22. Observe captured packets; choose an ICMP reply from 10.10.1.22 to 10.10.1.11, expand Internet Protocol Version 4; TTL = 128 => Windows-based. Stop capture. Start capture again (continue without saving). Ping 10.10.1.9; choose ICMP reply from 10.10.1.9 to 10.10.1.11; TTL = 64 => Linux-based. Stop capture. Concludes. Close windows and document.</p>
+                <p><strong>Notes:</strong> TTL and TCP window size in IP header help identify OS; passive (no crafted probes). Active banner grabbing sends crafted packets and compares responses.</p>
+            </div>
+        </section>
+        <section class="lab-task">
+            <h3>Lab 3 - Task 2: Perform OS Discovery using Nmap Script Engine (NSE)</h3>
+            <div class="section-card">
+                <span class="tool-tag">Nmap / NSE</span>
+                <p><strong>What/when:</strong> Use Nmap aggressive scan, OS detection, and smb-os-discovery.nse to obtain OS, computer name, NetBIOS name, domain, workgroup, system time. Target Windows Server 2022 (10.10.1.22). Run on Parrot Security as root.</p>
+                <pre><code># Aggressive scan (OS, version, scripts, traceroute)
+nmap -A 10.10.1.22
+
+# OS discovery
+nmap -O 10.10.1.22
+
+# SMB OS discovery script (ports 445/139)
+nmap --script smb-os-discovery.nse 10.10.1.22</code></pre>
+                <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security; login attacker/toor; close pop-ups. Open MATE Terminal; sudo su; password toor. Run nmap -A 10.10.1.22 (~10 min); results show open ports/services/versions and target details (OS, computer name, NetBIOS computer name) under Host script results. Run nmap -O 10.10.1.22; results show open ports/services and OS name. Run nmap --script smb-os-discovery.nse 10.10.1.22; results show target OS, computer name, NetBIOS computer name under Host script results. Concludes. Close windows and document.</p>
+                <p><strong>Notes:</strong> NSE extends Nmap with scripts for OS, NetBIOS, domain, forest, workgroup, system time.</p>
+            </div>
+        </section>
+        <section class="lab-task">
+            <h3>Lab 3 - Task 3: Perform OS Discovery using Unicornscan</h3>
+            <div class="section-card">
+                <span class="tool-tag">Unicornscan</span>
+                <p><strong>What/when:</strong> Linux CLI asynchronous TCP/UDP port scanner and banner grabber. Identify OS by TTL in scan result: TTL 128 = Windows; TTL 64 = Linux. Targets Windows Server 2022 (10.10.1.22) and Ubuntu (10.10.1.9). Run on Parrot Security as root.</p>
+                <pre><code># Immediate + verbose mode
+unicornscan 10.10.1.22 -Iv
+unicornscan 10.10.1.9 -Iv</code></pre>
+                <p><strong>Key procedural steps / narrative:</strong> On Parrot Security open MATE Terminal; sudo su; password toor; cd (root). Run unicornscan 10.10.1.22 -Iv; results show open TCP ports and TTL 128 => Microsoft Windows (8/8.1/10/11 or Server 16/19/22). Run unicornscan 10.10.1.9 -Iv; results show open TCP ports and TTL 64 => Linux-based (Google Linux, Ubuntu, Parrot, Kali). Concludes. Close windows and document.</p>
+                <p><strong>Notes:</strong> -I immediate mode, -v verbose. Attackers use OS info to formulate attack strategy.</p>
+            </div>
+        </section>
+        <section class="lab-task">
+            <h3>Lab 4 - Task 1: Scan beyond IDS/Firewall using various Evasion Techniques</h3>
+            <div class="section-card">
+                <span class="tool-tag">Nmap</span>
+                <p><strong>What/when:</strong> Evade enabled Windows Defender Firewall on Windows 11 (10.10.1.11) using fragmentation, source port manipulation, MTU, decoys, MAC spoofing. Observe in Wireshark on target. Run on Parrot Security as root; firewall enabled on Windows 11.</p>
+                <pre><code># Packet fragmentation
+nmap -f 10.10.1.11
+
+# Source port manipulation (port 80)
+nmap -g 80 10.10.1.11
+
+# MTU 8 bytes
+nmap -mtu 8 10.10.1.11
+
+# IP address decoy (10 random decoys)
+nmap -D RND:10 10.10.1.11
+
+# MAC spoofing (random) + TCP connect + skip host discovery
+nmap -sT -Pn --spoof-mac 0 10.10.1.11</code></pre>
+                <p><strong>Key procedural steps / narrative:</strong> On Windows 11 enable Windows Defender Firewall (Control Panel -> System and Security -> Windows Defender Firewall -> Turn on). Minimize Control Panel; search wireshark, open; double-click Ethernet to start capture (Remind me later). Switch to Parrot Security; open MATE Terminal; sudo su; password toor; cd (root). Run nmap -f 10.10.1.11; although firewall on, results show open TCP ports/services. On Windows 11 (target) observe fragmented packets in Wireshark. Back to Parrot: nmap -g 80 10.10.1.11; results show open ports; on target Wireshark shows port 80 used to scan other ports. nmap -mtu 8 10.10.1.11; on target observe fragments max 8 bytes. nmap -D RND:10 10.10.1.11; on target observe multiple source IPs. nmap -sT -Pn --spoof-mac 0 10.10.1.11; on target observe captured TCP. Concludes. Close windows and document.</p>
+                <p><strong>Notes:</strong> Evasion techniques: fragmentation, source routing, source port manipulation, IP decoy, spoofing, custom packets, random host order, bad checksums, proxies, anonymizers.</p>
+            </div>
+        </section>
+        <section class="lab-task">
+            <h3>Lab 4 - Task 2: Create Custom Packets using Colasoft Packet Builder to Scan beyond IDS/Firewall</h3>
+            <div class="section-card">
+                <span class="tool-tag">Colasoft Packet Builder</span>
+                <p><strong>What/when:</strong> Create custom network packets (ARP template) to scan target beyond firewall/IDS; observe replies in Wireshark. Target Windows Server 2019 (10.10.1.19). GUI on Windows Server 2019.</p>
+                <pre><code># GUI workflow values (no CLI)
+# Adapter: select adapter, OK
+# Add Packet: ARP Packet template; Delta Time 0.1 seconds; OK
+# Send Selected Packets: Burst Mode (no delay); Start; Close
+# Wireshark display filter: arp
+# Export: Selected Packets... -> choose destination, File name, Save as type, Save
+</code></pre>
+                <p><strong>Key procedural steps / narrative:</strong> On Windows Server 2019 login Administrator/Pa$$w0rd (handle Networks screen Yes). Search wireshark, open; double-click Ethernet2 to start capture. Minimize Wireshark; search colasoft, open Colasoft Packet Builder 2.0. Click Adapter icon; Select Adapter check settings, OK. Click Add icon; Add Packet dialog: select ARP Packet template, Delta Time 0.1 sec, OK. View Packet List. Decode Editor/Hex Editor on left. Click Send; Send Selected Packets: Burst Mode, Start; after progress Close. Broadcast ARP packet; active machines reply. In Wireshark filter arp; observe replies (host 10.10.1.19 broadcasting). Switch to Colasoft; Export -> Selected Packets...; Save As: choose destination, File name, Save as type, Save. Saved file for future reference. Attackers can use custom fragmented packets to bypass firewalls/IDS or flood for DoS. Concludes. Close windows and document.</p>
+                <p><strong>Notes:</strong> Colasoft Packet Builder supports editing decode/hex/ASCII and sending custom packets.</p>
+            </div>
+        </section>
+        <section class="lab-task">
+            <h3>Lab 4 - Task 3: Create Custom UDP and TCP Packets using Hping3 to Scan beyond IDS/Firewall</h3>
+            <div class="section-card">
+                <span class="tool-tag">Hping3</span>
+                <p><strong>What/when:</strong> Create custom UDP/TCP packets to evade IDS/firewall; observe in Wireshark on Windows 11 (10.10.1.11). Ensure Windows Defender Firewall enabled on Windows 11. Run on Parrot Security as root.</p>
+                <pre><code># Custom UDP packets with random source, 500-byte body
+hping3 10.10.1.11 --udp --rand-source --data 500
+
+# TCP SYN on port 80, 5 packets
+hping3 -S 10.10.1.11 -p 80 -c 5
+
+# TCP flood
+hping3 10.10.1.11 --flood</code></pre>
+                <p><strong>Key procedural steps / narrative:</strong> Ensure Windows 11 firewall enabled. On Windows 11 search wireshark, open; double-click Ethernet to start capture. Switch to Parrot Security; open MATE Terminal; sudo su; password toor; cd (root). Run hping3 10.10.1.11 --udp --rand-source --data 500; switch to Windows 11 and observe random UDP packets in Wireshark; double-click a UDP packet, expand Data node; data length 500 (as specified). Back to Parrot: Ctrl+C, then hping3 -S 10.10.1.11 -p 80 -c 5; 5 packets sent/received through port 80. On Windows 11 observe TCP packets. Back to Parrot: hping3 10.10.1.11 --flood; flood target. On Windows 11 stop capture after a while; observe TCP SYN flooding (DoS). Turn off Windows Firewall. Concludes. Close windows and document.</p>
+                <p><strong>Notes:</strong> --udp sends UDP; --rand-source randomizes source; --data sets body size; --flood performs TCP flooding.</p>
+            </div>
+        </section>
+        <section class="lab-task">
+            <h3>Lab 5 - Task 1: Scan a Target Network using Metasploit</h3>
+            <div class="section-card">
+                <span class="tool-tag">Metasploit Framework</span>
+                <p><strong>What/when:</strong> Discover active hosts, open ports, services, OS details using Metasploit + Nmap import and auxiliary scanners. Target subnet 10.10.1.0/24 and 10.10.1.5-23. Run on Parrot Security as root.</p>
+                <pre><code># Start DB and launch Metasploit
+service postgresql start
+msfconsole
+
+# Check DB status
+db_status
+
+# If not connected: exit; msfdb init; service postgresql restart; msfconsole; db_status
+
+# Scan subnet and save XML
+nmap -Pn -sS -A -oX Test 10.10.1.0/24
+
+# Import Nmap results
+db_import Test
+
+# View hosts and services
+hosts
+services
+# (or db_services)
+
+# List portscan modules
+search portscan
+
+# SYN portscan module
+use auxiliary/scanner/portscan/syn
+set INTERFACE eth0
+set PORTS 80
+set RHOSTS 10.10.1.5-23
+set THREADS 50
+run
+
+# TCP portscan module
+use auxiliary/scanner/portscan/tcp
+# Option A:
+hosts -R
+# Option B:
+set RHOSTS 10.10.1.22
+run
+
+# SMB version scan
+back
+use auxiliary/scanner/smb/smb_version
+set RHOSTS 10.10.1.5-23
+set THREADS 11
+run</code></pre>
+                <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security; open MATE Terminal; sudo su; password toor; cd (root). Run service postgresql start; msfconsole; db_status. If "postgresql selected, no connection": exit; msfdb init; service postgresql restart; msfconsole; db_status (should connect). Run nmap -Pn -sS -A -oX Test 10.10.1.0/24 (~5 min); displays active hosts (here 7). Run db_import Test; hosts (lists active hosts with MAC/OS); services/db_services (lists services). Run search portscan; use auxiliary/scanner/portscan/syn; set INTERFACE eth0, PORTS 80, RHOSTS 10.10.1.5-23, THREADS 50; run (shows open port 80 on active hosts). Use auxiliary/scanner/portscan/tcp; hosts -R (or set RHOSTS 10.10.1.22); run (~20 min) to list open TCP ports. back; use auxiliary/scanner/smb/smb_version; set RHOSTS 10.10.1.5-23, THREADS 11; run to show OS details. Can further explore FTP module etc. Concludes. Close windows and document.</p>
+                <p><strong>Notes:</strong> Metasploit modular approach combines exploits/payloads; portscan auxiliary modules scan targets; Nmap XML imported into DB.</p>
+            </div>
+        </section>
+        <section class="lab-task">
+            <h3>Overview: Scanning Networks</h3>
+            <div class="section-card">
+                <span class="tool-tag">Concepts</span>
+                <p><strong>What/when:</strong> Network scanning is extended reconnaissance to discover exploitable communication channels and responsive listeners. Used after footprinting to build a profile of the target organization.</p>
+            </div>
+        </section>
+        <section class="lab-task">
+            <h3>Reference: TTL Values and TCP Window Sizes by OS</h3>
+            <div class="section-card">
+                <span class="tool-tag">OS Fingerprinting</span>
+                <table style="width:100%">
+                    <thead><tr><th>OS (family)</th><th>Typical TTL</th><th>TCP Window Size</th></tr></thead>
+                    <tbody>
+                        <tr><td>Linux (Ubuntu, Parrot, Kali, etc.)</td><td>64</td><td>5840 / 29200 (varies)</td></tr>
+                        <tr><td>Windows (8/8.1/10/11, Server 2016/2019/2022)</td><td>128</td><td>65535 / 8192 (varies)</td></tr>
+                        <tr><td>Cisco IOS</td><td>255</td><td>4128</td></tr>
+                        <tr><td>Solaris</td><td>255</td><td>8760</td></tr>
+                        <tr><td>macOS</td><td>64</td><td>65535</td></tr>
+                    </tbody>
+                </table>
+                <p><strong>Notes:</strong> TTL in first packet of TCP session and ICMP reply helps identify OS. Values differ by stack implementation.</p>
+            </div>
+        </section>
+        <section class="lab-task">
+            <h3>Reference: IDS/Firewall Evasion Techniques</h3>
+            <div class="section-card">
+                <span class="tool-tag">Concepts</span>
+                <pre><code># Techniques to evade IDS/firewall
+Packet Fragmentation: Send fragmented probe packets
+Source Routing: Specify routing path for malformed packet
+Source Port Manipulation: Use common source ports (80, 53)
+IP Address Decoy: Generate decoy IPs to hide real scanner
+IP Address Spoofing: Change source IP
+Creating Custom Packets: Craft packets to bypass
+Randomizing Host Order: Scan hosts in random order
+Sending Bad Checksums: Packets with bogus checksums
+Proxy Servers: Chain proxies to hide source
+Anonymizers: Bypass censors and evade rules
+</code></pre>
+                <p><strong>Notes:</strong> Combine multiple techniques to bypass poorly implemented defenses. Always obtain authorization.</p>
+            </div>
+        </section>
+        <section class="lab-task">
+            <h3>Reference: Common Nmap Options</h3>
+            <div class="section-card">
+                <span class="tool-tag">Nmap</span>
+                <table style="width:100%">
+                    <thead><tr><th>Option</th><th>Meaning</th></tr></thead>
+                    <tbody>
+                        <tr><td>-sn</td><td>Disable port scan (host discovery only)</td></tr>
+                        <tr><td>-PR</td><td>ARP ping scan</td></tr>
+                        <tr><td>-PU</td><td>UDP ping scan</td></tr>
+                        <tr><td>-PE</td><td>ICMP ECHO ping scan</td></tr>
+                        <tr><td>-PP</td><td>ICMP timestamp ping scan</td></tr>
+                        <tr><td>-PM</td><td>ICMP address mask ping scan</td></tr>
+                        <tr><td>-PS</td><td>TCP SYN ping scan</td></tr>
+                        <tr><td>-PA</td><td>TCP ACK ping scan</td></tr>
+                        <tr><td>-PO</td><td>IP protocol ping scan</td></tr>
+                        <tr><td>-sT</td><td>TCP connect/full open scan</td></tr>
+                        <tr><td>-sS</td><td>Stealth/TCP half-open scan</td></tr>
+                        <tr><td>-sX</td><td>Xmas scan</td></tr>
+                        <tr><td>-sM</td><td>TCP Maimon scan</td></tr>
+                        <tr><td>-sA</td><td>ACK flag probe scan</td></tr>
+                        <tr><td>-sU</td><td>UDP scan</td></tr>
+                        <tr><td>-sV</td><td>Service/version detection</td></tr>
+                        <tr><td>-O</td><td>OS detection</td></tr>
+                        <tr><td>-A</td><td>Aggressive (OS, version, scripts, traceroute)</td></tr>
+                        <tr><td>-f</td><td>Fragment packets</td></tr>
+                        <tr><td>-g / --source-port</td><td>Source port manipulation</td></tr>
+                        <tr><td>-mtu</td><td>Set MTU size</td></tr>
+                        <tr><td>-D RND:n</td><td>Decoy scan with n random decoys</td></tr>
+                        <tr><td>--spoof-mac 0</td><td>Randomize MAC address</td></tr>
+                        <tr><td>-Pn</td><td>Skip host discovery</td></tr>
+                        <tr><td>-v</td><td>Verbose output</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section class="lab-task">
+            <h3>Reference: Metasploit Scanning Modules</h3>
+            <div class="section-card">
+                <span class="tool-tag">Metasploit</span>
+                <pre><code># Common scanning modules
+auxiliary/scanner/portscan/syn
+auxiliary/scanner/portscan/tcp
+auxiliary/scanner/portscan/ack
+auxiliary/scanner/portscan/xmas
+auxiliary/scanner/smb/smb_version
+auxiliary/scanner/ftp/ftp_version
+
+# Typical variables
+set INTERFACE eth0
+set PORTS 80
+set RHOSTS 10.10.1.5-23
+set THREADS 50
+run
+</code></pre>
+                <p><strong>Notes:</strong> Combine modules to discover hosts, ports, services, and OS details. Always obtain authorization.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const body = document.body;
+    const applyTheme = (t) => {
+        if (t === 'dark') body.setAttribute('data-theme', 'dark');
+        else body.removeAttribute('data-theme');
+    };
+    function getTheme() {
+        try {
+            const p = new URLSearchParams(location.search);
+            const u = p.get('theme');
+            if (u === 'dark' || u === 'light') return u;
+        } catch (e) {}
+        try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+    }
+    function syncNavLinks(t) {
+        document.querySelectorAll('a[href]').forEach(a => {
+            try {
+                const url = new URL(a.getAttribute('href'), location.href);
+                if (url.pathname.endsWith('.html')) {
+                    url.searchParams.set('theme', t);
+                    a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                }
+            } catch (e) {}
+        });
+    }
+    const initialTheme = getTheme();
+    applyTheme(initialTheme);
+    syncNavLinks(initialTheme);
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+            applyTheme(newT);
+            try { localStorage.setItem('theme', newT); } catch (e) {}
+            try {
+                const url = new URL(location.href);
+                url.searchParams.set('theme', newT);
+                history.replaceState(null, '', url.toString());
+            } catch (e) {}
+            syncNavLinks(newT);
+        });
+    }
+    const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+        'module_07.html': 'nav-07',
+        'module_08.html': 'nav-08',
+        'module_09.html': 'nav-09',
+        'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        document.getElementById(navId).classList.add('active');
+    </script>
+    <script src="app.js"></script>
+
+</body>
+</html>

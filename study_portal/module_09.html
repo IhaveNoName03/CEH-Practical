@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 09 - Social Engineering</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+            <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+            <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+            <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+            <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+        <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+        <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        </ul>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+    <main class="content-body">
+        <div class="window">
+            <div class="module-header">
+                <span>CEH v12 - Module 09</span>
+                <h2 class="hero-3d">Social Engineering</h2>
+            </div>
+
+            <p>Organizations fall victim to social engineering tactics despite having strong security policies and solutions in place. This is because social engineering exploits the most vulnerable link in information system security - employees. Cybercriminals are increasingly using social engineering techniques to target people's weaknesses or play on their good natures. Social engineering can take many forms, including phishing emails, fake sites, and impersonation. If the features of these techniques make them an art, the psychological insights that inform them make them a science. While non-existent or inadequate defense mechanisms in an organization can encourage attackers to use various social engineering techniques to target its employees, the bottom line is that there is no technological defense against social engineering. Organizations must educate employees on how to recognize and respond to these attacks, but only constant vigilance will minimize attackers' chances of success. As an expert ethical hacker and penetration tester, you need to assess the preparedness of your organization or the target of evaluation against social engineering attacks. It is important to note, however, that social engineering primarily requires soft skills. The labs in this module therefore demonstrate several techniques that facilitate or automate certain facets of social engineering attacks.</p>
+
+            <p><strong>Scenario:</strong> In a social engineering test, you should try to trick the user into disclosing personal information such as credit card numbers, bank account details, telephone numbers, or confidential information about their organization or computer system. In the real world, attackers would use these details either to commit fraud or to launch further attacks on the target system. With the tremendous increase in the use of online banking, online shares trading, and e-commerce, there has been a corresponding growth in incidents of phishing being used to carry out financial fraud. Social engineers exploit human behavior (manners, enthusiasm toward work, laziness, innocence, etc.) to gain access to the information resources of the target company.</p>
+
+            <p><strong>Objective:</strong> Use social engineering and related techniques to: sniff user/employee credentials such as employee IDs, names, and email addresses; obtain employees' basic personal details and organizational information; obtain usernames and passwords; perform phishing; detect phishing.</p>
+
+            <p><strong>Overview of Social Engineering:</strong> Social engineering is the art of manipulating people to divulge sensitive information that will be used to perform some kind of malicious action. Because social engineering targets human weakness, even organizations with strong security policies are vulnerable to being compromised by attackers. The impact of social engineering attacks on organizations can include economic losses, damage to goodwill, loss of privacy, risk of terrorism, lawsuits and arbitration, and temporary or permanent closure. Vulnerabilities include insufficient security training, unregulated access to information, an organizational structure consisting of several units, and non-existent or lacking security policies. There are three types of social engineering attacks: human-based (impersonation, vishing, eavesdropping), computer-based (phishing, spamming, instant messaging), and mobile-based (publishing malicious apps, repackaging legitimate apps, fake security applications, SMiShing).</p>
+
+            <section class="lab-task">
+                <h3>Lab 1 - Perform Social Engineering using Various Techniques: Task 1: Sniff Credentials using the Social-Engineer Toolkit (SET)</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Social-Engineer Toolkit (SET) / Firefox / Gmail</span>
+                    <p><strong>What/when:</strong> The Social-Engineer Toolkit (SET) is an open-source Python-driven tool aimed at penetration testing via social engineering. SET allows attackers to draft email messages, attach malicious files, and send them to a large number of people using spear phishing. Its multi-attack method allows Java applets, the Metasploit browser, and Credential Harvester/Tabnabbing to be used simultaneously. SET categorizes attacks according to the attack vector used (email, web, USB). Here we sniff user credentials using SET's Credential Harvester Attack Method with Site Cloner: clone http://www.moviescope.com, host it on the attacker machine, lure a victim with a disguised link in a phishing email, and harvest the submitted username/password. Attacker: Parrot Security (10.10.1.13); victim: Windows 11. SET is freely available and is the standard for social engineering penetration tests.</p>
+                    <pre><code># Parrot Security - become root
+sudo su
+# password: toor (not visible while typing)
+cd
+# navigate to the SET folder
+cd social-engineer-toolkit
+# launch Social-Engineer Toolkit
+./setoolkit
+# if "Do you agree to the terms of service [y/n]" appears: y
+# SET interactive menu choices:
+#   1 -> Social-Engineering Attacks
+#   2 -> Website Attack Vectors
+#   3 -> Credential Harvester Attack Method
+#   2 -> Site Cloner
+# IP address for the POST back in Harvester/Tabnabbing: 10.10.1.13
+# Enter the url to clone: http://www.moviescope.com
+# If "Press {return} if you understand what we're saying here": press Enter
+# (credential harvester initiates)
+
+# Phishing email (Gmail) - disguise malicious link
+# Firefox -> log in to email (Gmail) -> Compose
+# Position cursor just above "Regards"; click Insert link icon
+# Edit Link: Web address (actual) = http://10.10.1.13 ; Text to display (fake) = http://www.moviescope.com/avail_benefits
+# Verify link (Go to link pop-up) -> send email to intended user
+
+# Victim (Windows 11)
+# Open browser (Firefox) -> sign in to email account -> open phishing email -> click malicious link
+# Enter Username and Password -> Login (redirected to legitimate MovieScope page)
+# If save credentials notification appears: Don't Save
+
+# Attacker (Parrot Security)
+# Terminal shows harvested Username and Password in plain text
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Parrot Security to switch to the Parrot Security machine. In the login page, the attacker username is selected by default; enter password toor in the Password field and press Enter. If a Question pop-up window appears asking you to update the machine, click No. Click the MATE Terminal icon at the top of the Desktop to open a Terminal. Type sudo su and press Enter to run programs as root; in the [sudo] password for attacker field type toor (password not visible) and press Enter. Type cd and press Enter to jump to root. Type cd social-engineer-toolkit and press Enter to navigate to the setoolkit folder. Type ./setoolkit and press Enter to launch SET; if a terms-of-service question appears, enter y and press Enter. The SET menu appears; type 1 and press Enter to choose Social-Engineering Attacks. A list of options appears; type 2 and press Enter to choose Website Attack Vectors. A list of options appears; type 3 and press Enter to choose Credential Harvester Attack Method. Type 2 and press Enter to choose Site Cloner. When prompted for "IP address for the POST back in Harvester/Tabnabbing", type 10.10.1.13 (the Parrot Security machine) and press Enter. When prompted "Enter the url to clone", type http://www.moviescope.com and press Enter. If a message appears reading Press {return} if you understand what we're saying here, press Enter. After cloning completes, a highlighted message appears and the credential harvester initiates.</p>
+                    <p>Having successfully cloned a website, you must now send the IP address of your Parrot Security machine to a victim and try to trick him/her into clicking the link. Click the Firefox icon from the top section of the Desktop to launch a web browser and open your email account (here Gmail); log in and compose an email. After logging in, click Compose in the left pane and compose a fake but enticing email to lure a user into opening the email and clicking the malicious link. A good way to conceal a malicious link is to insert text that looks like a legitimate MovieScope URL but actually links to your cloned MovieScope page. Position the cursor just above Regards to place the fake URL, then click the Insert link icon. In the Edit Link window, first type the actual address of your cloned site in the Web address field under Link to (http://10.10.1.13), then type the fake URL in the Text to display field (http://www.moviescope.com/avail_benefits); click OK. The fake URL appears in the message body. Verify the fake URL is linked to the correct cloned site: in Gmail, click the link; the actual URL is displayed in a "Go to link" pop-up. Once verified, send the email to the intended user.</p>
+                    <p>Click Windows 11 to switch to the Windows 11 machine and click Ctrl+Alt+Delete. By default the Admin user profile is selected; click Pa$$w0rd to paste the password and press Enter to log in (handle Welcome to Windows wizard and Networks screen as needed). Open any web browser (Mozilla Firefox), sign in to the email account to which you sent the phishing mail, open the email you sent previously, and click the malicious link. When the victim clicks the URL, a new tab opens presenting a replica of www.moviescope.com. The victim is prompted to enter username and password into form fields as on the genuine site; when the victim enters Username and Password and clicks Login, he/she is redirected to the legitimate MovieScope login page. Note the different URLs in the browser address bar for the cloned and real sites. If a save-credentials notification appears, click Don't Save. Now click Parrot Security to switch back to the Parrot Security machine and switch to the terminal window. As soon as the victim types Username and Password and clicks Login, SET extracts the typed credentials, displayed in the terminal as Username and Password in plain text. These can be used to gain unauthorized access to the victim's account.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. SET is freely available. Credential harvester captures credentials submitted to the cloned form. Ensure the attacker IP (10.10.1.13) is reachable by the victim.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2 - Detect a Phishing Attack: Task 1: Detect Phishing using Netcraft</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Netcraft Browser Extension / Firefox</span>
+                    <p><strong>What/when:</strong> The Netcraft anti-phishing community is a giant neighborhood watch scheme, empowering the most alert and expert members to defend everyone against phishing attacks. The Netcraft Extension provides updated and extensive information about sites visited and blocks dangerous sites, helping users make an informed choice about site integrity. Here we install the Netcraft Extension in Firefox on Windows 11, inspect a legitimate site (certifiedhacker.com) via its Site Report, and trigger a "Suspected Phishing" block on a known phishing site. Netcraft only blocks; it can be bypassed by clicking Visit anyway.</p>
+                    <pre><code># Windows 11 browser (Firefox)
+https://www.netcraft.com/apps-extensions/browser-extension/
+# scroll to "Download the extension today" -> click Firefox browser icon
+# Add to Firefox -> Add
+# If "Netcraft Extension request additional permissions" pop-up: Allow
+# If asked to restart browser: Restart Now
+# If extension icon missing: Extensions icon -> Settings -> Pin to toolbar
+
+# Inspect a legitimate site
+http://www.certifiedhacker.com/
+# Click Netcraft Extension icon -> Site Report link
+# (Risk Rating, Site rank, First seen, Host; Background, Network, IP Geolocation, SSL/TLS, Hosting History)
+
+# Trigger phishing detection
+https://smbc.ctad-co.com/m
+# Netcraft blocks phishing site -> "Suspected Phishing" page
+# Options: Visit anyway / Report mistake
+# If site fails to open, try another phishing website
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows 11 to switch to the Windows 11 machine. First install the Netcraft extension. Launch any browser (Mozilla Firefox). In the address bar, type https://www.netcraft.com/apps-extensions/browser-extension/ and press Enter. The Netcraft website appears. Click Accept in the cookie notification in the lower section. Scroll down to the "Download the extension today" section and click the Firefox browser icon. On the next page, click Add to Firefox to install the Netcraft extension. When the "Add Netcraft Extension?" notification pop-up appears, click Add. If the "Netcraft Extension request additional permissions" pop-up appears, click Allow. After installation finishes you may be asked to restart the browser; if so, click Restart Now. If the "Netcraft Extension has been added to Firefox" notification appears, click Okay, Got it. The Netcraft Extension icon now appears on the top-right corner of the browser. If it does not appear, click the Extensions icon and Settings, then select Pin to toolbar.</p>
+                    <p>Now, in the address bar type http://www.certifiedhacker.com/ and press Enter. The certifiedhacker.com webpage appears. Click the Netcraft Extension icon in the top-right corner; a dialog box appears displaying a summary (Risk Rating, Site rank, First seen, Host). Click the Site Report link to view a detailed report (Background, Network, IP Geolocation, SSL/TLS, Hosting History). If a "Site information not available" or Cookies pop-up appears, ignore/accept. Now open a new tab and type https://smbc.ctad-co.com/m and press Enter. The Netcraft Extension automatically blocks phishing sites; if you trust the site click Visit anyway, otherwise click Report mistake. You may get a "Suspected Phishing" page or a "Secure Connection Failed" page; if the site fails, try another phishing website. This concludes the demonstration of detecting phishing using the Netcraft Extension. Close all open windows and document all acquired information.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ. Netcraft relies on community reports; a blocked site may be a false positive (Report mistake). Professional/work email not required for the extension.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2 - Detect a Phishing Attack: Task 2: Detect Phishing using PhishTank</h3>
+                <div class="section-card">
+                    <span class="tool-tag">PhishTank</span>
+                    <p><strong>What/when:</strong> PhishTank is a free community site where anyone can submit, verify, track, and share phishing data; it is a collaborative clearing house for phishing data and provides an open API for developers and researchers. Here we browse recent submissions, open a known phishing entry, and check an arbitrary URL (be-ride.ru/confirm) for phishing status. PhishTank returns "Is a phish" for confirmed phishing sites.</p>
+                    <pre><code># Windows 11 browser (Firefox)
+https://www.phishtank.com
+# Browse Recent Submissions -> click a phishing website ID (e.g. 7486626) -> view details ("Is a phish")
+# If "Would you like Firefox to save this login?": Don't Save
+# If captcha appears: enter captcha to proceed
+
+# Check an arbitrary URL
+# Found a phishing site? field: be-ride.ru/confirm -> "Is it a phish?"
+# Result: "Is a phish" (if phishing)
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> In the Windows 11 machine, launch any browser (Mozilla Firefox). In the address bar type https://www.phishtank.com and press Enter. The PhishTank webpage appears, displaying a list of phishing websites under Recent Submissions. Click on any phishing website ID in the Recent Submissions list (in this case, 7486626) to view detailed information about it. If a notification appears asking "Would you like Firefox to save this login for phishtank.com?", click Don't Save. If you are redirected to a page asking for a captcha, enter the captcha to proceed. If the site is a phishing site, PhishTank returns a result stating that the website "Is a phish". Navigate back to the PhishTank home page by clicking the Back button in the top-left corner of the browser. In the "Found a phishing site?" text field, type a website URL to be checked for phishing (in this example, be-ride.ru/confirm) and click the "Is it a phish?" button. You can examine any website of your choice for phishing. If the site is a phishing site, PhishTank returns a result stating that the website "Is a phish". This concludes the demonstration of detecting phishing using PhishTank. Close all open windows and document all acquired information.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ. Community-verified data; results depend on submissions. Open API available for integration into applications.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 3 - Audit Organization's Security for Phishing Attacks: Task 1: Audit Organization's Security for Phishing Attacks using OhPhish</h3>
+                <div class="section-card">
+                    <span class="tool-tag">OhPhish (EC-Council Aware) / Firefox</span>
+                    <p><strong>What/when:</strong> OhPhish is a web-based portal for testing employees' susceptibility to social engineering attacks; it is a phishing simulation tool providing a platform to launch phishing simulation campaigns on employees, capturing responses and providing MIS reports and trends in real time trackable by user, department, or designation. Here we activate an OhPhish account via ASPEN, then run two campaigns ("Entice to Click" with a COVID-19 template and "Send Attachment" with a PF Amount Credited template), have a victim open the phishing email on Windows Server 2019, and review campaign reports (defaulters, executive summary export). OhPhish requires an ASPEN/CEH v12 account; without access, write to support@eccouncil.org for an account and continue from step 12. Upgraded accounts can explore Credential Harvesting, Training, Vishing and Smishing.</p>
+                    <pre><code># Windows 11 browser (Firefox) - activate OhPhish via ASPEN
+# Log in to ASPEN -> CEH v12 (My Courses) -> click "Click here" (OhPhish notification)
+# OhPhish Sign Up: enter personal details, check I'm not a robot -> Complete Signup -> OK
+# Email from OhPhish -> click CLICK HERE TO LOGIN
+# EC-Council Aware: Username (email) -> Next; Password -> Sign In
+# If "Save login for ohphish.com?": Don't Save
+# Reset Password: new password in both fields -> Reset Password
+# Login: https://portal.ohphish.com/login (or via ASPEN "LOGIN TO OHPHISH PORTAL")
+
+# Campaign 1 - Entice to Click
+# Dashboard -> Entice to Click
+# Campaign Name: Test - Entice to Click
+# Select Template Category: Coronavirus/COVID-19
+# Email Template: Existing Template
+# Select Country: All (default)
+# Select Template: Work From Home: COVID-19 -> Select
+# Import users -> Select Source -> Quick Add -> enter employee details -> Add -> Import
+# Batch Count: 1 ; Batch Interval: 1
+# Landing Page: default
+# Create -> Add to Whitelist: Done -> Confirm: SURE
+# (10s countdown -> Alert OK)
+
+# Victim (Windows Server 2019)
+# Open Gmail -> search "WFH Under Organizational Policy" -> click WFH - Policy.pdf link
+# "Warning - phishing suspected" page appears -> close tab
+
+# Dashboard: click "Test - Entice to Click" campaign -> Campaign Detailed Report
+# Campaign Summary: No. of targets who clicked the link = 1
+# Home
+
+# Campaign 2 - Send Attachment
+# Dashboard -> Send Attachment
+# Campaign Name: Test - Send to Attachment
+# Select Template Category: Office Mailers
+# Select Template: PF Amount Credited -> Select
+# Attachment name: PFinfo
+# Import users (Quick Add) -> Import
+# Batch Count: 1 ; Batch Interval: 1
+# Create -> Done -> SURE
+# (10s countdown -> Alert OK)
+
+# Victim (Windows Server 2019)
+# Gmail Inbox -> email from HR - ABP News -> click "EPF - KYC Documents Upload Centre"
+# If Suspicious link pop-up: Proceed -> "Oh You've been Phished" landing page
+
+# Dashboard: click "Test - Send to Attachment" campaign -> Campaigns Users (defaulter details)
+# Reports -> Executive Summary Report -> select campaign -> Export -> Save File -> open Phishing-Simulation-Test file
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Before starting, you must activate your OhPhish account. Open any web browser (Mozilla Firefox). Log in to your ASPEN account and navigate to Certified Ethical Hacker v12 in the My Courses section. If you do not have an ASPEN account or access to the CEHv12 program on ASPEN, write to support@eccouncil.org for an OhPhish account; once set up you receive an email from aware@eccouncil.org with an account activation link; upon activation, continue from STEP 12. Click the "Click here" hyperlink in the OhPhish notification above the My Courses section. You are redirected to the OhPhish Sign Up page. Enter the remaining personal details, check the "I'm not a robot" checkbox, and click Complete Signup. An "Account creation Alert!" appears; click OK. Now open your email account given during registration, open the email from OhPhish, and click the CLICK HERE TO LOGIN button. The EC-Council Aware page appears; in the Username field enter your email address and click Next; on the next page enter your password in the Password field and click Sign In. If a "Save login for ohphish.com?" notification appears, click Don't Save. You are redirected to the Reset Password page; enter the new password in both fields and click Reset Password. Your account password is changed successfully. You can now log in to your OhPhish account either by clicking the LOGIN TO OHPHISH PORTAL button in your ASPEN account under My Courses, or by navigating to https://portal.ohphish.com/login and logging in with your credentials. Once logged in you are redirected to the OhPhish Dashboard.</p>
+                    <p>In the OhPhish Dashboard, click the Entice to Click option. The Create New Email Phishing Campaign form appears. If the OhPhish Helpdesk notification appears in the right corner, close it; if an "Almost Done" pop-up appears, click DISCARD CHANGES. In the Campaign Name field enter any name (here, Test - Entice to Click). In Select Template Category select Coronavirus/COVID-19 from the drop-down. Ensure Existing Template is selected in Email Template. In Select Country leave the default (All). In Select Template click Select Template and select "Work From Home: COVID-19", then click Select. Leave Sender Email, Sender Name, Subject, Select Time Zone, Expiry Date, and Schedule Later at defaults. In Import users click Select Source. In the Import Users pop-up select Quick Add. In the Import Users Info pop-up enter the employee details and click Add; similarly add multiple users (here, two). After adding, click Import. In Batch Count and Batch Interval set values to 1. Leave Landing Page at default. Scroll to the end and click Create. An "Add to your Whitelist" pop-up appears; click Done. The Confirm? pop-up appears; click SURE. A countdown timer appears and the campaign initiates in ten seconds. The Alert! pop-up appears indicating successful initiation; click OK.</p>
+                    <p>Now open the phishing email as a victim. Click Windows Server 2019 to switch to the Windows Server 2019 machine. Click Ctrl+Alt+Delete to activate; by default the Administrator profile is selected; click Pa$$w0rd to enter the password and press Enter (Networks screen: click Yes). Open any web browser (Mozilla Firefox) and open the email client used while creating the campaign (Gmail). After logging in to Gmail, search for an email with subject "WFH Under Organizational Policy" in the Inbox (check Spam if not found). Click the "WFH - Policy.pdf" link in the email. A "Warning - phishing suspected" page appears. Close the current tab. Now click Windows 11 to switch back. Click the "Test - Entice to Click" campaign on the OhPhish Dashboard; observe that one person has clicked the link (refresh if still 0). The Campaign Detailed Report page appears with Campaign Details and Campaign Summary; in Campaign Summary, "No. of targets who have clicked the link" and "No. of Targets who have opened the mail" are both 1. Click Home in the left pane to return to the Dashboard.</p>
+                    <p>In the Dashboard, click Send Attachment. The Create New Email Phishing Campaign form appears; if "Almost Done" pop-up appears, click DISCARD CHANGES. In Campaign Name enter any name (here, Test - Send to Attachment). In Select Template Category select Office Mailers. Ensure Existing templates is selected. In Select Country leave default (All). In Select Template select "PF Amount Credited" and click Select. Leave Sender Email, Sender Name, Subject, Select Time Zone, Expiry Date, Schedule Later at defaults. In Attachment enter any name (here, PFinfo). Click Select Source under Import users; select Quick Add; enter employee details and click Add; add multiple users (here, two); click Import. Set Batch Count and Batch Interval to 1. Leave Landing Page at default. Scroll to the end and click Create. "Add to your Whitelist" pop-up: click Done. Confirm? pop-up: click SURE. Countdown timer appears; campaign initiates in ten seconds. Alert! pop-up: click OK.</p>
+                    <p>Now click Windows Server 2019 to switch to the Windows Server 2019 machine (if logged out, Ctrl+Alt+Delete and log in as Administrator with Pa$$w0rd). In the Gmail account opened previously, navigate to the Inbox. You will find an email from "HR - ABP News". Click the "EPF - KYC Documents Upload Centre" hyperlink in the email. If a Suspicious link pop-up appears, click Proceed. You are redirected to the "Oh You've been Phished" landing page. Now click Windows 11 to switch back. Click the "Test - Send to Attachment" campaign on the OhPhish Dashboard. The Campaign Detailed Report page appears. In Campaign Summary, "No. of targets who have clicked the link (defaulters)" is 1; click the 1 icon to see the defaulter. The Campaigns Users page appears showing defaulter details (Risk Score, Credentials, IP Address, Location, etc.). Now expand the Reports section in the left pane and select Executive Summary Report. The Campaign Report page appears; select any phishing campaign from the drop-down (here, Test - Send to Attachment) and click the Export icon. The "Opening Phishing-Simulation-Test" window appears; select Save File and click OK. The file downloads to the default location (Downloads); navigate there and double-click "Phishing-Simulation-Test---Send-Attachment" to open it. The executive phishing report appears (if Microsoft Word pop-up appears, click OK/Yes). You can also explore Department Wise, Designation Wise, and Branch Wise reports. Upgraded accounts can explore Credential Harvesting, Training, Vishing and Smishing. This concludes the demonstration of auditing an organization's security for phishing attacks using OhPhish. Close all open windows and document all acquired information.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. OhPhish requires ASPEN/CEH v12 access. Whitelist sender IPs to avoid spam filtering. Reports export as Word documents.</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+    <script>
+        const body = document.body;
+    const applyTheme = (t) => {
+        if (t === 'dark') body.setAttribute('data-theme', 'dark');
+        else body.removeAttribute('data-theme');
+    };
+    function getTheme() {
+        try {
+            const p = new URLSearchParams(location.search);
+            const u = p.get('theme');
+            if (u === 'dark' || u === 'light') return u;
+        } catch (e) {}
+        try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+    }
+    function syncNavLinks(t) {
+        document.querySelectorAll('a[href]').forEach(a => {
+            try {
+                const url = new URL(a.getAttribute('href'), location.href);
+                if (url.pathname.endsWith('.html')) {
+                    url.searchParams.set('theme', t);
+                    a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                }
+            } catch (e) {}
+        });
+    }
+    const initialTheme = getTheme();
+    applyTheme(initialTheme);
+    syncNavLinks(initialTheme);
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+            applyTheme(newT);
+            try { localStorage.setItem('theme', newT); } catch (e) {}
+            try {
+                const url = new URL(location.href);
+                url.searchParams.set('theme', newT);
+                history.replaceState(null, '', url.toString());
+            } catch (e) {}
+            syncNavLinks(newT);
+        });
+    }
+    const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+            'module_07.html': 'nav-07',
+            'module_08.html': 'nav-08',
+            'module_09.html': 'nav-09',
+            'module_10.html': 'nav-10',
+        'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        document.getElementById(navId).classList.add('active');
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

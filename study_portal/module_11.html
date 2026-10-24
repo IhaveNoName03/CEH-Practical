@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 11 - Session Hijacking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+            <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+            <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+            <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+            <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+            <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+        <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        </ul>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+    <main class="content-body">
+        <div class="window">
+            <div class="module-header">
+                <span>CEH v12 - Module 11</span>
+                <h2 class="hero-3d">Session Hijacking</h2>
+            </div>
+
+            <p>A session hijacking attack refers to the exploitation of a session token-generation mechanism or token security controls that enables an attacker to establish an unauthorized connection with a target server. The attacker guesses or steals a valid session ID (which identifies authenticated users) and uses it to establish a session with the server.</p>
+
+            <p><strong>Scenario:</strong> As an ethical hacker or penetration tester, you should understand different session hijacking concepts, how attackers perform application- and network-level session hijacking, and the various tools used to launch this kind of attack. You should also be able to implement security measures at both the application and network levels to protect your network from session hijacking. Application-level hijacking involves gaining control over the Hypertext Transfer Protocol (HTTP) user session by obtaining the session IDs. Network-level hijacking is prevented by packet encryption, which can be achieved with protocols such as IPsec, SSL, and SSH.</p>
+
+            <p><strong>Objective:</strong> Hijack a session by intercepting traffic between server and client; steal a user session ID by intercepting traffic; detect session hijacking attacks.</p>
+
+            <p><strong>Overview of Session Hijacking:</strong> Session hijacking can be either active or passive, depending on the degree of involvement of the attacker:</p>
+            <ul>
+                <li><strong>Active session hijacking:</strong> An attacker finds an active session and takes it over.</li>
+                <li><strong>Passive session hijacking:</strong> An attacker hijacks a session, and, instead of taking over, monitors and records all the traffic in that session.</li>
+            </ul>
+
+            <p><strong>Lab Tasks:</strong></p>
+            <ul>
+                <li>Perform session hijacking
+                    <ul>
+                        <li>Hijack a session using Zed Attack Proxy (ZAP)</li>
+                        <li>Intercept HTTP traffic using bettercap</li>
+                        <li>Intercept HTTP traffic using Hetty</li>
+                    </ul>
+                </li>
+                <li>Detect session hijacking
+                    <ul>
+                        <li>Detect session hijacking using Wireshark</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <section class="lab-task">
+                <h3>Lab 1: Perform Session Hijacking - Task 1: Hijack a Session using Zed Attack Proxy (ZAP)</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Zed Attack Proxy (ZAP 2.11.1) / Google Chrome</span>
+                    <p><strong>What/when:</strong> Zed Attack Proxy (ZAP) is an integrated penetration testing tool for finding vulnerabilities in web applications. It offers automated scanners as well as tools that allow you to find security vulnerabilities manually, and is designed for people with a wide range of security experience. ZAP lets you see all requests you make to a web app and all responses you receive, including AJAX calls that may not otherwise be visible. You can also set breakpoints to change requests and responses in real time. Here we hijack a session using ZAP as an intercepting proxy: the victim's browser (Windows 11) is pointed at the attacker's ZAP instance (Windows Server 2019, 10.10.1.19:8080), ZAP traps every request/response with a global breakpoint, and the attacker rewrites the victim's navigation from www.moviescope.com to www.goodshopping.com so the victim sees attacker-chosen content while the address bar still shows the original site. Before starting, configure the proxy on the victim machine.</p>
+                    <pre><code># Victim machine: Windows 11 (proxy configuration)
+# Chrome -> Customize and control Google Chrome -> Settings
+# Settings -> Advanced -> System -> "Open your computer's proxy settings"
+# Settings (Windows) -> Proxy -> Manual proxy setup -> Edit
+# Use a proxy server: Off -> On
+Proxy IP address: 10.10.1.19   # attacker machine (Windows Server 2019)
+Port: 8080
+# Save; close Settings and browser windows
+
+# Attacker machine: Windows Server 2019 (ZAP as proxy)
+# Search "zap" -> ZAP 2.11.1 -> Enter
+# "Do you want to persist the ZAP Session?" -> "No, I do not want to persist this session..." -> Start
+# "+" icon (right pane) -> Break   (Break tab added; modify request/response in real time)
+# Options icon (toolbar) -> Local Proxies
+Address: 10.10.1.19   # Windows Server 2019 IP
+Port: 8080            # default
+# OK
+# "Set break on all requests and responses" icon -> turns green to red (global breakpoint)
+
+# Victim browser (Windows 11)
+# address bar: www.moviescope.com -> Enter
+# "Your connection is not private" -> Advanced -> "Proceed to www.moviescope.com (unsafe)"
+
+# Attacker ZAP (Windows Server 2019) - manipulate traffic
+# Break tab -> "Submit and step to next request or response" (capture request)
+# Break tab -> "Submit and step to next request or response" (capture response)
+# modify www.moviescope.com -> www.goodshopping.com in all captured GET requests
+# (any https URL -> http)
+# "Submit and step to next request or response" to forward traffic
+# submit HTTP Not Found requests
+# repeat until www.goodshopping.com renders on victim while address bar shows www.moviescope.com
+
+# Revert proxy on victim (Windows 11): Manual proxy setup -> On -> Off -> Save
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows 11 to switch to the victim machine. By default the Windows 11 machine is selected; click Ctrl+Alt+Delete (or the Ctrl+Alt+Delete button under the thumbnail/Commands menu). The Admin profile is selected by default; click Pa$$w0rd to paste the password and press Enter to log in. If the Welcome to Windows wizard appears, click Continue; in the Sign in with Microsoft wizard click Cancel. On the Networks screen click Yes to allow discoverability. Open any web browser (Google Chrome), click the Customize and control Google Chrome icon, select Settings. On the Settings page scroll down, expand Advanced settings, select System from the left pane. Click "Open your computer's proxy settings". In the Settings window, under Manual proxy setup click Set up. In Edit proxy server: switch Use a proxy server from Off to On; type Proxy IP address 10.10.1.19 (attacker's machine); Port 8080; click Save. Close Settings and browser windows. Proxy is now configured on the victim.</p>
+                    <p>Click Windows Server 2019 to switch to the attacker machine. Click Ctrl+Alt+Delete; the Administrator account is selected by default; click Pa$$w0rd and press Enter. Click the Type here to search icon, type zap; ZAP 2.11.1 appears; press Enter to launch. OWASP ZAP initializes; when prompted "Do you want to persist the ZAP Session?" select "No, I do not want to persist this session at this moment in time" and click Start. Click the "+" icon in the right pane and select Break (if a ZAP pop-up appears, click OK in all pop-ups). The Break tab allows modifying a response or request when ZAP catches it, including header, hidden fields, disabled fields, and fields filtered by JavaScript. To configure ZAP as a proxy, click the Options icon from the toolbar. In the Options window scroll the left pane and click Local Proxies; in the right pane under Local Proxy type Address 10.10.1.19 (Windows Server 2019 IP) and leave Port 8080 (default); click OK. Click the "Set break on all requests and responses" icon on the main toolbar; it turns from green to red, setting a global breakpoint that traps the next request/response from the victim in the Break tab.</p>
+                    <p>Click Windows 11 to switch back to the victim machine and launch the same browser (Google Chrome) in which the proxy was configured. Place the cursor in the address bar, type www.moviescope.com and press Enter. A "Your connection is not private" message appears; click Advanced, then "Proceed to www.moviescope.com (unsafe)". Click Windows Server 2019 to switch back to the attacker machine and observe ZAP capturing the victim's requests. In the Break tab click "Submit and step to next request or response" to capture the www.moviescope.com request, then click it again to capture the HTTP response. In the Break tab modify www.moviescope.com to www.goodshopping.com in all captured GET requests (convert any https URL to http). Click "Submit and step to next request or response" to forward traffic to the victim. For all HTTP Not Found requests click the same icon to forward traffic. Repeat modifying every GET request until www.goodshopping.com appears on the victim machine. You will need to switch back and forth to check the victim's browser; if no request appears or the Break tab is blank, switch to Windows 11 and refresh the browser. The victim navigated to www.moviescope.com but now sees www.goodshopping.com while the address bar still displays www.moviescope.com.</p>
+                    <p>Revert the proxy settings on the victim: repeat the proxy configuration steps, in Edit proxy server switch Use a proxy server from On to Off and click Save. This concludes the demonstration of performing session hijacking using ZAP. Close all open windows and document all acquired information.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. ZAP runs as an intercepting proxy on 10.10.1.19:8080. Global breakpoint traps every request/response. Revert proxy settings after the lab.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Perform Session Hijacking - Task 2: Intercept HTTP Traffic using bettercap</h3>
+                <div class="section-card">
+                    <span class="tool-tag">bettercap / Mozilla Firefox</span>
+                    <p><strong>What/when:</strong> In an MITM attack the attacker places himself between the authorized client and the web server so all information traveling in either direction passes through them. bettercap is a powerful, flexible, portable tool for performing various MITM attacks against a network, manipulating HTTP, HTTPS, and TCP traffic in real time, sniffing credentials, etc. Here bettercap on Parrot Security (eth0) performs ARP spoofing against Windows 11 (10.10.1.11), enables an HTTP proxy with SSL stripping, and sniffs for payloads matching the regex '.*password=.+', capturing the victim's browsing and plaintext credentials (sam/test) on the http-based www.moviescope.com. bettercap collects all HTTP logins used by routers, servers, and websites without SSL; to sniff HTTPS traffic enable SSL strip via set http.proxy.sslstrip true.</p>
+                    <pre><code># Parrot Security - become root
+sudo su
+# password: toor (not visible while typing)
+cd
+
+# inspect bettercap options
+bettercap -h
+# -h: requests a list of available options
+
+# bind to network interface
+bettercap -iface eth0
+# -iface: specifies the interface to bind to (eth0)
+
+# inside bettercap interactive console
+help                          # view available modules
+net.probe on                  # send probe packets to each IP in subnet for net.recon
+net.recon on                  # read ARP table to detect hosts; starts sniffing
+set http.proxy.sslstrip true  # enable SSL stripping
+set arp.spoof.internal true   # spoof local connections among internal computers
+set arp.spoof.targets 10.10.1.11   # spoof target host IP (Windows 11)
+http.proxy on                 # initiate HTTP proxy
+arp.spoof on                  # initiate ARP spoofing
+net.sniff on                  # perform network sniffing
+set net.sniff.regexp '.*password=.+'   # only packets whose payload matches regex
+
+# victim browses http://www.moviescope.com and logs in as sam/test
+# observe sniffed site + credentials in plaintext in bettercap console
+
+# stop
+# Ctrl+C
+# "Are you sure you want to quit this session? (Y/N)" -> y -> Enter
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Parrot Security to switch to the Parrot Security machine. In the login page the attacker username is selected by default; enter password toor in the Password field and press Enter. If a Question pop-up asks to update the machine, click No. Click the MATE Terminal icon at the top of the Desktop to open a Terminal. Type sudo su and press Enter to run programs as root; in the [sudo] password for attacker field type toor (not visible) and press Enter. Type cd and press Enter to jump to the root directory. Type bettercap -h and press Enter to list available options. Type bettercap -iface eth0 and press Enter to set the network interface. Type help and press Enter to view available modules. Type net.probe on and press Enter (sends different probe packets to each IP in the subnet for net.recon to detect them). Type net.recon on and press Enter (reads the system ARP table to detect new hosts; starts sniffing in real time). Type set http.proxy.sslstrip true and press Enter to enable SSL stripping. Type set arp.spoof.internal true and press Enter to spoof local connections among internal computers. Type set arp.spoof.targets 10.10.1.11 and press Enter to spoof the target host (Windows 11). Type http.proxy on and press Enter to initiate the HTTP proxy. Type arp.spoof on and press Enter to initiate ARP spoofing. Type net.sniff on and press Enter to perform sniffing. Type set net.sniff.regexp '.*password=.+' and press Enter so only packets with a payload matching the regex are considered.</p>
+                    <p>bettercap starts sniffing network traffic on the target machine (Windows 11). Click Windows 11 to switch to the victim machine. Open any web browser (Mozilla Firefox); in the address bar type http://www.moviescope.com and press Enter. Click Parrot Security to switch back; bettercap has sniffed the website browsed by the victim. Click Windows 11 to switch to the victim; on the MovieScope website enter credentials (sam/test) and press Enter to log in. Click Parrot Security; the details of both the browsed website and the credentials are obtained in plain text. After obtaining the credentials press Ctrl+C to terminate bettercap; when "Are you sure you want to quit this session?" appears press y then Enter. The credentials can be used to log in to the target user's account and obtain further sensitive information. This concludes the demonstration of intercepting HTTP traffic using bettercap. Close all open windows and document all acquired information.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. bettercap requires root. SSL strip only helps against non-HSTS HTTP sites. Use only in authorized labs.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Perform Session Hijacking - Task 3: Intercept HTTP Traffic using Hetty</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Hetty / Google Chrome / Mozilla Firefox</span>
+                    <p><strong>What/when:</strong> Hetty is an HTTP toolkit for security research aiming to become an open-source alternative to commercial software such as Burp Suite Pro, with features tailored to the InfoSec and bug bounty communities. It can perform MITM attacks, manually create/edit requests, replay proxied requests, and intercept requests and responses for manual review. Here Windows 11 acts as the attacker running Hetty (dashboard on http://localhost:8080) and Windows Server 2022 acts as the victim whose browser proxy is pointed at 10.10.1.11:8080. A project "Moviescope" is created; the victim browses http://www.moviescope.com and logs in as sam/test; the attacker inspects the Proxy logs, finds the POST request, and reads the captured credentials in the Body tab. Proxy settings are reverted afterward.</p>
+                    <pre><code># Attacker machine: Windows 11
+# navigate to E:\CEH-Tools\CEHv12 Module 11 Session Hijacking\Hetty
+# double-click hetty.exe
+# Open File - Security Warning -> Run
+# Command Prompt appears; Hetty initializes
+# minimize windows; launch browser (Mozilla Firefox)
+# address bar: http://localhost:8080 -> Enter (Hetty dashboard)
+# Hetty dashboard -> "MANAGE PROJECTS"
+# New Project: Project name = Moviescope -> "+ CREATE & OPEN PROJECT"
+# project "Moviescope" created, status Active
+# click Proxy logs icon (left pane) -> Proxy logs page
+
+# Victim machine: Windows Server 2022 (proxy configuration)
+# Ctrl+Alt+Delete -> CEH\Administrator -> Pa$$w0rd -> Enter
+# Networks screen -> Yes
+# Chrome -> Customize and control Google Chrome -> Settings
+# Settings -> Advanced -> System -> "Open your computer's proxy settings"
+# Manual proxy setup section:
+# Use a proxy server: Off -> On
+Address: 10.10.1.11   # attacker (Windows 11) IP
+Port: 8080
+# Save; close Settings and browser
+
+# Victim browser (Windows Server 2022)
+# new tab -> http://www.moviescope.com -> Enter
+# log in as victim: sam/test
+
+# Attacker Hetty dashboard (Windows 11)
+# Proxy logs page -> scroll to moviescope.com logs
+# find POST request for the target website
+# select the POST request -> lower section -> Body tab (under POST)
+# Body tab shows captured user credentials in plaintext
+
+# Revert proxy on victim (Windows Server 2022): Manual proxy setup -> On -> Off -> Save
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Here Windows 11 is the attacker machine and Windows Server 2022 is the target machine. Click Windows 11 to switch to Windows 11. Navigate to E:\CEH-Tools\CEHv12 Module 11 Session Hijacking\Hetty and double-click hetty.exe. In the Open File - Security Warning window click Run. A Command Prompt window appears and Hetty initializes. Minimize all windows and launch any web browser (Mozilla Firefox). In the address bar type http://localhost:8080 and press Enter to open the Hetty dashboard. In the Hetty dashboard click MANAGE PROJECTS. On the Projects page type the project name Moviescope under New Project and click "+ CREATE & OPEN PROJECT". A new project named Moviescope is created under Manage projects with status Active. Click the Proxy logs icon in the left pane; the Proxy logs page appears.</p>
+                    <p>Click Windows Server 2022 to switch to the target machine. Click Ctrl+Alt+Delete; by default the CEH\Administrator account is selected; click Pa$$w0rd to enter the password and press Enter. On the Networks screen click Yes. Open Google Chrome, click Customize and control Google Chrome, select Settings. On the Settings page expand Advanced settings and click System in the left pane. Scroll down to System and click "Open your computer's proxy settings". In the Settings window, under Manual proxy setup: switch Use a proxy server from Off to On; type Address 10.10.1.11 (attacker's machine); Port 8080; click Save. Close the windows. Now in the browser open a new tab, type http://www.moviescope.com and press Enter.</p>
+                    <p>Click Windows 11 to switch to the attacker machine. Observe that logs are captured in the Proxy logs page, focusing on moviescope.com. Click Windows Server 2022 to switch back to the victim; on the MovieScope website log in as a victim with credentials sam/test. Click Windows 11 to switch to the attacker. In the Proxy logs page scroll down to check more moviescope logs; check for the POST log captured for the target website. Select the POST request and in the lower section select the Body tab under POST; the captured user credentials are visible. The captured credentials can be used to log in to the target user's account and obtain further sensitive information.</p>
+                    <p>Revert the proxy on the victim: click Windows Server 2022, perform the proxy steps again, in the Settings window under Manual proxy setup click the On button to toggle it back to Off. This concludes the demonstration of HTTP traffic interception using Hetty. Close all open windows and document all acquired information.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Hetty dashboard runs on localhost:8080 on the attacker. Revert proxy settings after the lab.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2: Detect Session Hijacking - Task 1: Detect Session Hijacking using Wireshark</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Wireshark / bettercap (Parrot Security 10.10.1.13)</span>
+                    <p><strong>What/when:</strong> Session hijacking is dangerous and places the victim at risk of identity theft, fraud, and loss of sensitive information; all TCP/IP networks are vulnerable and such attacks are hard to detect. Detection can be manual (packet sniffers such as Wireshark/SteelCentral Packet Analyzer monitoring traffic and filtering) or automatic (IDS/IPS matching attack signatures, generating alerts and blocking traffic). Wireshark captures live traffic from Ethernet, IEEE 802.11, PPP/HDLC, ATM, Bluetooth, USB, Token Ring, Frame Relay, and FDDI networks (via WinPcap). Here Windows 11 (10.10.1.11) captures traffic in Wireshark while Parrot Security (10.10.1.13) runs bettercap (net.probe, net.recon, net.sniff) against it. A high number of ARP broadcast requests indicates the attacker (10.10.1.13) is acting as a client for all IPs in the subnet, so victim traffic is routed through the attacker (MITM) before reaching the gateway.</p>
+                    <pre><code># Victim machine: Windows 11 (capture traffic)
+# Search "wire" -> Wireshark -> Open
+# Wireshark Network Analyzer -> double-click primary interface (Ethernet)
+# capturing network traffic; leave running
+
+# Attacker machine: Parrot Security (launch session hijacking via bettercap)
+sudo su
+# password: toor (not visible)
+cd
+bettercap -iface eth0
+# -iface: interface to bind to (eth0)
+net.probe on       # send probe packets to each IP in subnet
+net.recon on       # read ARP table; detect hosts; start sniffing
+net.sniff on       # sniff network traffic
+
+# Victim Wireshark: observe huge number of ARP packets
+# high ARP broadcast count => 10.10.1.13 acts as client for all subnet IPs (MITM)
+
+# stop bettercap
+# Ctrl+C
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> We use Parrot Security (10.10.1.13) to carry out a session hijacking attack on the Windows 11 (10.10.1.11) machine. Click Windows 11 to switch to Windows 11. Click the Search icon on the Desktop, type wire in the search field; Wireshark appears in the result; click Open to launch it. The Wireshark Network Analyzer window opens. Double-click the primary network interface (Ethernet) to start capturing network traffic; leave it running.</p>
+                    <p>Now launch a session hijacking attack on the target using bettercap (either follow Steps 8-15 below or refer to Task 2 of Lab 1). Click Parrot Security to switch to Parrot Security. Click the MATE Terminal icon to open a Terminal. Type sudo su and press Enter; in the [sudo] password for attacker field type toor and press Enter (not visible). Type cd and press Enter. Type bettercap -iface eth0 and press Enter to set the network interface. Type net.probe on and press Enter to send probe packets to each IP in the subnet. Type net.recon on and press Enter to read the ARP table and detect hosts (starts sniffing). Type net.sniff on and press Enter to sniff network traffic. bettercap starts sniffing traffic on different machines in the network.</p>
+                    <p>Click Windows 11 to switch back and observe the huge number of ARP packets captured by Wireshark. bettercap sends several ARP broadcast requests to hosts (or potentially active hosts). A high number of ARP requests indicates that the system at 10.10.1.13 (the attacker) is acting as a client for all IP addresses in the subnet, meaning all packets from the victim node (10.10.1.11) first go to the host system (10.10.1.13) and then the gateway, and any packet destined for the victim is first forwarded from the gateway to the host system and then to the victim (MITM). This concludes the demonstration of detecting a session hijacking attack using Wireshark. Close all open windows and document all acquired information.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Manual detection via ARP anomaly; automatic detection via IDS/IPS signatures. Stop capture and close Wireshark when done.</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+    <script>
+        const body = document.body;
+    const applyTheme = (t) => {
+        if (t === 'dark') body.setAttribute('data-theme', 'dark');
+        else body.removeAttribute('data-theme');
+    };
+    function getTheme() {
+        try {
+            const p = new URLSearchParams(location.search);
+            const u = p.get('theme');
+            if (u === 'dark' || u === 'light') return u;
+        } catch (e) {}
+        try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+    }
+    function syncNavLinks(t) {
+        document.querySelectorAll('a[href]').forEach(a => {
+            try {
+                const url = new URL(a.getAttribute('href'), location.href);
+                if (url.pathname.endsWith('.html')) {
+                    url.searchParams.set('theme', t);
+                    a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                }
+            } catch (e) {}
+        });
+    }
+    const initialTheme = getTheme();
+    applyTheme(initialTheme);
+    syncNavLinks(initialTheme);
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+            applyTheme(newT);
+            try { localStorage.setItem('theme', newT); } catch (e) {}
+            try {
+                const url = new URL(location.href);
+                url.searchParams.set('theme', newT);
+                history.replaceState(null, '', url.toString());
+            } catch (e) {}
+            syncNavLinks(newT);
+        });
+    }
+    const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+            'module_07.html': 'nav-07',
+            'module_08.html': 'nav-08',
+            'module_09.html': 'nav-09',
+            'module_10.html': 'nav-10',
+            'module_11.html': 'nav-11',
+        'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        document.getElementById(navId).classList.add('active');
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

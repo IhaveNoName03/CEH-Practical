@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 07 - Malware Threats</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+            <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+        <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+        <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+        <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+        <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+        <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        </ul>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+    <main class="content-body">
+        <div class="window">
+            <div class="module-header">
+                <span>CEH v12 - Module 07</span>
+                <h2 class="hero-3d">Malware Threats</h2>
+            </div>
+
+            <p>Malware poses a major security threat to information security. Malware writers explore new attack vectors to exploit vulnerabilities in information systems, leading to sophisticated attacks such as drive-by malware, malvertising, and advanced persistent threats. This module provides first-hand experience with techniques attackers use to write and propagate malware, and teaches how to select security controls to protect information assets from malware threats. Lab tasks span Trojans, viruses, static malware analysis, and dynamic malware analysis. Ensure Windows Defender Firewall is turned off on lab machines, as it blocks and deletes malware as soon as it is executed. Labs use Windows 11 (10.10.1.11), Windows Server 2022 (10.10.1.22), Windows Server 2019 (10.10.1.19), and Windows 11 as attacker.</p>
+
+            <section class="lab-task">
+                <h3>Lab 1 - Trojans: Task 1: Gain Control over a Victim Machine using the njRAT RAT Trojan</h3>
+                <div class="section-card">
+                    <span class="tool-tag">njRAT v0.7d (Remote Access Trojan)</span>
+                    <p><strong>What/when:</strong> njRAT is a RAT with data-stealing capabilities: keystroke logging, camera access, browser credential theft, file upload/download, process/file manipulation, desktop viewing, botnet control, USB propagation. Attacker Windows 11 (10.10.1.11); victim Windows Server 2022 (10.10.1.22). Build a server executable, deliver it to victim, establish persistent C2 connection, then use File/Process/Connection/Registry/Remote Shell/Services managers, Remote Desktop, Remote Cam/Mic, Keylogger, Chat.</p>
+                    <pre><code># Attacker (Windows 11) - launch njRAT
+E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Trojans Types\Remote Access Trojans (RAT)\njRAT\njRAT v0.7d.exe
+# port: 5552 -> Start
+# Builder: Host 10.10.1.11 ; check Registy StarUp ; Build
+# Save As: Desktop\Test.exe
+
+# Victim (Windows Server 2022) - run delivered server
+# copy Test.exe from CEH-Tools share to Desktop, double-click Test.exe
+
+# Remote Shell command issued from njRAT Manager
+ipconfig /all
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Sign in Windows 11 as Admin (Pa$$w0rd), handle Networks wizard. Navigate to njRAT folder, double-click njRAT v0.7d.exe (Yes on UAC, Run on security warning). njRAT GUI appears with port pop-up; enter 5552, Start. Click Builder (lower-left). Enter Host 10.10.1.11, check Registy StarUp, leave defaults, Build. Save As Desktop, name Test.exe, OK. DONE! pop-up, OK. Copy Test.exe to shared network location (CEH-Tools) to deliver. Switch to Windows Server 2022, sign in CEH\\Administrator (Pa$$w0rd), handle Networks. Copy Test.exe from CEH-Tools to Desktop. Double-click Test.exe to run (Run on security warning). Switch back to Windows 11; njRAT establishes persistent connection and shows IP, username, OS. Right-click victim → Manager: File Manager (browse/manipulate ProgramData), Process Manager (Kill/Delete/Restart), Connections (Kill Connection), Registry (manipulate keys), Remote Shell (ipconfig/all and other commands), Services (start/pause/stop). Close Manager. Right-click victim → Remote Desktop (hover top-center down arrow, check Mouse; check Keyboard to type). Right-click → Remote Cam and Microphone. Switch to Windows Server 2022, perform activities (browse sites/type text). Switch to Windows 11, right-click → Keylogger; view captured keystrokes. Right-click → Open Chat; nickname Hacker, type message, Send; pop-up appears on victim. Victim restarts machine; connection drops, then re-establishes on login. End: on Windows Server 2022 open Task Manager → More details → find server.exe (32 bit) → End task. Concludes. Close all windows.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Server persists via registry startup. Victim must execute server (phishing/drive-by in real attacks).</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1 - Trojans: Task 2: Hide a Trojan using SwayzCryptor and Make it Undetectable to Various Anti-Virus Programs</h3>
+                <div class="section-card">
+                    <span class="tool-tag">VirusTotal / SwayzCryptor (crypter/FUD)</span>
+                    <p><strong>What/when:</strong> Crypters encrypt malicious binary code to evade AV detection. Baseline scan of Test.exe on VirusTotal (59/69 detections), then crypt with SwayzCryptor (Startup, Mutex, Disable UAC) producing CryptedFile.exe, rescan (only few detections), then verify CryptedFile.exe still connects to njRAT.</p>
+                    <pre><code># Baseline scan
+https://www.virustotal.com  # upload Desktop\Test.exe -> Confirm upload
+
+# Crypt
+E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Crypters\SwayzCryptor\SwayzCryptor.exe
+# File -> Desktop\Test.exe ; check Start up, Mutex, Disable UAC ; Encrypt
+# Save as Desktop\CryptedFile.exe (default name)
+
+# Rescan
+# VirusTotal -> upload icon -> Desktop\CryptedFile.exe -> Confirm upload
+
+# Verify functionality
+E:\CEH-Tools\...\njRAT\njRAT v0.7d.exe  # port 5552 Start
+# copy CryptedFile.exe to CEH-Tools share
+# Windows Server 2022: copy CryptedFile.exe to Desktop, double-click
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 open Chrome, browse https://www.virustotal.com. Choose file → Desktop Test.exe → Open → Confirm upload. Wait; ~59/69 AVs detect. Minimize browser. Open SwayzCryptor.exe from Crypters folder. Click ellipses below File → Desktop Test.exe → Open. Check Start up, Mutex, Disable UAC → Encrypt. Save File dialog → Desktop, default CryptedFile → Save. Done → Close. Maximize browser, click upload icon (top-right) → Desktop CryptedFile.exe → Open → Confirm upload. Scan completes; only few AVs detect. Minimize/close browser. Launch njRAT v0.7d.exe with port 5552 Start. Copy CryptedFile.exe to CEH-Tools share. Switch to Windows Server 2022 (login CEH\\Administrator if logged out), copy CryptedFile.exe to Desktop, double-click (handle UAC restart prompt: restart machine and re-login if shown). Executable runs; njRAT on Windows 11 shows connection established. End: Windows Server 2022 Task Manager → More details → server.exe (32 bit) → End task. Concludes: undetectable Trojan bypassing AV/firewall with persistent connection. Close all windows.</p>
+                    <p><strong>Notes:</strong> Detection ratio varies. Crypter options: Startup, Mutex, Disable UAC.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1 - Trojans: Task 3: Create a Trojan Server using Theef RAT Trojan</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Theef RAT (port 9871)</span>
+                    <p><strong>What/when:</strong> Theef is a Delphi RAT; server runs on victim (port 9871), client on attacker. Demo installs server on Windows Server 2022, connects from Windows 11, then uses Computer Information, Spy (screen capture, keylogger, task manager/process kill, webcam/mic), Keylogger verification.</p>
+                    <pre><code># Victim (Windows Server 2022)
+Z:\CEHv12 Module 07 Malware Threats\Trojans Types\Remote Access Trojans (RAT)\Theef\Server210.exe
+# (Run on security warning)
+
+# Attacker (Windows 11)
+E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Trojans Types\Remote Access Trojans (RAT)\Theef\Client210.exe
+# IP: 10.10.1.22 ; Port/FTP default ; Connect
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Switch to Windows Server 2022, sign in CEH\\Administrator (Pa$$w0rd), handle Networks. Navigate to Z:\\...\\Theef, double-click Server210.exe (Run on security warning). Switch to Windows 11 (attacker). Navigate to E:\\CEH-Tools\\...\\Theef, double-click Client210.exe. Theef main window appears. Enter IP 10.10.1.22, leave Port/FTP default, Connect. Connection established. Click Computer Information icon; view PC Details/OS Info/Home/Network (e.g., PC Details). Click Spy icon; perform screen capture, keylogging, process/task manager view, webcam/mic. In Task Manager, Refresh, select process, Close window to end task. From Spy menu click Keylogger; Start icon to read keystrokes. Switch to Windows Server 2022, open browser or Notepad (Test.txt) and type sensitive info. Switch back to Windows 11; Keylogger shows recorded keystrokes. Close Keylogger. Explore other icons. Close all windows on both machines. Concludes.</p>
+                    <p><strong>Notes:</strong> Generally attacker sends server to victim; here executed directly on victim for demo.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2 - Virus: Task 1: Create a Virus using the JPS Virus Maker Tool and Infect the Target System</h3>
+                <div class="section-card">
+                    <span class="tool-tag">JPS Virus Maker 4.0</span>
+                    <p><strong>What/when:</strong> Build a customized virus (Server.exe) with selected payloads, convert to worm (fedevi, 1 sec), change Windows password to qwerty, rename computer Test, JPG icon. Execute on Windows Server 2019; observe blank desktop, password change, disabled apps. End lab and relaunch to reset.</p>
+                    <pre><code># Create virus (Windows 11)
+E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Virus Maker\JPS Virus Maker\jps.exe
+# Options: Auto Startup; Disable TaskManager, Disable Windows Update, Disable Control Panel,
+# Disable Drives, Hide Windows Clock, Hide Desktop Icons, Enable Remote Desktop,
+# Remove Bluetooth, Turn Off Windows Firewall, Turn Off Windows Defender, Auto Startup
+# Trigger: None
+# Virus Options: Change Windows Password = qwerty ; Change Computer Name = Test
+# Enable Convert to Worm: Worm Name fedevi ; Copy After 1 (sec)
+# Icon: JPG Icon ; trigger None
+# Create Virus! -> drop-down x86(32Bit) -> Create Virus!
+# Output: E:\CEH-Tools\...\JPS Virus Maker\Server.exe
+
+# Infect (Windows Server 2019)
+Z:\CEHv12 Module 07 Malware Threats\Virus Maker\JPS Virus Maker\Server.exe
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 navigate to JPS Virus Maker, double-click jps.exe (Run on security warning). JPS window appears; tick Auto Startup. Check listed Virus Options. Ensure None radio selected for trigger. Click right arrow to configure virus options. In Virus Options check Change Windows Password → qwerty; check Change Computer Name → Test. Check Enable Convert to Worm → Worm Name fedevi; Copy After 1 (sec). Ensure JPG Icon selected; None selected lower. Click drop-down next to Create Virus! → x86(32Bit); click Create Virus!. Pop-up Virus Created Successful! → OK. Server.exe appears in JPS folder. Switch to Windows Server 2019, sign in Administrator (Pa$$w0rd). Navigate to Z:\\...\\JPS Virus Maker, double-click Server.exe. Desktop goes blank (virus infected). Restart machine; login with Pa$$w0rd gives "password is incorrect"; login with qwerty succeeds. Try Task Manager → error pop-up. All disabled apps show similar errors. End lab and relaunch to reset machines. Concludes.</p>
+                    <p><strong>Notes:</strong> After task end lab and relaunch to reset (Windows Server 2019 infected).</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 3 - Static Malware Analysis: Task 1: Perform Malware Scanning using Hybrid Analysis</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Hybrid Analysis (online)</span>
+                    <p><strong>What/when:</strong> Upload tini.exe to https://www.hybrid-analysis.com, select Windows 11 64 bit, generate public report. Observe malicious detection (threat score 100), SHA, AV results (CrowdStrike Falcon, MetaDefender), Falcon/incident response details.</p>
+                    <pre><code># URL
+https://www.hybrid-analysis.com
+# Upload: E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Viruses\tini.exe
+# Email + comment ; accept Terms & Conditions and I'm not a robot ; Continue
+# Select Windows 11 64 bit -> Generate Public Report
+# MetaDefender: click More Details
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 sign in Admin (Pa$$w0rd), handle Networks. Open Chrome, browse https://www.hybrid-analysis.com (accept cookies). Click Drag & Drop For Instant Analysis; Open dialog → E:\\...\\Viruses → tini.exe → Open. Getting Things Ready upload to 100%. Enter personal email and comment; check Terms & Conditions and I'm not a robot; Continue. Analysis Environments: select Windows 11 64 bit → Generate Public Report. Wait; Analysis Overview shows malicious, threat score 100, SHA. Anti-Virus Results show CrowdStrike Falcon and MetaDefender; click icon → More Details for MetaDefender (pop-up, close). Scroll for Falcon/incident response. Concludes. Close all windows. Alternative tools: Valkyrie, Cuckoo Sandbox, Jotti, IObit Cloud.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 3 - Static Malware Analysis: Task 2: Perform a Strings Search using BinText</h3>
+                <div class="section-card">
+                    <span class="tool-tag">BinText</span>
+                    <p><strong>What/when:</strong> Extract ANSI (green A), Unicode (red U), resource (blue R) strings from face.exe in Klez Virus Live! folder; review File pos, Mem pos, ID. Advanced view checked.</p>
+                    <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Static Malware Analysis Tools\String Searching Tools\BinText\bintext.exe
+# Browse -> E:\CEH-Tools\...\Viruses\Klez Virus Live!\face.exe -> Open
+# Advanced view checked -> Go
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 navigate to BinText folder, double-click bintext.exe. BinText main window; click Browse. Open file for Scanning → E:\\...\\Viruses\\Klez Virus Live! → face.exe → Open. Ensure Advanced view checked. Click Go; BinText extracts text. Review colored type markers (A/U/R), File pos, Mem pos, ID. Close all windows. Alternative tools: FLOSS, Strings, Free EXE DLL Resource Extract, FileSeek.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 3 - Static Malware Analysis: Task 3: Identify Packaging and Obfuscation Methods using PEid</h3>
+                <div class="section-card">
+                    <span class="tool-tag">PEid</span>
+                    <p><strong>What/when:</strong> Detect packers/cryptors/compilers for face.exe (Klez Virus Live!). PEid analyzes on open and shows packer type.</p>
+                    <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Static Malware Analysis Tools\Packaging and Obfuscation Tools\PEid\PEiD.exe
+# Browse -> E:\CEH-Tools\...\Viruses\Klez Virus Live!\face.exe -> Open
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 navigate to PEid folder, double-click PEiD.exe. Main window; click Browse. Choose file to open → E:\\...\\Viruses\\Klez Virus Live! → face.exe → Open. PEiD analyzes and displays packer/compiler info. Close all windows. Alternative tools: Macro_Pack, UPX, ASPack.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 3 - Static Malware Analysis: Task 4: Analyze ELF Executable File using Detect It Easy (DIE)</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Detect It Easy (DIE)</span>
+                    <p><strong>What/when:</strong> Analyze ELF Test File (Viruses folder) for OS, compiler, language; view File info (name, size, MD5, SHA1, entropy, entry points), Hash, Entropy graph; explore MIME, Hex, Signatures, Demangle.</p>
+                    <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Static Malware Analysis Tools\Packaging and Obfuscation Tools\DIE\die.exe
+# Open File - Security Warning -> Run
+# ellipses next to File name -> E:\CEH-Tools\...\Viruses\ELF Test File -> Open
+# File info ; Hash ; Entropy ; Close
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 navigate to DIE folder, double-click die.exe (Run on security warning). Detect It Easy window; click ellipses next to File name. Open file → E:\\...\\Viruses → ELF Test File → Open. DIE auto-scans; middle pane shows OS, compiler, language. Click File info (top right) → observe name, size, MD5, SHA1, entropy, entry points → Close. Click Hash → Close. Click Entropy → observe status, size, graph → Close. Explore MIME, Hex, Signatures, Demangle. Concludes. Close all windows. Alternative tools: Macro_Pack, UPX, ASPack.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 3 - Static Malware Analysis: Task 5: Find the Portable Executable (PE) Information of a Malware Executable File using PE Explorer</h3>
+                <div class="section-card">
+                    <span class="tool-tag">PE Explorer</span>
+                    <p><strong>What/when:</strong> Install PE Explorer, open face.exe (Klez Virus Live!), view headers info, data directories, section headers (double-click section for hex viewer). Evaluation pop-up → Continue.</p>
+                    <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Static Malware Analysis Tools\PE Extraction Tools\PE Explorer\PE.Explorer_setup.exe
+# install; Launch PE Explorer checked; View User's Guide unchecked; Finish
+# File -> Open File (or drag-drop) -> E:\CEH-Tools\...\Viruses\Klez Virus Live!\face.exe -> Open
+# Evaluation pop-up -> Continue
+# HEADERS INFO ; Data Directories icon ; Section Headers icon ; double-click section
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 navigate to PE Explorer folder, double-click PE.Explorer_setup.exe (Yes on UAC). Follow wizard; last step check Launch PE Explorer, uncheck View User's Guide, Finish. PE Explorer main window. File → Open File → E:\\...\\Viruses\\Klez Virus Live! → face.exe → Open. Evaluation pop-up → Continue. View HEADERS INFO (view/save text report, modify entry point, update checksum, set flag bits). Click Data Directories icon → view/edit virtual address and size. Click Section Headers icon → view sections/location/size; double-click section → mini hex viewer; close. Concludes. Close all windows. Alternative tools: Portable Executable Scanner (pescan), Resource Hacker, PEView.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 3 - Static Malware Analysis: Task 6: Identify File Dependencies using Dependency Walker</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Dependency Walker (depends.exe)</span>
+                    <p><strong>What/when:</strong> Open snoopy.exe (Klez Virus Live!), review DLL dependency tree, inspect KERNEL32.DLL import/export details. Handle processing error pop-up.</p>
+                    <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Static Malware Analysis Tools\File Dependency Checking Tools\Dependency Walker\depends.exe
+# File -> Open -> E:\CEH-Tools\...\Viruses\Klez Virus Live!\snoopy.exe -> Open
+# error pop-up -> OK
+# shrink .DLL nodes; select KERNEL32.DLL -> view Import/Export
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 navigate to Dependency Walker folder, double-click depends.exe. Main window; File → Open → E:\\...\\Viruses\\Klez Virus Live! → snoopy.exe → Open. Dependency Walker pop-up with processing error → OK. SNOOPY.EXE imported. Shrink .DLL nodes to view available DLLs. Click KERNEL32.DLL → view Import Section and Export Section details. Analyze all DLL dependencies. Close all windows. Alternative tools: Dependency-check, Snyk, RetireJS.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 3 - Static Malware Analysis: Task 7: Perform Malware Disassembly using IDA and OllyDbg</h3>
+                <div class="section-card">
+                    <span class="tool-tag">IDA Freeware 7.7 / OllyDbg</span>
+                    <p><strong>What/when:</strong> Disassemble face.exe with IDA (text view, flow chart, function calls, hex view, structures, enums; copy qwingraph.exe to IDA install dir). Then OllyDbg: open tini.exe, view log, executable modules, memory map, threads.</p>
+                    <pre><code># IDA
+# Search icon on Desktop -> type ida -> IDA Freeware -> Open
+# I Agree ; telemetry uncheck Yes... -> OK
+# Quick start -> New
+# Select file -> E:\CEH-Tools\...\Viruses\Klez Virus Live!\face.exe -> Open
+# Load a new file: Portable executable for 80386 (PE) [pe64.dll] -> OK
+# (Warning/Please confirm -> OK/Yes)
+# right-click -> Text view
+# copy qwingraph.exe to C:\Program Files\IDA Freeware 7.7 (Continue on access denied)
+# View -> Graphs -> Flow chart ; View -> Graphs -> Function calls
+# HexView-1 tab ; Structures tab ; Enums tab
+# Save database -> OK
+
+# OllyDbg
+E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Static Malware Analysis Tools\Disassembling and Debugging Tools\OllyDbg\OLLYDBG.EXE
+# (Run on security warning; UDD Directory Absent -> OK; admin rights -> OK)
+# File -> Open -> E:\CEH-Tools\...\Viruses\tini.exe -> Open
+# View -> Log ; View -> Executable modules ; (double-click module)
+# View -> Memory ; View -> Threads
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 click Search icon, type ida, open IDA Freeware (I Agree; uncheck telemetry help, OK). Quick start → New. Select file → E:\\...\\Viruses\\Klez Virus Live! → face.exe → Open. Load a new file → PE [pe64.dll] → OK (handle Warning/Please confirm). IDA completes analysis in IDA View-A. Right-click → Text view. Minimize IDA; copy qwingraph.exe from ...\\IDA to C:\\Program Files\\IDA Freeware 7.7 (Continue on access denied). Maximize IDA; View → Graphs → Flow chart (zoom); close. View → Graphs → Function calls (zoom); close WinGraph32. Click HexView-1 tab; Structures tab; Enums tab. Close all; Save database → OK. Then navigate to OllyDbg folder, double-click OLLYDBG.EXE (Run on security warning; UDD Directory Absent → OK; admin rights → OK). Close extra sub-windows. File → Open → E:\\...\\Viruses → tini.exe → Open (CPU - main thread). View → Log (view entry point/calls; close). View → Executable modules (double-click module, e.g., 73120000). View → Memory (close). View → Threads. Concludes. Close all windows. Alternative tools: Radare2, WinDbg, ProcDump.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 3 - Static Malware Analysis: Task 8: Perform Malware Disassembly using Ghidra</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Ghidra</span>
+                    <p><strong>What/when:</strong> Create project "Malware Analysis", import face.exe, analyze, view assembly/decompiler, symbol tree (Imports/Exports/Functions/Labels), program tree (Headers, .rdata).</p>
+                    <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Static Malware Analysis Tools\Disassembling and Debugging Tools\Ghidra\ghidraRun.bat
+# Tip of the Day -> Close
+# File -> New Project... -> Non-Shared Project -> Next
+# Project Name: Malware Analysis -> Finish
+# File -> Import File... -> E:\CEH-Tools\...\Viruses\Klez Virus Live!\face.exe -> Select File to Import -> OK
+# Import Results Summary -> OK ; double-click Face.exe node
+# Analyze pop-up -> Yes ; Analyze Options default -> Analyze
+# Symbol Tree: expand Imports ; Program Tree: double-click Headers, .rdata
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 navigate to Ghidra folder, double-click ghidraRun.bat. Tip of the Day → Close. NO ACTIVE PROJECT → File → New Project… → Non-Shared Project → Next. Project Name Malware Analysis → Finish. File → Import File… → E:\\...\\Viruses\\Klez Virus Live! → face.exe → Select File to Import. Import window → OK; Import Results Summary → OK. Double-click Face.exe node. Analyze pop-up → Yes; Analyze Options default → Analyze; wait for status bar. Assembly code + decompiler appear. Symbol Tree: expand Imports and other components. Close Decompiler tab. Program Tree: double-click Headers, then .rdata. Explore other functions. Concludes. Close all windows. Alternative tools: Radare2, WinDbg, ProcDump.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 4 - Dynamic Malware Analysis: Task 1: Perform Port Monitoring using TCPView and CurrPorts</h3>
+                <div class="section-card">
+                    <span class="tool-tag">TCPView / CurrPorts / njRAT</span>
+                    <p><strong>What/when:</strong> Build Trojan.exe with njRAT (ExeName Trojan.exe), run on Windows Server 2022, monitor with TCPView (observe Trojan.exe, do not kill), then CurrPorts (properties, do not kill). Demonstrates port/process monitoring.</p>
+                    <pre><code># Build (Windows 11)
+E:\CEH-Tools\...\njRAT\njRAT v0.7d.exe  # port 5552 Start
+# Builder: Host 10.10.1.11 ; Registy StarUp ; ExeName Trojan.exe ; Build
+# Save As: E:\CEH-Tools\...\njRAT\Trojan.exe
+
+# Victim run (Windows Server 2022)
+Z:\CEH-Tools\...\njRAT\Trojan.exe
+
+# TCPView
+Z:\CEH-Tools\...\Port Monitoring Tools\TCPView\Tcpview.exe  # Yes on UAC; Agree
+# search Trojan.exe ; right-click -> Kill Process... -> Cancel
+
+# CurrPorts
+Z:\CEH-Tools\...\Port Monitoring Tools\CurrPorts\cports.exe
+# search Trojan.exe ; Properties ; Kill/Close -> No
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 launch njRAT v0.7d.exe (port 5552 Start). Builder: Host 10.10.1.11, check Registy StarUp, ExeName Trojan.exe, Build. Save As E:\\...\\njRAT\\Trojan.exe. Minimize. Switch to Windows Server 2022, sign in CEH\\Administrator (Pa$$w0rd), handle Networks. Navigate to Z:\\...\\njRAT, double-click Trojan.exe. Connection established in njRAT (Windows 11). Switch to Windows Server 2022; navigate to TCPView folder, double-click Tcpview.exe (Yes on UAC; Agree license). TCPView shows processes/ports; click Local Port to sort; find Trojan.exe (remote address/port). Right-click → Kill Process… → Cancel (do not kill; needed next). Close TCPView. Navigate to CurrPorts folder, double-click cports.exe. Find Trojan.exe (port 5552). Right-click → Properties (name, PID, remote address/path) → OK. Right-click → Kill Processes Of Selected Ports / Close Selected TCP Connections → No. Concludes. Close all windows. Alternative tools: Port Monitor, TCP Port Monitoring, PortExpert.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 4 - Dynamic Malware Analysis: Task 2: Perform Process Monitoring using Process Monitor</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Process Monitor (Procmon)</span>
+                    <p><strong>What/when:</strong> Run Procmon on Windows Server 2022, locate Trojan.exe (re-execute if killed), view Event/Process/Stack tabs. If killed earlier, re-run Trojan.exe.</p>
+                    <pre><code>Z:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Dynamic Malware Analysis Tools\Process Monitoring Tools\ProcessMonitor\Procmon.exe
+# Agree license
+# find Trojan.exe ; if killed re-run:
+Z:\CEH-Tools\...\njRAT\Trojan.exe
+# right-click Trojan.exe -> Properties -> Event/Process/Stack tabs -> Close
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows Server 2022 navigate to ProcessMonitor folder, double-click Procmon.exe (Agree). Main window shows running processes. Scroll to find Trojan.exe; if killed earlier, re-run Trojan.exe from njRAT folder. Select Trojan.exe → right-click → Properties. Event tab shows Date/Thread/Class/Operation/Result/Path/Duration. Process tab shows process details. Stack tab shows supported DLLs. Close. Concludes. Close all windows on both machines. Alternative tools: Process Explorer, OpManager, Monit, ESET SysInspector.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 4 - Dynamic Malware Analysis: Task 3: Perform Registry Monitoring using Reg Organizer</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Reg Organizer</span>
+                    <p><strong>What/when:</strong> Install Reg Organizer on Windows 11, create snapshot "Shot 1", install SoftPerfect Network Scanner, compare with current registry to reveal differences.</p>
+                    <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Dynamic Malware Analysis Tools\Registry Monitoring Tools\Reg Organizer\reg-organizer-setup.exe
+# Run on security warning; Yes on UAC; Next; install; uncheck Enable functions requiring data transfer & What's new; Finish
+# TOOLS -> Registry Snapshots -> Create Snapshot -> name "Shot 1" -> OK
+# install SoftPerfect Network Scanner:
+E:\CEH-Tools\CEHv12 Module 04 Enumeration\SNMP Enumeration Tools\SoftPerfect Network Scanner\netscan_setup.exe
+# Compare with Current Registry -> Revealed Differences
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 navigate to Reg Organizer folder, double-click reg-organizer-setup.exe (Run on security warning; Yes on UAC). Setup → Next; follow wizard; uncheck Enable functions requiring data transfer and What's new; Finish. Reg Organizer main window. TOOLS → Registry Snapshots. Create Snapshot → name Shot 1 → OK. To demonstrate change, install SoftPerfect Network Scanner: navigate to E:\\...\\SoftPerfect Network Scanner, double-click netscan_setup.exe, follow wizard, uncheck Launch, Finish. Back in Reg Organizer click Compare with Current Registry → Revealed Differences window. Examine registry entries (expand nodes, select entry, view keys). Close all windows. Alternative tools: regshot, Registry Viewer, RegScanner, Registrar Registry Manager.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 4 - Dynamic Malware Analysis: Task 4: Perform Windows Services Monitoring using Windows Service Manager (SrvMan)</h3>
+                <div class="section-card">
+                    <span class="tool-tag">SrvMan (Windows Service Manager)</span>
+                    <p><strong>What/when:</strong> Run srvman.exe (x64) on Windows 11 to list services (internal name, state, type, display name, start type, executable), start/stop/restart/add/delete, view properties.</p>
+                    <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Dynamic Malware Analysis Tools\Windows Services Monitoring Tools\Windows Service Manager (SrvMan)\x64\srvman.exe
+# Yes on UAC
+# view services; Properties; Start/Stop/Restart/Add/Delete service
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 navigate to SrvMan x64 folder, double-click srvman.exe (Yes on UAC). Service Manager lists all services with details. Choose unwanted service to Stop/Delete; view Properties; Start stopped service; Restart running; Add new; Delete. Concludes. Close Service Manager. Alternative tools: Advanced Windows Service Manager, Process Hacker, Netwrix Service Monitor, AnVir Task Manager.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 4 - Dynamic Malware Analysis: Task 5: Perform Startup Program Monitoring using Autoruns for Windows and WinPatrol</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Autoruns for Windows / WinPatrol</span>
+                    <p><strong>What/when:</strong> Autoruns: view Logon/Explorer/Services/Drivers/Known DLLs tabs. WinPatrol: install, manage Startup Programs (disable OneDrive), IE Helpers (remove Java SSV Helper), Services (info/disable), File Types, Active Tasks (kill task).</p>
+                    <pre><code># Autoruns
+E:\CEH-Tools\...\Windows Startup Programs Monitoring Tools\Autoruns for Windows\Autoruns.exe
+# Agree license; view tabs: Logon, Explorer, Services, Drivers, Known DLLs
+
+# WinPatrol
+E:\CEH-Tools\...\Windows Startup Programs Monitoring Tools\WinPatrol\wpsetup.exe
+# Yes on UAC; install; Start application checked; Finish
+# Startup Programs tab: select OneDrive -> Disable
+# IE Helpers: select Java(tm) Plug-In SSV Helper -> Remove (Yes)
+# Services: select -> Info... -> Disabled -> Apply -> Close
+# File Types: select -> Info... -> Expand Info
+# Active Tasks: select -> Kill Task
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 navigate to Autoruns folder, double-click Autoruns.exe (Agree). Main window shows processes/DLLs/services. Click Logon, Explorer, Services, Drivers, Known DLLs tabs to review auto-start entries. Close Autoruns. Navigate to WinPatrol folder, double-click wpsetup.exe (Yes on UAC), follow wizard, check Start the application, Finish. WinPatrol opens on PLUS tab; click Startup Programs tab; select OneDrive → Disable (removed). IE Helpers tab; select Java(tm) Plug-In SSV Helper → Remove (Yes). Services tab; select service → Info… → Disabled → Apply → Close. File Types tab; select program → Info… → Expand Info → close. Active Tasks tab; select task → Kill Task. Concludes. Close all windows. Alternative tools: Autorun Organizer, Quick Startup, Chameleon Startup Manager.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 4 - Dynamic Malware Analysis: Task 6: Perform Installation Monitoring using Mirekusoft Install Monitor</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Mirekusoft Install Monitor</span>
+                    <p><strong>What/when:</strong> Install Mirekusoft, skip scan, Programs tab uninstall WinPatrol (with cleanup), Performance tab terminate programs, Startup tab disable startup programs.</p>
+                    <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Dynamic Malware Analysis Tools\Installation Monitoring Tools\Mirekusoft Install Monitor\SetupInstallMonitor.exe
+# Update Available -> Update; Yes on UAC; install; Launch
+# Welcome -> OK; Home -> Skip scan
+# Programs tab: select WinPatrol -> Uninstall -> (WinPatrol pop-ups Yes) -> OK
+# Cleanup for WinPatrol -> OK -> Confirm Cleanup -> Cleanup
+# Performance tab: select program -> End Program
+# Startup tab: select -> Disable
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 navigate to Mirekusoft folder, double-click SetupInstallMonitor.exe (Update if prompted; Yes on UAC). Follow install; Launch. Welcome pop-up → OK; Home → Skip scan. Programs tab lists installed programs; select WinPatrol → Uninstall (handle WinPatrol pop-ups Yes; selected application uninstalled → OK; Cleanup for WinPatrol → OK; Confirm Cleanup → Cleanup). Performance tab → select running program → End Program. Startup tab → if detected, select → Disable (restart may be needed). Concludes. Close all applications. Alternative tools: SysAnalyzer, Advanced Uninstaller PRO, REVO UNINSTALLER PRO, Comodo Programs Manager.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 4 - Dynamic Malware Analysis: Task 7: Perform Files and Folder Monitoring using PA File Sight</h3>
+                <div class="section-card">
+                    <span class="tool-tag">PA File Sight (Ultra/Satellite)</span>
+                    <p><strong>What/when:</strong> Install Ultra on Windows 11 (central, port 8000) and Satellite on Windows Server 2022; create/modify/delete Secret.txt in monitored folder; observe alerts/activity. Central IP 10.10.1.11.</p>
+                    <pre><code># Windows 11 (central)
+E:\CEH-Tools\...\Files and Folder Monitoring Tools\PA File Sight\FileSight_Trial_Key_E71BE154-2386-4CF3-BEA3-75830C985736.exe
+# Run on security warning; Yes on UAC; install; Ultra selected; Install Trial License; OK
+# Start service + Launch console checked; Finish
+# Local host -> OK ; close Start Wizard if appears
+# Add New Monitor -> File Sight Monitor -> OK
+# Browse path: C:\Users\Administrator\Desktop\File Monitoring (on Server2022)
+# Monitor Purpose: Audit file activity ; Actions -> New -> Action List -> OK -> Add -> OK
+# File Activities: Existing file is written to; Ignore file appends; OK
+# select Watch node -> Apply ; right-click -> Run Now!
+
+# Windows Server 2022 (satellite)
+Z:\CEH-Tools\...\PA File Sight\FileSight_Trial_Key_....exe
+# Select Components: uncheck Central Monitoring Service and Console UI; check Satellite Monitoring Service
+# Start Satellite Service + Configure checked; Finish
+# Configure Satellite: Central monitoring service address 10.10.1.11:8000 ; Apply Settings
+# Stop Satellite Service ; Start Satellite Service ; Exit
+# Create Desktop\File Monitoring\File Monitoring folder; Secret.txt with text
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 navigate to PA File Sight folder, double-click installer (Run on security warning; Yes on UAC). Select language → OK; follow install. Start Your Trial → Ultra → Install Trial License → OK. Completing wizard: check Start service and Launch console → Finish. Console → Local host → OK; close Start Wizard. Windows Server 2022 switch; sign in CEH\\Administrator (Pa$$w0rd). Install PA File Sight from Z:; Select Components: uncheck Central Monitoring Service and Console UI, check Satellite Monitoring Service; Next; install. Final: check Start Satellite Service and Configure; Finish. Configure Satellite: Central monitoring service address 10.10.1.11 (port 8000); Apply Settings. Stop Satellite Service; Start Satellite Service; Exit. Create folder "File Monitoring" on Desktop; create Secret.txt with text; save/close. Switch to Windows 11: PA File Sight monitors Server2022. Expand Server2022 node; select Inventory Collector; Apply; right-click → Run Now!. Select Server2022; scroll dashboard for system info. Right-click Server2022 → Add New Monitor → File Sight Monitor → OK. File Sight Configuration: Browse to C:\\Users\\Administrator\\Desktop\\File Monitoring; check Fire actions for each event separately; Monitor Purpose Audit file activity; Actions → New → Action List → OK → Add → choose action → OK → OK; add action via <<; OK. File Activities tab: check Existing file is written to and Ignore file appends; OK. Under Server2022, Watch node added; select → Apply; right-click → Run Now!. Switch to Windows Server 2022; open Secret.txt, modify text, save/close. Switch to Windows 11; observe activity/notepad.exe link; view CEH\\Administrator notepad.exe window (if blank, add text and switch back). Delete Secret.txt on Server 2022; switch to Windows 11; alert appears; Recent Alerts → Full History 1 day shows deletion. Concludes. Close all windows. Alternative tools: Tripwire, Netwrix Auditor, Verisys, CSP File Integrity Checker.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 4 - Dynamic Malware Analysis: Task 8: Perform Device Driver Monitoring using DriverView and Driver Reviver</h3>
+                <div class="section-card">
+                    <span class="tool-tag">DriverView / Driver Reviver</span>
+                    <p><strong>What/when:</strong> DriverView lists loaded drivers with properties. Driver Reviver scans/updates drivers and shows system info; uninstall after. Windows 11.</p>
+                    <pre><code>E:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Dynamic Malware Analysis Tools\Device Drivers Monitoring Tools\DriverView\DriverView.exe
+# right-click driver -> Properties -> OK
+
+E:\CEH-Tools\...\Device Drivers Monitoring Tools\Driver Reviver\DriverReviverSetup.exe
+# Yes on UAC; Next; install; scan; Update All if outdated
+# Home tab: system details; Backup tab: backup/restore
+# Uninstall via Control Panel -> Programs -> Uninstall a program
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 navigate to DriverView folder, double-click DriverView.exe. Main window lists installed drivers. Right-click any driver → Properties → view details → OK. Close DriverView. Navigate to Driver Reviver folder, double-click DriverReviverSetup.exe (Yes on UAC). Setup → Next; install; Driver Reviver initializes scan. After scan, list shows OUTDATED/UP TO DATE (here all up to date; may vary). Click Update All if outdated. Home tab: system/processor/graphics/memory/hard drives. Backup tab: create backup/restore. Uninstall Driver Reviver via Control Panel → Programs → Uninstall a program (remove all files). Close all windows. Alternative tools: Driver Booster, Driver Easy, Driver Fusion, Driver Genius 22.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 4 - Dynamic Malware Analysis: Task 9: Perform DNS Monitoring using DNSQuerySniffer</h3>
+                <div class="section-card">
+                    <span class="tool-tag">DNSQuerySniffer</span>
+                    <p><strong>What/when:</strong> Run on Windows Server 2022; capture DNS queries (WinPcap, Ethernet adapter) ~5 min. Change Preferred DNS to Windows 11 IP 10.10.1.11; observe changed DNS logs, properties. Restore DNS to 8.8.8.8.</p>
+                    <pre><code>Z:\CEH-Tools\CEHv12 Module 07 Malware Threats\Malware Analysis Tools\Dynamic Malware Analysis Tools\DNS Monitoring Tools\DNSQuerySniffer\DNSQuerySniffer.exe
+# Capture Options: WinPcap Packet Capture Driver; select Ethernet adapter; OK
+# wait ~5 min
+# change DNS: Network icon -> Open Network & Internet settings
+# Change adapter options -> Ethernet Properties -> IPv4 Properties
+# Preferred DNS server = 10.10.1.11 ; OK ; Close
+# wait ~5 min; right-click changed log -> Properties -> OK
+# restore Preferred DNS = 8.8.8.8
+                    </code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows Server 2022 sign in CEH\\Administrator (Pa$$w0rd). Navigate to DNSQuerySniffer folder, double-click DNSQuerySniffer.exe. Main window + Capture Options. Ensure WinPcap Packet Capture Driver selected; select Ethernet adapter; OK to start sniffing. Wait ~5 min; logs show host name, port, request/response time, duration, source/destination address (DNS 8.8.8.8). For demo change DNS: right-click Network icon → Open Network & Internet settings → Change adapter options → right-click Ethernet → Properties → IPv4 → Properties → Preferred DNS server 10.10.1.11 → OK → Close. Wait ~5 min; changed logs appear. Right-click changed log → Properties → observe DNS change → OK. Restore Preferred DNS to 8.8.8.8. Close all windows. Concludes. Alternative tools: DNSstuff, Sonar Lite.</p>
+                    <p><strong>Notes:</strong> DNSChanger-style attack demonstration; DNS capture takes ~5 minutes.</p>
+                </div>
+            </section>
+
+        </div>
+
+        <div class="window">
+            <div class="module-header">
+                <span>CEH v12 - Module 07 (Extended)</span>
+                <h2 class="hero-3d">Detailed Lab Narratives and Expected Outputs</h2>
+            </div>
+
+            <section class="lab-task">
+                <h3>Task 1 (Trojans): njRAT - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Sign in Windows 11 as Admin (Pa$$w0rd), handle Networks. Launch njRAT v0.7d.exe (Yes on UAC, Run on security warning). Port pop-up: enter 5552, Start. Builder: Host 10.10.1.11, check Registy StarUp, leave defaults, Build. Save As Desktop, Test.exe, OK. DONE! → OK. Copy Test.exe to CEH-Tools share. Switch to Windows Server 2022, sign in CEH\\Administrator (Pa$$w0rd), handle Networks. Copy Test.exe from share to Desktop. Double-click Test.exe (Run on security warning). Switch to Windows 11; connection appears with IP, username, OS. Right-click victim → Manager: File Manager (ProgramData), Process Manager (Kill/Delete/Restart), Connections (Kill Connection), Registry (manipulate), Remote Shell (ipconfig/all), Services (start/pause/stop). Close Manager. Remote Desktop (top-center down arrow, check Mouse/Keyboard). Remote Cam and Microphone. Switch to Windows Server 2022, perform activities (browse sites, type text). Switch to Windows 11; Keylogger shows keystrokes. Open Chat as Hacker, Send message; pop-up on victim. Victim restarts; connection drops then re-establishes. End: Windows Server 2022 Task Manager → More details → server.exe (32 bit) → End task. Close all windows.</p>
+                    <p><strong>Expected output:</strong> Persistent njRAT session, remote desktop, keystrokes, chat pop-up, reconnection after reboot.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 2 (Trojans): SwayzCryptor - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows 11 Chrome → https://www.virustotal.com. Choose file → Desktop Test.exe → Open → Confirm upload. ~59/69 detections. Minimize. Open SwayzCryptor.exe; ellipses → Desktop Test.exe → Open; check Start up, Mutex, Disable UAC; Encrypt; Save Desktop CryptedFile.exe; Close. Maximize browser; upload icon → Desktop CryptedFile.exe → Open → Confirm upload. Only few detections. Launch njRAT (port 5552 Start). Copy CryptedFile.exe to CEH-Tools. Windows Server 2022 (login if needed) copy CryptedFile.exe to Desktop; double-click (handle UAC restart if prompted). njRAT shows connection. End: Task Manager → server.exe (32 bit) → End task. Concludes undetectable Trojan.</p>
+                    <p><strong>Expected output:</strong> Detection ratio drops from ~59/69 to few; CryptedFile.exe still connects to njRAT.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 3 (Trojans): Theef - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows Server 2022 sign in CEH\\Administrator (Pa$$w0rd), handle Networks. Navigate Z:\\...\\Theef, double-click Server210.exe (Run). Windows 11 navigate E:\\...\\Theef, double-click Client210.exe. Enter IP 10.10.1.22, Port/FTP default, Connect. Computer Information icon → PC Details/OS Info/Home/Network. Spy icon → screen capture, keylogger, task manager, webcam/mic. Task Manager: Refresh, select process, Close window. Spy → Keylogger → Start. Windows Server 2022: browse sites or Notepad Test.txt typing sensitive info. Windows 11: view recorded keystrokes. Close Keylogger. Explore other icons. Close all windows both machines.</p>
+                    <p><strong>Expected output:</strong> Remote connection, PC details, task list, captured keystrokes.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 1 (Virus): JPS Virus Maker - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows 11 navigate JPS Virus Maker, double-click jps.exe (Run). Tick Auto Startup. Check Disable TaskManager, Disable Windows Update, Disable Control Panel, Disable Drives, Hide Windows Clock, Hide Desktop Icons, Enable Remote Desktop, Remove Bluetooth, Turn Off Windows Firewall, Turn Off Windows Defender, Auto Startup. None trigger. Right arrow → Virus Options: Change Windows Password qwerty; Change Computer Name Test; Enable Convert to Worm (fedevi, Copy After 1 sec); JPG Icon; None. Create Virus! drop-down x86(32Bit) → Create Virus! → OK. Server.exe created. Windows Server 2019 sign in Administrator (Pa$$w0rd). Navigate Z:\\...\\JPS Virus Maker, double-click Server.exe. Desktop blank. Restart; login Pa$$w0rd → incorrect; login qwerty succeeds. Task Manager → error. All disabled apps error. End lab and relaunch to reset.</p>
+                    <p><strong>Expected output:</strong> Infected desktop blank, password changed to qwerty, Task Manager disabled.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 1 (Static): Hybrid Analysis - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows 11 sign in Admin (Pa$$w0rd), handle Networks. Chrome → https://www.hybrid-analysis.com (accept cookies). Drag & Drop → tini.exe from Viruses. Upload to 100%. Enter email/comment; check Terms and I'm not a robot; Continue. Select Windows 11 64 bit → Generate Public Report. Wait; Analysis Overview malicious, threat score 100, SHA. Anti-Virus Results: CrowdStrike Falcon, MetaDefender; click icon → More Details (pop-up close). Scroll Falcon/incident response. Close all windows.</p>
+                    <p><strong>Expected output:</strong> Malicious file, threat score 100, AV results.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 2 (Static): BinText - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows 11 navigate BinText, double-click bintext.exe. Browse → face.exe in Klez Virus Live!. Advanced view checked. Go. Review A (ANSI green), U (Unicode red), R (resource blue), File pos, Mem pos, ID. Close all windows.</p>
+                    <p><strong>Expected output:</strong> Extracted strings with type/position metadata.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 3 (Static): PEid - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows 11 navigate PEid, double-click PEiD.exe. Browse → face.exe in Klez Virus Live! → Open. PEiD analyzes and shows packer/compiler. Close all windows.</p>
+                    <p><strong>Expected output:</strong> Packer/obfuscation method identified.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 4 (Static): Detect It Easy - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows 11 navigate DIE, double-click die.exe (Run). Ellipses → ELF Test File → Open. Auto-scan shows OS/compiler/language. File info → name/size/MD5/SHA1/entropy/entry points → Close. Hash → Close. Entropy → status/size/graph → Close. Explore MIME/Hex/Signatures/Demangle. Close all windows.</p>
+                    <p><strong>Expected output:</strong> ELF metadata, hashes, entropy.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 5 (Static): PE Explorer - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows 11 navigate PE Explorer, double-click PE.Explorer_setup.exe (Yes on UAC). Wizard; last step Launch checked, View Guide unchecked; Finish. File → Open File → face.exe in Klez Virus Live! → Open. Evaluation → Continue. HEADERS INFO (view/save report, modify entry point, checksum, flags). Data Directories icon → view/edit VA/size. Section Headers icon → view sections; double-click → hex viewer; close. Close all windows.</p>
+                    <p><strong>Expected output:</strong> PE headers, data directories, section headers, raw hex.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 6 (Static): Dependency Walker - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows 11 navigate Dependency Walker, double-click depends.exe. File → Open → snoopy.exe in Klez Virus Live! → Open. Processing error pop-up → OK. Shrink .DLL nodes. Select KERNEL32.DLL → view Import/Export details. Analyze all DLLs. Close all windows.</p>
+                    <p><strong>Expected output:</strong> DLL dependency tree and KERNEL32 import/export details.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 7 (Static): IDA and OllyDbg - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>IDA: Search ida → IDA Freeware (I Agree; uncheck telemetry; OK). Quick start → New. Select face.exe in Klez Virus Live! → Open. Load PE [pe64.dll] → OK (handle warnings). Right-click → Text view. Minimize; copy qwingraph.exe to C:\\Program Files\\IDA Freeware 7.7 (Continue). Maximize; View → Graphs → Flow chart (zoom); close. View → Graphs → Function calls; close. HexView-1, Structures, Enums tabs. Save database → OK. OllyDbg: navigate folder, double-click OLLYDBG.EXE (Run; UDD absent → OK; admin → OK). Close sub-windows. File → Open → tini.exe → Open. View → Log (close). View → Executable modules (double-click module). View → Memory (close). View → Threads. Close all windows.</p>
+                    <p><strong>Expected output:</strong> Disassembly text/graphs, hex/structures/enums; OllyDbg log/modules/memory/threads.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 8 (Static): Ghidra - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows 11 navigate Ghidra, double-click ghidraRun.bat. Tip of the Day → Close. File → New Project… → Non-Shared → Next. Project Name Malware Analysis → Finish. File → Import File… → face.exe in Klez Virus Live! → Select File to Import. Import → OK; Import Results Summary → OK. Double-click Face.exe node. Analyze → Yes; Analyze Options default → Analyze; wait. Assembly + decompiler. Symbol Tree expand Imports. Close Decompiler. Program Tree: double-click Headers, .rdata. Explore. Close all windows.</p>
+                    <p><strong>Expected output:</strong> Assembly/decompiled code, imports, headers/rdata.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 1 (Dynamic): Port Monitoring - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows 11 launch njRAT (port 5552 Start). Builder: Host 10.10.1.11, Registy StarUp, ExeName Trojan.exe, Build. Save As E:\\...\\njRAT\\Trojan.exe. Minimize. Windows Server 2022 sign in CEH\\Administrator (Pa$$w0rd), handle Networks. Navigate Z:\\...\\njRAT, double-click Trojan.exe. Connection in njRAT. Windows Server 2022: TCPView folder, double-click Tcpview.exe (Yes on UAC; Agree). Sort Local Port; find Trojan.exe (remote address/port). Right-click → Kill Process… → Cancel. Close. CurrPorts folder, double-click cports.exe. Find Trojan.exe (port 5552). Properties → OK. Kill/Close → No. Close all windows.</p>
+                    <p><strong>Expected output:</strong> Trojan.exe visible in TCPView/CurrPorts with remote connection details.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 2 (Dynamic): Process Monitor - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows Server 2022 navigate ProcessMonitor, double-click Procmon.exe (Agree). Find Trojan.exe; if killed re-run from njRAT folder. Select Trojan.exe → right-click → Properties. Event/Process/Stack tabs. Close. Close all windows both machines.</p>
+                    <p><strong>Expected output:</strong> Trojan.exe process details, events, stack DLLs.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 3 (Dynamic): Registry Monitoring - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows 11 navigate Reg Organizer, double-click reg-organizer-setup.exe (Run; Yes on UAC). Next; install; uncheck data transfer/What's new; Finish. TOOLS → Registry Snapshots → Create Snapshot → Shot 1 → OK. Install SoftPerfect Network Scanner (netscan_setup.exe), follow wizard, uncheck Launch, Finish. Compare with Current Registry → Revealed Differences. Examine entries. Close all windows.</p>
+                    <p><strong>Expected output:</strong> Registry differences before/after install.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 4 (Dynamic): Windows Services Monitoring - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows 11 navigate SrvMan x64, double-click srvman.exe (Yes on UAC). Lists services (internal name, state, type, display name, start type, executable). View Properties; Start/Stop/Restart; Add; Delete. Close.</p>
+                    <p><strong>Expected output:</strong> Service list and management actions.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 5 (Dynamic): Startup Monitoring - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Autoruns: Windows 11 navigate Autoruns, double-click Autoruns.exe (Agree). Review Logon/Explorer/Services/Drivers/Known DLLs tabs. Close. WinPatrol: navigate, double-click wpsetup.exe (Yes on UAC), install, check Start application, Finish. Startup Programs tab: select OneDrive → Disable. IE Helpers: Java SSV Helper → Remove (Yes). Services: select → Info… → Disabled → Apply → Close. File Types: select → Info… → Expand Info. Active Tasks: select → Kill Task. Close all windows.</p>
+                    <p><strong>Expected output:</strong> Auto-start entries and managed startup programs/services.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 6 (Dynamic): Installation Monitoring - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows 11 navigate Mirekusoft, double-click SetupInstallMonitor.exe (Update; Yes on UAC). Install; Launch. Welcome → OK; Home → Skip scan. Programs tab: select WinPatrol → Uninstall (handle pop-ups; Cleanup → OK; Confirm Cleanup → Cleanup). Performance tab: select program → End Program. Startup tab: select → Disable (if detected). Close all applications.</p>
+                    <p><strong>Expected output:</strong> Installed programs list, uninstall with cleanup, running programs.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 7 (Dynamic): File/Folder Monitoring - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows 11 install PA File Sight Ultra (Run; Yes on UAC; language; install; Ultra; Install Trial License; OK; check Start service + Launch console; Finish). Console Local host → OK; close Start Wizard. Windows Server 2022 install Satellite (Select Components: uncheck Central/Console, check Satellite; final check Start + Configure; Finish). Configure Satellite: central 10.10.1.11:8000; Apply; Stop; Start; Exit. Create Desktop\\File Monitoring; Secret.txt with text. Windows 11: Inventory Collector → Apply; Run Now!; select Server2022; dashboard. Add New Monitor → File Sight Monitor → OK; Browse path; Monitor Purpose Audit file activity; Actions New → Action List → OK → Add → OK; add via <<; OK. File Activities: Existing file is written to + Ignore file appends; OK. Watch node → Apply; Run Now!. Windows Server 2022: modify Secret.txt, save; delete Secret.txt. Windows 11: observe activity/notepad link; alert on deletion; Recent Alerts Full History 1 day. Close all windows.</p>
+                    <p><strong>Expected output:</strong> Monitored file create/modify/delete alerts and activity.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 8 (Dynamic): Device Driver Monitoring - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows 11 navigate DriverView, double-click DriverView.exe. Right-click driver → Properties → OK. Close. Navigate Driver Reviver, double-click DriverReviverSetup.exe (Yes on UAC). Next; install; scan. List OUTDATED/UP TO DATE (here up to date). Update All if needed. Home tab system details; Backup tab backup/restore. Uninstall via Control Panel → Programs → Uninstall (remove all files). Close all windows.</p>
+                    <p><strong>Expected output:</strong> Loaded driver list/properties, driver update scan.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Task 9 (Dynamic): DNS Monitoring - Detailed Narrative</h3>
+                <div class="section-card">
+                    <p>Windows Server 2022 sign in CEH\\Administrator (Pa$$w0rd). Navigate DNSQuerySniffer, double-click DNSQuerySniffer.exe. Capture Options: WinPcap; select Ethernet; OK. Wait ~5 min. Change DNS: Network icon → Open Network & Internet settings → Change adapter options → Ethernet Properties → IPv4 Properties → Preferred DNS 10.10.1.11 → OK → Close. Wait ~5 min; right-click changed log → Properties → observe DNS change → OK. Restore DNS to 8.8.8.8. Close all windows.</p>
+                    <p><strong>Expected output:</strong> DNS queries captured; changed DNS visible in properties.</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+    <script>
+        const body = document.body;
+    const applyTheme = (t) => {
+        if (t === 'dark') body.setAttribute('data-theme', 'dark');
+        else body.removeAttribute('data-theme');
+    };
+    function getTheme() {
+        try {
+            const p = new URLSearchParams(location.search);
+            const u = p.get('theme');
+            if (u === 'dark' || u === 'light') return u;
+        } catch (e) {}
+        try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+    }
+    function syncNavLinks(t) {
+        document.querySelectorAll('a[href]').forEach(a => {
+            try {
+                const url = new URL(a.getAttribute('href'), location.href);
+                if (url.pathname.endsWith('.html')) {
+                    url.searchParams.set('theme', t);
+                    a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                }
+            } catch (e) {}
+        });
+    }
+    const initialTheme = getTheme();
+    applyTheme(initialTheme);
+    syncNavLinks(initialTheme);
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+            applyTheme(newT);
+            try { localStorage.setItem('theme', newT); } catch (e) {}
+            try {
+                const url = new URL(location.href);
+                url.searchParams.set('theme', newT);
+                history.replaceState(null, '', url.toString());
+            } catch (e) {}
+            syncNavLinks(newT);
+        });
+    }
+    const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+            'module_07.html': 'nav-07',
+        'module_08.html': 'nav-08',
+        'module_09.html': 'nav-09',
+        'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        document.getElementById(navId).classList.add('active');
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

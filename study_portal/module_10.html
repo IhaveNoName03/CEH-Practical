@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 10 - Denial-of-Service</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+            <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+            <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+            <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+            <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+        <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+        <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        </ul>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+    <main class="content-body">
+        <div class="window">
+            <div class="module-header">
+                <span>CEH v12 - Module 10</span>
+                <h2 class="hero-3d">Denial-of-Service</h2>
+            </div>
+
+            <p>Denial-of-Service (DoS) and Distributed Denial-of-Service (DDoS) attacks have become a major threat to computer networks. These attacks attempt to make a machine or network resource unavailable to its authorized users. Usually, DoS and DDoS attacks exploit vulnerabilities in the implementation of the TCP/IP model protocol or bugs in a specific operating system. In a DoS attack, attackers flood a victim's system with non-legitimate service requests or traffic to overload its resources, bringing the system down and leading to the unavailability of the victim's website, or at least significantly slowing the victim's system or network performance. The goal of a DoS attack is not to gain unauthorized access to a system or corrupt data, but to keep legitimate users from using the system. Perpetrators of DoS attacks typically target sites or services hosted on high-profile web servers such as banks, credit card payment gateways, and even root nameservers. In general, DoS attacks target network bandwidth or connectivity: bandwidth attacks overflow the network with a high volume of traffic using existing network resources, thus depriving legitimate users of these resources; connectivity attacks overflow a computer with a flood of connection requests, consuming all available OS resources, so that the computer cannot process legitimate users' requests. As an expert ethical hacker or penetration tester, you must possess sound knowledge of DoS and DDoS attacks to detect and neutralize attack handlers and mitigate such attacks. The labs in this module give hands-on experience in auditing a network against DoS and DDoS attacks.</p>
+
+            <p><strong>Scenario:</strong> DoS and DDoS attacks have become popular because of the easy accessibility of exploit plans and the negligible amount of brainwork required while executing them. These attacks can be very dangerous because they can quickly consume the largest hosts on the Internet, rendering them useless. The impact includes loss of goodwill, disabled networks, financial loss, and disabled organizations. In a DDoS attack, many applications pound the target browser or network with fake exterior requests that make the system, network, browser, or site slow, useless, disabled, or unavailable. The attacker initiates the DDoS attack by sending a command to zombie agents. These zombie agents send a connection request to a large number of reflector systems with the spoofed IP address of the victim. The reflector systems see these requests as coming from the victim's machine instead of from the zombie agents because of the spoofing of the source IP address. Hence, they send the requested information (response to connection request) to the victim. The victim's machine is flooded with unsolicited responses from several reflector computers at once, which may reduce performance or may even cause the victim's machine to shut down completely. As an expert ethical hacker or pen tester, you must have the required knowledge to perform DoS and DDoS attacks to be able to test systems in the target network. In this lab you will gain hands-on experience in auditing network resources against DoS and DDoS attacks.</p>
+
+            <p><strong>Objective:</strong> Perform a DoS attack by continuously sending a large number of SYN packets; perform a DoS attack (SYN flooding, Ping of Death (PoD), and UDP application layer flood) on a target host; perform a DDoS attack; detect and analyze DoS attack traffic; detect and protect against a DDoS attack.</p>
+
+            <p><strong>Overview of Denial of Service:</strong> A DoS attack is a type of security break that does not generally result in the theft of information. However, these attacks can harm the target in terms of time and resources. Further, failure to protect against such attacks might mean the loss of a service such as email. In a worst-case scenario, a DoS attack can mean the accidental destruction of the files and programs of millions of people who happen to be surfing the Web at the time of the attack. Some examples of types of DoS attacks: flooding the victim's system with more traffic than it can handle; flooding a service (such as an internet relay chat (IRC)) with more events than it can handle; crashing a TCP/IP stack by sending corrupt packets; crashing a service by interacting with it in an unexpected way; hanging a system by causing it to go into an infinite loop.</p>
+
+            <p><strong>Overview of DoS and DDoS Attacks:</strong> DDoS attacks mainly aim at the network bandwidth; they exhaust network, application, or service resources, and thereby restrict legitimate users from accessing their system or network resources. In general, the following are categories of DoS/DDoS attack vectors:</p>
+            <ul>
+                <li><strong>Volumetric Attacks:</strong> consume the bandwidth of the target network or service. Techniques: UDP flood attack, ICMP flood attack, Ping of Death and smurf attack, pulse wave and zero-day attack.</li>
+                <li><strong>Protocol Attacks:</strong> consume resources like connection state tables present in network infrastructure components such as load-balancers, firewalls, and application servers. Techniques: SYN flood attack, fragmentation attack, spoofed session flood attack, ACK flood attack.</li>
+                <li><strong>Application Layer Attacks:</strong> consume application resources or services, thereby making them unavailable to other legitimate users. Techniques: HTTP GET/POST attack, Slowloris attack, UDP application layer flood attack, DDoS extortion attack.</li>
+            </ul>
+
+            <p><strong>Overview of DoS and DDoS Attack Detection:</strong> Detection techniques are based on identifying and discriminating the illegitimate traffic increase and flash events from the legitimate packet traffic. The following are the three types of detection techniques: Activity Profiling (profiles based on the average packet rate for a network flow, which consists of consecutive packets with similar packet header information); Sequential Change-point Detection (filters network traffic by IP addresses, targeted port numbers, and communication protocols used, and stores the traffic flow data in a graph that shows the traffic flow rate over time); Wavelet-based Signal Analysis (analyzes network traffic in terms of spectral components).</p>
+
+            <section class="lab-task">
+                <h3>Lab 1 - Perform DoS and DDoS Attacks using Various Techniques: Task 1: Perform a DoS Attack (SYN Flooding) on a Target Host using Metasploit</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Metasploit (msfconsole) / Nmap / Wireshark</span>
+                    <p><strong>What/when:</strong> SYN flooding takes advantage of a flaw in how most hosts implement the TCP three-way handshake. The intruder sends unlimited SYN packets (requests) to the host system faster than the system can handle them. Normally the connection establishes with the TCP three-way handshake, and the host keeps track of the partially open connections while waiting in a listening queue for response ACK packets. Metasploit is a penetration testing platform that allows a user to find, exploit, and validate vulnerabilities; it provides the infrastructure, content, and tools to conduct penetration tests and comprehensive security auditing. The Metasploit framework has numerous auxiliary module scripts that can be used to perform DoS attacks. Here we use the auxiliary/dos/tcp/synflood module to perform SYN flooding on port 21 of a Windows 11 target (10.10.1.11) from Parrot Security (10.10.1.13), spoofing the source IP as Windows Server 2019 (10.10.1.19). We first confirm port 21 is open with Nmap, then launch the attack and observe the slowed target and spoofed source in Wireshark.</p>
+                    <pre><code># Parrot Security - become root
+sudo su
+# password: toor (not visible while typing)
+cd
+# confirm target port 21 is open
+nmap -p 21 10.10.1.11
+# -p: specifies the port to be scanned
+# launch Metasploit console
+msfconsole
+# inside msfconsole
+use auxiliary/dos/tcp/synflood
+show options
+# configure module options
+set RHOST 10.10.1.11
+set RPORT 21
+set SHOST 10.10.1.19
+# SHOST spoofs the Parrot Security IP with that of Windows Server 2019
+# start the DoS attack
+exploit
+# stop the attack
+# Ctrl+C
+
+# Windows 11 - capture/observe traffic
+# search: wireshark -> Open
+# double-click primary network interface (Ethernet) to capture
+# observe Source IP 10.10.1.19 (spoofed) and slowed performance
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Parrot Security to switch to the Parrot Security machine. In the login page, the attacker username is selected by default; enter password toor in the Password field and press Enter. If a Question pop-up window appears asking you to update the machine, click No. Click the MATE Terminal icon at the top of the Desktop to open a Terminal. Type sudo su and press Enter to run programs as root; in the [sudo] password for attacker field type toor (not visible) and press Enter. Type cd and press Enter to jump to the root directory. First determine whether port 21 is open using Nmap: type nmap -p 21 10.10.1.11 and press Enter (target IP is Windows 11). The result displays port status as open. Now perform SYN flooding on port 21 of Windows 11. Type msfconsole and press Enter to launch msfconsole. In the msf command line, type use auxiliary/dos/tcp/synflood and press Enter to launch the SYN flood module. Type show options and press Enter to display all options associated with the auxiliary module. Issue: set RHOST 10.10.1.11, set RPORT 21, set SHOST 10.10.1.19 (spoofing the Parrot Security IP with Windows Server 2019). Type exploit and press Enter to begin SYN flooding Windows 11. To confirm, click Windows 11 to switch to the Windows 11 machine and log in (Ctrl+Alt+Delete; Admin profile; Pa$$w0rd). Click Search icon on the Desktop, type wireshark, click Open. Double-click the primary network interface (Ethernet) to start capturing. Observe the Source IP address is 10.10.1.19 (Windows Server 2019), implying the Parrot Security IP has been spoofed. Observe the target machine has drastically slowed, implying the DoS attack is in progress; if continued, resources will be exhausted and the machine will stop responding. Once performance analysis is complete, click Parrot Security to switch back and press Ctrl+C to terminate the attack. Close all open windows and document all acquired information.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Spoofed source IP (SHOST) hides the attacker's origin. Ensure target port 21 is open before flooding. Prolonged flooding can crash the target.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1 - Perform DoS and DDoS Attacks using Various Techniques: Task 2: Perform a DoS Attack on a Target Host using hping3</h3>
+                <div class="section-card">
+                    <span class="tool-tag">hping3 / Nmap / Wireshark</span>
+                    <p><strong>What/when:</strong> hping3 is a command-line-oriented network scanning and packet crafting tool for the TCP/IP protocol that sends ICMP echo requests and supports TCP, UDP, ICMP, and raw-IP protocols. It performs network security auditing, firewall testing, manual path MTU discovery, advanced traceroute, remote OS fingerprinting, remote uptime guessing, TCP/IP stacks auditing, and other functions. Here we use hping3 to perform DoS attacks such as SYN flooding, Ping of Death (PoD), and UDP application layer flood on a target host. Three sub-attacks: (1) SYN flood with spoofed source on port 22; (2) PoD with oversized 65,538-byte packets on port 21; (3) UDP application layer flood on NetBIOS port 139 of Windows Server 2019. Traffic is observed in Wireshark with I/O Graph analysis.</p>
+                    <pre><code># Windows 11 - start capture
+# search: wireshark -> Open; double-click primary interface (Ethernet)
+# leave capturing
+
+# Parrot Security - become root
+sudo su
+# password: toor
+cd
+# SYN flooding (spoofed source)
+hping3 -S 10.10.1.11 -a 10.10.1.19 -p 22 --flood
+# -S: sets SYN flag; -a: spoofs IP; -p: destination port; --flood: huge number of packets
+# stop after a few seconds
+# Ctrl+C
+
+# observe on Windows 11
+# Wireshark -> Statistics -> I/O Graph -> observe huge TCP packet count -> Close
+
+# Ping of Death (PoD)
+hping3 -d 65538 -S -p 21 --flood 10.10.1.11
+# -d: data size; -S: SYN flag; -p: destination port; --flood: huge number of packets
+# RFC 791 IP max is 65,535 bytes; 65,538 exceeds it
+# Ctrl+C to stop
+
+# Windows 11 - capture PoD traffic in Wireshark (optional re-capture)
+
+# UDP application layer flood on Windows Server 2019 (port 139)
+# confirm port 139 open
+nmap -p 139 10.10.1.19
+hping3 -2 -p 139 --flood 10.10.1.19
+# -2: UDP mode; -p: destination port; --flood: huge number of packets
+# Ctrl+C to stop
+
+# Windows Server 2019 - capture traffic
+# search: wireshark -> Open; double-click primary interface (Ethernet 2)
+# observe huge UDP packets from 10.10.1.13 via port 139
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows 11 to switch to the Windows 11 machine. Click Search icon on the Desktop, type wireshark, click Open. Double-click the primary network interface (here, Ethernet) to start capturing; leave it running. Click Parrot Security to switch to the Parrot Security machine. Click the MATE Terminal icon, open Terminal. Type sudo su and press Enter; type toor as password and press Enter. Type cd and press Enter. Type hping3 -S 10.10.1.11 -a 10.10.1.19 -p 22 --flood and press Enter (target 10.10.1.11 Windows 11, spoofable 10.10.1.19 Windows Server 2019). This initiates SYN flooding. After a few seconds press Ctrl+C to stop (prolonged flooding may crash the target). Click Windows 11 and observe the TCP-SYN packets captured by Wireshark. Click Statistics from the menu bar, then I/O Graph; observe the huge number of TCP packets; click Close. Close the Wireshark main window (Stop and Quit without Saving if prompted).</p>
+                    <p>Now perform a PoD attack. Click Parrot Security. In the Terminal, type hping3 -d 65538 -S -p 21 --flood 10.10.1.11 and press Enter (-d data size 65538; -S SYN flag; -p port 21; --flood). This initiates the PoD attack: the attacker sends packets larger than the 65,535-byte limit of RFC 791 IP, and the receiving system's reassembly process might cause it to crash. Click Windows 11, launch Wireshark, double-click primary interface, observe large number of packets and degraded performance. Click Parrot Security and press Ctrl+C to terminate the PoD attack. Now perform a UDP application layer flood attack on Windows Server 2019 using NetBIOS port 139. In the terminal, type nmap -p 139 10.10.1.19 and press Enter to confirm port 139 is open. Then type hping3 -2 -p 139 --flood 10.10.1.19 and press Enter (-2 UDP mode; -p port 139; --flood). Click Windows Server 2019, log in (Ctrl+Alt+Delete; Administrator; Pa$$w0rd). In the search field type wireshark, click Wireshark to launch. Double-click primary interface (Ethernet 2). Observe huge number of UDP packets from source IP 10.10.1.13 via port 139. Click Parrot Security and press Ctrl+C to terminate. UDP-based application layer protocols attackers can employ include CharGEN (19), SNMPv2 (161), QOTD (17), RPC (135), SSDP (1900), CLDAP (389), TFTP (69), NetBIOS (137,138,139), NTP (123), Quake Network Protocol (26000), VoIP (5060). Close all open windows and document all acquired information.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. PoD relies on oversized packets exceeding RFC 791. UDP flood is connectionless and easily spoofed. Prolonged flooding may crash targets.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1 - Perform DoS and DDoS Attacks using Various Techniques: Task 3: Perform a DoS Attack using Raven-Storm</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Raven-Storm (rst) / Wireshark</span>
+                    <p><strong>What/when:</strong> Raven-Storm is a DDoS tool for penetration testing that features Layer 3, Layer 4, and Layer 7 attacks. It is written in Python 3 and is effective and powerful in shutting down hosts and servers. It can be used to perform strong attacks and can be optimized for non-typical targets. Here we use Raven-Storm's layer 4 (UDP/TCP) module to flood Windows Server 2019 (10.10.1.19) on port 80 using 20,000 threads, observing the flood in Wireshark on the target.</p>
+                    <pre><code># Parrot Security - become root
+sudo su
+# password: toor
+# launch Raven-Storm
+sudo rst
+# interactive prompts
+l4
+# load layer4 module (UDP/TCP)
+ip 10.10.1.19
+# target IP (Windows Server 2019)
+port 80
+# target port
+threads 20000
+# number of threads
+run
+# start DoS attack
+# "Do you agree to the terms of use? (Y/N)": Y
+# stop attack
+# Ctrl+Z
+
+# Windows Server 2019 - capture traffic
+# search: wireshark -> Open (or Applications -> Pentesting -> Information Gathering -> wireshark)
+# password: toor -> OK
+# double-click primary interface (Ethernet 2)
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Parrot Security to switch to the Parrot Security machine. Click the MATE Terminal icon at the top of the Desktop to open a Terminal (if a Question pop-up appears asking you to update the machine, click No). Type sudo su and press Enter; type toor as password and press Enter. Type sudo rst and press Enter to start Raven-Storm. The tool initializes. Type l4 and press Enter to load the layer 4 module (UDP/TCP). Now click Windows Server 2019 to switch to Windows Server 2019. In the Type here to search field, type wireshark, click Wireshark to launch (security pop-up: password toor, click OK). Double-click the primary network interface (here, Ethernet 2) to start capturing; leave running. Click Parrot Security to switch back. In the terminal, type ip 10.10.1.19 and press Enter to specify the target IP address. Type port 80 and press Enter to specify the target port. Type threads 20000 and press Enter to specify the number of threads. Type run and press Enter to start the DoS attack. In the "Do you agree to the terms of use? (Y/N)" field, type Y and press Enter. Raven-Storm starts the DoS attack on the target (Windows Server 2019). Click Windows Server 2019 to switch; observe a large number of packets received from the Parrot Security machine (10.10.1.13). Click Parrot Security and press Ctrl+Z to stop the attack. Close all open windows and document all acquired information.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Raven-Storm supports Layer 3/4/7 attacks. High thread counts can exhaust attacker resources too. Use only in authorized labs.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1 - Perform DoS and DDoS Attacks using Various Techniques: Task 4: Perform a DDoS Attack using HOIC</h3>
+                <div class="section-card">
+                    <span class="tool-tag">HOIC (hoic2.1.exe) / Wireshark</span>
+                    <p><strong>What/when:</strong> HOIC (High Orbit Ion Cannon) is a network stress and DoS/DDoS attack application written in BASIC. It is designed to attack up to 256 target URLs simultaneously, sending HTTP, POST, and GET requests; it offers a high-speed multi-threaded HTTP Flood and a built-in scripting system ("boosters") to thwart DDoS countermeasures and increase DoS output. Here we use three attacker machines (Windows 11, Windows Server 2019, Windows Server 2022) to DDoS Parrot Security (10.10.1.13), which captures traffic in Wireshark. HOIC is copied from the shared drive to each machine's Desktop to avoid errors, configured with target URL http://10.10.1.13, Power High, booster GenericBoost.hoic, Threads 20, then all three fire simultaneously.</p>
+                    <pre><code># Parrot Security - capture traffic
+# Applications -> Pentesting -> Information Gathering -> wireshark
+# password: toor -> OK
+# double-click primary interface (eth0)
+
+# Windows 11 (and Server 2019/2022) - copy tool
+# navigate to E:\CEH-Tools\CEHv12 Module 10 Denial-of-Service\DoS and DDoS Attack Tools
+# copy "High Orbit Ion Cannon (HOIC)" folder to Desktop
+# (Server 2019/2022: Z:\CEH-Tools\CEHv12 Module 10 Denial-of-Service\DoS and DDoS Attack Tools)
+
+# launch HOIC
+# Desktop -> High Orbit Ion Cannon (HOIC) -> double-click hoic2.1.exe
+# if Open File - Security Warning: Run
+
+# configure target
+# click "+" below TARGETS
+# URL: http://10.10.1.13   (Parrot Security)
+# slide Power bar to High
+# Booster: GenericBoost.hoic
+# click Add
+# set THREADS to 20 (click ">" until 20)
+# repeat configuration on Windows Server 2019 and 2022
+
+# fire
+# on each attacker machine click "FIRE TEH LAZER!"
+# Status changes from READY to ENGAGING
+
+# Parrot Security - observe Wireshark capturing large volume from 11/19/22
+# performance slightly affected
+
+# stop
+# click "FIRE TEH LAZER!" again on each attacker; close HOIC
+# close Wireshark on Parrot Security
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> In this task, Windows 11, Windows Server 2019, and Windows Server 2022 launch a DDoS attack on the Parrot Security machine. Click Parrot Security to switch to the Parrot Security machine. Click Applications in the top-left corner and navigate to Pentesting -> Information Gathering -> wireshark. A security pop-up appears; enter password toor and click OK. Double-click the primary network interface (here, eth0) to start capturing. Click Windows 11 to switch to Windows 11. Navigate to E:\CEH-Tools\CEHv12 Module 10 Denial-of-Service\DoS and DDoS Attack Tools and copy the High Orbit Ion Cannon (HOIC) folder to Desktop (running directly from the shared drive one machine at a time can cause errors; copy individually). Similarly follow on Windows Server 2019 (Z:\...) and Windows Server 2022 (Z:\...), logging in as needed (Server 2019: Ctrl+Alt+Delete, Administrator, Pa$$w0rd; Server 2022: CEH\Administrator, Pa$$w0rd). Click Windows 11, navigate to Desktop, open the HOIC folder, double-click hoic2.1.exe (if Open File - Security Warning, click Run). The HOIC GUI main window appears; click the "+" button below TARGETS. In the HOIC - [Target] pop-up, type the target URL http://10.10.1.13 (Parrot Security) in the URL field, slide the Power bar to High, select GenericBoost.hoic under Booster, click Add. Set THREADS to 20 via the ">" button. Switch to Windows Server 2019 and 2022 and follow the same configuration steps. Once configured on all machines, switch to each attacker machine and click "FIRE TEH LAZER!" to initiate the DDoS; Status changes from READY to ENGAGING. Click Parrot Security; observe Wireshark capturing a large volume of packets from Windows 11, Windows Server 2019, and Windows Server 2022, with performance slightly affected. With more attacker machines the target would be completely overwhelmed. On completion, click "FIRE TEH LAZER!" again and close HOIC on all attackers, and close Wireshark on Parrot Security. Close all open windows and document all acquired information.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. HOIC attacks up to 256 URLs simultaneously. Real-world DDoS uses hundreds/thousands of machines coordinated via IRC. Requires multiple attacker hosts.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1 - Perform DoS and DDoS Attacks using Various Techniques: Task 5: Perform a DDoS Attack using LOIC</h3>
+                <div class="section-card">
+                    <span class="tool-tag">LOIC (LOIC.exe) / Wireshark</span>
+                    <p><strong>What/when:</strong> LOIC (Low Orbit Ion Cannon) is a network stress testing and DoS attack application, mostly targeting web applications. It floods a target site with TCP packets, UDP packets, or HTTP requests to disrupt a host's service. Here three attacker machines (Windows 11, Windows Server 2019, Windows Server 2022) DDoS Parrot Security (10.10.1.13) using UDP method, 10 threads, medium power, while Parrot Security captures traffic in Wireshark on eth0.</p>
+                    <pre><code># Windows 11 - launch LOIC
+# navigate to E:\CEH-Tools\CEHv12 Module 10 Denial-of-Service\DoS and DDoS Attack Tools\Low Orbit Ion Cannon (LOIC)
+# double-click LOIC.exe ; if Open File - Security Warning: Run
+
+# configure
+# Select your target: IP = 10.10.1.13 ; click Lock on
+# Attack options: Method = UDP; Threads = 10; slide power bar to middle
+
+# Windows Server 2019 and 2022 - launch + configure (same, LOIC at Z:\...)
+# Server 2019: Ctrl+Alt+Delete, Administrator, Pa$$w0rd
+# Server 2022: CEH\Administrator, Pa$$w0rd
+
+# fire on each attacker
+# click "IMMA CHARGIN MAH LAZER" under Ready?
+
+# Parrot Security - capture
+# Applications -> Pentesting -> Information Gathering -> wireshark
+# password toor -> OK; double-click eth0
+# observe large volume from 11/19/22; leave 5-10 minutes; performance slows
+
+# stop
+# click "Stop flooding" on each attacker; close LOIC
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows 11 to switch to the Windows 11 machine, navigate to E:\CEH-Tools\CEHv12 Module 10 Denial-of-Service\DoS and DDoS Attack Tools\Low Orbit Ion Cannon (LOIC) and double-click LOIC.exe (if Open File - Security Warning, click Run). The Low Orbit Ion Cannon main window appears. Under Select your target, type the target IP address 10.10.1.13 in the IP field and click Lock on to add the target. Under Attack options, select UDP from the Method drop-down, set Threads to 10, slide the power bar to the middle. Now switch to Windows Server 2019 and Windows Server 2022 and follow the same steps to launch and configure LOIC (located at Z:\CEH-Tools\... on those machines). Once configured on all machines, switch to each attacker and click "IMMA CHARGIN MAH LAZER" under Ready? to initiate the DDoS on Parrot Security. Click Parrot Security to switch. Click Applications -> Pentesting -> Information Gathering -> wireshark; enter password toor and click OK. Double-click the primary network interface (eth0) to start capturing. Observe Wireshark capturing a large volume of packets from Windows 11, Windows Server 2019, and Windows Server 2022. Leave the machine intact for 5-10 minutes; performance becomes slightly affected and response slows. On completion, click Stop flooding and close the LOIC window on all attacker machines (Windows 11, Windows Server 2019, Windows Server 2022). Close all open windows and document all acquired information.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. LOIC is application-focused (HTTP/TCP/UDP). Power bar and threads tune intensity. Use only in authorized labs.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2 - Detect and Protect Against DoS and DDoS Attacks: Task 1: Detect and Protect Against DDoS Attacks using Anti DDoS Guardian</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Anti DDoS Guardian / LOIC / Wireshark</span>
+                    <p><strong>What/when:</strong> Anti DDoS Guardian is a DDoS attack protection tool that protects IIS servers, Apache servers, game servers, Camfrog servers, mail servers, FTP servers, VOIP PBX, SIP servers, and other systems. It monitors each incoming and outgoing packet in real time and displays local address, remote address, and other information of each network flow. It limits network flow number, client bandwidth, client concurrent TCP connection number, and TCP connection rate, and also limits UDP bandwidth, UDP connection rate, and UDP packet rate. Here Windows Server 2019 and 2022 attack Windows 11 (10.10.1.11) with LOIC while Anti DDoS Guardian on Windows 11 detects the flood and blocks attacker IPs (10.10.1.19, 10.10.1.22) via Block IP in the Traffic Detail Viewer.</p>
+                    <pre><code># Windows 11 - install Anti DDoS Guardian
+# navigate to E:\CEH-Tools\CEHv12 Module 10 Denial-of-Service\DoS and DDoS Protection Tools\Anti DDoS Guardian
+# double-click Anti_DDoS_Guardian_setup.exe
+# User Account Control: Yes ; Open File - Security Warning: Run
+# Setup wizard: Next; uncheck "install Stop RDP Brute Force"; Next
+# check "Create a desktop shortcut"; Next
+# Ready to Install: Install
+# Completing: uncheck "Launch Mini IP Blocker"; Finish
+# Anti-DDoS Wizard: Continue through all steps (defaults); Finish
+# Show hidden icons (bottom-right) -> click Anti DDoS Guardian icon
+# window shows incoming/outgoing traffic
+
+# Windows Server 2019 - launch LOIC (attacker)
+# log in: Ctrl+Alt+Delete, Administrator, Pa$$w0rd
+# navigate Z:\CEH-Tools\CEHv12 Module 10 Denial-of-Service\DoS and DDoS Attack Tools\Low Orbit Ion Cannon (LOIC)
+# double-click LOIC.exe ; if Open File - Security Warning: Run
+# Select your target: IP = 10.10.1.11 ; Lock on
+# Attack options: Method = UDP; Threads = 5; power bar middle
+
+# Windows Server 2022 - same (Steps 11-13)
+
+# fire
+# on Server 2019 and 2022 click "IMMA CHARGIN MAH LAZER"
+
+# Windows 11 - detect and block
+# Anti DDoS Guardian shows huge packets from 10.10.1.19 and 10.10.1.22
+# double-click a session (e.g. 10.10.1.22) -> Traffic Detail Viewer (raw data)
+# observe high incoming bytes from Remote IP
+# left pane: click Block IP -> session turns red in Action Taken
+# similarly Block IP for 10.10.1.19
+
+# stop
+# click Stop flooding on Server 2019 and 2022; close LOIC
+
+# cleanup
+# Windows 11: Control Panel -> Programs -> Programs and Features -> uninstall Anti DDoS Guardian
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> In this task, Windows Server 2019 and Windows Server 2022 perform a DDoS attack on the target system Windows 11. On the Windows 11 machine, navigate to E:\CEH-Tools\CEHv12 Module 10 Denial-of-Service\DoS and DDoS Protection Tools\Anti DDoS Guardian and double-click Anti_DDoS_Guardian_setup.exe (User Account Control: Yes; Open File - Security Warning: Run). The Setup - Anti DDoS Guardian window appears; click Next. Follow the wizard-driven installation steps. In the Stop Windows Remote Desktop Brute Force wizard, uncheck the install Stop RDP Brute Force option and click Next. In the Select Additional Tasks wizard, check Create a desktop shortcut and click Next. In the Ready to Install wizard, click Install. In the Completing wizard, uncheck Launch Mini IP Blocker and click Finish. The Anti-DDoS Wizard appears; click Continue in all wizard steps leaving defaults; in the last window click Finish. Click Show hidden icons in the bottom-right corner and click the Anti DDoS Guardian icon. The window appears displaying incoming and outgoing traffic information.</p>
+                    <p>Now click Windows Server 2019 to switch, log in (Ctrl+Alt+Delete; Administrator; Pa$$w0rd). Navigate to Z:\CEH-Tools\CEHv12 Module 10 Denial-of-Service\DoS and DDoS Attack Tools\Low Orbit Ion Cannon (LOIC) and double-click LOIC.exe (if Open File - Security Warning, click Run). The Low Orbit Ion Cannon main window appears. Under Select your target, type the target IP 10.10.1.11 and click Lock on. Under Attack options, select UDP from Method, set Threads to 5, slide the power bar to the middle. Switch to Windows Server 2022 and follow the same steps (Steps 11-13). Once LOIC is configured on both machines, switch to each (Windows Server 2019 and Windows Server 2022) and click "IMMA CHARGIN MAH LAZER" under Ready? to initiate the DDoS on Windows 11.</p>
+                    <p>Click Windows 11 to switch back and observe the packets captured by Anti DDoS Guardian. Observe the huge number of packets coming from 10.10.1.19 (Windows Server 2019) and 10.10.1.22 (Windows Server 2022). Double-click any session (10.10.1.19 or 10.10.1.22; here 10.10.1.22). The Anti DDoS Guardian Traffic Detail Viewer window appears, displaying the selected session's content as raw data; observe the high number of incoming bytes from Remote IP 10.10.1.22. From the left-hand pane you can use Clear, Stop Listing, Block IP, and Allow IP; Block IP blocks the IP sending the huge number of packets. Click Block IP; the blocked IP session turns red in the Action Taken column. Similarly block 10.10.1.19. On completion, click Stop flooding and close LOIC on all attacker machines (Windows Server 2019 and 2022). You can also use other DoS/DDoS protection tools such as DOSarrest's DDoS protection service (https://www.dosarrest.com), DDoS-GUARD (https://ddos-guard.net), and Cloudflare (https://www.cloudflare.com) to protect organization systems and networks. Click Windows 11, navigate to Control Panel -> Programs -> Programs and Features and uninstall Anti DDoS Guardian. Close all open windows and document all acquired information.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Anti DDoS Guardian is a host-based real-time monitor/limiter. Block IP is reactive; for production use cloud/WAF services. Uninstall after lab.</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+    <script>
+        const body = document.body;
+    const applyTheme = (t) => {
+        if (t === 'dark') body.setAttribute('data-theme', 'dark');
+        else body.removeAttribute('data-theme');
+    };
+    function getTheme() {
+        try {
+            const p = new URLSearchParams(location.search);
+            const u = p.get('theme');
+            if (u === 'dark' || u === 'light') return u;
+        } catch (e) {}
+        try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+    }
+    function syncNavLinks(t) {
+        document.querySelectorAll('a[href]').forEach(a => {
+            try {
+                const url = new URL(a.getAttribute('href'), location.href);
+                if (url.pathname.endsWith('.html')) {
+                    url.searchParams.set('theme', t);
+                    a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                }
+            } catch (e) {}
+        });
+    }
+    const initialTheme = getTheme();
+    applyTheme(initialTheme);
+    syncNavLinks(initialTheme);
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+            applyTheme(newT);
+            try { localStorage.setItem('theme', newT); } catch (e) {}
+            try {
+                const url = new URL(location.href);
+                url.searchParams.set('theme', newT);
+                history.replaceState(null, '', url.toString());
+            } catch (e) {}
+            syncNavLinks(newT);
+        });
+    }
+    const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+            'module_07.html': 'nav-07',
+            'module_08.html': 'nav-08',
+            'module_09.html': 'nav-09',
+            'module_10.html': 'nav-10',
+        'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        document.getElementById(navId).classList.add('active');
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

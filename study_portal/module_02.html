@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 02: Footprinting and Reconnaissance</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+    <h1>[MISSION_CONTROL]</h1>
+    <div class="search-wrap">
+        <input id="globalSearch" type="text" placeholder="Search modules...">
+        <div id="searchResults"></div>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+    <ul id="navMenu">
+        <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+        <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+        <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+        <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+        <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+        <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+        <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+        <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+        <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+        <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+        <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+        <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+    </ul>
+    <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+</nav>
+<main class="content-body">
+    <div class="window">
+        <div class="module-header">
+            <span>CEH v12 - Module 02</span>
+            <h2 class="hero-3d">Footprinting and Reconnaissance</h2>
+        </div>
+        <p>Reconnaissance collects information about a target, the first step in any attack. Ethical hackers and pen testers must gather enough information about the target before initiating assessments, simulating all steps an attacker follows to understand the security posture. Scope and rules of engagement (RoE) must be agreed with management first. Labs give real-time experience collecting info from open/publicly accessible sources. Target env: Windows 11 (10.10.1.11), Parrot Security (10.10.1.13), Windows Server 2019, etc. Always obtain proper authorization. Objectives: organization info (employees, addresses, contacts, partners, weblinks, web tech, patents, trademarks); network info (domains, sub-domains, network blocks, topologies, routers, firewalls, reachable IPs, Whois, DNS); system info (OS, web server OS, server location, user accounts/passwords). Footprinting is passive (no direct interaction, undetected) or active (direct interaction, target may notice).</p>        <section class="lab-task">
+            <h3>Lab 1 - Perform Footprinting Through Search Engines: Task 1: Gather Information using Advanced Google Hacking Techniques</h3>
+            <div class="section-card">
+                <span class="tool-tag">Google Advanced Operators</span>
+                <p><strong>What/when:</strong> Advanced Google hacking creates complex queries using Google operators to extract sensitive or hidden information about a target company from search results; reveals vulnerable websites. Target here: EC-Council (eccouncil.org), but you can choose your own. Requires browser on Windows 11 (login Admin/Pa$$w0rd). Results may differ.</p>
+                <pre><code># Find login pages on target site
+intitle:login site:eccouncil.org
+
+# Search specific file types
+EC-Council filetype:pdf ceh
+
+# Cached version of a site
+cache:www.eccouncil.org
+
+# All query terms in URL
+allinurl: EC-Council career
+
+# Word in URL on a specific site
+inurl: copy site:www.eccouncil.org
+
+# All query terms in title
+allintitle: detect malware
+
+# Anchor text operators
+Anti-virus inanchor:Norton
+allinanchor: best cloud service provider
+
+# Links / related / info / location
+link:www.eccouncil.org
+related:www.eccouncil.org
+info:eccouncil.org
+location: EC-Council                <p><strong>Key procedural steps / narrative:</strong> Launch Mozilla Firefox, go to https://www.google.com (handle Default Browser pop-up: uncheck always perform check, Not now; notification Okay, Got it; top-right pop-up No thanks). Type <code>intitle:login site:eccouncil.org</code> and press Enter; restricts results to eccouncil.org pages containing login pages (attackers can subject login pages to credential brute-forcing, injection, other web app attacks). Click back icon to return to Google. Type <code>EC-Council filetype:pdf ceh</code> and press Enter; search by file extension and keyword; click a result link (e.g., CEH-brochure.pdf) to view the PDF. PDFs/documents may reveal sensitive info about products/services and attack vectors. Other operators: cache (cached version), allinurl (all terms in URL), inurl (word in URL), allintitle (all terms in title), inanchor/allinanchor (anchor text), link (pages pointing to site), related (similar sites), info (info about page), location (location-based). Conduct your own series of queries. Close all open windows and document all acquired information.</p></code></pre>
+                <p><strong>Notes:</strong> PDF and other documents may provide sensitive information about target products/services. Login pages are crucial for pentesting.</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 1 - Perform Footprinting Through Search Engines: Task 2: Gather Information from Video Search Engines</h3>
+            <div class="section-card">
+                <span class="tool-tag">YouTube / YouTube Metadata (mattw.io) / Reverse Image Search</span>
+                <p><strong>What/when:</strong> Video search engines crawl the web for video content; advanced video search and reverse image search extract critical target info. Use YouTube search engine and YouTube Metadata tool. Target EC-Council (or your choice). If unable to access YouTube from VM, use host machine. Other tools: Google videos, Yahoo videos, EZGif, VideoReverser.com, TinEye, Yahoo Image Search.</p>
+                <pre><code># YouTube search
+https://www.youtube.com  -> search "ec-council" (or target org)
+
+# YouTube Metadata tool
+https://mattw.io/youtube-metadata/
+# Paste copied video link into "Submit a link to a video, playlist, or channel" -> Submit
+
+# Reverse image search (from Thumbnail section -> Click to reverse image search)
+# Other video search engines
+https://www.google.com/videohp
+https://in.video.search.yahoo.com
+
+# Reverse image search tools
+https://tineye.com
+https://images.search.yahoo.com                <p><strong>Key procedural steps / narrative:</strong> Launch any web browser, go to https://www.youtube.com (here Mozilla Firefox). Search target organization (ec-council); view latest videos. Select any video, right-click title, Copy Link. Open new tab, go to https://mattw.io/youtube-metadata/. Paste link into submit field, click Submit. Observe details in Snippet section (published date/time, channel ID, title, etc.). Scroll for Statistics, Geolocation, Status. Under Thumbnail section click "Click to reverse image search" under any thumbnail; new Google tab shows reverse image search results. Other video search engines and reverse image search tools listed above can gather crucial info. Close all open windows and document all acquired information.</p></code></pre>
+                <p><strong>Notes:</strong> YouTube Metadata tool collects singular details of a video, its uploader, playlist and creator/channel. Results may vary.</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 1 - Perform Footprinting Through Search Engines: Task 3: Gather Information from FTP Search Engines</h3>
+            <div class="section-card">
+                <span class="tool-tag">NAPALM FTP Indexer (searchftps.net) / FreewareWeb FTP File Search</span>
+                <p><strong>What/when:</strong> FTP search engines search for files located on FTP servers; files may hold valuable info about target (business strategies, tax docs, employee personal records, financial records, licensed software, confidential info). Many industries/institutions/companies/universities use FTP servers for large file archives. Use NAPALM FTP indexer. Also FreewareWeb FTP File Search.</p>
+                <pre><code># Launch browser -> https://www.searchftps.net/
+# In search bar type: microsoft   (or target org) -> click Search
+https://www.freewareweb.com                <p><strong>Key procedural steps / narrative:</strong> Launch any browser (Mozilla Firefox), go to https://www.searchftps.net/. NAPALM FTP indexer website appears. In search bar type microsoft (or target org), click Search. Results contain critical files and documents related to target. You can also use FreewareWeb FTP File Search (https://www.freewareweb.com). Close all open windows and document all acquired information.</p></code></pre>
+                <p><strong>Notes:</strong> FTP search engines provide info about critical files and directories including business strategies, tax documents, employee personal records, financial records, licensed software, and other confidential information.</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 1 - Perform Footprinting Through Search Engines: Task 4: Gather Information from IoT Search Engines</h3>
+            <div class="section-card">
+                <span class="tool-tag">Shodan / Censys</span>
+                <p><strong>What/when:</strong> IoT search engines crawl the Internet for publicly accessible IoT devices; provide info on control of SCADA, traffic control systems, Internet-connected household/industrial appliances, CCTV cameras, etc. Search for vulnerable IoT devices in target org using Shodan. Also Censys for manufacturer details, geographical location, IP address, hostname, open ports, etc.</p>
+                <pre><code># Shodan
+https://www.shodan.io/  -> search "amazon" (or target org) -> Enter
+# Censys
+https://censys.io                <p><strong>Key procedural steps / narrative:</strong> Launch any browser (Mozilla Firefox), go to https://www.shodan.io/. Shodan page appears. In search bar type amazon (or target), press Enter. Obtain search results with details of all vulnerable IoT devices related to target in various countries. You can also use Censys (https://censys.io) to gather manufacturer details, geographical location, IP address, hostname, open ports, etc. Close all open windows and document all acquired information.</p></code></pre>
+                <p><strong>Notes:</strong> IoT search engines provide crucial info including control of SCADA systems, traffic control systems, Internet-connected household appliances, industrial appliances, CCTV cameras, etc.</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 2 - Perform Footprinting Through Web Services: Task 1: Find the Company's Domains and Sub-domains using Netcraft</h3>
+            <div class="section-card">
+                <span class="tool-tag">Netcraft / Sublist3r / Pentest-Tools Find Subdomains</span>
+                <p><strong>What/when:</strong> Domains and sub-domains are critical network infrastructure. A company's TLDs and sub-domains provide organizational history, services/products, contact info. Public website shows organization presence. Extract domains/sub-domains using Netcraft web service. Attackers use collected subdomains to perform web app attacks (injection, brute-force, DoS). Also Sublist3r, Pentest-Tools Find Subdomains.</p>
+                <pre><code># Netcraft
+https://www.netcraft.com
+# Menu icon (top-right) -> Resources -> Tools -> Site Report
+# Type target URL: https://www.eccouncil.org -> click Look up
+# In Network section click website link in Domain field to view subdomains
+# Other tools
+https://github.com (Sublist3r)
+https://pentest-tools.com (Find Subdomains)                <p><strong>Key procedural steps / narrative:</strong> Launch any browser (Mozilla Firefox), go to https://www.netcraft.com. Netcraft page appears (if cookie pop-up, click Accept). Click menu icon top-right, navigate Resources -> Tools -> Site Report. "What's that site running?" page appears. Type target website URL (https://www.eccouncil.org) in text field, click Look up. Site report appears with Background, Network, Hosting History, etc. In Network section, click website link (eccouncil.org) in Domain field to view subdomains. Result displays subdomains along with netblock and operating system info. Close all open windows and document all acquired information.</p></code></pre>
+                <p><strong>Notes:</strong> Cookie pop-up may appear; click Accept. Attackers use collected subdomains to perform injection, brute-force, and DoS attacks.</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 2 - Perform Footprinting Through Web Services: Task 2: Gather Personal Information using PeekYou Online People Search Service</h3>
+            <div class="section-card">
+                <span class="tool-tag">PeekYou / Spokeo / pipl / Intelius / BeenVerified</span>
+                <p><strong>What/when:</strong> Online people search services (public record websites) provide names, addresses, contact details, DOB, photos, videos, profession, family/friends details, social profiles, property info, criminal background. Gather info about a person from target org via people search. Example: Satya Nadella from Microsoft. Other services: Spokeo, pipl, Intelius, BeenVerified.</p>
+                <pre><code># PeekYou
+https://www.peekyou.com
+# First Name: Satya ; Last Name: Nadella ; Location: Washington, DC ; click Search icon
+# Click "View Full Report" for detailed info                <p><strong>Key procedural steps / narrative:</strong> Launch any browser (Mozilla Firefox), go to https://www.peekyou.com. PeekYou page appears (if cookie pop-up, click I agree). In First Name and Last Name fields type Satya and Nadella. In Location drop-down select Washington, DC. Click Search icon. People search begins and best matches displayed. Result shows public records, background details, email addresses, contact information, address history, etc. Click View Full Report for detailed info. Close all open windows and document all acquired information.</p></code></pre>
+                <p><strong>Notes:</strong> After clicking result, redirected to different website; may take time. Other services: Spokeo, pipl, Intelius, BeenVerified.</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 2 - Perform Footprinting Through Web Services: Task 3: Gather an Email List using theHarvester</h3>
+            <div class="section-card">
+                <span class="tool-tag">theHarvester</span>
+                <p><strong>What/when:</strong> theHarvester gathers emails, subdomains, hosts, employee names, open ports, and banners from public sources such as search engines, PGP key servers, and SHODAN. Target here: Microsoft. Other data sources: Baidu, bing, binaryedge, bingapi, censys, google, linkedin, twitter, virustotal, threatcrowd, crtsh, netcraft, yahoo, etc.</p>
+                <pre><code># Launch Parrot Security; login attacker/toor
+sudo su
+# password: toor
+cd
+theHarvester -d microsoft.com -l 200 -b baidu                <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security machine, login attacker/toor (ignore Parrot Updater/Question pop-ups). Open MATE Terminal. Run <code>sudo su</code>, password toor (not visible). Run <code>cd</code> to root. Run <code>theHarvester -d microsoft.com -l 200 -b baidu</code> (-d domain/company, -l number results, -b data source). theHarvester extracts details and displays email IDs and hosts from Baidu source. Attackers can use email lists/usernames for social engineering and brute force. Results may differ. You can specify different data sources. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 2 - Perform Footprinting Through Web Services: Task 4: Gather Information using Deep and Dark Web Searching</h3>
+            <div class="section-card">
+                <span class="tool-tag">Tor Browser / DuckDuckGo / Onion Sites</span>
+                <p><strong>What/when:</strong> Deep web consists of hidden/unindexed web pages not locatable via traditional browsers/search engines; accessible via Tor Browser and WWW Virtual Library. Dark web is subset where navigation is anonymous. Deep/dark web search can provide credit card details, passports, IDs, medical records, social media accounts, SSNs, etc. Compare surface web search and dark web search using Mozilla Firefox and Tor Browser.</p>
+                <pre><code># Open File Explorer -> C:\Users\Admin\Desktop\Tor Browser -> double-click Start Tor Browser
+# Connect to Tor page -> Connect
+# Minimize Tor; open Mozilla Firefox -> www.google.com -> search "hacker for hire"
+# Switch to Tor Browser -> search "hacker for hire" (uses DuckDuckGo)
+# Onion sites
+http://zqktlwiuavvvqqt4ybvgvi7tyo4hjl5xgfuvpdf6otjiycgwqbym2qad.onion/wiki
+http://ymvhtqya23wqpez63gyc3ke4svju3mqsby2awnhd3bk2e65izt7baqad.onion
+http://s57divisqlcjtsyutxjz2ww77vlbwpxgodtijcsrgsuts4js5hnxkhqd.onion
+# Tools
+https://metrics.torproject.org (ExoneraTor)
+https://onionlandsearchengine.com                <p><strong>Key procedural steps / narrative:</strong> Switch to Windows 11. Open File Explorer, navigate C:\Users\Admin\Desktop\Tor Browser, double-click Start Tor Browser. Connect to Tor page; click Connect (or configure bridge/proxy). Tor Browser home page appears (maintains anonymity). Minimize Tor and open Mozilla Firefox; navigate www.google.com; search "hacker for hire" to see irrelevant surface results. Switch to Tor Browser and search same term; relevant underground hacker links appear. Tor uses DuckDuckGo; results may vary. Click any result (e.g., https://www.hackerforhire.net) to view. Explore onion sites (Hidden Wiki, FakeID, Cardshop) and ExoneraTor/OnionLand Search to gather target info. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 2 - Perform Footprinting Through Web Services: Task 5: Determine Target OS Through Passive Footprinting</h3>
+            <div class="section-card">
+                <span class="tool-tag">Censys / Netcraft / Shodan</span>
+                <p><strong>What/when:</strong> Operating system information is crucial; acquire OS details by passive footprinting. Censys can reveal city, country, lat/long, hostname, OS, IP address. Target here: EC-Council. Also Netcraft/Shodan.</p>
+                <pre><code># Censys
+https://search.censys.io/?q=
+# Type target website: www.eccouncil.org -> Enter
+# Click any Hosts IP address to gather OS details
+# Observe OS (e.g., Ubuntu) under Basic Information                <p><strong>Key procedural steps / narrative:</strong> Launch any browser (Mozilla Firefox), go to https://search.censys.io/?q=. In search field type target website (www.eccouncil.org), press Enter. From results click any Hosts IP address to gather OS details. Selected host page appears; under Basic Information observe OS (Ubuntu) plus protocols, software, host keys, etc. Attackers use this to identify potential vulnerabilities/exploits. You can also use Netcraft/Shodan. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 3 - Perform Footprinting Through Social Networking Sites: Task 1: Gather Employees' Information from LinkedIn using theHarvester</h3>
+            <div class="section-card">
+                <span class="tool-tag">theHarvester (LinkedIn source)</span>
+                <p><strong>What/when:</strong> LinkedIn is a social networking website for industry professionals. Gather employees (name and job title) of target org available on LinkedIn using theHarvester. Target here: EC-Council (complete domain eccouncil.org).</p>
+                <pre><code># Switch to Parrot Security
+sudo su
+# password: toor
+cd
+theHarvester -d eccouncil -l 200 -b linkedin                <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security machine. Open MATE Terminal. Run <code>sudo su</code>, password toor. Run <code>cd</code>. Run <code>theHarvester -d eccouncil -l 200 -b linkedin</code> (-d domain/company name eccouncil, -l number results, -b data source LinkedIn). Scroll to view list of employees along with job roles. This info can help attackers perform social engineering/phishing. Results may differ. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 3 - Perform Footprinting Through Social Networking Sites: Task 2: Gather Personal Information from Various Social Networking Sites using Sherlock</h3>
+            <div class="section-card">
+                <span class="tool-tag">Sherlock / Social Searcher / UserRecon</span>
+                <p><strong>What/when:</strong> Sherlock is a Python-based tool used to gather information about a target person over various social networking sites. It searches many sites for given target user, locates person, displays results with complete URLs. Target here: Satya Nadella. Other tools: Social Searcher, UserRecon.</p>
+                <pre><code># In Parrot Security terminal
+sudo su
+# password: toor
+sherlock "satya nadella"                <p><strong>Key procedural steps / narrative:</strong> In Parrot Security, open MATE Terminal. Run <code>sudo su</code>, password toor. Run <code>sherlock "satya nadella"</code>. You get all URLs related to Satya Nadella; scroll to view all results. Results may differ; ignore errors. Attackers can use gathered URLs to obtain DOB, employment status, organization info, business strategy, potential clients, upcoming project plans. Other tools: Social Searcher, UserRecon. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 4 - Perform Website Footprinting: Task 1: Gather Information About a Target Website using Ping Command Line Utility</h3>
+            <div class="section-card">
+                <span class="tool-tag">ping (Windows)</span>
+                <p><strong>What/when:</strong> Ping tests reachability of a host on an IP network and measures round-trip time. Sends ICMP echo request and waits for ICMP response; measures RTT and records packet loss. Assists in obtaining domain info and IP address of target website. Target here: www.certifiedhacker.com (IP 162.241.216.11). Find max frame size and TTL behavior.</p>
+                <pre><code># Windows 11 Command Prompt
+ping www.certifiedhacker.com
+ping www.certifiedhacker.com -f -l 1500
+ping www.certifiedhacker.com -f -l 1300
+ping www.certifiedhacker.com -f -l 1473
+ping www.certifiedhacker.com -f -l 1472
+ping www.certifiedhacker.com -i 3
+ping www.certifiedhacker.com -i 2 -n 1
+ping www.certifiedhacker.com -i 3 -n 1
+ping www.certifiedhacker.com -i 4 -n 1                <p><strong>Key procedural steps / narrative:</strong> Switch to Windows 11. Open Command Prompt (Search icon, type cmd). Run <code>ping www.certifiedhacker.com</code> to get IP address and ping stats. Run <code>ping www.certifiedhacker.com -f -l 1500</code> (DF flag, buffer size 1500) to see "Packet needs to be fragmented but DF set". Run with 1300. Try 1473 (fragmented) and 1472 (success) to find max frame size (1472). For TTL: <code>ping www.certifiedhacker.com -i 3</code> shows TTL expired in transit from router. Minimize and open new Command Prompt: <code>ping www.certifiedhacker.com -i 2 -n 1</code>, then -i 3 -n 1, then -i 4 -n 1, etc. until reply from destination 162.241.216.11; hop count here 19 (may vary). Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 4 - Perform Website Footprinting: Task 2: Gather Information about a Target Website using Photon</h3>
+            <div class="section-card">
+                <span class="tool-tag">Photon</span>
+                <p><strong>What/when:</strong> Photon is a Python script used to crawl a given target URL to obtain URLs (in-scope/out-of-scope), URLs with parameters, email addresses, social media accounts, files, secret keys and subdomains. Extracted info can be exported JSON. Target here: www.certifiedhacker.com.</p>
+                <pre><code># Switch to Parrot Security
+sudo su
+# password: toor
+cd Photon
+python3 photon.py -h
+python3 photon.py -u http://www.certifiedhacker.com
+ls
+python3 photon.py -u http://www.certifiedhacker.com -l 3 -t 200 --wayback                <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security. Open MATE Terminal. Run <code>sudo su</code>, password toor. Run <code>cd Photon</code>. Run <code>python3 photon.py -h</code> to view options. Run <code>python3 photon.py -u http://www.certifiedhacker.com</code> to crawl target for internal/external/scripts URLs; results saved in www.certifiedhacker.com dir under Photon. Run <code>ls</code> to see directory. Open Places -> Home Folder -> Photon -> www.certifiedhacker.com; view external.txt, internal.txt, scripts.txt in Pluma. Run <code>python3 photon.py -u http://www.certifiedhacker.com -l 3 -t 200 --wayback</code> (-l level 3, -t 200 threads, --wayback uses archive.org). Further explore cloning, secret keys, cookies, regex strings. Attackers can perform brute-force, DoS, injection, phishing, social engineering. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 4 - Perform Website Footprinting: Task 3: Gather Information About a Target Website using Central Ops</h3>
+            <div class="section-card">
+                <span class="tool-tag">CentralOps (centralops.net)</span>
+                <p><strong>What/when:</strong> CentralOps is a free online network scanner that investigates domains and IP addresses, DNS records, traceroute, nslookup, whois searches, etc. Target here: www.certifiedhacker.com.</p>
+                <pre><code># Windows 11 browser
+https://centralops.net
+# enter domain or IP: www.certifiedhacker.com -> go
+# View Address lookup, Domain Whois, Network Whois, DNS records                <p><strong>Key procedural steps / narrative:</strong> Switch to Windows 11. Open any browser (Mozilla Firefox), go to https://centralops.net. Central Ops website appears. Type target website URL (www.certifiedhacker.com) in enter a domain or IP address field, click go. Search result shows Address lookup, Domain Whois record. Scroll down for Network Whois record and DNS records. Attackers can use this info for injection and other web app attacks. Other tools: Website Informer, Burp Suite, Zaproxy. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 4 - Perform Website Footprinting: Task 4: Extract a Company's Data using Web Data Extractor</h3>
+            <div class="section-card">
+                <span class="tool-tag">Web Data Extractor Pro</span>
+                <p><strong>What/when:</strong> Web data extraction extracts data from web pages available on company website. Company data such as contact details (email, phone, fax), URLs, meta tags, directories, web research, etc. Web spiders such as Web Data Extractor perform automated searches on target website and extract specified info. Target here: https://www.certifiedhacker.com.</p>
+                <pre><code># Windows 11
+E:\CEH-Tools\CEHv12 Module 02 Footprinting and Reconnaissance\Web Spiders\Web Data Extractor\wdepro.exe
+# Install Web Data Extractor Pro
+# Search "web data extractor" -> Open
+# New session -> Start URL: https://www.certifiedhacker.com -> check all options -> Start
+# Results tab -> view Meta Tag / Email / Phone / Fax / Link / Domain tabs                <p><strong>Key procedural steps / narrative:</strong> In Windows 11, navigate E:\CEH-Tools\...Web Data Extractor and double-click wdepro.exe (Run security warning; UAC Yes). Follow wizard to install, click Finish. Search "web data extractor", open Web Data Extractor Pro. Main window appears; click new session. Session window: type URL (https://www.certifiedhacker.com) in Start URL field; check all options. Click Start to initiate data extraction. Web Data Extractor collects Session, Meta tags, Emails, Phones, Faxes, Links, Domains. Click Results tab to view collected info. View Meta Tag, Email, Phone, Fax, Link, Domain tabs. Other web spiders: ParseHub, SpiderFoot. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 4 - Perform Website Footprinting: Task 5: Mirror a Target Website using HTTrack Web Site Copier</h3>
+            <div class="section-card">
+                <span class="tool-tag">HTTrack Web Site Copier (WinHTTrack)</span>
+                <p><strong>What/when:</strong> Website mirroring creates a replica/clone of original website; helps footprint website thoroughly on local system. Allows download website to local directory, analyze all directories, HTML, images, flash, videos, other files. Duplicate websites using HTTrack Web Site Copier. Target here: https://www.certifiedhacker.com. Other mirroring tools: Cyotek WebCopy.</p>
+                <pre><code># Windows 11
+# Search "winhttrack" -> Open WinHTTrack Website Copier
+# New Project: Name "Test Project"; Base path store copied files; Next
+# Web Addresses (URL): https://www.certifiedhacker.com -> Set options
+# Scan Rules tab -> select file types -> OK
+# Next -> "Please adjust connection parameters..." -> check Disconnect when finished -> Finish
+# After mirroring complete -> Browse Mirrored Website                <p><strong>Key procedural steps / narrative:</strong> In Windows 11, search "winhttrack", open WinHTTrack Website Copier. About window appears; click OK, then Next to create New Project. Enter project name "Test Project"; select Base path to store copied files; Next. Enter target URL https://www.certifiedhacker.com in Web Addresses (URL); click Set options. WinHTTrack window: Scan Rules tab, select checkboxes for file types; OK. Click Next. By default radio selected for "Please adjust connection parameters if necessary, then press FINISH"; check Disconnect when finished; click Finish to start mirroring. Progress displayed. Once complete, message "Mirroring operation complete"; click Browse Mirrored Website. If "How do you want to open this file?" pop-up, select browser and OK. Mirrored website launches; URL indicates local storage. Analyze directories, HTML, images, flash, videos, other files; check possible exploits/vulnerabilities. If webpage doesn't open, navigate to mirrored directory and open index.html. Close browser, click Finish on WinHTTrack, EXIT. Some websites large and take long. Attackers can use vulnerabilities identified to launch web app attacks. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 4 - Perform Website Footprinting: Task 6: Gather Information About a Target Website using GRecon</h3>
+            <div class="section-card">
+                <span class="tool-tag">GRecon</span>
+                <p><strong>What/when:</strong> GRecon is a Python tool that runs Google search queries to perform reconnaissance on a target to find subdomains, sub-subdomains, login pages, directory listings, exposed documents, and WordPress entries. Target here: certifiedhacker.com.</p>
+                <pre><code># Switch to Parrot Security
+sudo su
+# password: toor
+cd GRecon
+python3 grecon.py
+# Set Target (site.com): certifiedhacker.com                <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security. Open MATE Terminal. Run <code>sudo su</code>, password toor. Run <code>cd GRecon</code>. Run <code>python3 grecon.py</code>. GRecon initializes; in Set Target (site.com) field type certifiedhacker.com and press Enter. GRecon searches available subdomains, sub-subdomains, login pages, directory listings, exposed documents, WordPress entries and pasting sites; displays results (~5 minutes). Attackers can use gathered info to perform web app attacks. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 4 - Perform Website Footprinting: Task 7: Gather a Wordlist from the Target Website using CeWL</h3>
+            <div class="section-card">
+                <span class="tool-tag">CeWL</span>
+                <p><strong>What/when:</strong> CeWL is a ruby app that spiders a given target URL to specified depth, optionally following external links, and returns a list of unique words that can be used for cracking passwords. Target here: https://www.certifiedhacker.com (depth 2, min word length 5). Wordlist can be used for brute-force against previously obtained emails.</p>
+                <pre><code># Switch to Parrot Security
+sudo su
+# password: toor
+cd
+cewl -d 2 -m 5 https://www.certifiedhacker.com
+cewl -w wordlist.txt -d 2 -m 5 https://www.certifiedhacker.com
+pluma wordlist.txt
+cewl --help                <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security. Open MATE Terminal. Run <code>sudo su</code>, password toor. Run <code>cd</code>. Run <code>cewl -d 2 -m 5 https://www.certifiedhacker.com</code> (-d depth 2, -m minimum word length 5) to gather unique wordlist. Run <code>cewl -w wordlist.txt -d 2 -m 5 https://www.certifiedhacker.com</code> to write output to wordlist.txt (saved in root by default). Run <code>pluma wordlist.txt</code> to view extracted wordlist. Run <code>cewl --help</code> to view options. This wordlist can be used for brute-force attacks against previously obtained emails. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 5 - Perform Email Footprinting: Task 1: Gather Information about a Target by Tracing Emails using eMailTrackerPro</h3>
+            <div class="section-card">
+                <span class="tool-tag">eMailTrackerPro</span>
+                <p><strong>What/when:</strong> Email header is a crucial source of info; contains sender details, routing info, addressing scheme, date, subject, recipient, etc. Email tracking reveals recipient's system IP, GPS coordinates/map location, when email received/read, server type, OS/browser info, attachments, etc. Target: analyze email header. Find headers in Gmail/Outlook. Other tools: Infoga, Mailtrack.</p>
+                <pre><code># Windows 11
+E:\CEH-Tools\CEHv12 Module 02 Footprinting and Reconnaissance\Email Tracking Tools\eMailTrackerPro\emt.exe
+# Install eMailTrackerPro (default options)
+# Launch; Edition Selection -> OK
+# My Trace Reports icon (View)
+# Trace Headers icon (New Email Trace)
+# Select "Trace an email I have received"
+# Paste email header into "Email headers:" field -> Trace
+# View Map, Email Summary, Table hops, View Report                <p><strong>Key procedural steps / narrative:</strong> Switch to Windows 11. Navigate E:\CEH-Tools\...eMailTrackerPro and double-click emt.exe (UAC Yes). Follow wizard (default options) to install; in Completing wizard uncheck Show Readme and click Finish. Main window appears with Edition Selection pop-up; click OK. To trace, click My Trace Reports icon from View section. Click Trace Headers icon from New Email Trace section. Pop-up: select "Trace an email I have received". Copy email header from suspicious email and paste into Email headers field. To find headers: Gmail: open email, click dots (More) next to Reply, select Show original, copy header. Outlook: double-click email, click ... (More actions), View, view message source, copy header. Paste header, click Trace. My Trace Reports window opens; email location traced on Map (world map). View summary via Email Summary; Table shows hops with IP and suspected locations. Click View Report above Map to view complete trace report in default browser (select Firefox if prompted). Expand sections. Other tools: Infoga, Mailtrack. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 6 - Perform Whois Footprinting: Task 1: Perform Whois Lookup using DomainTools</h3>
+            <div class="section-card">
+                <span class="tool-tag">DomainTools Whois</span>
+                <p><strong>What/when:</strong> Whois is query/response protocol for querying databases storing registered users/assignees of Internet resource (domain name, IP block, autonomous system). Listens on port 43 (TCP). RIRs maintain Whois databases with personal info of domain owners. Provides text records with resource and assignee/administrative info (creation/expiration dates). Target here: www.certifiedhacker.com. Other tools: SmartWhois, Batch IP Converter.</p>
+                <pre><code># Windows 11 browser
+http://whois.domaintools.com
+# Enter domain or IP: www.certifiedhacker.com -> Search
+# View registration details, name servers, IP address, location, etc.                <p><strong>Key procedural steps / narrative:</strong> In Windows 11, open any browser (Mozilla Firefox). Go to http://whois.domaintools.com. Whois Lookup website appears. In "Enter a domain or IP address..." search bar, type www.certifiedhacker.com and click Search. Search result reveals details associated with URL including organizational details such as registration details, name servers, IP address, location, etc. Attackers can use this to create network map, social engineering, obtain internal network details. Other Whois lookup tools: SmartWhois, Batch IP Converter. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 7 - Perform DNS Footprinting: Task 1: Gather DNS Information using nslookup Command Line Utility and Online Tool</h3>
+            <div class="section-card">
+                <span class="tool-tag">nslookup / NSLOOKUP (kloth.net)</span>
+                <p><strong>What/when:</strong> nslookup is network administration command-line utility for querying DNS to obtain domain name or IP address mapping or specific DNS record. Available as CLI and web app. Target here: www.certifiedhacker.com / certifiedhacker.com. Find IP, authoritative name server, name server IP. Other tools: DNSdumpster, DNS Records.</p>
+                <pre><code># Windows 11 Command Prompt
+nslookup
+set type=a
+www.certifiedhacker.com
+set type=cname
+certifiedhacker.com
+set type=a
+ns1.bluehost.com
+
+# Online tool
+http://www.kloth.net/services/nslookup.php
+# Domain: certifiedhacker.com
+# Query: A (IPv4 address) -> Look it up
+# Query: AAAA (IPv6 address) -> Look it up                <p><strong>Key procedural steps / narrative:</strong> In Windows 11, launch Command Prompt. Type <code>nslookup</code> and press Enter; displays default server and address. In interactive mode type <code>set type=a</code> and press Enter; then type target domain <code>www.certifiedhacker.com</code> and press Enter; resolves IP address (162.241.216.11). Result non-authoritative if from local/Google DNS. Type <code>set type=cname</code> and press Enter; type <code>certifiedhacker.com</code> and press Enter; returns authoritative name server (ns1.bluehost.com) and mail server address. Type <code>set type=a</code> and press Enter; type <code>ns1.bluehost.com</code> and press Enter; returns IP address of name server. Attackers may exploit primary name server. For online tool: open browser, go to http://www.kloth.net/services/nslookup.php. In Domain field enter certifiedhacker.com; Query default A (IPv4); click Look it up. Change Query to AAAA (IPv6) and Look it up; perform queries. Other tools: DNSdumpster, DNS Records. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 7 - Perform DNS Footprinting: Task 2: Perform Reverse DNS Lookup using Reverse IP Domain Check and DNSRecon</h3>
+            <div class="section-card">
+                <span class="tool-tag">yougetsignal Reverse IP Domain Check / DNSRecon</span>
+                <p><strong>What/when:</strong> Reverse DNS obtains domain name of given IP address. Use yougetsignal Reverse IP Domain Check to find other domains/sites sharing same web server as target. Use DNSRecon on IP range to locate DNS PTR records. Target here: www.certifiedhacker.com (IP 162.241.216.11; range 162.241.216.0-162.241.216.255).</p>
+                <pre><code># Windows 11 browser
+https://www.yougetsignal.com
+# Reverse IP Domain Check -> Remote Address: www.certifiedhacker.com -> Check
+
+# Parrot Security
+cd dnsrecon
+chmod +x ./dnsrecon.py
+./dnsrecon.py -r 162.241.216.0-162.241.216.255                <p><strong>Key procedural steps / narrative:</strong> In Windows 11, open any browser, go to https://www.yougetsignal.com. Click Reverse IP Domain Check. On page, enter www.certifiedhacker.com in Remote Address field, click Check to find other domains/sites hosted on certifiedhacker.com web server; list displayed. Switch to Parrot Security. Open MATE Terminal. Run <code>cd dnsrecon</code>. Run <code>chmod +x ./dnsrecon.py</code>. Run <code>./dnsrecon.py -r 162.241.216.0-162.241.216.255</code> (-r range first-last for reverse lookup brute force) to locate DNS PTR records for IPs. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 7 - Perform DNS Footprinting: Task 3: Gather Information of Subdomain and DNS Records using SecurityTrails</h3>
+            <div class="section-card">
+                <span class="tool-tag">SecurityTrails</span>
+                <p><strong>What/when:</strong> SecurityTrails is advanced DNS enumeration tool capable of creating DNS map of target domain network. Enumerates current and historical DNS records (A, AAAA, NS, MX, SOA, TXT) and subdomains via brute-force. Requires free sign-up and email verification. Target here: certifiedhacker.com. Other tools: DNSChecker, DNSdumpster.</p>
+                <pre><code># Windows 11 browser
+https://securitytrails.com/
+# Sign Up For Free -> enter details -> check terms -> Sign up for free
+# Verify email -> Confirm Email Address
+# Dashboard -> Enter a Domain, IP, Keyword or Hostname: certifiedhacker.com -> Enter
+# Tabs: DNS records (A, AAAA, MX, NS, SOA, TXT, CNAME), Historical Data, Subdomains                <p><strong>Key procedural steps / narrative:</strong> Switch to Windows 11. Open browser, go to https://securitytrails.com/. Click Sign Up For Free top-right. Enter required details, check terms, click Sign up for free. Verification email sent. Open new tab, login email, open mail from SecurityTrails, click Confirm Email Address. After verification redirected to Dashboard. In Enter a Domain, IP, Keyword or Hostname field type certifiedhacker.com and press Enter. DNS records appear (A, AAAA, MX, NS, SOA, TXT, CNAME). Examine Historical Data tab (historical A, AAAA, MX, NS, SOA, TXT). Switch to Subdomains tab for all subdomains. DNS records provide locations/types of servers attackers can use for web app attacks. Other tools: DNSChecker, DNSdumpster. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 8 - Perform Network Footprinting: Task 1: Locate the Network Range</h3>
+            <div class="section-card">
+                <span class="tool-tag">ARIN Whois</span>
+                <p><strong>What/when:</strong> Network range information assists in creating map of target network; helps gather info about network structure, alive machines, topology, access control devices, OS. Target here: www.certifiedhacker.com IP 162.241.216.11.</p>
+                <pre><code># Windows 11 browser
+https://www.arin.net/about/welcome/region
+# search IP: 162.241.216.11 -> Search
+# View network range, network type, registration info                <p><strong>Key procedural steps / narrative:</strong> Switch to Windows 11. Open any browser, go to https://www.arin.net/about/welcome/region (if secure DNS notification appears, click Disable). ARIN website appears. In search bar enter IP address of target organization (162.241.216.11), click Search. Results show network range along with network type, registration info, etc. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 8 - Perform Network Footprinting: Task 2: Perform Network Tracerouting in Windows and Linux Machines</h3>
+            <div class="section-card">
+                <span class="tool-tag">tracert / traceroute</span>
+                <p><strong>What/when:</strong> Route is path network packet traverses between source and destination. Tracerouting identifies path and hosts between source and destination; provides IP addresses of hosts, helps map network topology, trusted routers, firewall locations. Target here: www.certifiedhacker.com. Other tools: VisualRoute, Traceroute NG.</p>
+                <pre><code># Windows 11 Command Prompt
+tracert www.certifiedhacker.com
+tracert /?
+tracert -h 5 www.certifiedhacker.com
+
+# Parrot Security terminal
+traceroute www.certifiedhacker.com                <p><strong>Key procedural steps / narrative:</strong> Switch to Windows 11. Open Command Prompt. Run <code>tracert www.certifiedhacker.com</code> to view hops packets made before reaching destination. Run <code>tracert /?</code> to show options. Run <code>tracert -h 5 www.certifiedhacker.com</code> to perform trace with max 5 hops. Close command prompt. Switch to Parrot Security. Open MATE Terminal. Run <code>traceroute www.certifiedhacker.com</code> to view hops (direct hop may appear in simple network; screenshots may vary). Other traceroute tools: VisualRoute, Traceroute NG. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 9 - Perform Footprinting using Various Footprinting Tools: Task 1: Footprinting a Target using Recon-ng</h3>
+            <div class="section-card">
+                <span class="tool-tag">Recon-ng</span>
+                <p><strong>What/when:</strong> Recon-ng is web reconnaissance framework with independent modules and database interaction; provides environment for open-source web-based reconnaissance. Gather network reconnaissance, personnel info, target info from social networking sites. Target here: certifiedhacker.com (hosts, contacts, subdomains/IPs). Results may differ.</p>
+                <pre><code># Switch to Parrot Security
+sudo su
+# password: toor
+cd
+recon-ng
+help
+marketplace install all
+modules search
+workspaces create CEH
+workspaces list
+db insert domains
+# domain (TEXT): certifiedhacker.com
+# notes (TEXT): (Enter)
+show domains
+modules load brute
+modules load recon/domains-hosts/brute_hosts
+run
+modules load reverse_resolve
+modules load recon/hosts-hosts/reverse_resolve
+run
+show hosts
+back
+modules load reporting
+modules load reporting/html
+options set FILENAME /home/attacker/Desktop/results.html
+options set CREATOR Jason
+options set CUSTOMER Certifiedhacker Networks
+run# Recon-ng personnel info
+workspaces create reconnaissance
+modules load recon/domains-contacts/whois_pocs
+info
+options set SOURCE facebook.com
+run
+
+# Recon-ng subdomains/IPs
+modules load recon/domains-hosts/hackertarget
+options set SOURCE certifiedhacker.com
+run                <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security. Open MATE Terminal. Run <code>sudo su</code>, password toor. Run <code>cd</code>. Run <code>recon-ng</code>. Run <code>help</code> to view commands. Run <code>marketplace install all</code> (ignore errors). Run <code>modules search</code> to view modules. Run <code>workspaces create CEH</code> (or select), then <code>workspaces list</code>. Run <code>db insert domains</code>; at domain (TEXT) type certifiedhacker.com; at notes press Enter. Run <code>show domains</code>. Run <code>modules load brute</code> then <code>modules load recon/domains-hosts/brute_hosts</code>; run <code>run</code> to harvest hosts. For reverse lookup: <code>modules load reverse_resolve</code>, <code>modules load recon/hosts-hosts/reverse_resolve</code>, <code>run</code>; then <code>show hosts</code>; <code>back</code>. For report: <code>modules load reporting</code>, <code>modules load reporting/html</code>; set options FILENAME /home/attacker/Desktop/results.html, CREATOR Jason, CUSTOMER "Certifiedhacker Networks"; run <code>run</code>. Open results.html from Desktop in Firefox; expand Hosts node. For personnel info: new terminal, sudo su, cd, recon-ng; <code>workspaces create reconnaissance</code>; <code>modules load recon/domains-contacts/whois_pocs</code>; <code>info</code>; <code>options set SOURCE facebook.com</code>; <code>run</code> (note contacts). For subdomains/IPs: new terminal, sudo su, cd, recon-ng; <code>modules load recon/domains-hosts/hackertarget</code>; <code>options set SOURCE certifiedhacker.com</code>; <code>run</code>. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 9 - Perform Footprinting using Various Footprinting Tools: Task 2: Footprinting a Target using Maltego</h3>
+            <div class="section-card">
+                <span class="tool-tag">Maltego</span>
+                <p><strong>What/when:</strong> Maltego is footprinting tool for ethical hacking, forensics, pentesting. Provides library of transforms to discover data from open sources and visualizes in graph format for link analysis/data mining. Target here: www.certifiedhacker.com. Requires Maltego ID creation and online activation. Transforms include DNS, SOA, MX, NS, IP, location, WHOIS entities, personal entities.</p>
+                <pre><code># Switch to Parrot Security
+sudo maltego
+# password: toor
+# Welcome wizard: MALTEGO ID -> Next; Online Activation (Default) -> Next
+# LICENSE AGREEMENT Accept -> Next; copy login link; open Firefox; CREATE ID; enter details; CONTINUE; create password; verify email
+# Browser login successful -> Next; wait activations; Terms accept; Next; Install data sources; Next; Finish
+# New Graph: drag Website entity; change www.paterva.com to www.certifiedhacker.com
+# Right-click entity -> All Transforms -> To Domains [DNS]
+# certifiedhacker.com -> All Transforms -> To DNS Name [Using Name Schema dictionary]
+# certifiedhacker.com -> All Transforms -> To DNS Name - SOA (Start of Authority)
+# certifiedhacker.com -> All Transforms -> To DNS Name - MX (mail server)
+# certifiedhacker.com -> All Transforms -> To DNS Name - NS (name server)
+# entity -> All Transforms -> To IP Address [DNS]
+# IP entity -> All Transforms -> To location [city, country]
+# www.certifiedhacker.com -> All Transforms -> To Domains [DNS]
+# domain -> All Transforms -> To Entities from WHOIS [IBM Watson]
+# Personal node entities: Email Address, Phone Numbers, Image, Alias, Phrase, etc.                <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security. Open terminal, run <code>sudo maltego</code>, password toor. Welcome wizard: select MALTEGO ID, Next. Online Activation (Default), Next. Configure Maltego, accept license, Next. Login Link Options: copy link, open Firefox, paste, Sign In, CREATE ID, enter details, CONTINUE, create strong password, verify email. Browser login successful, Next. Maltego ID Activation completes, Next. Select Data Sources Next, Download Data Sources wait Next, Terms and Conditions check Next, Install Data Sources Next, Help Improve Maltego Next, Web Browser Options Finish. Maltego Community Edition GUI appears; acknowledge Privacy Policy. New Graph window appears. In Entity Palette Infrastructure node, drag Website entity onto graph (default www.paterva.com). Double-click name and change to www.certifiedhacker.com. Right-click entity, select All Transforms. Click To Domains [DNS]; domain displays. Right-click certifiedhacker.com, All Transforms -> To DNS Name [Using Name Schema dictionary]; observe name schemas. Select and delete name schemas. Right-click certifiedhacker.com, All Transforms -> To DNS Name - SOA; returns primary name server and admin email. Select/delete. All Transforms -> To DNS Name - MX; returns mail server. Select/delete. All Transforms -> To DNS Name - NS; returns name servers. Select/delete. All Transforms -> To IP Address [DNS]; displays IP. All Transforms -> To location [city, country]; identifies geographical location. Right-click www.certifiedhacker.com, All Transforms -> To Domains [DNS]. Right-click domain, All Transform -> To Entities from WHOIS [IBM Watson]; returns owner entities. Personal node entities can gather email, phone, image, alias, phrase. Other transforms track social networking accounts/conversations. Attackers can perform enumeration, web app hacking, social engineering. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 9 - Perform Footprinting using Various Footprinting Tools: Task 3: Footprinting a Target using OSRFramework</h3>
+            <div class="section-card">
+                <span class="tool-tag">OSRFramework (domainfy, searchfy, usufy, mailfy, phonefy, entify)</span>
+                <p><strong>What/when:</strong> OSRFramework is set of libraries for Open Source Intelligence tasks: username checking, DNS lookups, information leaks research, deep web search, regex extraction, etc. Provides graphical and console/web interfaces. Target examples: domain ECCOUNCIL, user "Tim Cook".</p>
+                <pre><code># Switch to Parrot Security
+sudo su
+# password: toor
+cd
+domainfy -n ECCOUNCIL -t all
+searchfy -q "Tim Cook"                <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security. Open MATE Terminal. Run <code>sudo su</code>, password toor. Run <code>cd</code>. Run <code>domainfy -n ECCOUNCIL -t all</code> (-n nickname/list nicknames, -t list TLDs) to check existing domains; retrieves domains and IP addresses related to target; attackers can find vulnerabilities in subdomains and launch web app attacks. Run <code>searchfy -q "Tim Cook"</code> (-q query/list queries) to check existence of user details on social platforms (Github, Instagram, Keyserverubuntu); provides profile links for social engineering. Other packages: usufy (registered accounts with usernames), mailfy (email accounts), phonefy (phone existence), entify (entities via regex from URLs). Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 9 - Perform Footprinting using Various Footprinting Tools: Task 4: Footprinting a Target using FOCA</h3>
+            <div class="section-card">
+                <span class="tool-tag">FOCA</span>
+                <p><strong>What/when:</strong> FOCA reveals metadata and hidden information in scanned documents. Searches using Google, Bing, DuckDuckGo. Examines Microsoft Office, Open Office, PDF, Adobe InDesign, SVG. Target here: www.eccouncil.org (run on Windows Server 2019). Metadata may include users, folders, printers, software, domains, network structure.</p>
+                <pre><code># Switch to Windows Server 2019 (login Administrator/Pa$$w0rd)
+# Navigate Z:\CEHv12 Module 02 Footprinting and Reconnaissance\Footprinting Tools\FOCA
+# Double-click FOCA.exe
+# Project -> New project
+# Project name: Project of www.eccouncil.org
+# Domain website: www.eccouncil.org
+# Folder where to save documents: Desktop (via Browse For Folder)
+# Create -> OK
+# Search engines: Google, Bing, DuckDuckGo; Extensions: All -> Search All
+# Network node; Domains node -> target domain; Crawling tab -> Google crawling
+# Document Analysis -> Metadata Summary                <p><strong>Key procedural steps / narrative:</strong> Switch to Windows Server 2019. Login Administrator/Pa$$w0rd (Networks Yes). Navigate Z:\CEHv12 Module 02...\Footprinting Tools\FOCA and double-click FOCA.exe. Wait initialization. FOCA main window appears. Project -> New project. Enter project name "Project of www.eccouncil.org"; domain website www.eccouncil.org; leave alternative domains empty; under Folder where to save documents click Folder icon, select Desktop, OK; leave other settings default; click Create. Project saved successfully, OK. To extract info, select all three search engines (Google, Bing, DuckDuckGo) under Search engines; under Extensions click All; click Search All. Search All toggles to Stop and gathers info. After scans, Stop toggles back to Search All; metadata results appear. Right-click any URL -> Link(s) -> Open in browser to view extracted file. Navigate FOCA window: click Network node to expand and view network structure (domain may have no clients/servers). Expand Domains node, click target domain (eccouncil.org) to view domain info. Right pane: Crawling tab, click Google crawling button; crawling begins and results appear with domains and severity (low/medium/high). Expand Document Analysis -> Metadata Summary; info on users, folders, printers, software may appear. Attackers can find vulnerabilities and exploit. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 9 - Perform Footprinting using Various Footprinting Tools: Task 5: Footprinting a Target using BillCipher</h3>
+            <div class="section-card">
+                <span class="tool-tag">BillCipher</span>
+                <p><strong>What/when:</strong> BillCipher is an information gathering tool for a website or IP address. Gathers DNS Lookup, Whois lookup, GeoIP Lookup, Subnet Lookup, Port Scanner, Page Links, Zone Transfer, HTTP Header, Host Finder, etc. Target here: www.certifiedhacker.com.</p>
+                <pre><code># Switch to Parrot Security
+sudo su
+# password: toor
+cd BillCipher
+python3 billcipher.py
+# Are you want to collect information of website or IP address? -> website
+# Enter the website address -> www.certifiedhacker.com
+# What information would you like to collect? -> 1 (DNS Lookup)
+# Do you want to continue? -> Yes
+# Repeat: website -> www.certifiedhacker.com -> 3 (GeoIP Lookup) -> Yes
+# website -> www.certifiedhacker.com -> 4 (Subnet Lookup) -> Yes
+# website -> www.certifiedhacker.com -> 6 (Page Links) -> Yes
+# website -> www.certifiedhacker.com -> 8 (HTTP Header) -> Yes
+# website -> www.certifiedhacker.com -> 9 (Host Finder)                <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security. Open MATE Terminal. Run <code>sudo su</code>, password toor. Run <code>cd BillCipher</code>. Run <code>python3 billcipher.py</code>. BillCipher initializes. At prompt "Are you want to collect information of website or IP address?" type website and press Enter. At "Enter the website address" type www.certifiedhacker.com and press Enter. At "What information would you like to collect?" type 1 for DNS Lookup and press Enter; result displays DNS info. At "Do you want to continue?" type Yes and press Enter. Repeat for GeoIP Lookup (3), Subnet Lookup (4), Page Links (6), HTTP Header (8), Host Finder (9), each time re-entering website and URL. Similarly use other gathering options. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Lab 9 - Perform Footprinting using Various Footprinting Tools: Task 6: Footprinting a Target using OSINT Framework</h3>
+            <div class="section-card">
+                <span class="tool-tag">OSINT Framework</span>
+                <p><strong>What/when:</strong> OSINT Framework is open source intelligence gathering framework for automated footprinting/reconnaissance, OSINT research, intelligence gathering from free tools/resources. Simple web interface lists OSINT tools arranged by category as OSINT tree. Indicators: (T) tool to install/run locally, (D) Google Dork, (R) requires registration, (M) URL contains search term and must be edited manually. Explore Username, Email Address, Domain Name, IP Address, Social Networks, Instant Messaging, Metadata categories. Target here: general footprinting. Other tools: Recon-Dog, Grecon, Th3Inspector, Raccoon, Orb.</p>
+                <pre><code># Windows 11 browser
+https://osintframework.com/
+# Click Username category -> expand Username Search Engines and Specific Sites
+# Click NameCheckr tool -> view NameCheckr website -> close tab
+# Click Domain Name category -> expand Whois Records -> click Domain Dossier
+# Click Metadata category -> click FOCA
+# Explore Email Address, IP Address, Social Networks, Instant Messaging, etc.                <p><strong>Key procedural steps / narrative:</strong> Switch to Windows 11. Open any browser, go to https://osintframework.com/. OSINT Framework website appears; observe OSINT tree on left. Clicking categories (Username, Email Address, Domain Name) reveals sub-tree resources. Click Username category, expand Username Search Engines and Specific Sites; observe tools. From Username Search Engines click NameCheckr to navigate to NameCheckr website; close tab to return. Click Domain Name category, expand Whois Records; click Domain Dossier tool; view Domain Dossier website (generates reports from public records about domains/IPs); close tab. Click Metadata category, click FOCA tool; view FOCA website with download link. Explore other categories such as Email Address, IP Address, Social Networks, Instant Messaging and associated tools. Other footprinting tools: Recon-Dog, Grecon, Th3Inspector, Raccoon, Orb. Close all open windows and document all acquired information.</p></code></pre>
+            </div>
+        </section>
+    </div>
+</main>
+<script>
+    const body = document.body;
+    const applyTheme = (t) => {
+        if (t === 'dark') body.setAttribute('data-theme', 'dark');
+        else body.removeAttribute('data-theme');
+    };
+    function getTheme() {
+        try {
+            const p = new URLSearchParams(location.search);
+            const u = p.get('theme');
+            if (u === 'dark' || u === 'light') return u;
+        } catch (e) {}
+        try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+    }
+    function syncNavLinks(t) {
+        document.querySelectorAll('a[href]').forEach(a => {
+            try {
+                const url = new URL(a.getAttribute('href'), location.href);
+                if (url.pathname.endsWith('.html')) {
+                    url.searchParams.set('theme', t);
+                    a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                }
+            } catch (e) {}
+        });
+    }
+    const initialTheme = getTheme();
+    applyTheme(initialTheme);
+    syncNavLinks(initialTheme);
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+            applyTheme(newT);
+            try { localStorage.setItem('theme', newT); } catch (e) {}
+            try {
+                const url = new URL(location.href);
+                url.searchParams.set('theme', newT);
+                history.replaceState(null, '', url.toString());
+            } catch (e) {}
+            syncNavLinks(newT);
+        });
+    }
+    const path = window.location.pathname.split('/').pop();
+    const navMap = {
+        'index.html': 'nav-index',
+        'module_02.html': 'nav-02',
+        'module_03.html': 'nav-03',
+        'module_04.html': 'nav-04',
+        'module_05.html': 'nav-05',
+        'module_06.html': 'nav-06',
+        'module_07.html': 'nav-07',
+        'module_08.html': 'nav-08',
+        'module_09.html': 'nav-09',
+        'cheat_sheet.html': 'nav-cheat'
+    };
+    const navId = navMap[path] || 'nav-index';
+    document.getElementById(navId).classList.add('active');
+</script>
+<script src="app.js"></script>
+</body>
+</html>

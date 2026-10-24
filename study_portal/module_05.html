@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 05 - Vulnerability Analysis</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+        <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+        <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+        <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+        <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+        <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+        <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        </ul>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+    <main class="content-body">
+        <div class="window">
+            <div class="module-header">
+                <span>CEH v12 - Module 05</span>
+                <h2 class="hero-3d">Vulnerability Analysis</h2>
+            </div>
+
+            <section class="lab-task">
+                <h3>Module Overview</h3>
+                <div class="section-card">
+                    <p><strong>Scenario:</strong> Footprinting and scanning already gathered target details (system name, OS, shared resources, policies/passwords, users/groups). The next step is vulnerability research and vulnerability assessment: discover, measure, and classify security weaknesses such as missing patches, unnecessary services, weak authentication/encryption, configuration errors, and known/publicly reported vulnerabilities before attackers exploit them.</p>
+                    <p><strong>Objective:</strong> Extract information about the target that includes network vulnerabilities; listening IP/TCP/UDP ports and services; application/service configuration errors; OS and application versions; accounts with weak passwords; files/folders with weak permissions; default services to remove; common application security misconfigurations; and systems exposed to known vulnerabilities.</p>
+                    <p><strong>Vulnerability databases:</strong> CWE (Common Weakness Enumeration), CVE (Common Vulnerabilities and Exposures), NVD (National Vulnerability Database), and CVSS (Common Vulnerability Scoring System). Scanning approaches: Active Scanning (probes sent) and Passive Scanning (traffic monitored).</p>
+                    <p><strong>Lab tasks:</strong> (1) Perform vulnerability research with vulnerability scoring systems and databases (CWE, CVE, NVD). (2) Perform vulnerability assessment using OpenVAS, Nessus, and Nikto.</p>
+                    <p><strong>Duration note:</strong> The lab environment shows "1 Hr 45 Min Remaining" for the module; individual scans take about 10-20 minutes.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1 - Task 1: Perform Vulnerability Research in Common Weakness Enumeration (CWE)</h3>
+                <div class="section-card">
+                    <span class="tool-tag">CWE (cwe.mitre.org)</span>
+                    <p><strong>What/when:</strong> CWE is a category system for software vulnerabilities and weaknesses used as a baseline for weakness identification, mitigation, and prevention. Its advanced search lets you view weaknesses by research, development, and architectural concepts. Use it to research weaknesses in services discovered during enumeration (e.g., SMB) and to review the CWE Top 25 Most Dangerous Software Weaknesses. Browser-based; no CLI commands.</p>
+                    <p><strong>When to use:</strong> Early vulnerability research phase, after enumeration identifies running services such as SMB, to understand weakness categories and map them to potential exploits.</p>
+                    <pre><code># Open CWE in Mozilla Firefox
+https://cwe.mitre.org/
+
+# CWE website -> Search tab -> Google Custom Search under "Search CWE"
+# Type: SMB
+# Click the search icon
+
+# Open a result link, e.g.:
+CWE-284
+
+# Navigate back: Home -> CWE List
+# External Mappings section -> click:
+CWE Top 25 (2021)
+
+# View "Weaknesses in the 2021 CWE Top 25 Most Dangerous Software Weaknesses"
+# Click individual weakness IDs for details
+                    </code></pre>
+                    <p><strong>Step-by-step:</strong></p>
+                    <ol>
+                        <li>Log in to Windows 11 as Admin / Pa$$w0rd (handle the Welcome to Windows and Networks prompts if they appear).</li>
+                        <li>Launch Mozilla Firefox; uncheck "Always perform this check when starting Firefox" and click "Not now" if the default-browser pop-up appears; click "Got it" on the content-blocking pop-up if it appears.</li>
+                        <li>In the address bar type https://cwe.mitre.org/ and press Enter.</li>
+                        <li>Click the Search tab; in the Google Custom Search under Search CWE type "SMB" and click the search icon.</li>
+                        <li>Review the search results showing underlying vulnerabilities in the target service (SMB); results may differ.</li>
+                        <li>Click any link (e.g., CWE-284) to view detailed information about the vulnerability; scroll down for more information.</li>
+                        <li>Click other vulnerabilities as desired to view their details.</li>
+                        <li>Click Home to navigate back to the CWE website, then click CWE List.</li>
+                        <li>Scroll down to the External Mappings section and click CWE Top 25 (2021) (the publishing year may differ).</li>
+                        <li>Scroll and view the list of Weaknesses in the 2021 CWE Top 25 Most Dangerous Software Weaknesses under Relationships; click each weakness for details.</li>
+                        <li>Return to the CWE website and explore other options if desired.</li>
+                        <li>Close all open windows and document all acquired information.</li>
+                    </ol>
+                    <p><strong>Notes:</strong></p>
+                    <ul>
+                        <li>The search results might differ when you perform this task.</li>
+                        <li>The result showing the publishing year might differ when you perform this task.</li>
+                        <li>This information can be used to exploit vulnerabilities in software and further launch attacks.</li>
+                        <li>Attacker can find vulnerabilities on services running on target systems and further exploit them.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1 - Task 2: Perform Vulnerability Research in Common Vulnerabilities and Exposures (CVE)</h3>
+                <div class="section-card">
+                    <span class="tool-tag">CVE (cve.mitre.org)</span>
+                    <p><strong>What/when:</strong> CVE is a free, publicly available list/dictionary of standardized identifiers for common software vulnerabilities and exposures. It provides a baseline for tool evaluation and enables data exchange for cybersecurity automation. Use it to view the newest CVE records, search by CVE ID (e.g., CVE-2021-4034, CVE-2021-44228) or by service name (e.g., SMB), and read descriptions, references, and record creation dates. CVE-2021-4034 is revisited in Module 06 System Hacking; CVE-2021-44228 is revisited in Module 14 Hacking Web Applications.</p>
+                    <p><strong>When to use:</strong> When you have a service, product, or CVE identifier from enumeration/scanning and need standardized vulnerability details, references, and disclosure dates.</p>
+                    <pre><code># Open CVE in Mozilla Firefox
+https://cve.mitre.org/
+
+# View "Newest CVE Records" / "Newest CVE Entries" in the right pane
+
+# Search CVE List tab -> Search CVE List section:
+# Type vulnerability name and click Submit
+CVE-2021-4034
+CVE-2021-44228
+
+# Open the result link, e.g.:
+CVE-2021-44228
+
+# Search by service name:
+SMB
+# Click Submit, then click the first CVE-ID link for details
+                    </code></pre>
+                    <p><strong>Step-by-step:</strong></p>
+                    <ol>
+                        <li>In Windows 11, launch Mozilla Firefox and type https://cve.mitre.org/ in the address bar, then press Enter.</li>
+                        <li>The CVE website appears; in the right pane under Newest CVE Records/Newest CVE Entries, recently discovered vulnerabilities are displayed (results may differ).</li>
+                        <li>You can copy the name of any vulnerability under Newest CVE Entries and search CVE to view detailed information.</li>
+                        <li>Click the Search CVE List tab; under Search CVE List type the vulnerability name (e.g., CVE-2021-4034) in the search bar and click Submit.</li>
+                        <li>The Search Results page appears displaying information about the searched vulnerability; click the vulnerability link for further detailed information.</li>
+                        <li>Click Search CVE List at the top of the browser window again, type CVE-2021-44228 in the search bar, and click Submit.</li>
+                        <li>The Search Results page appears displaying records that match; click the CVE-2021-44228 link to view the details of the vulnerability.</li>
+                        <li>The CVE-2021-44228 page appears displaying information regarding the searched vulnerability.</li>
+                        <li>In the Search CVE List section, search for a service-related vulnerability by typing the service name (e.g., SMB) and click Submit.</li>
+                        <li>The Search Results page appears displaying a list of vulnerabilities in the target service (SMB) along with their descriptions (results may differ).</li>
+                        <li>Click the CVE-ID of any vulnerability to view detailed information; here click the first CVE-ID link.</li>
+                        <li>Detailed information is displayed such as Description, References, and Date Record Created; follow links under References for more information.</li>
+                        <li>Search other target services for underlying vulnerabilities in the Search CVE List section.</li>
+                        <li>Close all open windows and document all acquired information.</li>
+                    </ol>
+                    <p><strong>Notes:</strong></p>
+                    <ul>
+                        <li>The result might differ when you perform this task.</li>
+                        <li>We will exploit CVE-2021-4034 in Module 06 System Hacking to gain access to the target system.</li>
+                        <li>We will exploit CVE-2021-44228 in Module 14 Hacking Web Applications to gain access to the target system.</li>
+                        <li>You can search for vulnerabilities of running services found in previous module labs (Module 04 Enumeration).</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1 - Task 3: Perform Vulnerability Research in National Vulnerability Database (NVD)</h3>
+                <div class="section-card">
+                    <span class="tool-tag">NVD (nvd.nist.gov)</span>
+                    <p><strong>What/when:</strong> The NVD is the U.S. government repository of standards-based vulnerability management data represented using SCAP. It includes security checklist references, software flaws, misconfigurations, product names, and impact metrics. Use it to view recent vulnerabilities (e.g., CVE-2022-0729), inspect CVSS Base/Temporal/Environmental/Overall scores, and keyword-search services (e.g., SMB) in the Search Vulnerability Database.</p>
+                    <p><strong>When to use:</strong> When you need U.S. government-curated vulnerability data, CVSS scoring details, severity ratings, and SCAP-based references for a known CVE or service.</p>
+                    <pre><code># Open NVD in Mozilla Firefox
+https://nvd.nist.gov/
+
+# Click a CVE-ID link, e.g.:
+CVE-2022-0729
+
+# Under Severity, click:
+Base Score
+# (Common Vulnerability Scoring System Calculator)
+
+# Navigate back to main page:
+# Vulnerabilities -> expand -> Search & Statistics
+
+# Search Vulnerability Database:
+# Keyword Search field:
+SMB
+# Click Search
+
+# Click any Vuln ID link for detailed vulnerability info
+                    </code></pre>
+                    <table>
+                        <thead><tr><th>Severity</th><th>Base Score Range</th></tr></thead>
+                        <tbody>
+                            <tr><td>None</td><td>0.0</td></tr>
+                            <tr><td>Low</td><td>0.1 - 3.9</td></tr>
+                            <tr><td>Medium</td><td>4.0 - 6.9</td></tr>
+                            <tr><td>High</td><td>7.0 - 8.9</td></tr>
+                            <tr><td>Critical</td><td>9.0 - 10.0</td></tr>
+                        </tbody>
+                    </table>
+                    <p><strong>Step-by-step:</strong></p>
+                    <ol>
+                        <li>In Windows 11, launch Mozilla Firefox and type https://nvd.nist.gov/ in the address bar, then press Enter.</li>
+                        <li>The National Vulnerability Database website appears; recently discovered vulnerabilities can be viewed.</li>
+                        <li>Click the CVE-ID link (e.g., CVE-2022-0729) to view detailed information about the vulnerability (results may differ).</li>
+                        <li>A new webpage appears displaying CVE-2022-0729 Detail; view detailed information such as Current Description, Severity, References, and Weakness Enumeration.</li>
+                        <li>Under the Severity section, click the Base Score link to view CVSS details regarding the vulnerability.</li>
+                        <li>A new webpage appears displaying Base Scores, Temporal Score, and Environmental Score Overall Score related to the vulnerability in graphical form under the Common Vulnerability Scoring System Calculator for CVE-2022-0729.</li>
+                        <li>Review the severity table: None 0.0, Low 0.1-3.9, Medium 4.0-6.9, High 7.0-8.9, Critical 9.0-10.0.</li>
+                        <li>Base Score deals with the inherent qualities of a vulnerability and is the metric most relied upon by enterprises.</li>
+                        <li>Temporal Score represents qualities of the vulnerability that change over time; Environmental Score represents qualities specific to the affected user's environment.</li>
+                        <li>Overall Score is the sum total of both scores (CVSS Base Score + CVSS Temporal Score).</li>
+                        <li>Scroll down to view more detailed information on Base Score Metrics, Temporal Score Metrics, and Environmental Score Metrics (results may differ depending on the selected vulnerability).</li>
+                        <li>Navigate back to the main page of the National Vulnerability Database website.</li>
+                        <li>Expand Vulnerabilities and click Search & Statistics.</li>
+                        <li>The Search Vulnerability Database page appears; in the Keyword Search field type a target service (e.g., SMB) and click Search.</li>
+                        <li>The Search Results page appears displaying detailed information on the underlying vulnerabilities in the target service.</li>
+                        <li>Click any Vuln ID link to view detailed information on that vulnerability.</li>
+                        <li>Search other target services for underlying vulnerabilities in the Search Vulnerability Database section.</li>
+                        <li>Close all open windows and document all acquired information.</li>
+                    </ol>
+                    <p><strong>Notes:</strong></p>
+                    <ul>
+                        <li>The result might differ when you perform this task.</li>
+                        <li>The results might differ depending upon the selected vulnerability.</li>
+                        <li>You can search for vulnerabilities of running services found in previous module labs (Module 04 Enumeration).</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2 - Task 1: Perform Vulnerability Analysis using OpenVAS</h3>
+                <div class="section-card">
+                    <span class="tool-tag">OpenVAS / Greenbone (Parrot 10.10.1.13 -> Windows Server 2022 10.10.1.22)</span>
+                    <p><strong>What/when:</strong> OpenVAS (Greenbone) is a comprehensive vulnerability scanning and management framework with 50,000+ Network Vulnerability Tests (NVTs), supporting unauthenticated/authenticated testing and many protocols. Use it to scan a target IP, review discovered vulnerabilities with severity and ports, and compare results with the target firewall ON vs OFF to show the system remains vulnerable even with the firewall enabled. Authenticated/deeper scans require credentials.</p>
+                    <p><strong>When to use:</strong> Network vulnerability assessment of an internal target (here Windows Server 2022) from a Linux attacker machine, especially to validate vulnerabilities and compare firewall impact.</p>
+                    <pre><code># Host machine: Parrot Security (10.10.1.13) ; Target: Windows Server 2022 (10.10.1.22)
+
+# Parrot login
+Username: attacker
+Password: toor
+
+# Windows Server 2022 login
+User: CEH\Administrator
+Password: Pa$$w0rd
+
+# Launch OpenVAS service:
+# Applications -> Pentesting -> Vulnerability Analysis -> Openvas - Greenbone -> Start Greenbone Vulnerability Manager Service
+# [sudo] password for attacker:
+toor
+
+# Open Firefox and browse:
+https://127.0.0.1:9392
+# OpenVAS login:
+Username: admin
+Password: password
+
+# Scans -> Tasks
+# (close "Welcome to the scan management!" pop-up if shown)
+# Hover wand icon -> Task Wizard
+# IP address or hostname:
+10.10.1.22
+# Click Start Scan
+
+# Wait until Status changes Requested -> Done (~20 min)
+# Click Done under Status -> Report: Information
+# Click Results tab (vulnerabilities, severity, ports)
+# Click a vulnerability, e.g.:
+Report outdated /end-of-life Scan Engine /Environment (local)
+
+# Enable Windows Firewall on target:
+# Control Panel -> System and Security -> Windows Defender Firewall -> Turn Windows Defender Firewall on or off
+# Enable Windows Firewall -> OK
+
+# Return to Parrot and repeat scan Steps 9-11 (Task Wizard -> 10.10.1.22 -> Start Scan)
+# Wait ~15-20 min -> click Done -> Results tab
+
+# Disable Windows Firewall on target when finished:
+# Control Panel -> System and Security -> Windows Defender Firewall -> Turn Windows Defender Firewall on or off
+# Disable Windows Firewall -> OK
+                    </code></pre>
+                    <p><strong>Step-by-step:</strong></p>
+                    <ol>
+                        <li>Use Parrot Security (10.10.1.13) as the host machine and Windows Server 2022 (10.10.1.22) as the target machine.</li>
+                        <li>Click on Parrot Security to switch to it; in the login page the attacker username is selected by default; enter password toor and press Enter (ignore Parrot Updater pop-up; click No if asked to update).</li>
+                        <li>Click Applications at the top of the Desktop and navigate to Pentesting -> Vulnerability Analysis -> Openvas - Greenbone -> Start Greenbone Vulnerability Manager Service.</li>
+                        <li>In the terminal's [sudo] password for attacker field type toor and press Enter; OpenVAS initializes (typed password not visible).</li>
+                        <li>After initialization, click the Firefox icon from the top section of the Desktop.</li>
+                        <li>In the address bar type https://127.0.0.1:9392 and press Enter.</li>
+                        <li>On the OpenVAS login page log in with Username admin and Password password, then click Login.</li>
+                        <li>The OpenVAS Dashboard appears; navigate to Scans -> Tasks (close the "Welcome to the scan management!" pop-up if it appears).</li>
+                        <li>Hover over the wand icon and click Task Wizard.</li>
+                        <li>In the Task Wizard window enter the target IP address in the IP address or hostname field (here 10.10.1.22) and click Start Scan.</li>
+                        <li>The task appears under Tasks and OpenVAS starts scanning the target IP.</li>
+                        <li>Wait for Status to change from Requested to Done (about 20 minutes; if logged out, log in again with admin/password).</li>
+                        <li>Click Done under the Status column to view the vulnerabilities found.</li>
+                        <li>In Report: Information click the Results tab to view discovered vulnerabilities with severity and port numbers.</li>
+                        <li>Click any vulnerability under the Vulnerability column (e.g., "Report outdated /end-of-life Scan Engine /Environment (local)") to view detailed information.</li>
+                        <li>Click other discovered vulnerabilities to view their details.</li>
+                        <li>Review all high or critical findings and manually verify them; scanners are limited and work best for internal/white-box tests when credentials are known.</li>
+                        <li>Enable Windows Firewall on the target: switch to Windows Server 2022, click Ctrl+Alt+Delete, log in as CEH\Administrator / Pa$$w0rd.</li>
+                        <li>Navigate to Control Panel -> System and Security -> Windows Defender Firewall -> Turn Windows Defender Firewall on or off, enable Windows Firewall, and click OK (this makes scanning more difficult).</li>
+                        <li>Switch back to Parrot Security and perform the scan steps again (Task Wizard -> 10.10.1.22 -> Start Scan).</li>
+                        <li>A newly created task appears under Tasks and starts scanning.</li>
+                        <li>After completion (about 15-20 minutes) click Done under Status.</li>
+                        <li>Open Report: Information and click Results to view discovered vulnerabilities with severity and ports (results may differ).</li>
+                        <li>Observe that results before and after enabling the Windows Firewall are the same, indicating the target is vulnerable even with the firewall enabled.</li>
+                        <li>Switch back to Windows Server 2022, log in, navigate to Control Panel -> System and Security -> Windows Defender Firewall -> Turn Windows Defender Firewall on or off, disable Windows Firewall, and click OK.</li>
+                        <li>Close all open windows and document all acquired information.</li>
+                    </ol>
+                    <p><strong>Notes:</strong></p>
+                    <ul>
+                        <li>It takes approximately 20 minutes for the first scan to complete.</li>
+                        <li>It takes approximately 15-20 minutes for the second scan to complete.</li>
+                        <li>If you are logged out of the session then log in again using credentials admin/password.</li>
+                        <li>The scan results might differ when you perform this task.</li>
+                        <li>By turning the Firewall ON, you are making it more difficult for the scanning tool to scan for vulnerabilities in the target system.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2 - Task 2: Perform Vulnerability Scanning using Nessus</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Nessus Essentials (Windows 11, https://localhost:8834/)</span>
+                    <p><strong>What/when:</strong> Nessus is an assessment solution for identifying vulnerabilities, configuration issues, and malware across OSes, network devices, databases, web servers, and more. Use it to create an Advanced Scan policy (authenticated with Windows credentials), launch a scan against Windows Server 2022 (10.10.1.22), review hosts/vulnerabilities, inspect a plugin such as SSL (Multiple Issues), and generate/download an HTML report.</p>
+                    <p><strong>When to use:</strong> Host-based/network vulnerability scanning with policy-based configuration and authenticated Windows credentials; useful for generating reusable scan policies and downloadable reports.</p>
+                    <pre><code># Switch to Windows 11
+# Launch Microsoft Edge:
+https://localhost:8834/
+# If "Your connection isn't private": Advanced -> continue to localhost (unsafe)
+
+# Nessus login:
+Username: Admin
+Password: password
+
+# Policies -> Create a new policy -> Advanced Scan
+
+# Settings -> BASIC:
+Name: NetworkScan_Policy
+Description: Scanning a Network
+
+# Settings -> DISCOVERY:
+# Turn off: Ping the remote host
+# Port Scanning -> check: Verify open TCP ports found by local port enumerators
+
+# Settings -> ADVANCED:
+# Performance Options:
+Max number of concurrent TCP sessions per host: Unlimited
+Max number of concurrent TCP sessions per scan: Unlimited
+
+# Credentials tab -> Windows:
+Username: CEH123
+Password: qwerty@123
+
+# Plugins tab -> (leave defaults) -> Save
+# "Policy saved successfully"
+
+# Scans -> Create a new scan
+# Scan Templates -> User Defined -> NetworkScan_Policy
+
+# New Scan / NetworkScan_Policy -> General Settings:
+Name: Local Network
+Description: Scanning a local network
+Targets: 10.10.1.22
+
+# Schedule settings -> Enabled: off
+# Drop-down next to Save -> Launch
+
+# After scan completes (~15-20 min):
+# Click "Local Network"
+# Hosts tab: summary of target hosts, Scan Details, Vulnerabilities
+# Vulnerabilities tab: scroll all vulnerabilities
+# Example: click "SSL (Multiple Issues)" -> click an issue, e.g. "SSL Medium Strength Cipher Suites Supported (SWEET32)"
+
+# Report tab -> Generate Report
+# Choose file format: HTML -> Generate Report
+# Open the downloaded report; click "Expand All"
+# Click a plugin, e.g. 42873, for details
+
+# Sign out: Admin -> Sign Out
+                    </code></pre>
+                    <p><strong>Step-by-step:</strong></p>
+                    <ol>
+                        <li>Click on Windows 11 to switch to the Windows 11 machine.</li>
+                        <li>Launch Microsoft Edge; in the address bar type https://localhost:8834/ and press Enter.</li>
+                        <li>If "Your connection isn't private" appears, expand Advanced and click continue to localhost (unsafe).</li>
+                        <li>On the Nessus login page use Admin as the username and password as Password and click Sign In.</li>
+                        <li>Nessus begins to initialize; this takes some time. On completion the Nessus dashboard appears along with the "Welcome to Nessus Essentials" pop-up; close the pop-up. If Edge asks to save the password, click Never.</li>
+                        <li>Click Policies under the RESOURCES section in the left pane.</li>
+                        <li>The Policies window appears; click Create a new policy.</li>
+                        <li>The Policy Templates window appears; click Advanced Scan.</li>
+                        <li>The New Policy / Advanced Scan section appears.</li>
+                        <li>In the Settings tab under BASIC type the policy name in the Name field (here NetworkScan_Policy) and give a Description (here Scanning a Network).</li>
+                        <li>In the Settings tab click DISCOVERY and turn off the Ping the remote host option.</li>
+                        <li>Select the Port Scanning option under DISCOVERY and click the "Verify open TCP ports found by local port enumerators" checkbox; leave other fields default.</li>
+                        <li>Select the ADVANCED setting type; under Performance Options set Max number of concurrent TCP sessions per host and per scan to Unlimited.</li>
+                        <li>Click the Credentials tab and select Windows.</li>
+                        <li>Specify Username and Password (here CEH123 / qwerty@123); re-enter Admin/password if a session timeout notification appears.</li>
+                        <li>Click the Plugins tab, do not alter options, and click Save.</li>
+                        <li>A "Policy saved successfully" notification appears and the policy is added in the Policies window.</li>
+                        <li>Click Scans from the menu bar to open My Scans; click Create a new scan.</li>
+                        <li>The Scan Templates window appears; click the User Defined tab and select NetworkScan_Policy. If an API Disabled pop-up appears, refresh and log in again; if it persists clear browser cache/cookies and log in again.</li>
+                        <li>The New Scan / NetworkScan_Policy window appears; under General Settings input the scan Name (here Local Network), Description (here Scanning a local network), and Targets IP address (here 10.10.1.22).</li>
+                        <li>Click Schedule settings and ensure the Enabled switch is turned off.</li>
+                        <li>Click the drop-down icon next to Save and select Launch to start the scan.</li>
+                        <li>A "Scan saved and launched successfully" notification appears; Nessus begins scanning the target.</li>
+                        <li>After completion (about 15-20 minutes) click Local Network to view detailed results.</li>
+                        <li>The Local Network window appears displaying the summary of target hosts, Scan Details, and Vulnerabilities categorization under the Hosts tab.</li>
+                        <li>Click the Vulnerabilities tab and scroll down to view all vulnerabilities associated with the target (the list may differ).</li>
+                        <li>Click vulnerabilities to view detailed reports; for example select the first vulnerability, SSL (Multiple Issues).</li>
+                        <li>The Local Network / SSL (Multiple Issues) window appears; click any issue (e.g., SSL Medium...) to view detailed information.</li>
+                        <li>The report for the selected vulnerability appears with plugin details, risk information, vulnerability information, reference information, solution, and output.</li>
+                        <li>On completing analysis, click Scans, then click the recently performed scan (Local Network).</li>
+                        <li>In the Local Network window click the Report tab in the top-right corner; in Generate Report choose a file format (here HTML) and click Generate Report.</li>
+                        <li>Once download finishes a pop-up appears; click Open file.</li>
+                        <li>The Nessus scan report appears in the Edge browser.</li>
+                        <li>Click Expand All to view the detailed scan report.</li>
+                        <li>A list of discovered vulnerabilities appears; click a plugin (e.g., 42873) for more detailed information.</li>
+                        <li>The selected plugin details are displayed.</li>
+                        <li>Switch back to the Nessus tab and click Admin -> Sign Out in the top-right corner.</li>
+                        <li>A "Signed out successfully. Goodbye, admin" notification appears.</li>
+                        <li>Close all open windows and document all acquired information.</li>
+                    </ol>
+                    <p><strong>Notes:</strong></p>
+                    <ul>
+                        <li>It takes approximately 15-20 minutes for the scan.</li>
+                        <li>The list of vulnerabilities may differ when you perform this task.</li>
+                        <li>Screenshots and browser might differ when you perform this task.</li>
+                        <li>The results might differ when you perform this task.</li>
+                        <li>By downloading a report you can access it anytime instead of logging in to Nessus again.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2 - Task 3: Perform Web Servers and Applications Vulnerability Scanning using CGI Scanner Nikto</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Nikto (Parrot, target https://www.certifiedhacker.com)</span>
+                    <p><strong>What/when:</strong> Nikto is an open-source web server scanner that tests for 6700+ potentially dangerous files/programs, outdated server versions (1250+), version-specific problems (270+ servers), and configuration issues such as multiple index files and HTTP options; it also identifies installed web servers/software. Use it to scan a target website with tuning options, check CGI directories, and save results to a text file.</p>
+                    <p><strong>When to use:</strong> Web server/application vulnerability scanning of a target website (here https://www.certifiedhacker.com) from Parrot Security, including tuning, CGI directory checks, and report export.</p>
+                    <pre><code># Switch to Parrot Security
+# Applications menu -> Pentesting -> Web Application Analysis -> Web Vulnerability Scanners -> nikto
+# [sudo] password for attacker:
+toor
+
+# View available options
+nikto -H
+
+# Scan with reverse tuning (include all except specified)
+nikto -h https://www.certifiedhacker.com -Tuning x
+# -h: target host ; x: Reverse Tuning Options
+# ~10 minutes
+
+# Scan all CGI directories
+nikto -h https://www.certifiedhacker.com -Cgidirs all
+# -Cgidirs: scan specified CGI directories ("none" or "all")
+
+# Save results to Desktop as text
+cd
+cd Desktop
+nikto -h https://www.certifiedhacker.com -o Nikto_Scan_Results -F txt
+# -o: output file name ; -F: file format
+# Name the file: Nikto_Scan_Results
+
+# Open the results file in a text editor
+pluma Nikto_Scan_Results
+                    </code></pre>
+                    <p><strong>Step-by-step:</strong></p>
+                    <ol>
+                        <li>In this task the target is the website www.certifiedhacker.com.</li>
+                        <li>Click on Parrot Security to switch to the Parrot Security machine.</li>
+                        <li>Click the Applications menu in the top-left corner of the Desktop and navigate to Pentesting -> Web Application Analysis -> Web Vulnerability Scanners -> nikto to open Nikto in the Terminal window.</li>
+                        <li>A Parrot Terminal window appears; in the [sudo] password for attacker field type toor and press Enter; Nikto initializes (the password is not visible).</li>
+                        <li>Nikto scanning options display for scanning the target website.</li>
+                        <li>Type nikto -H and press Enter to view various available commands with full help text.</li>
+                        <li>The result appears displaying various available options in Nikto; the Tuning option is used for a deeper, more comprehensive scan.</li>
+                        <li>A tuning scan can decrease the number of tests performed by including or excluding test types, enabling faster focused testing; useful when certain file types such as XSS or "interesting" files are undesired.</li>
+                        <li>In the terminal type nikto -h (Target Website) -Tuning x (here https://www.certifiedhacker.com) and press Enter; Nikto starts scanning with all tuning options enabled.</li>
+                        <li>-h specifies the target host and x specifies Reverse Tuning Options (include all except specified).</li>
+                        <li>The scan takes approximately 10 minutes to complete.</li>
+                        <li>The result appears displaying server name, IP address, target port, retrieved files, and vulnerability details of the target website (results may differ).</li>
+                        <li>Check for CGI directories with the -Cgidirs option, searching specific directories or using all to search all available directories.</li>
+                        <li>In the terminal type nikto -h (Target Website) -Cgidirs all (here https://www.certifiedhacker.com) and press Enter.</li>
+                        <li>-Cgidirs scans the specified CGI directories; users can use filters such as "none" or "all".</li>
+                        <li>The scan takes approximately 10 minutes to complete (results may differ).</li>
+                        <li>The target website does not have any CGI directory, so the same result as the previous scan is obtained; try this command on another website to obtain CGI directory information.</li>
+                        <li>Save the scan results as a text file on Desktop: type cd and press Enter to jump to the root directory.</li>
+                        <li>Type cd Desktop and press Enter to navigate to the Desktop folder.</li>
+                        <li>Type nikto -h (Target Website) -o (File_Name) -F txt (here https://www.certifiedhacker.com) and press Enter.</li>
+                        <li>-h specifies the target, -o specifies the output file name, and -F specifies the file format.</li>
+                        <li>Name the file Nikto_Scan_Results; the scan takes approximately 10 minutes (results may differ).</li>
+                        <li>Type pluma Nikto_Scan_Results and press Enter to open the created file in a text editor; the file displays the scanned results.</li>
+                        <li>Close all open windows and document all acquired information.</li>
+                    </ol>
+                    <p><strong>Notes:</strong></p>
+                    <ul>
+                        <li>The result might differ when you perform this task.</li>
+                        <li>The scan takes approximately 10 minutes to complete.</li>
+                        <li>You can use try this command on another website to obtain information about CGI directories.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Key Concepts</h3>
+                <div class="section-card">
+                    <ul>
+                        <li><strong>Active vs Passive Scanning:</strong> Active scanning sends probes to the target; passive scanning monitors traffic without direct interaction.</li>
+                        <li><strong>Vulnerability Scoring:</strong> CVSS provides standardized Base, Temporal, Environmental, and Overall severity metrics; severity ranges from None (0.0) to Critical (9.0-10.0).</li>
+                        <li><strong>Vulnerability Databases:</strong> CWE categorizes weaknesses; CVE provides standardized vulnerability IDs; NVD aggregates SCAP-based vulnerability data and CVSS scores.</li>
+                        <li><strong>Firewall Evasion/Observation:</strong> Scans may produce the same results with the firewall ON or OFF, showing that firewalling alone does not remove underlying vulnerabilities.</li>
+                        <li><strong>Authenticated Scanning:</strong> Providing credentials (e.g., CEH123/qwerty@123 in Nessus) yields deeper configuration and patch-level results.</li>
+                        <li><strong>Web Scanning:</strong> Nikto focuses on web server/application exposures such as dangerous files, outdated versions, and CGI directories.</li>
+                        <li><strong>Tool Comparison:</strong> OpenVAS is an open framework with 50,000+ NVTs; Nessus provides policy-based scanning and reporting; Nikto specializes in web server scanning.</li>
+                    </ul>
+                </div>
+            </section>
+
+        </div>
+    </main>
+    <script>
+        const body = document.body;
+    const applyTheme = (t) => {
+        if (t === 'dark') body.setAttribute('data-theme', 'dark');
+        else body.removeAttribute('data-theme');
+    };
+    function getTheme() {
+        try {
+            const p = new URLSearchParams(location.search);
+            const u = p.get('theme');
+            if (u === 'dark' || u === 'light') return u;
+        } catch (e) {}
+        try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+    }
+    function syncNavLinks(t) {
+        document.querySelectorAll('a[href]').forEach(a => {
+            try {
+                const url = new URL(a.getAttribute('href'), location.href);
+                if (url.pathname.endsWith('.html')) {
+                    url.searchParams.set('theme', t);
+                    a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                }
+            } catch (e) {}
+        });
+    }
+    const initialTheme = getTheme();
+    applyTheme(initialTheme);
+    syncNavLinks(initialTheme);
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+            applyTheme(newT);
+            try { localStorage.setItem('theme', newT); } catch (e) {}
+            try {
+                const url = new URL(location.href);
+                url.searchParams.set('theme', newT);
+                history.replaceState(null, '', url.toString());
+            } catch (e) {}
+            syncNavLinks(newT);
+        });
+    }
+    const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+        'module_07.html': 'nav-07',
+        'module_08.html': 'nav-08',
+        'module_09.html': 'nav-09',
+        'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        document.getElementById(navId).classList.add('active');
+    </script>
+<script src="app.js"></script>
+</body>
+</html>

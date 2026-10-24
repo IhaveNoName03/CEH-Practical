@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 08 - Sniffing</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+            <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+            <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+        <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+        <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+        <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+        <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        </ul>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+    <main class="content-body">
+        <div class="window">
+            <div class="module-header">
+                <span>CEH v12 - Module 08</span>
+                <h2 class="hero-3d">Sniffing</h2>
+            </div>
+
+            <p>Earlier modules taught how to damage target systems by infecting them using malware, which gives limited or full control of the target systems to further perform data exfiltration. Now, as an ethical hacker or pen tester, it is important to understand network sniffing. Packet sniffing allows a person to observe and access the entire network's traffic from a given point. It monitors any bit of information entering or leaving the network. There are two types of sniffing: passive and active. Passive sniffing refers to sniffing on a hub-based network; active sniffing refers to sniffing on a switch-based network. Although passive sniffing was once predominant, proper network-securing architecture (switch-based network) mitigates this kind of attack. However, there are a few loopholes in switch-based network implementation that can open doors for an attacker to sniff network traffic. Attackers hack the network using sniffers, mainly targeting protocols vulnerable to sniffing: HTTP, FTP, SMTP, POP, Telnet, IMAP, and NNTP. The sniffed traffic comprises data such as FTP and Telnet passwords, chat sessions, email and web traffic, and DNS traffic. Once attackers obtain such sensitive information, they might attempt to impersonate target user sessions. Thus, an ethical hacker or pen tester needs to assess the security of the network's infrastructure, find the loopholes in the network using various network auditing tools, and patch them up to ensure a secure network environment. The labs in this module provide real-time experience in performing packet sniffing on the target network using various packet sniffing techniques and tools.</p>
+
+            <p><strong>Scenario:</strong> Network sniffing can be used to troubleshoot network problems, examine security problems, and debug protocol implementations, but attackers misuse sniffers to capture sensitive data such as login credentials. A packet sniffer can only capture data packets from within a given subnet and cannot sniff packets from another network. Sniffers turn off the filter employed by Ethernet NICs so the host sees other stations' traffic; promiscuous mode lets a network device intercept and read each packet in its entirety. An ethical hacker must perform network security assessments, suggest troubleshooting techniques, and detect sniffing attempts.</p>
+
+            <p><strong>Objective:</strong> Perform network sniffing and other tasks that include, but are not limited to: sniff the network; analyze incoming and outgoing packets for any attacks; troubleshoot the network for performance; secure the network from attacks.</p>
+
+            <p><strong>Overview of Network Sniffing:</strong> Sniffing is straightforward in hub-based networks, as traffic on a segment passes through all hosts associated with that segment. Most networks today work on switches. A switch looks at the MAC address associated with each frame and sends data to the required port. A MAC address is a hardware address that uniquely identifies each node of a network. Packet sniffers convert the host NIC to promiscuous mode. Passive Sniffing involves sending no packets; it only captures and monitors packets flowing in the network. Active Sniffing searches for traffic on a switched LAN by actively injecting traffic into the LAN; it also refers to sniffing through a switch. Active sniffing techniques include MAC Flooding, DNS Poisoning, ARP Poisoning, DHCP Attacks (starvation and rogue DHCP server), Switch port stealing, and Spoofing (MAC spoofing, VLAN hopping, STP attacks).</p>
+
+            
+            <section class="lab-task">
+                <h3>Lab 1 - Active Sniffing: Task 1: Perform MAC Flooding using macof</h3>
+                <div class="section-card">
+                    <span class="tool-tag">macof (dsniff) / Wireshark</span>
+                    <p><strong>What/when:</strong> MAC flooding is a technique used to compromise the security of network switches that connect network segments or network devices. Attackers use MAC flooding to force a switch to act as a hub, so they can easily sniff the traffic. macof is a Unix and Linux tool that is part of the dsniff collection. It floods the local network with random MAC addresses and IP addresses, causing some switches to fail and open in repeating mode, thereby facilitating sniffing. This tool floods the switch's CAM tables (131,000 per minute) by sending forged MAC entries. When the MAC table fills up, the switch converts to a hub-like operation where an attacker can monitor the data being broadcast. For demonstration purposes, only one target machine (Windows 11) is used, but macof sends packets with random MAC and IP addresses to all active machines in the local network. Attacker: Parrot Security (10.10.1.13).</p>
+                    <pre><code># Parrot Security - become root
+sudo su
+# password: toor (not visible while typing)
+cd
+# jump to root directory
+
+# Launch Wireshark (GUI): Applications -> Pentesting -> Information Gathering -> wireshark
+# Security pop-up: password toor -> OK
+# Wireshark Network Analyzer: double-click available ethernet/interface (eth0) to start capture
+# Leave Wireshark running
+
+# Flood CAM table with 10 random MAC/IP pairs
+macof -i eth0 -n 10
+# -i: specifies the interface
+# -n: specifies the number of packets to be sent (here, 10)
+
+# Target a single system instead
+macof -i eth0 -d [Target IP Address]
+# -d: specifies the destination IP address
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Parrot Security to switch to the Parrot Security machine. In the login page, the attacker username is selected by default; enter password toor and press Enter. If a Parrot Updater pop-up appears, ignore and close it; if a Question pop-up asks to update, click No. Click Applications in the top-left corner and navigate to Pentesting -> Information Gathering -> wireshark. Security pop-up: enter password toor -> OK. The Wireshark Network Analyzer window appears; double-click the available ethernet/interface (here, eth0) to start packet capture. Leave Wireshark running. Click the MATE Terminal icon at the top of the Desktop to open a Terminal. Type sudo su and press Enter to run programs as root; in the [sudo] password for attacker field type toor and press Enter (password not visible). Type cd and press Enter to jump to root. The Parrot Terminal appears; type macof -i eth0 -n 10 and press Enter. This command starts flooding the CAM table with random MAC addresses. Switch to the Wireshark window and observe the IPv4 packets from random IP addresses. Click on any captured IPv4 packet and expand the Ethernet II node in the packet details section; source and destination MAC addresses are displayed. Similarly, you can switch to a different machine to see the same packets captured by Wireshark on the Parrot Security machine. Macof sends packets with random MAC and IP addresses to all active machines in the local network; if using multiple targets, the same packets are observed on all target machines. Close the Wireshark window; if an "Unsaved packets..." pop-up appears, click "Stop and Quit without Saving" to close Wireshark. This concludes the demonstration of how to perform MAC flooding using macof. Close all open windows and document all acquired information.</p>
+                                        <p><strong>Notes:</strong> Versions/website appearance may differ; process same. macof is Unix/Linux (dsniff). Filling the CAM table makes the switch behave like a hub.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1 - Active Sniffing: Task 2: Perform a DHCP Starvation Attack using Yersinia</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Yersinia / Wireshark</span>
+                    <p><strong>What/when:</strong> In a DHCP starvation attack, an attacker floods the DHCP server by sending a large number of DHCP requests and uses all available IP addresses that the DHCP server can issue. As a result, the server cannot issue any more IP addresses, leading to a Denial-of-Service (DoS) attack. Because of this issue, valid users cannot obtain or renew their IP addresses, and thus fail to access their network. This attack can be performed using various tools such as Yersinia and Hyenae. Yersinia is a network tool designed to take advantage of weaknesses in different network protocols such as DHCP. It pretends to be a solid framework for analyzing and testing deployed networks and systems. Attacker: Parrot Security (10.10.1.13). Yersinia's interactive mode only works in a maximized terminal window.</p>
+                    <pre><code># Parrot Security - become root
+sudo su
+# password: toor
+cd
+
+# Launch Wireshark (GUI): Applications -> Pentesting -> Information Gathering -> wireshark
+# Security pop-up: password toor -> OK
+# Wireshark Network Analyzer: double-click available ethernet/interface (eth0) to start capture
+# Leave Wireshark running
+
+# Open MATE Terminal, sudo su (toor), cd root
+# Maximize the terminal window (interactive mode only works maximized)
+
+# Open Yersinia in interactive ncurses mode
+yersinia -I
+# -I: Starts an interactive ncurses session
+
+# Yersinia interactive UI steps:
+# Press any key to remove Notification window, then press h for help
+# Press q to exit help options
+# Press F2 to select DHCP mode (STP Fields become DHCP Fields)
+# Press x to list available attack options
+# Press 1 to start a DHCP starvation attack
+# After a few seconds, press q to stop the attack and terminate Yersinia
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On the Parrot Security machine, click Applications in the top-left corner and navigate to Pentesting -> Information Gathering -> wireshark. Security pop-up: enter password toor -> OK. The Wireshark Network Analyzer window appears; double-click the available ethernet/interface (here, eth0) to start packet capture. Leave Wireshark running. Click the MATE Terminal icon at the top of the Desktop to open a Terminal. Type sudo su and press Enter; in the [sudo] password for attacker field type toor and press Enter. Type cd and press Enter to jump to root. Click the Maximize Window icon to maximize the terminal window (the interactive mode of Yersinia only works in a maximized terminal window). Type yersinia -I and press Enter to open Yersinia in interactive mode. Yersinia interactive mode appears. To remove the Notification window, press any key, then press h for help; the Available commands option appears. Press q to exit the help options. Press F2 to select DHCP mode; in DHCP mode, STP Fields in the lower section change to DHCP Fields. Press x to list available attack options. The Attack Panel window appears; press 1 to start a DHCP starvation attack. Yersinia starts sending DHCP packets to the network adapter and all active machines in the local network. If using multiple targets, the same packets are observed on all target machines. After a few seconds, press q to stop the attack and terminate Yersinia. Switch to the Wireshark window and observe the huge number of captured DHCP packets. Click on any DHCP packet and expand the Ethernet II node in the packet details section; source and destination MAC addresses are displayed. Close the Wireshark window (Stop and Quit without Saving if prompted). This concludes the demonstration of how to perform a DHCP starvation attack using Yersinia. Close all open windows and document all acquired information.</p>
+                                        <p><strong>Notes:</strong> Yersinia pretends to be a solid framework for analyzing and testing deployed networks and systems. Starvation exhausts DHCP lease pool, causing DoS for valid users.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1 - Active Sniffing: Task 3: Perform ARP Poisoning using arpspoof</h3>
+                <div class="section-card">
+                    <span class="tool-tag">arpspoof (dsniff) / Wireshark</span>
+                    <p><strong>What/when:</strong> ARP spoofing is a method of attacking an Ethernet LAN. ARP spoofing succeeds by changing the IP address of the attacker's computer to the IP address of the target computer. A forged ARP request and reply packet find a place in the target ARP cache in this process. As the ARP reply has been forged, the destination computer (target) sends the frames to the attacker's computer, where the attacker can modify them before sending them to the source machine (User A) in an MITM attack. arpspoof redirects packets from a target host (or all hosts) on the LAN intended for another host on the LAN by forging ARP replies. This is an extremely effective way of sniffing traffic on a switch. Attacker: Parrot Security (10.10.1.13); target: Windows 11 (10.10.1.11); access point/gateway: 10.10.1.1.</p>
+                    <pre><code># Parrot Security - become root
+sudo su
+# password: toor
+cd
+
+# Launch Wireshark (GUI): Applications -> Pentesting -> Information Gathering -> wireshark
+# Security pop-up: password toor -> OK
+# Wireshark Network Analyzer: double-click available ethernet/interface (eth0) to start capture
+# Leave Wireshark running
+
+# Inform access point that target (10.10.1.11) has our MAC
+arpspoof -i eth0 -t 10.10.1.1 10.10.1.11
+# -i: specifies network interface
+# -t: specifies target IP address
+# Press CTRL+Z after sending a few packets
+
+# Inform target that we are the access point (10.10.1.1)
+arpspoof -i eth0 -t 10.10.1.11 10.10.1.1
+# Press CTRL+Z after sending a few packets
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On the Parrot Security machine, click Applications and navigate to Pentesting -> Information Gathering -> wireshark. Security pop-up: enter password toor -> OK. The Wireshark Network Analyzer appears; double-click the available ethernet/interface (here, eth0) to start packet capture. Leave Wireshark running. Click the MATE Terminal icon, open a Terminal. Type sudo su and press Enter; in the [sudo] password for attacker field type toor and press Enter. Type cd and press Enter to jump to root. In the Parrot Terminal, type arpspoof -i eth0 -t 10.10.1.1 10.10.1.11 and press Enter. (Here, 10.10.1.11 is the IP address of the target system [Windows 11], and 10.10.1.1 is the IP address of the access point or gateway.) Issuing this command informs the access point that the target system (10.10.1.11) has our MAC address (the MAC address of the host machine, Parrot Security). In other words, we are informing the access point that we are the target system. After sending a few packets, press CTRL+Z to stop sending the ARP packets. Switch to the Wireshark window and observe the captured ARP packets. Switch back to the terminal where arpspoof was running. Type arpspoof -i eth0 -t 10.10.1.11 10.10.1.1 and press Enter. Through this command, the host system informs the target system (10.10.1.11) that it is the access point (10.10.1.1). After sending a few packets, press CTRL+Z to stop sending the ARP packets. In Wireshark, observe the ARP packets with an alert warning "duplicate use of 10.10.1.11 detected!" Click on any ARP packet and expand the Ethernet II node in the packet details section; observe the MAC addresses of IP addresses 10.10.1.1 and 10.10.1.11. Here, the MAC address of the host system (Parrot Security) is 02:15:5d:22:14:ce. Using arpspoof, we assigned the MAC address of the host system to the target system (Windows 11) and access point; therefore, the alert warning of a duplicate use of 10.10.1.11 is displayed. You can navigate to the Windows 11 machine and see the IP addresses and their corresponding MAC addresses; the MAC addresses of IP addresses 10.10.1.1 and 10.10.1.13 are the same, indicating the occurrence of an ARP poisoning attack, where 10.10.1.13 is the Parrot Security machine and 10.10.1.1 is the access point. Attackers use arpspoof to obtain the ARP cache; then the MAC address is replaced with that of an attacker's system. Therefore, any traffic flowing from the victim to the gateway will be redirected to the attacker's system. This concludes the demonstration of how to perform ARP poisoning using arpspoof. Close all open windows and document all acquired information.</p>
+                                        <p><strong>Notes:</strong> arpspoof redirects packets from target host (or all hosts) to another host by forging ARP replies; extremely effective for sniffing on a switch.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1 - Active Sniffing: Task 4: Perform a Man-in-the-Middle (MITM) Attack using Cain & Abel</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Cain & Abel</span>
+                    <p><strong>What/when:</strong> An attacker can obtain usernames and passwords using various techniques or by capturing data packets. By merely capturing enough packets, attackers can extract a target's username and password if the victim authenticates themselves in public networks, especially on unsecured websites. Another effective method for obtaining usernames and passwords is by using Cain & Abel to perform MITM attacks. An MITM attack is used to intrude into an existing connection between systems and to intercept the messages being exchanged. Using various techniques, attackers split the TCP connection into two connections - a client-to-attacker connection and an attacker-to-server connection. After successful interception of the TCP connection, the attacker can read, modify, and insert fraudulent data into the intercepted communication. MITM attacks are varied and can be carried out on a switched LAN using tools such as Cain & Abel. Cain & Abel is a password recovery tool that allows recovery of passwords by sniffing the network and cracking encrypted passwords. The ARP poisoning feature sends free spoofed ARPs to the network's host victims, making it easier to attack a middleman. Attacker: Windows Server 2019 (10.10.1.19); targets: Windows 11 (10.10.1.11) and Windows Server 2022 (10.10.1.22). Captures FTP credentials (Jason / qwerty) even on failed login.</p>
+                    <pre><code># Windows Server 2022 - victim generates FTP traffic
+ftp 10.10.1.11
+# When prompted for User: Jason
+# When prompted for Password: qwerty
+# (Irrespective of successful login, Cain captures the password)
+
+# Cain & Abel (Windows Server 2019) GUI steps:
+# Click Type here to search -> type cain -> click Cain
+# Configure (menu bar) -> Sniffer tab -> ensure Adapter for machine IP selected -> OK
+# Start/Stop Sniffer icon -> OK on Warning pop-up
+# Sniffer tab -> plus (+) icon or right-click -> Scan MAC Addresses
+#   MAC Address Scanner: check "All hosts in my subnet", check "All Tests" -> OK
+# APR tab (bottom) -> click topmost section to activate plus (+)
+#   New ARP Poison Routing: select 10.10.1.11 (left) and 10.10.1.22 (right) -> OK
+# Select created target IP scan in Configuration/Routes Packets tab
+# Start/Stop APR icon -> Status changes Idle to Poisoning
+# Passwords tab (bottom) -> FTP (left pane) to view sniffed password
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows Server 2019 to switch to the Windows Server 2019 machine. Click Ctrl+Alt+Delete to activate; by default Administrator user profile is selected, click Pa$$w0rd to paste the password and press Enter to login. Networks screen: click Yes to allow PC to be discoverable. Click the "Type here to search" icon at the bottom of Desktop and type cain; click Cain from results. The Cain & Abel main window appears. Click Configure from the menu bar to configure an ethernet card. The Configuration Dialog window appears; by default the Sniffer tab is selected. Ensure that the Adapter associated with the IP address of the machine is selected; click OK. Click the Start/Stop Sniffer icon on the toolbar to begin sniffing. A Cain pop-up displays a Warning message; click OK. Now click the Sniffer tab. Click the plus (+) icon or right-click in the window and select Scan MAC Addresses to scan the network for hosts. The MAC Address Scanner window appears. Check the "All hosts in my subnet" radio button and select the "All Tests" checkbox; click OK. Cain & Abel starts scanning for MAC addresses and lists all those found. After completing the scan, a list of all active IP addresses along with their corresponding MAC addresses is displayed. Now click the APR tab at the bottom of the window. APR options appear in the left-hand pane. Click anywhere on the topmost section in the right-hand pane to activate the plus (+) icon. Click the plus (+) icon; a New ARP Poison Routing window appears, from which we can add IPs to listen to traffic. To monitor traffic between two systems (Windows 11 and Windows Server 2022), click to select 10.10.1.11 (Windows 11) from the left-hand pane and 10.10.1.22 (Windows Server 2022) from the right-hand pane; click OK. Click to select the created target IP address scan displayed in the Configuration / Routes Packets tab. Click on the Start/Stop APR icon to start capturing ARP packets; the Status changes from Idle to Poisoning. Click Windows Server 2022 to switch to the Windows Server 2022 machine; click Ctrl+Alt+Delete. By default, CEH\Administrator user profile is selected; click Pa$$w0rd to paste the password and press Enter to login. Click the "Type here to search" icon and type cmd; click Command Prompt from the results. The Command Prompt window appears; type ftp 10.10.1.11 (the IP address of Windows 11) and press Enter. When prompted for a User, type "Jason" and press Enter; for a Password, type "qwerty" and press Enter. Irrespective of a successful login, Cain & Abel captures the password entered during login. Click Windows Server 2019 to switch back; observe that the tool lists packet exchange. Click the Passwords tab from the bottom of the window. Click FTP from the left-hand pane to view the sniffed password for ftp 10.10.1.11. In real-time, attackers use the ARP poisoning technique to perform sniffing on the target network; using this method, attackers can steal sensitive information, prevent network and web access, and perform DoS and MITM attacks. This concludes the demonstration of how to perform an MITM attack using Cain & Abel. Close all open windows and document all acquired information.</p>
+                                        <p><strong>Notes:</strong> As a preventive measure, administrators should advise employees not to provide sensitive information in public networks without HTTPS; use VPN and SSH tunneling. An expert ethical hacker must know sniffing, network protocols and topology, TCP/UDP services, routing tables, remote access (SSH/VPN), authentication mechanisms, and encryption techniques.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1 - Active Sniffing: Task 5: Spoof a MAC Address using TMAC and SMAC</h3>
+                <div class="section-card">
+                    <span class="tool-tag">TMAC v6 / SMAC 2.7</span>
+                    <p><strong>What/when:</strong> A MAC duplicating or spoofing attack involves sniffing a network for the MAC addresses of legitimate clients connected to the network. In this attack, the attacker first retrieves the MAC addresses of clients who are actively associated with the switch port. Then, the attacker spoofs their own MAC address with the MAC address of the legitimate client. Once the spoofing is successful, the attacker receives all traffic destined for the client. Thus, an attacker can gain access to the network and take over the identity of a network user. If an administrator does not have adequate packet-sniffing skills, it is hard to defend against such intrusions. So, an expert ethical hacker and pen tester must know how to spoof MAC addresses, sniff network packets, and perform ARP poisoning, network spoofing, and DNS poisoning. This lab demonstrates how to spoof a MAC address to remain unknown to an attacker. Here, we will use TMAC and SMAC tools to perform MAC spoofing on Windows 11.</p>
+                    <pre><code># TMAC (Windows 11 GUI)
+# Click Search icon on Desktop -> type TMAC -> TMAC v6 -> Open (UAC Yes)
+# Technitium MAC Address Changer pop-up -> click No
+# In TMAC main window: choose network adapter (Ethernet)
+# Information tab: note Original MAC Address
+# Change MAC Address: click "Random MAC Address" -> random MAC appears
+# Click "Change Now!" -> "MAC Address Changed Successfully" -> OK
+# Observe new MAC under Active MAC Address
+# To restore: click "Restore Original" -> "MAC Address Restored Successfully" -> OK
+# Close TMAC
+
+# SMAC (Windows 11 GUI)
+# Click Search icon -> type SMAC -> SMAC 2.7 -> Open (UAC Yes)
+# SMAC License Agreement -> I Accept
+# SMAC Registration -> Proceed (unregistered)
+# Choose network adapter whose MAC is to be spoofed
+# Click "Random" -> random MAC in "New Spoofed MAC Address"
+# ">>" under Network Connection toggles connection/adapter info; "<<" toggles back
+# ">>" under Hardware ID toggles Hardware/Config ID; "<<" toggles back
+# "IPConfig" button -> view ipconfig -> Close
+# "MAC List" -> "Load List" -> select Sample_MAC_Address_List.txt -> Open
+# Choose any MAC address -> "Select" -> appears in New Spoofed MAC Address
+# Click "Update MAC" -> Yes (temp disconnect) -> "Adapter Restart Complete" -> OK
+# Observe new MAC under Spoofed/Active MAC Address
+# To restore: click "Remove MAC"
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows 11 to switch to the Windows 11 machine (UAC Yes if prompted). Click the Search icon on the Desktop. Type TMAC in the search field; TMAC v6 appears in the results; click Open to launch it (UAC Yes). The Technitium MAC Address Changer main window appears. In the Technitium MAC Address Changer pop-up, click No. In the TMAC main window, choose the network adapter of the target machine whose MAC address is to be spoofed (here, Ethernet). Under the Information tab, note the Original MAC Address of the network adapter. Click the Random MAC Address button under the Change MAC Address option to generate a random MAC address. A Random MAC Address is generated and appears under the Change MAC Address field. Click the "Change Now!" button to change the MAC address. The "MAC Address Changed Successfully" pop-up appears; click OK. Observe that the newly generated random MAC address appears under the Active MAC Address section. To restore the original MAC address, click on the "Restore Original" button at the bottom of the TMAC window; the "MAC Address Restored Successfully" pop-up appears; click OK. Close the TMAC main window.</p>
+                    <p>Now, we shall perform MAC spoofing using the SMAC tool. Click the Search icon on the Desktop. Type SMAC in the search field; SMAC 2.7 appears in the results; click Open to launch it (UAC Yes). The SMAC main window appears, along with the SMAC License Agreement. Click I Accept to continue. The SMAC Registration window appears; click Proceed to continue with the unregistered version of SMAC. The SMAC main window appears. Choose the network adapter of the target machine whose MAC address is to be spoofed. Click the Random button to generate a random MAC address. A randomly generated MAC appears in the New Spoofed MAC Address field. Click the forward arrow button (>>) under Network Connection to view the Network Adapter information. Clicking the back arrow (<<) button under Network Adapter will again display the Network Connection information; these buttons allow toggling between the network connection and network adapter. Similarly, click the forward arrow button (>>) under Hardware ID to view Configuration ID information and click the back arrow button (<<) to toggle back to Hardware ID information. Click the IPConfig button to view the ipconfig information. The View IPConfig window appears and displays the IP configuration details of the available network adapters; click Close after analyzing the information. Click the MAC List button to import the MAC address list into SMAC. The MAC List window appears; click the Load List button. The Load MAC List window appears; select the Sample_MAC_Address_List.txt file and click Open. A list of MAC addresses will be added to the MAC List in SMAC. Choose any MAC Address and click the Select button. The selected MAC address appears under the New Spoofed MAC Address field. Click the Update MAC button to update the machine's MAC address information. The SMAC pop-up appears; click Yes. It will cause a temporary disconnection in your network adapter. (This dialog box only appears in the evaluation or trial version. In evaluation mode, you can change the MAC address to 0C-0C-0C-0C-0C-01. If you purchase SMAC, you can change the MAC address as you like.) After successfully spoofing the MAC address, a SMAC pop-up appears stating "Adapter Restart Complete"; click OK. Once the adapter is restarted, a random MAC address is assigned to your machine; you can see the newly generated MAC address under Spoofed MAC Address and Active MAC Address. By spoofing the MAC address, an attacker can simulate attacks such as ARP poisoning and MAC flooding without revealing their own actual MAC address. To restore the MAC address back to its original setting, click the Remove MAC button. This concludes the demonstration of spoofing MAC addresses using TMAC and SMAC. Close all open windows and document all acquired information.</p>
+                                        <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Evaluation mode limits spoofed MAC to 0C-0C-0C-0C-0C-01.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1 - Active Sniffing: Task 6: Spoof a MAC Address of Linux Machine using macchanger</h3>
+                <div class="section-card">
+                    <span class="tool-tag">macchanger</span>
+                    <p><strong>What/when:</strong> A MAC address is a unique number that can be assigned to every network interface, and it is used by various systems programs and protocols to identify a network interface. It is not possible to change a MAC address that is hard-coded on the NIC (Network Interface Controller). However, many drivers allow the MAC address to be changed. Some tools can make the operating system believe that the NIC has the MAC address of the user's choice. Masking of the MAC address is known as MAC spoofing and involves changing the computer's identity. MAC spoofing can be performed using numerous tools. Here, we will be using the macchanger utility to change the MAC address of a Linux system. Attacker: Parrot Security (10.10.1.13).</p>
+                    <pre><code># Parrot Security - become root
+sudo su
+# password: toor
+cd
+
+# Turn off the network interface before changing MAC
+ifconfig eth0 down
+
+# View macchanger options
+macchanger --help
+
+# View current MAC address
+macchanger -s eth0
+# -s: prints the MAC address of the machine
+
+# Set a random vendor MAC address
+macchanger -a eth0
+# -a: sets random vendor MAC address to the network interface
+
+# Set a random MAC address
+macchanger -r eth0
+
+# Enable the network interface
+ifconfig eth0 up
+
+# Verify changed MAC
+ifconfig
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Parrot Security to switch to the Parrot Security machine. In the login page, the attacker username is selected by default; enter password toor in the Password field and press Enter to log in. If a Parrot Updater pop-up appears at the top-right corner of Desktop, ignore and close it; if a Question pop-up window asks you to update the machine, click No. Click the MATE Terminal icon at the top of the Desktop window to open a Terminal. Type sudo su and press Enter to run programs as root; in the [sudo] password for attacker field type toor and press Enter (password not visible). Type cd and press Enter to jump to root. Before changing the MAC address we need to turn off the network interface. Type ifconfig eth0 down and press Enter to turn off the network interface. Type macchanger --help and press Enter to see the available options of the macchanger tool. To see the current MAC address of the Parrot Security machine, type macchanger -s eth0 and press Enter (-s prints the MAC address). Now we will change the MAC address of the network interface. In the terminal type macchanger -a eth0 and press Enter to set a random vendor MAC address to the network interface (-a sets random vendor MAC). Now type macchanger -r eth0 and press Enter to set a random MAC address to the network interface. To enable the network interface type ifconfig eth0 up and press Enter. To check the changed MAC address, type ifconfig and press Enter. You can observe that a random MAC address is set to the network interface. This concludes the demonstration of how to spoof a MAC address of a Linux machine using macchanger. Close all open windows and document all acquired information. Now, before proceeding to the next task, End the lab and re-launch it to reset the machines: click the Menu icon and click END from the drop-down options.</p>
+                                        <p><strong>Notes:</strong> Versions/website appearance may differ; process same. MAC spoofing changes the OS-believed identity; hard-coded NIC MAC remains unchanged.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2 - Network Sniffing Tools: Task 1: Perform Password Sniffing using Wireshark</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Wireshark / Remote Packet Capture Protocol v.0</span>
+                    <p><strong>What/when:</strong> Wireshark is a network packet analyzer used to capture network packets and display packet data in detail. The tool uses WinPcap to capture packets on its own supported networks. It captures live network traffic from Ethernet, IEEE 802.11, PPP/HDLC, ATM, Bluetooth, USB, Token Ring, Frame Relay, and FDDI networks. The captured files can be programmatically edited via the command-line. A set of filters for customized data displays can be refined using a display filter. Here, we will use Wireshark to perform password sniffing. In this task, we will use the Windows Server 2019 (10.10.1.19) machine as the host machine and the Windows 11 (10.10.1.11) machine as the target machine. Data traversing an HTTP channel flows in plain-text format and is therefore prone to MITM attacks. Network administrators can use sniffers to troubleshoot network problems, examine security problems, and debug protocol implementations. However, an attacker can use sniffing tools such as Wireshark to sniff the traffic flowing between the client and the server. The traffic obtained might contain sensitive information such as login credentials, which can then be used to perform malicious activities such as user-session impersonation.</p>
+                    <pre><code># Wireshark capture on host (Windows Server 2019)
+# Launch Wireshark (search wireshark) -> double-click Ethernet2 to start capture
+# Victim (Windows 11) browses http://www.moviescope.com and logs in (sam / test)
+# Stop capture -> File -> Save As... -> name "Password Sniffing"
+# Display filter:
+http.request.method == POST
+# Edit -> Find Packet...:
+#   Display filter -> String
+#   Packet list -> Packet details
+#   Narrow & Wide -> Narrow (UTF-8 / ASCII)
+#   search string: pwd -> Find
+# Expand "HTML Form URL Encoded: application/x-www-form-urlencoded" to view username/password
+
+# Remote capture setup (victim Windows 11 must run rpcapd)
+# RDP from Windows Server 2019 to 10.10.1.11 as Jason (password qwerty)
+# Control Panel -> System and Security -> Windows Tools -> Services
+# "Remote Packet Capture Protocol v.0 (experimental)" -> right-click -> Start (Status Running)
+# Close all windows on victim and close RDP
+
+# Wireshark remote interface (Windows Server 2019)
+# Capture options icon -> Manage Interfaces... -> Remote Interfaces tab -> Add (+)
+# Host: 10.10.1.11 ; Port: 2002
+# Authentication: Password -> Jason / qwerty -> OK
+# Select remote interface -> Start
+# Victim (Windows 11) logs in as Jason (qwerty) and browses http://www.goodshopping.com
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows Server 2019 to switch to the Windows Server 2019 machine. Click Ctrl+Alt+Delete to activate; by default Administrator user profile is selected, click Pa$$w0rd to paste the password and press Enter to login. Click the "Type here to search" icon at the bottom of Desktop and type wireshark; click Wireshark from the results (if Software update window appears, click Remind me later). The Wireshark Network Analyzer window appears; double-click the available ethernet/interface (here, Ethernet2) to start packet capture. Wireshark starts capturing all packets generated while traffic is received by or sent from your machine. Now, click Windows 11 to switch to the Windows 11 machine; click Ctrl+Alt+Delete. By default, Admin user profile is selected; click Pa$$w0rd to paste the password and press Enter to login (handle Welcome to Windows wizard and Networks screen as needed). Open any browser (Mozilla Firefox); place the cursor in the address bar, type http://www.moviescope.com/, and press Enter. The MOVIESCOPE home page appears; type Username and Password as sam and test, and click Login. Click Windows Server 2019 to switch back; in the Wireshark window, click the Stop capturing packets icon on the toolbar. Click File -> Save As... from the top-left corner to save the captured packets. The Save file as window appears; select any location, specify File name as "Password Sniffing", and click Save. In the Apply a display filter field, type http.request.method == POST and click the arrow icon (-->) to apply the filter; Wireshark only filters http POST traffic packets. Now, click Edit from the menu bar and click Find Packet.... The Find Packet section appears below the display filter field. Click Display filter, select String from the drop-down; click Packet list, select Packet details from the drop-down; click Narrow & Wide and select Narrow (UTF-8 / ASCII). In the field next to String, type pwd and click the Find button. Wireshark displays the sniffed password from the captured packets. Expand the "HTML Form URL Encoded: application/x-www-form-urlencoded" node from the packet details section and view the captured username and password. Close the Wireshark window. Click Windows 11 to switch to the Windows 11 machine, close the web browser, and sign out from the Admin account. Click Windows Server 2019 to switch back. Click the "Type here to search" icon and type Remote; click Remote Desktop Connection from the results. The Remote Desktop Connection dialog-box appears; click Show Options. If a previously accessed IP address appears in the Computer field, delete it. The dialog-box expands; under the General tab, type 10.10.1.11 in the Computer field and Jason in the User name field; click Connect. (The IP address and username might differ in your lab environment; the target system credentials Jason/qwerty were obtained in previous labs.) The Windows Security pop-up appears; enter Password (qwerty) and click OK (uncheck Remember me if checked). The Remote Desktop Connection pop-up appears; click Yes. A remote connection to the target system (Windows 11) appears. If a Choose privacy settings window appears, click Next/Next/Accept. Click the Search icon on the Desktop; type Control; open Control Panel. Navigate to System and Security -> Windows Tools; in the Windows Tools control panel, double-click Services. The Services window appears; choose "Remote Packet Capture Protocol v.0 (experimental)", right-click the service, and click Start. The Status changes to Running. Close all open windows on the Windows 11 machine and close Remote Desktop Connection (OK if pop-up appears). Now, in Windows Server 2019, click the "Type here to search" icon and type wireshark; click Wireshark to launch. The Wireshark Network Analyzer window appears; click the Capture options icon from the toolbar. The Wireshark Capture Options window appears; click the Manage Interfaces... button. The Manage Interfaces window appears; click the Remote Interfaces tab, then the Add a remote host and its interface icon (+). The Remote Interface window appears. In the Host text field, enter the IP address of the target machine (here, 10.10.1.11); in the Port field, enter port number 2002. Under Authentication, select the Password authentication radio button and enter the target machine's user credentials (here, Jason and qwerty); click OK. (The IP address and user credentials may differ when you perform this task.) A new remote interface is added to the Manage Interfaces window; click OK. The newly added remote interface appears in the Wireshark Capture Options window; click Start. Click Windows 11 to switch to the Windows 11 machine; click Ctrl+Alt+Delete. Select Jason from the list of user accounts in the left pane, click qwerty to enter the password and press Enter to log in (acting as the victim). Acting as the target, open any web browser (Mozilla Firefox) and browse the website of your choice (here, http://www.goodshopping.com). Although we are only browsing the Internet here, you could also log in to your account and sniff the credentials. Click Windows Server 2019 to switch back; Wireshark starts capturing packets as soon as the user begins browsing the Internet. After a while, click the Stop capturing packet icon on the toolbar to stop live packet capture. This way, you can use Wireshark to capture traffic on a remote interface. In real-time, when attackers gain the credentials of a victim's machine, they attempt to capture its remote interface and monitor the traffic its user browses to reveal confidential user information. This concludes the demonstration of how to perform password sniffing using Wireshark. Close all open windows and document all acquired information.</p>
+                                        <p><strong>Notes:</strong> An attacker can only capture data packets from within a given subnet. Many enterprises leave switch ports open; a sniffer in promiscuous mode can capture and analyze all network traffic.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2 - Network Sniffing Tools: Task 2: Analyze a Network using the Omnipeek Network Protocol Analyzer</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Omnipeek (LiveAction)</span>
+                    <p><strong>What/when:</strong> OmniPeek Network Analyzer provides real-time visibility and expert analysis of each part of the target network. It performs analysis, drills down, and fixes performance bottlenecks across multiple network segments. It includes analytic plug-ins that provide targeted visualization and search abilities. An ethical hacker or pen tester can use this tool to monitor and analyze network traffic of the target network in real-time, identify the source location of that traffic, and attempt to obtain sensitive information as well as find any network loopholes. Before starting this lab, we need to find the User IDs associated with the usernames for the Windows 11 machine. Here, we will use Omnipeek to analyze a network. Windows 11 is the capture machine; Windows Server 2019 generates traffic.</p>
+                    <pre><code># Windows 11 browser - register & download Omnipeek
+https://www.liveaction.com/products/omnipeek-network-protocol-analyzer/
+# Click Free Trial; Warning: Potential Security Risk Ahead -> Advanced -> Accept the Risk and Continue
+# Redirected to cart -> checkout
+# LiveAction Store: input personal details; click "Start My Omnipeek Trial"
+# (must provide professional EMAIL ADDRESS work/school)
+# Let's get started page: License Key + download link
+# Click "Download Omnipeek for Windows"; if Opening Omnipeek_21.4.1msi pop-up -> Save File
+# Navigate to download location (Downloads) -> double-click Omnipeek_21.4.1msi (version may differ)
+# Open File - Security Warning -> Run
+# OmniPeek Installer: Next
+# Product Activation: Automatic (requires Internet) -> Next
+# Customer Information: Company Name (abc), Email (provided at registration)
+#   switch to Firefox, copy License Key, close browser; paste in Serial Number/Product Key -> Next
+# Follow wizard defaults; UAC Yes if prompted
+# Completing: uncheck View Readme, ensure Launch Omnipeek checked -> Finish (UAC Yes)
+# Omnipeek evaluation dialog -> OK
+
+# Capture (Omnipeek main window)
+# New Capture -> Adapter -> expand "Local machine: WINDOWS11" -> select Ethernet -> OK
+# Start Capture (top right) -> Stop Capture toggles
+# Packets (Capture section, left pane) -> Show Decode View / Show Hex View
+# Events (Capture section)
+# Clients/Servers (Expert section)
+# Flows and Applications
+# Clients (Web section)
+# Peer Map (Visuals section) -> Traffic Types (Unicast, Multicast, Broadcast)
+# Graphs (Visuals section)
+# Summary (Statistics section)
+# File -> Save Report... -> Report folder ellipsis -> Desktop -> OK -> Save
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows 11 to switch to the Windows 11 machine. Open any browser (Mozilla Firefox), place the cursor in the address bar and click on https://www.liveaction.com/products/omnipeek-network-protocol-analyzer/ and press Enter. If a website cookie notification appears, click Accept. The LiveAction website appears; click the Free Trial button. If "Warning: Potential Security Risk Ahead" page appears, click Advanced, then "Accept the Risk and Continue". You will be redirected to a cart in live action; click checkout. The LiveAction Store website appears. Input your personal details in all required fields. Click the "Start My Omnipeek Trial" button. (Here, you must provide your professional EMAIL ADDRESS (work or school accounts).) The "Let's get started" webpage appears, displaying the License Key and download link for Omnipeek. Click on the "Download Omnipeek for Windows" button to begin the download. If "Opening Omnipeek_21.4.1msi" pop-up appears, click Save File to download the application. On completion of the download, navigate to the download location of the tool (here, Downloads) and double-click Omnipeek_21.4.1msi. (The version of Omnipeek might differ when you perform the task.) If an Open File - Security Warning pop-up appears, click Run. The OmniPeek Installer wizard appears; click Next. In the Product Activation wizard, ensure that the "Automatic: requires an Internet connection" radio-button is selected and click Next. The Customer Information wizard appears; type a Company Name (here, abc) and Email (provided at the time of registration). For the serial number field, switch to the Mozilla Firefox browser and copy the License Key. Close the browser. Switch back to the Omnipeek Installer window, paste the License Key in the Serial Number or Product Key field, and then click Next. Follow the wizard-driven installation steps to install Omnipeek using the default settings. While Installing LiveAction Omnipeek, if a User Account Control pop-up appears, click Yes. On completion of the installation, the Omnipeek Installer Completed wizard appears; uncheck View Readme, ensure that the Launch Omnipeek option is checked, and click Finish. (If a User Account Control pop-up appears, click Yes.) The Omnipeek evaluation dialog-box appears; click OK. The Omnipeek main window appears. Click on the New Capture option from Omnipeek's main screen to create an Omnipeek capture window. The Capture Options window appears; by default, the Adapter option opens up. Under the Adapter section in the right-hand pane, expand the "Local machine: WINDOWS11" node, select Ethernet, and click OK. The Capture 1 tab appears; click the Start Capture button in the right-hand corner of the window to begin capturing packets. The Start Capture button changes to read "Stop Capture" and traffic statistics begin to populate Network under the Dashboards section. Click Windows Server 2019 to switch to the Windows Server 2019 machine. Acting as the target, open any web browser (Mozilla Firefox) and browse the website of your choice (here, https://www.gmail.com). (Social networking websites are blocked from this environment due to some security reasons; if you want to run this lab task you can use some other website of your choice or else you can run this task in your local environment.) Now, click Windows 11 to switch back to the Windows 11 machine. The captured statistical analysis of the data is displayed in the Capture 1 tab of the navigation bar. You can observe the network traffic along with the websites visited by the target machine. To view the captured packets, select Packets under the Capture section in the left-hand pane. You can observe the outgoing and incoming network packets of the target system. You can further click the Show Decode View and Show Hex View icons to view detailed information regarding any selected packet. Click Events under the Capture section in the left-hand pane to view the events occurring in the network. Click Clients/Servers under the Expert section in the left-hand pane to view a list of active systems in the local network. Similarly, under the Flows and Applications options, you can view the packet flow and applications running on the systems in the local network. Click on Clients under the Web section in the left-hand pane to view the active systems in the network. Click Peer Map under the Visuals section in the left-hand pane to show a mapped view of the network traffic. By default, all Traffic Types (Unicast, Multicast, and Broadcast) are selected. (You can select any traffic according to your purpose.) Similarly, under the Visuals section, you can click the Graphs option to show graphs on packet size, QoS analysis, TCP analysis, TCP vs. UDP, and web protocols. Click on the Summary option under the Statistics section in the left-hand pane to view a summary report of the network analysis. Stop the packet capturing by clicking on the Stop Capture button in the right-hand corner of the window; the Stop Capture button toggles back to the Start Capture button. Click File from the menu bar and click Save Report... to save the report. The Save Report window appears; under the Report folder field, click the ellipse icon to change the download location. The Browse For Folder window appears; select the Desktop as your save location and click OK. The changed save location appears in the Report folder field; click the Save button to save the report. The saved report automatically appears. (If "How do you want to open this file?" pop-up appears, select Firefox and click OK.) Scroll down the page in the pdf to view the complete report. In real-time, an attacker may perform this analysis to obtain sensitive information as well as to find any loopholes in the network. This concludes the demonstration of analyzing a network using the Omnipeek Network Protocol Analyzer. Close all open windows and document all acquired information.</p>
+                                        <p><strong>Notes:</strong> Trial registration requires professional (work/school) email. Version may differ. Attacker may perform this analysis to obtain sensitive info/find loopholes.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2 - Network Sniffing Tools: Task 3: Analyze a Network using the SteelCentral Packet Analyzer</h3>
+                <div class="section-card">
+                    <span class="tool-tag">SteelCentral Packet Analyzer Plus (Riverbed)</span>
+                    <p><strong>What/when:</strong> SteelCentral Packet Analyzer provides a graphical console for high-speed packet analysis. It captures terabytes of packet data traversing the network, reads it, and displays it in a GUI. It can analyze multi-gigabyte recordings from locally presented trace files or on remote SteelCentral NetShark probes (physical, virtual, or embedded on SteelHeads), without a large file transfer, to identify anomalous network issues or diagnose and troubleshoot complex network and application performance issues down to the bit level. Here, we will use the SteelCentral Packet Analyzer tool to analyze a network. Windows 11 captures; Windows Server 2019 generates traffic.</p>
+                    <pre><code># Windows 11 browser - trial registration
+https://www.riverbed.com/trial-downloads
+# Scroll down -> click LEARN MORE under "Try Alluvio AppResponse/Packet Analyzer Plus Trial"
+# (tool version may differ; at bottom click Accept All Cookies)
+# Registration form -> fill personal details -> SUBMIT (must give work email)
+# "Please verify your email address" pop-up -> CONFIRM
+# Thank You webpage with trial info
+# Open new tab -> log in to email -> open "Riverbed Evaluation License Request for SteelCentral PacketAnalyzer Plus"
+#   -> click Software link to download SteelCentral Packet Analyzer
+# Opening PacketAnalyzer_11.13.0_Setup.exe -> Save File
+# Navigate to Downloads -> double-click PacketAnalyzer_11.13.0_Setup.exe
+# Open File - Security Warning -> Run
+# SteelCentral Packet Analyzer Plus Setup: check "Create shortcut on desktop", click "I Agree"
+# Completing wizard: ensure "Start the application" checked -> Close
+# License window: leave running
+# Switch to browser tab with Riverbed email -> copy License Key
+# License window: paste License Key in Product Key -> Activate (UAC Yes) -> Start
+# Main window shows Getting Started tab
+# (Live Devices unavailable: insufficient privileges) -> double-click prompt -> UAC Yes
+# Ethernet adapter appears under Local System -> click Microsoft Corporation adapter
+# Double-click "Bandwidth Over Time" (Recently Used) -> starts capture
+# Windows Server 2019 browses www.gmail.com
+# Double-click "Network Usage by Port Name" (Recently Used)
+# Double-click "IP Conversations" (Recently Used)
+# Double-click "Protocol Distribution" (Recently Used)
+# Expand Generic -> double-click "Capture Summary"
+# Expand LAN/Network -> double-click "MAC Overview"
+# Explore VLAN, MPLS, ARP, ICMP, DHCP nodes
+# Reporting (menu bar) -> All Views -> export report -> opens in Chrome
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows 11 to switch to the Windows 11 machine, open any web browser (Mozilla Firefox), now type https://www.riverbed.com/trial-downloads in the address bar and press Enter. The riverbed website appears, displaying TRIAL DOWNLOADS. Scroll down and click on LEARN MORE under "Try Alluvio AppResponse/Packet Analyzer Plus Trial". (The tool version might differ in your lab environment. At the bottom of the page click on Accept All Cookies.) A website appears with a registration form. Fill in your required personal details to create an account and click the SUBMIT button. (Here, you must give your work email to create an account.) If a "Please verify your email address" pop-up appears, click CONFIRM to submit the entered email address. A Thank You webpage appears with information regarding the trial version. Open a new tab and log in to the email account you provided during registration. Open the email from "Riverbed Evaluation License Request for SteelCentral PacketAnalyzer Plus", and click the Software link to download SteelCentral Packet Analyzer. The "Opening PacketAnalyzer_11.13.0_Setup.exe" pop-up appears; click Save File to download the SteelCentral Packet Analyzer setup file. On completion of the download, minimize the browser. Navigate to the download location (here, Downloads) and double-click PacketAnalyzer_11.13.0_Setup.exe. The Open File - Security Warning window appears; click Run. The SteelCentral Packet Analyzer Plus Setup window appears; click "Create shortcut on desktop" checkbox and click I Agree to proceed. SteelCentral Packet Analyzer starts installing, and after completion, the "Completed the SteelCentral Packet Analyzer Plus Setup" wizard appears. Ensure that the "Start the application" checkbox is selected and click Close. The License window appears. Leave this window running. Switch to your browser (Mozilla Firefox). Navigate to the tab where the Riverbed Evaluation License Request for SteelCentral PacketAnalyzer Plus email is open and copy the License Key provided in the email. Switch back to License window and paste the License Key in the Product Key field. Click the Activate button. (If a User Account Control pop-up appears, click Yes.) The SteelCentral Packet Analyzer Plus license activated notification appears; click the Start button to start the application. The SteelCentral Packet Analyzer Plus main window appears, displaying the Getting Started tab options. Observe that under the Devices tab in the left-hand pane, the application is unable to detect any Local System as it requires admin privileges. Therefore, double-click "Live Devices unavailable: Insufficient privileges to run the application as an Administrator." A User Account Control pop-up appears; click Yes. Ethernet adapter appears under Local System in the left-hand pane. Click the Microsoft Corporation adapter. Double-click the "Bandwidth Over Time" option under the Recently Used node in the left-hand pane under the Views section. A new "Bandwidth Over Time" tab appears, and SteelCentral Packet Analyzer Plus starts capturing the network traffic. Now, click Windows Server 2019 to switch to the Windows Server 2019 machine. Acting as the target, open any web browser (Mozilla Firefox) and browse the website of your choice (here, www.gmail.com). Click Windows 11 to switch back to the Windows 11 machine and observe the network traffic captured by SteelCentral Packet Analyzer. Double-click the "Network Usage by Port Name" option under the Recently Used node; a new tab appears displaying captured network traffic. Double-click the "IP Conversations" option; a new tab appears displaying conversations between different IP addresses in a map view. Double-click the "Protocol Distribution" option; a new tab appears displaying Network Protocols, Transport Protocols, TCP Protocols, UDP Protocols, and other information. Now, expand the Generic node and double-click the "Capture Summary" option in the left-hand pane; a new tab appears displaying information about the captured network traffic packets. Expand the LAN and Network node and double-click the "MAC Overview" option; a new tab appears displaying information about MAC sources and destinations and MAC conversations. Similarly, you can explore various options in other nodes such as VLAN, MPLS, ARP, ICMP, and DHCP. Click Reporting from the menu bar. Click on the All Views option to generate a report that includes all views. An Export Report pop-up appears, and the report starts exporting. After completing the extraction, the generated report appears. (If "How do you want to open this file?" pop-up appears, click on Google Chrome and press OK.) Scroll down to view detailed information on each option shown in Table of Contents. This concludes the demonstration of analyzing a network using SteelCentral Packet Analyzer. Close all open windows and document all acquired information.</p>
+                                        <p><strong>Notes:</strong> Requires admin privileges for local device capture. Version may differ. Explore VLAN, MPLS, ARP, ICMP, DHCP nodes.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 3 - Detect Network Sniffing: Task 1: Detect ARP Poisoning and Promiscuous Mode in a Switch-Based Network</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Cain & Abel / Wireshark / Nmap (sniffer-detect NSE)</span>
+                    <p><strong>What/when:</strong> ARP poisoning involves forging many ARP request and reply packets to overload a switch. ARP cache poisoning is the method of attacking a LAN network by updating the target computer's ARP cache with both forged ARP request and reply packets designed to change the Layer 2 Ethernet MAC address (that of the network card) to one that the attacker can monitor. Attackers use ARP poisoning to sniff on the target network. Attackers can thus steal sensitive information, prevent network and web access, and perform DoS and MITM attacks. Promiscuous mode allows a network device to intercept and read each network packet that arrives in its entirety. The sniffer toggles the NIC of a system to promiscuous mode, so that it listens to all data transmitted on its segment. A sniffer can constantly monitor all network traffic to a computer through the NIC by decoding the information encapsulated in the data packet. Promiscuous mode in the network can be detected using various tools. The ethical hacker and pen tester must assess the organization or target of evaluation for ARP poisoning vulnerabilities. Here, we will detect ARP poisoning in a switch-based network using Wireshark and we will use the Nmap Scripting Engine (NSE) to check if a system on a local Ethernet has its network card in promiscuous mode. In this task, we will use the Windows Server 2019 machine as the host machine to perform ARP poisoning, and will sniff traffic flowing between the Windows 11 and Parrot Security machines. We will use the same machine (Windows Server 2019) to detect ARP poisoning and use the Windows 11 machine to detect promiscuous mode in the network.</p>
+                    <pre><code># Parrot Security - generate traffic for poisoning detection
+sudo su
+# password: toor
+cd
+hping3 [Target IP Address] -c 100000
+# here target IP address is 10.10.1.11 (Windows 11)
+# -c: specifies the packet count
+
+# Cain & Abel (Windows Server 2019) GUI:
+# Configure -> Sniffer tab -> select adapter for machine IP -> OK
+# Start/Stop Sniffer -> OK on Warning
+# Sniffer tab -> + (Scan MAC Addresses) -> Range 10.10.1.1-10.10.1.30, All Tests -> OK
+# APR tab -> + (New ARP Poison Routing) -> select 10.10.1.11 (left) and 10.10.1.13 (right) -> OK
+# Select created scan -> Start/Stop APR (Status: Poisoning)
+
+# Wireshark (Windows Server 2019) preferences & capture
+# Edit -> Preferences... -> Protocols node -> ARP/RARP
+#   Check "Detect ARP request storms" and "Detect duplicate IP address configuration" -> OK
+# Double-click adapter (Ethernet2) to start capture
+# Analyze -> Expert Information -> expand Warning "Duplicate IP address configured (10.10.1.11)"
+# Click packet (e.g., 138) to highlight; close Expert Information
+
+# Nmap (Windows 11 Zenmap) promiscuous mode detection
+# Search zenmap -> open "Nmap - Zenmap GUI"
+nmap --script=sniffer-detect [Target IP Address/IP Address Range]
+# here target IP address is 10.10.1.19 (Windows Server 2019)
+# Results show "Likely in promiscuous mode" under Host script results
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows Server 2019 to switch to the Windows Server 2019 machine. Click the "Type here to search" icon at the bottom of Desktop and type cain; click Cain from the results. The Cain & Abel main window appears. Click Configure from the menu bar to configure an ethernet card. The Configuration Dialog window appears; the Sniffer tab is selected by default. Ensure that the Adapter associated with the IP address of the machine is selected and click OK. Click the Start/Stop Sniffer icon on the toolbar to begin sniffing. The Cain pop-up appears with a Warning message; click OK. Now, click the Sniffer tab. Click the plus (+) icon or right-click in the window and select Scan MAC Addresses to scan the network for hosts. The MAC Address Scanner window appears. Check the Range radio button and specify the IP address range as 10.10.1.1-10.10.1.30. Select the All Tests checkbox; then click OK. Cain & Abel starts scanning for MAC addresses and lists all those found. After completion of the scan, a list of all active IP addresses along with their corresponding MAC addresses is displayed. Now, click the APR tab at the bottom of the window. APR options appear in the left-hand pane. Click anywhere on the topmost section in the right-hand pane to activate the plus (+) icon. Click the plus (+) icon; a New ARP Poison Routing window appears, from which we can add IPs to listen to traffic. To monitor traffic between two systems (Windows 11 and Parrot Security), from the left-hand pane click to select 10.10.1.11 (Windows 11) and from the right-hand pane click 10.10.1.13 (Parrot Security); click OK. By doing so, you are setting Cain to perform ARP poisoning between the first and second targets. Click to select the created target IP address scan displayed in the Configuration / Routed Packets tab. Click on the Start/Stop APR icon to start capturing ARP packets. After clicking, Cain & Abel starts ARP poisoning and the status of the scan changes to Poisoning. Cain & Abel intercepts the traffic traversing between these two machines. To generate traffic between the machines, you need to ping one target machine using the other. Click Parrot Security to switch to the Parrot Security machine. Click the MATE Terminal icon at the top of the Desktop window to open a Terminal. Type sudo su and press Enter; in the [sudo] password for attacker field type toor and press Enter (password not visible). Type cd and press Enter to jump to root. A Parrot Terminal window appears; type hping3 [Target IP Address] -c 100000 (here, target IP address is 10.10.1.11 [Windows 11]) and press Enter. (-c specifies the packet count.) This command starts pinging the target machine (Windows 11) with 100,000 packets. Leave the command running and immediately click Windows Server 2019 to switch to the Windows Server 2019 machine. Click the "Type here to search" icon and type wireshark; click Wireshark from the results. The Wireshark Network Analyzer window appears; click Edit in the menu bar and select Preferences.... The Wireshark Preferences window appears; expand the Protocols node. Scroll down in the Protocols node and select the ARP/RARP option. From the right-hand pane, click the "Detect ARP request storms" checkbox and ensure that the "Detect duplicate IP address configuration" checkbox is checked; click OK. Now double-click on the adapter associated with your network (here, Ethernet2) to start capturing the network packets. Wireshark begins to capture the traffic between the two machines. Switch to the Cain & Abel window to observe the packets flowing between the two machines. Now, switch to Wireshark and click the Stop packet capturing icon to stop the packet capturing. Click Analyze from the menu bar and select Expert Information from the drop-down options. The Wireshark Expert Information window appears; click to expand the Warning node labeled "Duplicate IP address configured (10.10.1.11)", running on the ARP/RARP protocol. Arrange the Wireshark Expert Information window above the Wireshark window so that you can view the packet number and the Packet details section. In the Wireshark Expert Information window, click any packet (here, 138). On selecting the packet number, Wireshark highlights the packet, and its associated information is displayed under the packet details section. Close the Wireshark Expert Information window. The warnings highlighted in yellow indicate that duplicate IP addresses have been detected at one MAC address. (ARP spoofing succeeds by changing the IP address of the attacker's computer to the IP address of the target computer. A forged ARP request and reply packet find a place in the target ARP cache. As the ARP reply has been forged, the destination computer (target) sends frames to the attacker's computer, where the attacker can modify the frames before sending them to the source machine (User A) in an MITM attack. At this point, the attacker can launch a DoS attack by associating a non-existent MAC address with the IP address of the gateway or may passively sniff the traffic, and then forward it to the target destination.) This concludes the demonstration of detecting ARP poisoning in a switch-based network. Close the Wireshark window and leave all other windows running.</p>
+                    <p>Now, we shall perform promiscuous mode detection using Nmap. Click Windows 11 to switch to the Windows 11 machine. Click the Search icon on the Desktop. Type zenmap in the search field; the Nmap - Zenmap GUI appears in the results; click Open to launch it. The Zenmap window appears. In the Command field, type the command nmap --script=sniffer-detect [Target IP Address] (here, target IP address is 10.10.1.19 [Windows Server 2019]) and click Scan. The scan results appear, displaying "Likely in promiscuous mode" under the Host script results section. This indicates that the target system is in promiscuous mode. Close the Nmap tool window and document all acquired information. Close all open windows in all machines (ensure that ARP poisoning is not running in Windows Server 2019), and document all acquired information.</p>
+                                        <p><strong>Notes:</strong> Promiscuous mode allows a network device to intercept and read each network packet in its entirety. The sniffer leaves no trace since it does not transmit data, so detection uses ping/DNS/ARP methods. Nmap sniffer-detect uses the ARP method.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 3 - Detect Network Sniffing: Task 2: Detect ARP Poisoning using the Capsa Network Analyzer</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Capsa Enterprise (Colasoft) / Habu</span>
+                    <p><strong>What/when:</strong> Capsa, a portable network performance analysis and diagnostics tool, provides packet capture and analysis capabilities with an easy-to-use interface that allows users to protect and monitor networks in a critical business environment. It helps ethical hackers or pentesters in quickly detecting ARP poisoning and ARP flooding attack and in locating attack source. Habu is an open source penetration testing toolkit that can perform various tasks such as ARP poisoning, ARP sniffing, DHCP starvation and DHCP discovers. Here, we will use Habu tool to perform ARP poisoning attack on the target system and use Capsa Network Analyser to detect the attack. Capsa installed on Windows 11; Habu runs on Parrot Security to poison Windows 11 (10.10.1.11) between Parrot (10.10.1.13).</p>
+                    <pre><code># Windows 11 browser - download Capsa Enterprise
+https://www.colasoft.com/download/arp_flood_arp_spoofing_arp_poisoning_attack_solution_with_capsa.php
+# Download Free Trial -> redirected to Download Capsa Enterprise Trial
+# Scroll down, fill personal details -> "30-Day Trial Download" (professional email)
+# Opening capsa_ent_15.1.0.15104_x64.zip -> Save File (~5 min)
+# Downloads folder -> right-click zip -> WinRAR -> Extract Here
+# Double-click capsa_ent_15.1.0.15104_x64.exe -> UAC Yes
+# Setup - Colasoft Capsa Enterprise: Next -> follow wizard defaults
+# Completing wizard: ensure Launch Program checked -> Finish
+# Colasoft Software Activation Wizard: Next
+# Leave activation wizard open; open browser new tab -> log in to email
+#   Open email from service@colasoft.com -> copy Trial Serial Number
+# Activation wizard: paste serial in Serial Number field
+#   Ensure "Activate online (Recommended)" selected -> Next
+# Success -> Finish
+# Analysis Project 1: check checkbox beside available adapter (Ethernet) -> Start
+# Diagnosis tab
+
+# Parrot Security - ARP poisoning with Habu
+sudo su
+# password: toor
+cd
+habu.arp.poison 10.10.1.11 10.10.1.13
+# sends ARP 'is-at' packets to specified victim(s), poisoning their ARP tables
+# ignore errors if any
+
+# Capsa detection (Windows 11)
+# Diagnosis tab -> expand Data Link Layer -> "ARP Too Many Unrequested Replies" (~10 min)
+# Click "ARP Too Many Unrequested Replies" warning
+# Right-click any Security warning under Details -> Resolve Address... -> OK
+# All Diagnosis (Events section) -> select Parrot IP 10.10.1.13 -> double-click
+# Packet tab -> check packets transferred by Parrot machine
+# Analysis Settings (N) menu -> Diagnosis -> check Diagnosis node
+#   Log -> Save log to disk -> ellipsis -> Desktop -> Select Folder
+#   CSV file selected; Split file every 1 minute -> OK
+# Observe csv log in Desktop/log_diagnosis
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows 11 to switch to the Windows 11 machine. Open any browser (Mozilla Firefox), place the cursor in the address bar, type https://www.colasoft.com/download/arp_flood_arp_spoofing_arp_poisoning_attack_solution_with_capsa.php and press Enter. In the Colasoft Capsa - Quick detect ARP poisoning & ARP flooding window, click on Download Free Trial button. You will be redirected to Download Capsa Enterprise Trial window; scroll down and fill all the required personal details and click on 30-Day Trial Download. (Here, you must provide your professional EMAIL ADDRESS (work or school accounts).) You will be redirected to download page; if "Opening capsa_ent_15.1.0.15104_x64.zip" pop-up appears, select Save File radio button and click OK. The capsa_ent_15.1.0.15104_x64.zip file starts downloading (approximately 5 minutes). Once the download completes, navigate to the Downloads folder and right-click on the zip file, hover the cursor over WinRAR and select Extract Here. Once extraction is completed, double-click the capsa_ent_15.1.0.15104_x64.exe file. A User Account Control pop-up appears; click Yes. Setup - Colasoft Capsa Enterprise window appears; click Next and follow the wizard-driven steps to install Colasoft Capsa Enterprise tool. In the Completing the Colasoft Capsa Enterprise Setup Wizard, ensure that Launch Program checkbox is checked and click Finish. In the Colasoft Software Activation Wizard - Colasoft Capsa Enterprise Edition window, click Next. In the next window we need to enter the serial number to activate the license. Leave the Colasoft Software Activation Wizard as it is and switch to the browser. Open a new tab in the browser and log in to the email account you provided during registration. Open the email from service@colasoft.com and copy the Trial Serial Number. Now, minimize the browser window and switch to the Colasoft Software Activation Wizard window and paste the copied serial number in the Serial Number field. Ensure that "Activate online (Recommended)" radio button is selected and click Next. A window appears showing that the software has been successfully activated; click Finish. After successful installation, an "Analysis Project 1 - Colasoft Capsa Enterprise Trial" window appears. In that window, check the checkbox beside the available adapter (here, Ethernet) and click Start. The "Analysis Project 1 - Colasoft Capsa Enterprise Trial" window appears. Navigate to the Diagnosis tab in the window. Click on Parrot Security to switch to the Parrot Security machine. Click the MATE Terminal icon at the top of the Desktop window to open a Terminal. A Parrot Terminal window appears; type sudo su and press Enter; in the [sudo] password for attacker field type toor and press Enter (password not visible). In the terminal window, type habu.arp.poison 10.10.1.11 10.10.1.13 and press Enter to start ARP poisoning on the Windows 11 machine. (The above command sends ARP 'is-at' packets to the specified victim(s), poisoning their ARP tables to send their traffic to the attacker system. If you receive any error while running the command, ignore it.) Click Windows 11 to switch to the Windows 11 machine. In the Diagnosis tab, expand the Data Link Layer node to see the "ARP Too Many Unrequested Replies" warning. (It will take approximately 10 minutes for the tool to capture the ARP requests.) Click on the "ARP Too Many Unrequested Replies" warning under the Data Link Layer node. Right-click on any Security warning under the Details section and select Resolve Address... from the context menu. An Address Resolver pop-up appears; once the address resolving completes, click OK. Now, to locate the Parrot Machine's IP address, click on All Diagnosis option under the Events section. Now select the Parrot Security machine's IP address from the list (here, 10.10.1.13) and double-click on it. (Here, the IP address of the Parrot Security machine is the attacker's IP address.) The "IP - Behaviour Analysis 10.10.1.13 - Analysis Project1" window appears. Now click on the Packet tab in the "Analysis Project 1 - Colasoft Capsa Enterprise Trial" window to check the packets transferred by the Parrot Security machine. After completing the analysis, close the "IP - Behaviour Analysis" window and return to the Capsa window. Now click on Analysis Settings (N) from the menu bar and select Diagnosis from the drop-down options. In the Analysis Settings window, check the checkbox beside the Diagnosis node under Analysis Settings in the left-hand pane to select the Diagnosis settings. Now check the checkbox beside Log option; in the Analysis Settings window, check the "Save log to disk" checkbox and click the ellipsis button under File path option. In the Select Folder window, select Desktop and click Select Folder. Ensure that the csv file radio button is selected under Save As section and select 1 minute under "Split file every:" section (this option directly saves a new log file in the specified location for every 1 minute); leave all other settings as default and click OK. We can see that the csv log file is created in Desktop -> log_diagnosis location. This concludes the demonstration of detecting ARP poisoning using the Capsa Network Analyzer. Close all open windows and document all acquired information.</p>
+                                        <p><strong>Notes:</strong> Capsa is a portable network performance analysis and diagnostics tool; Habu is an open-source pen-test toolkit (ARP poisoning, ARP sniffing, DHCP starvation/discover). It may take ~10 minutes to capture ARP requests.</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+    <script>
+        const body = document.body;
+    const applyTheme = (t) => {
+        if (t === 'dark') body.setAttribute('data-theme', 'dark');
+        else body.removeAttribute('data-theme');
+    };
+    function getTheme() {
+        try {
+            const p = new URLSearchParams(location.search);
+            const u = p.get('theme');
+            if (u === 'dark' || u === 'light') return u;
+        } catch (e) {}
+        try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+    }
+    function syncNavLinks(t) {
+        document.querySelectorAll('a[href]').forEach(a => {
+            try {
+                const url = new URL(a.getAttribute('href'), location.href);
+                if (url.pathname.endsWith('.html')) {
+                    url.searchParams.set('theme', t);
+                    a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                }
+            } catch (e) {}
+        });
+    }
+    const initialTheme = getTheme();
+    applyTheme(initialTheme);
+    syncNavLinks(initialTheme);
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+            applyTheme(newT);
+            try { localStorage.setItem('theme', newT); } catch (e) {}
+            try {
+                const url = new URL(location.href);
+                url.searchParams.set('theme', newT);
+                history.replaceState(null, '', url.toString());
+            } catch (e) {}
+            syncNavLinks(newT);
+        });
+    }
+    const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+            'module_07.html': 'nav-07',
+            'module_08.html': 'nav-08',
+        'module_09.html': 'nav-09',
+        'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        document.getElementById(navId).classList.add('active');
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>
+", "path">
+/mnt/windows/CEH Practical/study_portal/module_08.html

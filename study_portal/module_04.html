@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 04 - Enumeration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+    <h1>[MISSION_CONTROL]</h1>
+    <div class="search-wrap">
+        <input id="globalSearch" type="text" placeholder="Search modules...">
+        <div id="searchResults"></div>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul id="navMenu">
+        <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+        <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+        <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+        <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+        <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+        <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+        <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+        <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+        <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+        <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+        <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+        <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+    </ul>
+    <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+</nav>
+    <main>
+    <div class="module-header">
+        <span>CEH v12 - Module 04</span>
+        <h2 class="hero-3d">Enumeration</h2>
+    </div>
+
+    <section class="lab-task">
+        <h3>Module 04 - Enumeration (Overview)</h3>
+        <div class="section-card">
+            <span class="tool-tag">CEH v12</span>
+            <p><strong>Scenario:</strong> After reconnaissance and scanning, the next step is enumeration: probing the target network to extract machine names, OSes, services, ports, network resources, usernames, groups, shares, policies, passwords, routing tables, audit/service settings, SNMP and FQDN details. Enumeration creates an active connection and performs directed queries; it is typically conducted in an intranet environment.</p>
+            <p><strong>Objective:</strong> Extract information about the target organization including machine names, OSes, services, ports, network resources, usernames and groups, lists of shares on hosts, policies and passwords, routing tables, audit and service settings, SNMP and FQDN details.</p>
+            <p><strong>Lab Tasks:</strong></p>
+            <ul>
+                <li>Perform NetBIOS enumeration (Windows CMD, NetBIOS Enumerator, NSE)</li>
+                <li>Perform SNMP enumeration (snmp-check, SoftPerfect Network Scanner, SnmpWalk, Nmap)</li>
+                <li>Perform LDAP enumeration (AD Explorer, Python + Nmap, ldapsearch)</li>
+                <li>Perform NFS enumeration (RPCScan, SuperEnum)</li>
+                <li>Perform DNS enumeration (zone transfer, DNSSEC zone walking, Nmap)</li>
+                <li>Perform SMTP enumeration (Nmap)</li>
+                <li>Perform RPC, SMB, and FTP enumeration (NetScanTools Pro, Nmap)</li>
+                <li>Perform enumeration using various tools (Global Network Inventory, Advanced IP Scanner, Enum4linux)</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="lab-task">
+        <h3>Lab 1: Perform NetBIOS Enumeration</h3>
+        <div class="section-card">
+            <span class="tool-tag">NetBIOS</span>
+            <p><strong>Scenario:</strong> NetBIOS enumeration exploits the NetBIOS API on Windows systems to collect computers in a domain, shares on hosts, policies, passwords, etc. NetBIOS uses a 16-character name (15 device + 1 service). The NetBIOS service is easy to target because it runs on Windows even when unused.</p>
+            <p><strong>Objectives:</strong> Perform NetBIOS enumeration using Windows command-line utilities; using NetBIOS Enumerator; using an NSE script.</p>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 1: Perform NetBIOS Enumeration using Windows Command-Line Utilities</h4>
+            <span class="tool-tag">Windows CMD - nbtstat, net use</span>
+            <p><strong>What/When:</strong> Use nbtstat and net use on Windows Server 2019 (10.10.1.19) to target Windows 11 (10.10.1.11). nbtstat displays NetBIOS name tables, name cache, and protocol statistics; net use shows connections and shared resources.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Switch to Windows Server 2019 (10.10.1.19); log in as Administrator with password Pa$$w0rd; accept network discoverability.</li>
+                <li>Open a Command Prompt window.</li>
+                <li>Run nbtstat -a against the remote machine IP to display its NetBIOS name table.</li>
+                <li>Run nbtstat -c to list the NetBIOS name cache and resolved IP addresses.</li>
+                <li>Run net use to display connection status, shared folders/drives, and network information.</li>
+                <li>Document acquired information; close windows.</li>
+            </ol>
+            <pre><code># Display NetBIOS name table of remote computer (Windows 11, 10.10.1.11)
+nbtstat -a 10.10.1.11
+
+# -a : displays the NetBIOS name table of a remote computer
+
+# List contents of the NetBIOS name cache (names + resolved IPs)
+nbtstat -c
+
+# -c : lists the contents of the NetBIOS name cache
+
+# Display connection information, shared folders/drives, and network status
+net use</code></pre>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 2: Perform NetBIOS Enumeration using NetBIOS Enumerator</h4>
+            <span class="tool-tag">NetBIOS Enumerator</span>
+            <p><strong>What/When:</strong> Use NetBIOS Enumerator on Windows 11 to scan IP range 10.10.1.15-10.10.1.100 (targeting Windows Server 2019 10.10.1.19 and Windows Server 2022 10.10.1.22). Enumerates NetBIOS names, usernames, domain names, and MAC addresses. Scan takes ~5 minutes.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Switch to Windows 11; log in as Admin with password Pa$$w0rd.</li>
+                <li>Navigate to E:\CEH-Tools\CEHv12 Module 04 Enumeration\NetBIOS Enumeration Tools\NetBIOS Enumerator and double-click NetBIOS Enumerater.exe (click Run if security warning).</li>
+                <li>Under "IP range to scan", enter from/to (e.g., 10.10.1.15 to 10.10.1.100); ensure "to" is between 10.10.1.100 and 10.10.1.250 to avoid crash.</li>
+                <li>Click Scan; wait ~5 minutes until Debug window shows Ready!.</li>
+                <li>Expand 10.10.1.19 and 10.10.1.22, then expand NetBIOS Names to view NetBIOS details.</li>
+                <li>Document acquired information; close windows.</li>
+            </ol>
+            <pre><code># Launch tool
+E:\CEH-Tools\CEHv12 Module 04 Enumeration\NetBIOS Enumeration Tools\NetBIOS Enumerator\NetBIOS Enumerater.exe
+
+# Scan range (example): 10.10.1.15 - 10.10.1.100</code></pre>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 3: Perform NetBIOS Enumeration using an NSE Script</h4>
+            <span class="tool-tag">Nmap NSE - nbstat.nse</span>
+            <p><strong>What/When:</strong> On Parrot Security, run nbstat.nse against target (10.10.1.22) to retrieve NetBIOS name, user, and MAC address. Increasing verbosity extracts all names.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Switch to Parrot Security; log in as attacker/toor; open MATE Terminal; sudo su (password toor).</li>
+                <li>Run nmap -sV -v --script nbstat.nse against target IP.</li>
+                <li>Run nmap -sU -p 137 --script nbstat.nse against target IP for UDP NetBIOS.</li>
+                <li>Review Host script results (NetBIOS name, user, MAC); document.</li>
+            </ol>
+            <pre><code># TCP service/version scan with NetBIOS enumeration
+nmap -sV -v --script nbstat.nse 10.10.1.22
+
+# -sV : service version detection
+# -v  : verbose output (all hosts/ports)
+# --script nbstat.nse : NetBIOS enumeration
+
+# UDP scan on NetBIOS port 137 with NetBIOS enumeration
+nmap -sU -p 137 --script nbstat.nse 10.10.1.22
+
+# -sU : UDP scan
+# -p 137 : NetBIOS name service port
+# --script nbstat.nse : NetBIOS enumeration</code></pre>
+            <p><strong>Other NetBIOS tools:</strong> Global Network Inventory, Advanced IP Scanner, Hyena, Nsauditor Network Security Auditor.</p>
+        </div>
+    </section>
+
+    <section class="lab-task">
+        <h3>Lab 2: Perform SNMP Enumeration</h3>
+        <div class="section-card">
+            <span class="tool-tag">SNMP</span>
+            <p><strong>Scenario:</strong> SNMP enumeration extracts network resources (hosts, routers, devices, shares) and network info (ARP tables, routing tables, device info, traffic stats) via SNMP agents (UDP 161). Default community string often "public".</p>
+            <p><strong>Objectives:</strong> Perform SNMP enumeration using snmp-check; SoftPerfect Network Scanner; SnmpWalk; Nmap.</p>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 1: Perform SNMP Enumeration using snmp-check</h4>
+            <span class="tool-tag">snmp-check</span>
+            <p><strong>What/When:</strong> On Parrot Security, first verify SNMP port 161 open on Windows Server 2022 (10.10.1.22), then run snmp-check to enumerate system info, user accounts, network info, interfaces, routing, processes, storage, filesystem, devices, shares.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Switch to Parrot Security; log in attacker/toor; open MATE Terminal; sudo su (toor); cd to root.</li>
+                <li>Run nmap -sU -p 161 to confirm SNMP port open.</li>
+                <li>Run snmp-check against target; review system/user/network/interface/routing/TCP/process/storage/filesystem/device/share info.</li>
+                <li>Document; close windows.</li>
+            </ol>
+            <pre><code># UDP scan to confirm SNMP port 161 is open
+nmap -sU -p 161 10.10.1.22
+
+# -sU : UDP scan
+# -p 161 : SNMP port
+
+# Enumerate SNMP device (default community "public")
+snmp-check 10.10.1.22</code></pre>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 2: Perform SNMP Enumeration using SoftPerfect Network Scanner</h4>
+            <span class="tool-tag">SoftPerfect Network Scanner</span>
+            <p><strong>What/When:</strong> On Windows Server 2019, scan IP range 10.10.1.5-10.10.1.23 via SoftPerfect Network Scanner with SNMP enabled; view properties (shared resources, IP, MAC, response time, hostname, uptime, system description) and shared folders.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Switch to Windows Server 2019 (login if needed); search "network" and launch Network Scanner (UAC Yes).</li>
+                <li>In Welcome wizard click Continue.</li>
+                <li>Options -> Remote SNMP; click Mark All/None to select all SNMP items; close.</li>
+                <li>Enter IPv4 From/To (10.10.1.5 to 10.10.1.23); click Start Scanning; wait for completion.</li>
+                <li>Right-click an IP (10.10.1.22) -> Properties to view shared resources, IP, MAC, response time, hostname, uptime, system description.</li>
+                <li>Expand hosts with + node to view shared folders; right-click host -> Open Device for HTTP/HTTPS/FTP/Telnet options.</li>
+                <li>Document; close windows.</li>
+            </ol>
+            <pre><code># Launch tool
+Network Scanner (SoftPerfect)
+
+# Scan range (example): 10.10.1.5 - 10.10.1.23</code></pre>
+            <p><strong>Other SNMP tools:</strong> SolarWinds Network Performance Monitor, ManageEngine OpUtils, PRTG Network Monitor, SolarWinds Engineer's Toolset.</p>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 3: Perform SNMP Enumeration using SnmpWalk</h4>
+            <span class="tool-tag">SnmpWalk</span>
+            <p><strong>What/When:</strong> On Parrot Security, use snmpwalk v1 and v2c with community "public" against 10.10.1.22 to fetch OIDs, variables, server/user/parameter info.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Switch to Parrot Security; open MATE Terminal; sudo su (toor).</li>
+                <li>Run snmpwalk -v1 -c public 10.10.1.22; review OIDs/variables.</li>
+                <li>Run snmpwalk -v2c -c public 10.10.1.22; review server/user/parameters.</li>
+                <li>Document; close windows.</li>
+            </ol>
+            <pre><code># SNMPv1 walk with community string "public"
+snmpwalk -v1 -c public 10.10.1.22
+
+# -v1 : SNMP version 1
+# -c public : community string
+
+# SNMPv2c walk
+snmpwalk -v2c -c public 10.10.1.22
+
+# -v2c : SNMP version 2c
+# -c public : community string</code></pre>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 4: Perform SNMP Enumeration using Nmap</h4>
+            <span class="tool-tag">Nmap NSE - SNMP scripts</span>
+            <p><strong>What/When:</strong> On Parrot Security, run SNMP NSE scripts against Windows Server 2022 (10.10.1.22): sysdescr, processes, win32-software, interfaces.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Switch to Parrot Security; open MATE Terminal; sudo su (toor).</li>
+                <li>Run snmp-sysdescr to get SNMP server type and OS details.</li>
+                <li>Run snmp-processes to list running SNMP processes and ports.</li>
+                <li>Run snmp-win32-software to list installed applications.</li>
+                <li>Run snmp-interfaces to get OS, network interfaces, installed apps.</li>
+                <li>Document; close windows.</li>
+            </ol>
+            <pre><code># SNMP system description / OS info
+nmap -sU -p 161 --script=snmp-sysdescr 10.10.1.22
+
+# SNMP running processes
+nmap -sU -p 161 --script=snmp-processes 10.10.1.22
+
+# SNMP installed Windows software
+nmap -sU -p 161 --script=snmp-win32-software 10.10.1.22
+
+# SNMP network interfaces
+nmap -sU -p 161 --script=snmp-interfaces 10.10.1.22
+
+# -sU : UDP scan
+# -p 161 : SNMP port
+# --script : NSE script to run</code></pre>
+        </div>
+    </section>
+
+    <section class="lab-task">
+        <h3>Lab 3: Perform LDAP Enumeration</h3>
+        <div class="section-card">
+            <span class="tool-tag">LDAP</span>
+            <p><strong>Scenario:</strong> LDAP enumeration accesses directory listings (Active Directory) to gather usernames, addresses, departmental details, server names. LDAP runs on TCP 389; one can anonymously query LDAP for sensitive info.</p>
+            <p><strong>Objectives:</strong> Perform LDAP enumeration using AD Explorer; using Python and Nmap; using ldapsearch.</p>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 1: Perform LDAP Enumeration using Active Directory Explorer (AD Explorer)</h4>
+            <span class="tool-tag">AD Explorer</span>
+            <p><strong>What/When:</strong> On Windows Server 2019, use AD Explorer to connect to Windows Server 2022 (10.10.1.22), browse AD structure (DC=CEH,DC=com, CN=Users), view/modify user attributes.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Switch to Windows Server 2019; log in Administrator/Pa$$w0rd.</li>
+                <li>Navigate to Z:\CEHv12 Module 04 Enumeration\LDAP Enumeration Tools\Active Directory Explorer and double-click ADExplorer.exe; click Agree on license.</li>
+                <li>In Connect to Active Directory, enter target IP (10.10.1.22); click OK.</li>
+                <li>Expand DC=CEH, DC=com and CN=Users to explore domain users.</li>
+                <li>Click a username to view properties; right-click an attribute (e.g., displayName) -> Modify to edit value.</li>
+                <li>Document; close windows.</li>
+            </ol>
+            <pre><code># Launch tool
+Z:\CEHv12 Module 04 Enumeration\LDAP Enumeration Tools\Active Directory Explorer\ADExplorer.exe
+
+# Connect to: 10.10.1.22 (Windows Server 2022)</code></pre>
+            <p><strong>Other LDAP tools:</strong> Softerra LDAP Administrator, LDAP Admin Tool, LDAP Account Manager, LDAP Search.</p>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 2: Perform LDAP Enumeration using Python and Nmap</h4>
+            <span class="tool-tag">Nmap + Python ldap3</span>
+            <p><strong>What/When:</strong> On Parrot Security, verify LDAP port 389 on 10.10.1.22, brute-force LDAP auth via NSE, then use Python ldap3 to bind anonymously and dump directory objects/password attributes.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Switch to Parrot Security; open MATE Terminal; sudo su (toor).</li>
+                <li>Run nmap -sU -p 389 to confirm LDAP port open.</li>
+                <li>Run nmap -p 389 --script ldap-brute with base cn=users,dc=CEH,dc=com to brute-force auth.</li>
+                <li>Open python3; import ldap3; create Server and Connection; bind(); print server.info.</li>
+                <li>Run connection.search for all objects and person objects with userpassword; print connection.entries.</li>
+                <li>Document; close windows.</li>
+            </ol>
+            <pre><code># UDP scan to confirm LDAP port 389
+nmap -sU -p 389 10.10.1.22
+
+# LDAP brute-force authentication via NSE
+nmap -p 389 --script ldap-brute --script-args ldap.base='"cn=users,dc=CEH,dc=com"' 10.10.1.22
+
+# -p 389 : LDAP port
+# ldap-brute : brute-force LDAP authentication
+# ldap.base : base for password guessing attempts
+
+# Manual LDAP enumeration with Python
+python3
+>>> import ldap3
+>>> server = ldap3.Server('10.10.1.22', get_info=ldap3.ALL, port=389)
+>>> connection = ldap3.Connection(server)
+>>> connection.bind()
+>>> server.info
+>>> connection.search(search_base='DC=CEH,DC=com', search_filter='(&amp;(objectclass=*))', search_scope='SUBTREE', attributes='*')
+>>> connection.entries
+>>> connection.search(search_base='DC=CEH,DC=com', search_filter='(&amp;(objectclass=person))', search_scope='SUBTREE', attributes='userpassword')
+>>> connection.entries</code></pre>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 3: Perform LDAP Enumeration using ldapsearch</h4>
+            <span class="tool-tag">ldapsearch</span>
+            <p><strong>What/When:</strong> On Parrot Security, use ldapsearch against 10.10.1.22 to get naming contexts, primary domain info, and all directory objects.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Switch to Parrot Security; open MATE Terminal; sudo su (toor).</li>
+                <li>Run ldapsearch -h IP -x -s base namingcontexts.</li>
+                <li>Run ldapsearch -h IP -x -b "DC=CEH,DC=com".</li>
+                <li>Run ldapsearch -x -h IP -b "DC=CEH,DC=com" "objectclass=*".</li>
+                <li>Document; close windows.</li>
+            </ol>
+            <pre><code># Get naming contexts
+ldapsearch -h 10.10.1.22 -x -s base namingcontexts
+
+# -x : simple authentication
+# -h : host
+# -s : scope
+
+# Obtain primary domain info
+ldapsearch -h 10.10.1.22 -x -b "DC=CEH,DC=com"
+
+# -b : base DN for search
+
+# Retrieve all objects in directory tree
+ldapsearch -x -h 10.10.1.22 -b "DC=CEH,DC=com" "objectclass=*"</code></pre>
+        </div>
+    </section>
+
+    <section class="lab-task">
+        <h3>Lab 4: Perform NFS Enumeration</h3>
+        <div class="section-card">
+            <span class="tool-tag">NFS</span>
+            <p><strong>Scenario:</strong> NFS enumeration identifies exported directories and clients connected to the server, plus shared data. After gathering info, attackers can spoof target IPs to gain access to shared files.</p>
+            <p><strong>Objectives:</strong> Perform NFS enumeration using RPCScan and SuperEnum.</p>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 1: Perform NFS Enumeration using RPCScan and SuperEnum</h4>
+            <span class="tool-tag">RPCScan, SuperEnum</span>
+            <p><strong>What/When:</strong> Enable NFS on Windows Server 2019 (10.10.1.19), verify port 2049 open from Parrot Security, then run SuperEnum and RPCScan (rpc-scan.py --rpc) to enumerate NFS/RPC services.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>On Windows Server 2019: Server Manager -> Add roles and features -> File and Storage Services -> Server for NFS (add required features) -> Install -> Close.</li>
+                <li>Switch to Parrot Security; open MATE Terminal; sudo su (toor).</li>
+                <li>Run nmap -p 2049 10.10.1.19 to confirm NFS port open.</li>
+                <li>cd SuperEnum; echo "10.10.1.19" >> Target.txt (add target IP).</li>
+                <li>Run ./superenum; when prompted "Enter IP List filename with path", type Target.txt; wait 15-20 mins. (If permission error, chmod +x superenum then rerun.)</li>
+                <li>Review results for port 2049/NFS and other open ports.</li>
+                <li>cd ..; cd RPCScan; run python3 rpc-scan.py 10.10.1.19 --rpc; review portmapper/RPC info.</li>
+                <li>Document; close windows.</li>
+            </ol>
+            <pre><code># Confirm NFS port 2049 open
+nmap -p 2049 10.10.1.19
+
+# -p 2049 : NFS port
+
+# SuperEnum workflow
+cd SuperEnum
+echo "10.10.1.19" >> Target.txt
+./superenum
+# (input: Target.txt)
+# If permission error: chmod +x superenum
+
+# RPCScan workflow
+cd ..
+cd RPCScan
+python3 rpc-scan.py 10.10.1.19 --rpc
+
+# --rpc : lists the RPC (portmapper)</code></pre>
+        </div>
+    </section>
+
+    <section class="lab-task">
+        <h3>Lab 5: Perform DNS Enumeration</h3>
+        <div class="section-card">
+            <span class="tool-tag">DNS</span>
+            <p><strong>Scenario:</strong> DNS enumeration yields DNS server names, hostnames, machine names, usernames, IP addresses, aliases in a target domain via zone transfer, cache snooping, DNSSEC zone walking.</p>
+            <p><strong>Objectives:</strong> Perform DNS enumeration using zone transfer; DNSSEC zone walking; Nmap.</p>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 1: Perform DNS Enumeration using Zone Transfer</h4>
+            <span class="tool-tag">dig, nslookup</span>
+            <p><strong>What/When:</strong> On Parrot Security, use dig to query NS records and attempt zone transfer (AXFR) for www.certifiedhacker.com; on Windows 11, use nslookup to query SOA and attempt zone transfer.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Parrot Security: open MATE Terminal; sudo su (toor); cd to root.</li>
+                <li>Run dig ns www.certifiedhacker.com to get name servers.</li>
+                <li>Run dig @ns1.bluehost.com www.certifiedhacker.com axfr to attempt zone transfer (expected Transfer failed if not allowed).</li>
+                <li>Windows 11: open Command Prompt; run nslookup; set querytype=soa; enter certifiedhacker.com; then ls -d ns1.bluehost.com to request zone transfer (expected refused).</li>
+                <li>Document; close windows.</li>
+            </ol>
+            <pre><code># Linux (Parrot Security): get DNS name servers
+dig ns www.certifiedhacker.com
+
+# ns : returns name servers
+
+# Attempt zone transfer (AXFR)
+dig @ns1.bluehost.com www.certifiedhacker.com axfr
+
+# axfr : retrieves zone information
+
+# Windows (Windows 11): nslookup interactive
+nslookup
+> set querytype=soa
+> certifiedhacker.com
+> ls -d ns1.bluehost.com
+
+# set querytype=soa : SOA record query
+# ls -d : requests a zone transfer</code></pre>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 2: Perform DNS Enumeration using DNSSEC Zone Walking</h4>
+            <span class="tool-tag">DNSRecon</span>
+            <p><strong>What/When:</strong> On Parrot Security, use DNSRecon to perform DNSSEC zone walking against www.certifiedhacker.com.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Switch to Parrot Security; open MATE Terminal; sudo su (toor).</li>
+                <li>cd dnsrecon; chmod +x ./dnsrecon.py.</li>
+                <li>Run ./dnsrecon.py -h to view options.</li>
+                <li>Run ./dnsrecon.py -d www.certifiedhacker.com -z to perform DNSSEC zone walk.</li>
+                <li>Document enumerated DNS records (A, MX, SOA, NS, AAAA, SPF, TXT); close windows.</li>
+            </ol>
+            <pre><code>cd dnsrecon
+chmod +x ./dnsrecon.py
+./dnsrecon.py -h
+./dnsrecon.py -d www.certifiedhacker.com -z
+
+# -d : target domain
+# -z : DNSSEC zone walk with standard enumeration</code></pre>
+            <p><strong>Other DNSSEC tools:</strong> LDNS, nsec3map, nsec3walker, DNSwalk.</p>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 3: Perform DNS Enumeration using Nmap</h4>
+            <span class="tool-tag">Nmap NSE - DNS scripts</span>
+            <p><strong>What/When:</strong> On Parrot Security, use Nmap DNS scripts against certifiedhacker.com to discover DNS services, subdomains, and SRV records.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Switch to Parrot Security; open MATE Terminal; sudo su (toor).</li>
+                <li>Run nmap --script=broadcast-dns-service-discovery certifiedhacker.com.</li>
+                <li>Run nmap -T4 -p 53 --script dns-brute certifiedhacker.com.</li>
+                <li>Run nmap --script dns-srv-enum --script-args "dns-srv-enum.domain='certifiedhacker.com'".</li>
+                <li>Document; close windows.</li>
+            </ol>
+            <pre><code># Discover available DNS services
+nmap --script=broadcast-dns-service-discovery certifiedhacker.com
+
+# Brute-force subdomains
+nmap -T4 -p 53 --script dns-brute certifiedhacker.com
+
+# -T4 : timing template
+# -p 53 : DNS port
+
+# Enumerate SRV records
+nmap --script dns-srv-enum --script-args "dns-srv-enum.domain='certifiedhacker.com'"</code></pre>
+        </div>
+    </section>
+
+    <section class="lab-task">
+        <h3>Lab 6: Perform SMTP Enumeration</h3>
+        <div class="section-card">
+            <span class="tool-tag">SMTP</span>
+            <p><strong>Scenario:</strong> SMTP enumeration obtains valid users, delivery addresses, and message recipients on an SMTP server (TCP 25/2525/587) using Nmap NSE scripts.</p>
+            <p><strong>Objectives:</strong> Perform SMTP enumeration using Nmap.</p>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 1: Perform SMTP Enumeration using Nmap</h4>
+            <span class="tool-tag">Nmap NSE - SMTP scripts</span>
+            <p><strong>What/When:</strong> On Parrot Security, run SMTP NSE scripts against 10.10.1.19 to enumerate users, open relays, and SMTP commands.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Switch to Parrot Security; open MATE Terminal; sudo su (toor); cd to root.</li>
+                <li>Run nmap -p 25 --script=smtp-enum-users 10.10.1.19.</li>
+                <li>Run nmap -p 25 --script=smtp-open-relay 10.10.1.19.</li>
+                <li>Run nmap -p 25 --script=smtp-commands 10.10.1.19.</li>
+                <li>Document; close windows.</li>
+            </ol>
+            <pre><code># Enumerate SMTP users
+nmap -p 25 --script=smtp-enum-users 10.10.1.19
+
+# -p 25 : SMTP port
+# smtp-enum-users : user enumeration script
+
+# Check for open relay
+nmap -p 25 --script=smtp-open-relay 10.10.1.19
+
+# smtp-open-relay : open relay check
+
+# List available SMTP commands
+nmap -p 25 --script=smtp-commands 10.10.1.19
+
+# smtp-commands : lists SMTP commands</code></pre>
+        </div>
+    </section>
+
+    <section class="lab-task">
+        <h3>Lab 7: Perform RPC, SMB, and FTP Enumeration</h3>
+        <div class="section-card">
+            <span class="tool-tag">RPC, SMB, FTP</span>
+            <p><strong>Scenario:</strong> RPC enumeration identifies vulnerable services; SMB enumeration enables banner grabbing (OS/services versions); FTP enumeration yields port 21 and running FTP services for attacks (bounce, brute force, sniffing).</p>
+            <p><strong>Objectives:</strong> Perform SMB and RPC enumeration using NetScanTools Pro; perform RPC, SMB, and FTP enumeration using Nmap.</p>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 1: Perform SMB and RPC Enumeration using NetScanTools Pro</h4>
+            <span class="tool-tag">NetScanTools Pro</span>
+            <p><strong>What/When:</strong> On Windows 11, install/run NetScanTools Pro, use SMB Scanner against 10.10.1.19 and 10.10.1.22 with Administrator/Pa$$w0rd credentials, and *nix RPC Info against 10.10.1.19. (NFS service enabled on Windows Server 2019 first.)</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Enable NFS on Windows Server 2019 (Server Manager -> Add roles and features -> Server for NFS) as in Lab 4.</li>
+                <li>Switch to Windows 11; navigate to E:\CEH-Tools\CEHv12 Module 03 Scanning Networks\Scanning Tools\NetScanTools Pro and double-click nstp11demo.exe; follow wizard; launch demo.</li>
+                <li>In left pane -> Manual Tools (all) -> SMB Scanner; click Start SMB Scanner (external App) (demo messages OK).</li>
+                <li>Edit Target List: add 10.10.1.19 and 10.10.1.22; OK.</li>
+                <li>Edit Share Login Credentials: add Administrator / Pa$$w0rd; OK.</li>
+                <li>Click Get SMB Versions; review NetBIOS Name, DNS Name, SMB versions, Shares.</li>
+                <li>Right-click a host (10.10.1.19) -> View Shares to see Share Name, Type, Remark, Path, Permissions, Credentials Used.</li>
+                <li>In left pane -> *nix RPC Info; enter 10.10.1.19; click Dump Portmap; review RPC info.</li>
+                <li>Document; close windows.</li>
+            </ol>
+            <pre><code># Launch installer
+E:\CEH-Tools\CEHv12 Module 03 Scanning Networks\Scanning Tools\NetScanTools Pro\nstp11demo.exe
+
+# Targets: 10.10.1.19, 10.10.1.22
+# Credentials: Administrator / Pa$$w0rd
+# RPC target: 10.10.1.19 -> Dump Portmap</code></pre>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 2: Perform RPC, SMB, and FTP Enumeration using Nmap</h4>
+            <span class="tool-tag">Nmap</span>
+            <p><strong>What/When:</strong> Configure FTP on Windows Server 2019 (IIS FTP site CEH.com on 10.10.1.19), then from Parrot Security run Nmap to enumerate FTP/RPC/SMB services.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>On Windows Server 2019: create C:\FTP-Site Data folder; open IIS Manager; right-click Sites -> Add FTP Site (name CEH.com, path C:\FTP-Site Data); bind IP 10.10.1.19; No SSL; allow All users Read/Write; verify Status Started (ftp); close windows.</li>
+                <li>Switch to Parrot Security; open MATE Terminal; sudo su (toor); cd to root.</li>
+                <li>Run nmap -p 21 10.10.1.19 to confirm FTP port open.</li>
+                <li>Run nmap -T4 -A 10.10.1.19 to get open ports/services/versions (observe RPC 111 and NFS 2049).</li>
+                <li>Run nmap -p 445 -A 10.10.1.19 to enumerate SMB (host script results).</li>
+                <li>Run nmap -p 21 -A 10.10.1.19 to enumerate FTP (traceroute info).</li>
+                <li>Document; close windows.</li>
+            </ol>
+            <pre><code># Confirm FTP port 21 open
+nmap -p 21 10.10.1.19
+
+# Aggressive scan (OS, version, scripts, traceroute)
+nmap -T4 -A 10.10.1.19
+
+# -T4 : timing template (0-5)
+# -A  : aggressive scan (OS, -sV, -sC, traceroute)
+
+# SMB enumeration on port 445
+nmap -p 445 -A 10.10.1.19
+
+# FTP enumeration on port 21
+nmap -p 21 -A 10.10.1.19
+
+# -p : port to scan
+# -A : aggressive scan</code></pre>
+        </div>
+    </section>
+
+    <section class="lab-task">
+        <h3>Lab 8: Perform Enumeration using Various Enumeration Tools</h3>
+        <div class="section-card">
+            <span class="tool-tag">Enumeration Tools</span>
+            <p><strong>Scenario:</strong> Use a range of tools to extract even more information about target systems: Global Network Inventory, Advanced IP Scanner, Enum4linux.</p>
+            <p><strong>Objectives:</strong> Enumerate info using Global Network Inventory; enumerate network resources using Advanced IP Scanner; enumerate Windows/Samba hosts using Enum4linux.</p>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 1: Enumerate Information using Global Network Inventory</h4>
+            <span class="tool-tag">Global Network Inventory</span>
+            <p><strong>What/When:</strong> On Windows 11, run Global Network Inventory single-address audit against 10.10.1.22 (Windows Server 2022) with Administrator/Pa$$w0rd credentials; review tabs (computer details, OS, BIOS, NetBIOS, user groups, users, services, installed software, shares, etc.).</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Switch to Windows 11; search "gni" and launch Global Network Inventory (UAC Yes).</li>
+                <li>Click I Agree on About wizard; close Tip of the Day.</li>
+                <li>In New Audit Wizard click Next.</li>
+                <li>Select Single address scan; Next.</li>
+                <li>Enter target IP 10.10.1.22 in Name field; Next.</li>
+                <li>Authentication Settings: select Connect as; enter Domain\Username Administrator and Password Pa$$w0rd; Next.</li>
+                <li>Leave defaults; click Finish; wait for scan.</li>
+                <li>Review Scan summary and tabs: Operating System, BIOS, NetBIOS, User groups, Users, Services, Installed software, Shares, plus Computer System, Processors, Main board, Memory, SNMP systems, Hot fixes (hover items for details).</li>
+                <li>Document; close windows.</li>
+            </ol>
+            <pre><code># Launch tool
+Global Network Inventory (search "gni")
+
+# Target: 10.10.1.22
+# Credentials: Administrator / Pa$$w0rd
+# Mode: Single address scan</code></pre>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 2: Enumerate Network Resources using Advanced IP Scanner</h4>
+            <span class="tool-tag">Advanced IP Scanner</span>
+            <p><strong>What/When:</strong> On Windows Server 2019, scan IP range 10.10.1.5-10.10.1.23 with Advanced IP Scanner to list active hosts, shared folders, services, and remote control options.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Switch to Windows Server 2019 (login if needed); search "advanced ip" and launch Advanced IP Scanner.</li>
+                <li>In IP address range field enter 10.10.1.5-10.10.1.23; click Scan; wait.</li>
+                <li>Review active hosts: status, machine name, IP, manufacturer, MAC.</li>
+                <li>Click Expand all to view shared folders and services.</li>
+                <li>Right-click a detected IP -> Tools options (ping, traceroute, file transfer, chat, message, Radmin remote control, etc.).</li>
+                <li>Document; close windows.</li>
+            </ol>
+            <pre><code># Launch tool
+Advanced IP Scanner (search "advanced ip")
+
+# Scan range: 10.10.1.5 - 10.10.1.23</code></pre>
+        </div>
+
+        <div class="section-card">
+            <h4>Task 3: Enumerate Information from Windows and Samba Hosts using Enum4linux</h4>
+            <span class="tool-tag">Enum4linux</span>
+            <p><strong>What/When:</strong> On Parrot Security, use Enum4linux with user martin/apple against 10.10.1.22 (Windows Server 2022) to enumerate NetBIOS, users, OS, password policy, groups, and shares.</p>
+            <p><strong>Procedural steps:</strong></p>
+            <ol>
+                <li>Switch to Parrot Security; open MATE Terminal; sudo su (toor); cd to root.</li>
+                <li>Run enum4linux -h to view options.</li>
+                <li>Run enum4linux -u martin -p apple -n 10.10.1.22 for NetBIOS info.</li>
+                <li>Run enum4linux -u martin -p apple -U 10.10.1.22 for user list.</li>
+                <li>Run enum4linux -u martin -p apple -o 10.10.1.22 for OS info.</li>
+                <li>Run enum4linux -u martin -p apple -P 10.10.1.22 for password policy.</li>
+                <li>Run enum4linux -u martin -p apple -G 10.10.1.22 for group policy.</li>
+                <li>Run enum4linux -u martin -p apple -S 10.10.1.22 for share list.</li>
+                <li>Document; close windows.</li>
+            </ol>
+            <pre><code># View options
+enum4linux -h
+
+# NetBIOS information
+enum4linux -u martin -p apple -n 10.10.1.22
+
+# -u : username; -p : password; -n : NetBIOS info
+
+# User list
+enum4linux -u martin -p apple -U 10.10.1.22
+
+# -U : get userlist
+
+# OS information
+enum4linux -u martin -p apple -o 10.10.1.22
+
+# -o : OS info
+
+# Password policy
+enum4linux -u martin -p apple -P 10.10.1.22
+
+# -P : password policy
+
+# Group and member list
+enum4linux -u martin -p apple -G 10.10.1.22
+
+# -G : group/member list
+
+# Share list
+enum4linux -u martin -p apple -S 10.10.1.22
+
+# -S : sharelist</code></pre>
+        </div>
+    </section>
+
+    <section class="lab-task">
+        <h3>Appendix: Targets, Credentials, and Consolidated Command Reference</h3>
+        <div class="section-card">
+            <span class="tool-tag">Reference</span>
+            <p><strong>Lab environment (CEH v12):</strong> Attacker: Parrot Security 10.10.1.13 (attacker/toor). Targets: Windows 11 10.10.1.11; Windows Server 2019 10.10.1.19 (Administrator/Pa$$w0rd); Windows Server 2022 10.10.1.22 (Administrator/Pa$$w0rd). Domains: certifiedhacker.com, www.certifiedhacker.com, CEH.com (FTP site). Scan ranges used: 10.10.1.5-10.10.1.23 and 10.10.1.15-10.10.1.100.</p>
+            <p><strong>Timing notes:</strong> NetBIOS Enumerator scan ~5 minutes; SuperEnum scan 15-20 minutes; ensure IP "to" field between 10.10.1.100 and 10.10.1.250 in NetBIOS Enumerator to avoid crashes.</p>
+            <p><strong>NetBIOS consolidated commands:</strong></p>
+            <pre><code>nbtstat -a 10.10.1.11        # NetBIOS name table of remote host
+nbtstat -c                   # NetBIOS name cache
+net use                      # connections and shares
+nmap -sV -v --script nbstat.nse 10.10.1.22
+nmap -sU -p 137 --script nbstat.nse 10.10.1.22</code></pre>
+            <p><strong>SNMP consolidated commands:</strong></p>
+            <pre><code>nmap -sU -p 161 10.10.1.22
+snmp-check 10.10.1.22
+snmpwalk -v1 -c public 10.10.1.22
+snmpwalk -v2c -c public 10.10.1.22
+nmap -sU -p 161 --script=snmp-sysdescr 10.10.1.22
+nmap -sU -p 161 --script=snmp-processes 10.10.1.22
+nmap -sU -p 161 --script=snmp-win32-software 10.10.1.22
+nmap -sU -p 161 --script=snmp-interfaces 10.10.1.22</code></pre>
+            <p><strong>LDAP consolidated commands:</strong></p>
+            <pre><code>nmap -sU -p 389 10.10.1.22
+nmap -p 389 --script ldap-brute --script-args ldap.base='"cn=users,dc=CEH,dc=com"' 10.10.1.22
+ldapsearch -h 10.10.1.22 -x -s base namingcontexts
+ldapsearch -h 10.10.1.22 -x -b "DC=CEH,DC=com"
+ldapsearch -x -h 10.10.1.22 -b "DC=CEH,DC=com" "objectclass=*"</code></pre>
+            <p><strong>NFS consolidated commands:</strong></p>
+            <pre><code>nmap -p 2049 10.10.1.19
+python3 rpc-scan.py 10.10.1.19 --rpc
+# SuperEnum: echo "10.10.1.19" >> Target.txt ; ./superenum</code></pre>
+            <p><strong>DNS consolidated commands:</strong></p>
+            <pre><code>dig ns www.certifiedhacker.com
+dig @ns1.bluehost.com www.certifiedhacker.com axfr
+# nslookup interactive: set querytype=soa ; certifiedhacker.com ; ls -d ns1.bluehost.com
+./dnsrecon.py -d www.certifiedhacker.com -z
+nmap --script=broadcast-dns-service-discovery certifiedhacker.com
+nmap -T4 -p 53 --script dns-brute certifiedhacker.com
+nmap --script dns-srv-enum --script-args "dns-srv-enum.domain='certifiedhacker.com'"</code></pre>
+            <p><strong>SMTP consolidated commands:</strong></p>
+            <pre><code>nmap -p 25 --script=smtp-enum-users 10.10.1.19
+nmap -p 25 --script=smtp-open-relay 10.10.1.19
+nmap -p 25 --script=smtp-commands 10.10.1.19</code></pre>
+            <p><strong>RPC/SMB/FTP consolidated commands:</strong></p>
+            <pre><code>nmap -p 21 10.10.1.19
+nmap -T4 -A 10.10.1.19
+nmap -p 445 -A 10.10.1.19
+nmap -p 21 -A 10.10.1.19</code></pre>
+            <p><strong>Enum4linux consolidated commands:</strong></p>
+            <pre><code>enum4linux -u martin -p apple -n 10.10.1.22
+enum4linux -u martin -p apple -U 10.10.1.22
+enum4linux -u martin -p apple -o 10.10.1.22
+enum4linux -u martin -p apple -P 10.10.1.22
+enum4linux -u martin -p apple -G 10.10.1.22
+enum4linux -u martin -p apple -S 10.10.1.22</code></pre>
+            <p><strong>When to use:</strong> NetBIOS for Windows names/shares; SNMP for device/network inventory; LDAP for directory/AD users; NFS for exported filesystems; DNS for domain infrastructure; SMTP for mail users/relays; RPC/SMB/FTP for service-specific details; Global Network Inventory/Advanced IP Scanner/Enum4linux for broad host and share enumeration.</p>
+        </div>
+    </section>
+
+</main>
+    
+<script>
+    const body = document.body;
+    const applyTheme = (t) => {
+        if (t === 'dark') body.setAttribute('data-theme', 'dark');
+        else body.removeAttribute('data-theme');
+    };
+    function getTheme() {
+        try {
+            const p = new URLSearchParams(location.search);
+            const u = p.get('theme');
+            if (u === 'dark' || u === 'light') return u;
+        } catch (e) {}
+        try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+    }
+    function syncNavLinks(t) {
+        document.querySelectorAll('a[href]').forEach(a => {
+            try {
+                const url = new URL(a.getAttribute('href'), location.href);
+                if (url.pathname.endsWith('.html')) {
+                    url.searchParams.set('theme', t);
+                    a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                }
+            } catch (e) {}
+        });
+    }
+    const initialTheme = getTheme();
+    applyTheme(initialTheme);
+    syncNavLinks(initialTheme);
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+            applyTheme(newT);
+            try { localStorage.setItem('theme', newT); } catch (e) {}
+            try {
+                const url = new URL(location.href);
+                url.searchParams.set('theme', newT);
+                history.replaceState(null, '', url.toString());
+            } catch (e) {}
+            syncNavLinks(newT);
+        });
+    }
+    const path = window.location.pathname.split('/').pop();
+    const navMap = {
+        'index.html': 'nav-index',
+        'module_02.html': 'nav-02',
+        'module_03.html': 'nav-03',
+        'module_04.html': 'nav-04',
+        'module_05.html': 'nav-05',
+        'module_06.html': 'nav-06',
+        'module_07.html': 'nav-07',
+        'module_08.html': 'nav-08',
+        'module_09.html': 'nav-09',
+        'cheat_sheet.html': 'nav-cheat'
+    };
+    const navId = navMap[path] || 'nav-index';
+    document.getElementById(navId).classList.add('active');
+</script>
+<script src="app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEH Study Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+        <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+        <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+        <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+        <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+        <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+        <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        </ul>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+    <main class="content-body">
+        <div class="window">
+            <canvas id="hero3d" style="position:absolute;inset:0;width:100%;height:100%;opacity:0.08;pointer-events:none;z-index:0;"></canvas>
+            <div style="position:relative;z-index:1;">
+            <div class="progress">
+                <div class="progress-bar"><div id="progressFill"></div></div>
+                <div id="progressLabel"></div>
+            </div>
+            <div class="cube-3d">
+                <div class="face front">CEH</div>
+                <div class="face back">V12</div>
+                <div class="face right">HACK</div>
+                <div class="face left">LABS</div>
+                <div class="face top">SEC</div>
+                <div class="face bottom">OPS</div>
+            </div>
+            <div class="module-header">
+            <span>CEH v12 - Study Portal</span>
+            <h2 class="hero-3d">Roadmap & Progress</h2>
+            </div>
+        </div>
+        <div class="section-card">
+            <h3>The Roadmap</h3>
+            <ul>
+                <li><strong>Phase 1: Information Gathering</strong> (Modules 2-4)</li>
+                <li><strong>Phase 2: Vulnerability Analysis</strong> (Module 5)</li>
+                <li><strong>Phase 3: Attack Execution</strong> (Modules 6-10)</li>
+                <li><strong>Phase 4: Advanced Topics</strong> (Modules 11-20)</li>
+            </ul>
+        </div>
+        <div class="section-card">
+            <h3>Available Modules</h3>
+            <div class="tool-grid">
+                <a href="module_02.html" class="tool-card" style="text-decoration:none">
+                    <span class="tool-name">Module 02</span>
+                    <p>Footprinting & Reconnaissance.</p>
+                </a>
+                <a href="module_03.html" class="tool-card" style="text-decoration:none">
+                    <span class="tool-name">Module 03</span>
+                    <p>Scanning Networks.</p>
+                </a>
+                <a href="module_04.html" class="tool-card" style="text-decoration:none">
+                    <span class="tool-name">Module 04</span>
+                    <p>Enumeration: NetBIOS, SNMP, LDAP, DNS, SMTP, SMB.</p>
+                </a>
+                <a href="module_05.html" class="tool-card" style="text-decoration:none">
+                    <span class="tool-name">Module 05</span>
+                    <p>Vulnerability Analysis: CWE, CVE, NVD, OpenVAS, Nessus, Nikto.</p>
+                </a>
+                <a href="module_06.html" class="tool-card" style="text-decoration:none">
+                    <span class="tool-name">Module 06</span>
+                    <p>System Hacking: gaining access, privilege escalation, persistence, clearing logs.</p>
+                </a>
+                <a href="module_07.html" class="tool-card" style="text-decoration:none">
+                    <span class="tool-name">Module 07</span>
+                    <p>Malware Threats: trojans, viruses, static & dynamic malware analysis.</p>
+                </a>
+                <a href="module_08.html" class="tool-card" style="text-decoration:none">
+                    <span class="tool-name">Module 08</span>
+                    <p>Sniffing: MAC flooding, DHCP starvation, ARP poisoning, MITM, packet analysis.</p>
+                </a>
+                <a href="module_09.html" class="tool-card" style="text-decoration:none">
+                    <span class="tool-name">Module 09</span>
+                    <p>Social Engineering: SET credential harvesting, phishing detection, OhPhish audits.</p>
+                </a>
+                <a href="module_10.html" class="tool-card" style="text-decoration:none">
+                    <span class="tool-name">Module 10</span>
+                    <p>Denial-of-Service: SYN flooding, hping3, Raven-Storm, HOIC, LOIC, Anti DDoS Guardian.</p>
+                </a>
+                <a href="module_11.html" class="tool-card" style="text-decoration:none">
+                    <span class="tool-name">Module 11</span>
+                    <p>Session Hijacking: ZAP, bettercap, Hetty, Wireshark detection.</p>
+                </a>
+                <a href="module_12.html" class="tool-card" style="text-decoration:none">
+                    <span class="tool-name">Module 12</span>
+                    <p>Evading IDS/Firewalls/Honeypots: Snort, Nmap evasion, tunneling, Metasploit templates, BITSAdmin.</p>
+                </a>
+                <a href="cheat_sheet.html" class="tool-card" style="text-decoration:none">
+                    <span class="tool-name">Cheat Sheet</span>
+                    <p>Consolidated command reference across all modules.</p>
+                </a>
+            </div>
+        </div>
+
+        </div>
+    </main>
+    <script>
+        const body = document.body;
+    const applyTheme = (t) => {
+        if (t === 'dark') body.setAttribute('data-theme', 'dark');
+        else body.removeAttribute('data-theme');
+    };
+    function getTheme() {
+        try {
+            const p = new URLSearchParams(location.search);
+            const u = p.get('theme');
+            if (u === 'dark' || u === 'light') return u;
+        } catch (e) {}
+        try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+    }
+    function syncNavLinks(t) {
+        document.querySelectorAll('a[href]').forEach(a => {
+            try {
+                const url = new URL(a.getAttribute('href'), location.href);
+                if (url.pathname.endsWith('.html')) {
+                    url.searchParams.set('theme', t);
+                    a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                }
+            } catch (e) {}
+        });
+    }
+    const initialTheme = getTheme();
+    applyTheme(initialTheme);
+    syncNavLinks(initialTheme);
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+            applyTheme(newT);
+            try { localStorage.setItem('theme', newT); } catch (e) {}
+            try {
+                const url = new URL(location.href);
+                url.searchParams.set('theme', newT);
+                history.replaceState(null, '', url.toString());
+            } catch (e) {}
+            syncNavLinks(newT);
+        });
+    }
+    const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+        'module_07.html': 'nav-07',
+        'module_08.html': 'nav-08',
+        'module_09.html': 'nav-09',
+        'module_10.html': 'nav-10',
+        'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        document.getElementById(navId).classList.add('active');
+    </script>
+    <script type="module">
+import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+const canvas = document.getElementById('hero3d');
+if (canvas) {
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
+  camera.position.z = 4;
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const geo = new THREE.IcosahedronGeometry(1.2, 1);
+  const mat = new THREE.MeshStandardMaterial({ color: 0xb91c1c, wireframe: true, emissive: 0x1d4ed8, emissiveIntensity: 0.2 });
+  const mesh = new THREE.Mesh(geo, mat);
+  scene.add(mesh);
+  const light = new THREE.PointLight(0xffffff, 1.2);
+  light.position.set(3, 3, 3);
+  scene.add(light);
+  const amb = new THREE.AmbientLight(0xffffff, 0.3);
+  scene.add(amb);
+  let t = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    t += 0.005;
+    mesh.rotation.x = t * 0.6;
+    mesh.rotation.y = t * 0.9;
+    mesh.position.y = Math.sin(t * 2) * 0.15;
+    renderer.render(scene, camera);
+  }
+  animate();
+  window.addEventListener('resize', () => {
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    camera.aspect = canvas.clientWidth / canvas.clientHeight;
+    camera.updateProjectionMatrix();
+  });
+}
+</script>
+<script src="app.js"></script>
+</body>
+</html>
