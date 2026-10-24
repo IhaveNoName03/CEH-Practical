@@ -27,8 +27,12 @@
             <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
         <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
         <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+        <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+        <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
         <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
         </ul>
+        <button id="viewToggle" class="view-toggle">COMPACT</button>
         <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
     </nav>
     <main class="content-body">
@@ -54,6 +58,98 @@
             </ul>
 
             <p><strong>Overview of DoS and DDoS Attack Detection:</strong> Detection techniques are based on identifying and discriminating the illegitimate traffic increase and flash events from the legitimate packet traffic. The following are the three types of detection techniques: Activity Profiling (profiles based on the average packet rate for a network flow, which consists of consecutive packets with similar packet header information); Sequential Change-point Detection (filters network traffic by IP addresses, targeted port numbers, and communication protocols used, and stores the traffic flow data in a graph that shows the traffic flow rate over time); Wavelet-based Signal Analysis (analyzes network traffic in terms of spectral components).</p>
+
+            <section class="lab-task">
+                <h3>Exam Essentials: Denial-of-Service</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Exam Essentials</span>
+                    <h4>Scenario</h4>
+                    <p>DoS and DDoS attacks have become popular because of the easy accessibility of exploit plans and the negligible amount of brainwork required while executing them. These attacks can be very dangerous because they can quickly consume the largest hosts on the Internet, rendering them useless. The impact includes loss of goodwill, disabled networks, financial loss, and disabled organizations. In a DDoS attack, many applications pound the target browser or network with fake exterior requests that make the system, network, browser, or site slow, useless, disabled, or unavailable. The attacker initiates the DDoS attack by sending a command to zombie agents. These zombie agents send a connection request to a large number of reflector systems with the spoofed IP address of the victim. The reflector systems see these requests as coming from the victim's machine instead of from the zombie agents because of the spoofing of the source IP address. Hence, they send the requested information (response to connection request) to the victim. The victim's machine is flooded with unsolicited responses from several reflector computers at once, which may reduce performance or may even cause the victim's machine to shut down completely. As an expert ethical hacker or pen tester, you must have the required knowledge to perform DoS and DDoS attacks to be able to test systems in the target network. In this lab you will gain hands-on experience in auditing network resources against DoS and DDoS attacks.</p>
+                    <h4>Objective</h4>
+                    <p>Perform a DoS attack by continuously sending a large number of SYN packets; perform a DoS attack (SYN flooding, Ping of Death (PoD), and UDP application layer flood) on a target host; perform a DDoS attack; detect and analyze DoS attack traffic; detect and protect against a DDoS attack.</p>
+                    <h4>Overview of Denial of Service</h4>
+                    <p>A DoS attack is a type of security break that does not generally result in the theft of information. However, these attacks can harm the target in terms of time and resources. Further, failure to protect against such attacks might mean the loss of a service such as email. In a worst-case scenario, a DoS attack can mean the accidental destruction of the files and programs of millions of people who happen to be surfing the Web at the time of the attack. Some examples of types of DoS attacks: flooding the victim's system with more traffic than it can handle; flooding a service (such as an internet relay chat (IRC)) with more events than it can handle; crashing a TCP/IP stack by sending corrupt packets; crashing a service by interacting with it in an unexpected way; hanging a system by causing it to go into an infinite loop.</p>
+                    <h4>Overview of DoS and DDoS Attacks</h4>
+                    <p>DDoS attacks mainly aim at the network bandwidth; they exhaust network, application, or service resources, and thereby restrict legitimate users from accessing their system or network resources. In general, the following are categories of DoS/DDoS attack vectors:</p>
+                    <ul>
+                        <li><strong>Volumetric Attacks:</strong> consume the bandwidth of the target network or service. Techniques: UDP flood attack, ICMP flood attack, Ping of Death and smurf attack, pulse wave and zero-day attack.</li>
+                        <li><strong>Protocol Attacks:</strong> consume resources like connection state tables present in network infrastructure components such as load-balancers, firewalls, and application servers. Techniques: SYN flood attack, fragmentation attack, spoofed session flood attack, ACK flood attack.</li>
+                        <li><strong>Application Layer Attacks:</strong> consume application resources or services, thereby making them unavailable to other legitimate users. Techniques: HTTP GET/POST attack, Slowloris attack, UDP application layer flood attack, DDoS extortion attack.</li>
+                    </ul>
+                    <h4>Overview of DoS and DDoS Attack Detection</h4>
+                    <p>Detection techniques are based on identifying and discriminating the illegitimate traffic increase and flash events from the legitimate packet traffic. The following are the three types of detection techniques: Activity Profiling (profiles based on the average packet rate for a network flow, which consists of consecutive packets with similar packet header information); Sequential Change-point Detection (filters network traffic by IP addresses, targeted port numbers, and communication protocols used, and stores the traffic flow data in a graph that shows the traffic flow rate over time); Wavelet-based Signal Analysis (analyzes network traffic in terms of spectral components).</p>
+                    <h4>Key Concepts</h4>
+                    <ul>
+                        <li><strong>DoS vs. DDoS:</strong> A Denial-of-Service (DoS) attack originates from a single source to make a resource unavailable; a Distributed Denial-of-Service (DDoS) attack coordinates many compromised machines (zombies/bots) via handlers/agents to flood the target, often using spoofed source IPs and reflector systems. DDoS attacks mainly aim at network bandwidth and exhaust network, application, or service resources.</li>
+                        <li><strong>SYN Flood:</strong> Exploits the TCP three-way handshake by sending a flood of SYN packets without completing the handshake. The victim keeps partially open (half-open) connections in its listening/backlog queue, exhausting connection state tables and preventing legitimate connections. Tool: Metasploit auxiliary/dos/tcp/synflood (RHOST, RPORT, SHOST) or hping3 (-S --flood).</li>
+                        <li><strong>UDP Flood:</strong> Connectionless flood of UDP packets (often to random or application ports such as NetBIOS 139). The target spends resources processing/checking ports and replying with ICMP "port unreachable", consuming bandwidth and CPU. Easily spoofed. Tool: hping3 -2 -p &lt;port&gt; --flood; LOIC (UDP method).</li>
+                        <li><strong>ICMP Flood:</strong> Flood of ICMP echo request (ping) packets overwhelming bandwidth/processing. Includes Smurf (amplification) and Ping of Death.</li>
+                        <li><strong>HTTP Flood:</strong> Layer 7 attack sending HTTP GET/POST requests mimicking legitimate users; can be high-rate (HOIC) or slow (Slowloris holding connections open). Harder to distinguish from legitimate traffic. Tool: HOIC (HTTP flood with boosters), LOIC (HTTP).</li>
+                        <li><strong>Smurf Attack:</strong> ICMP amplification: attacker sends ICMP echo requests to a broadcast address with the victim's spoofed source IP; all hosts on the broadcast network reply to the victim, flooding it.</li>
+                        <li><strong>Fraggle Attack:</strong> UDP-based amplification similar to Smurf: attacker sends UDP echo requests to a broadcast address with the victim's spoofed source IP; broadcast hosts reply to the victim.</li>
+                        <li><strong>Ping of Death (PoD):</strong> Sends malformed/oversized ICMP packets (e.g., 65,538 bytes) exceeding the 65,535-byte maximum of RFC 791 IP. The target's packet reassembly process may crash, freeze, or destabilize the system. Tool: hping3 -d 65538 -S -p 21 --flood.</li>
+                        <li><strong>Teardrop Attack:</strong> Sends fragmented packets with overlapping fragment offsets; the target's IP reassembly logic crashes or hangs when trying to reassemble them. A fragmentation attack.</li>
+                        <li><strong>Other Protocol/Application Attacks:</strong> ACK flood, fragmentation attack, spoofed session flood, Slowloris, UDP application layer flood, pulse wave, zero-day, DDoS extortion.</li>
+                    </ul>
+                    <h4>Tools</h4>
+                    <p><span class="tool-tag">hping3</span> <span class="tool-tag">Metasploit</span> <span class="tool-tag">HOIC</span> <span class="tool-tag">LOIC</span> <span class="tool-tag">Raven-Storm</span> <span class="tool-tag">Anti DDoS Guardian</span></p>
+                    <ul>
+                        <li><strong>hping3:</strong> Packet crafting/scanning tool supporting TCP/UDP/ICMP/raw-IP. Used for SYN flood (-S --flood), PoD (-d 65538 ... --flood), and UDP application flood (-2 -p &lt;port&gt; --flood). Supports IP spoofing (-a) and high volume (--flood).</li>
+                        <li><strong>Metasploit:</strong> Penetration testing framework; uses auxiliary/dos/tcp/synflood (set RHOST, RPORT, SHOST) to perform SYN flooding while spoofing the source IP.</li>
+                        <li><strong>HOIC (High Orbit Ion Cannon):</strong> HTTP flood tool attacking up to 256 URLs simultaneously; high-speed multi-threaded HTTP flood with "boosters" (e.g., GenericBoost.hoic) to bypass countermeasures; configurable threads and power.</li>
+                        <li><strong>LOIC (Low Orbit Ion Cannon):</strong> Network stress/DoS tool targeting web applications; floods with TCP/UDP/HTTP requests; configurable method, threads, and power bar.</li>
+                        <li><strong>Raven-Storm:</strong> Python 3 DDoS tool supporting Layer 3, 4, and 7 attacks; interactive (rst) with l4 module, ip/port/threads/run commands.</li>
+                        <li><strong>Anti DDoS Guardian:</strong> Host-based real-time protection; monitors incoming/outgoing flows, limits connection/bandwidth rates, and allows Block IP of offending sources via Traffic Detail Viewer.</li>
+                    </ul>
+                    <h4>Key Protocols / Ports</h4>
+                    <table style="width:100%">
+                        <thead><tr><th>Protocol / Service</th><th>Port</th></tr></thead>
+                        <tbody>
+                            <tr><td>HTTP</td><td>80</td></tr>
+                            <tr><td>FTP</td><td>21</td></tr>
+                            <tr><td>SSH</td><td>22</td></tr>
+                            <tr><td>NetBIOS (name/datagram/session)</td><td>137, 138, 139</td></tr>
+                            <tr><td>CharGEN</td><td>19</td></tr>
+                            <tr><td>SNMPv2</td><td>161</td></tr>
+                            <tr><td>QOTD</td><td>17</td></tr>
+                            <tr><td>RPC</td><td>135</td></tr>
+                            <tr><td>SSDP</td><td>1900</td></tr>
+                            <tr><td>CLDAP</td><td>389</td></tr>
+                            <tr><td>TFTP</td><td>69</td></tr>
+                            <tr><td>NTP</td><td>123</td></tr>
+                            <tr><td>Quake Network Protocol</td><td>26000</td></tr>
+                            <tr><td>VoIP / SIP</td><td>5060</td></tr>
+                            <tr><td>ICMP</td><td>no port (protocol)</td></tr>
+                        </tbody>
+                    </table>
+                    <h4>Mitigation</h4>
+                    <ul>
+                        <li><strong>Rate Limiting:</strong> Cap the number of requests/connections per source to absorb floods.</li>
+                        <li><strong>SYN Cookies:</strong> Avoid allocating state for half-open connections; encode connection state in the SYN-ACK so only completed handshakes consume resources.</li>
+                        <li><strong>Firewalls / IPS / IDS:</strong> Filter malicious traffic, block attack signatures, and limit connection rates.</li>
+                        <li><strong>Load Balancers / Traffic Scrubbing:</strong> Distribute and clean traffic; blackhole or scrub attack traffic upstream.</li>
+                        <li><strong>Host-based Protection:</strong> Anti DDoS Guardian monitors flows and blocks offending IPs (Block IP).</li>
+                        <li><strong>Detection Techniques:</strong> Activity profiling, sequential change-point detection, and wavelet-based signal analysis to distinguish attack traffic.</li>
+                        <li><strong>Cloud/DDoS Services:</strong> DOSarrest, DDoS-GUARD, Cloudflare, and similar scrubbing/CDN services for organization-wide protection.</li>
+                    </ul>
+                    <h4>Exam Tips</h4>
+                    <ul>
+                        <li>DoS = single source; DDoS = many sources (zombies/bots) coordinated by handlers.</li>
+                        <li>SYN flood exploits the TCP three-way handshake and fills the half-open connection queue; mitigated by SYN cookies.</li>
+                        <li>Smurf = ICMP amplification via broadcast; Fraggle = UDP amplification via broadcast.</li>
+                        <li>Ping of Death = oversized ICMP packet (&gt;65,535 bytes) crashing reassembly; Teardrop = overlapping fragments crashing reassembly.</li>
+                        <li>HTTP flood is Layer 7 and mimics legitimate traffic; Slowloris holds connections open.</li>
+                        <li>UDP is connectionless and easily spoofed; UDP floods often target application ports.</li>
+                        <li>hping3 flags: -S (SYN), -2 (UDP), -d (data size), -a (spoof IP), -p (port), --flood.</li>
+                        <li>Metasploit module: auxiliary/dos/tcp/synflood with RHOST/RPORT/SHOST.</li>
+                        <li>Anti DDoS Guardian: real-time monitor/limiter; Block IP turns the session red.</li>
+                        <li>Mitigations to remember: rate limiting, SYN cookies, firewalls, IPS/IDS, scrubbing, cloud protection.</li>
+                        <li>Detection: activity profiling, sequential change-point detection, wavelet-based signal analysis.</li>
+                        <li>Always obtain proper authorization before performing DoS/DDoS tests.</li>
+                    </ul>
+                    <p><strong>Notes:</strong> Keep the lab tasks below as hands-on practice for these concepts.</p>
+                </div>
+            </section>
 
             <section class="lab-task">
                 <h3>Lab 1 - Perform DoS and DDoS Attacks using Various Techniques: Task 1: Perform a DoS Attack (SYN Flooding) on a Target Host using Metasploit</h3>

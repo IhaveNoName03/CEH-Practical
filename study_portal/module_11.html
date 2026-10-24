@@ -27,8 +27,12 @@
             <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
             <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
         <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+        <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+        <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
         <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
         </ul>
+        <button id="viewToggle" class="view-toggle">COMPACT</button>
         <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
     </nav>
     <main class="content-body">
@@ -49,6 +53,99 @@
                 <li><strong>Active session hijacking:</strong> An attacker finds an active session and takes it over.</li>
                 <li><strong>Passive session hijacking:</strong> An attacker hijacks a session, and, instead of taking over, monitors and records all the traffic in that session.</li>
             </ul>
+
+            <section class="lab-task">
+                <h3>Exam Essentials: Session Hijacking</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Exam Essentials</span>
+                    <h4>Scenario</h4>
+                    <p>As an ethical hacker or penetration tester, you should understand different session hijacking concepts, how attackers perform application- and network-level session hijacking, and the various tools used to launch this kind of attack. You should also be able to implement security measures at both the application and network levels to protect your network from session hijacking. Application-level hijacking involves gaining control over the Hypertext Transfer Protocol (HTTP) user session by obtaining the session IDs. Network-level hijacking is prevented by packet encryption, which can be achieved with protocols such as IPsec, SSL, and SSH.</p>
+                    <h4>Objective</h4>
+                    <p>Hijack a session by intercepting traffic between server and client; steal a user session ID by intercepting traffic; detect session hijacking attacks.</p>
+                    <h4>Overview of Session Hijacking</h4>
+                    <p>Session hijacking can be either active or passive, depending on the degree of involvement of the attacker:</p>
+                    <ul>
+                        <li><strong>Active session hijacking:</strong> An attacker finds an active session and takes it over.</li>
+                        <li><strong>Passive session hijacking:</strong> An attacker hijacks a session, and, instead of taking over, monitors and records all the traffic in that session.</li>
+                    </ul>
+                    <p>Session hijacking can be divided into three broad phases:</p>
+                    <ul>
+                        <li><strong>Tracking the Connection:</strong> The attacker uses a network sniffer to track a victim and host, or uses a tool such as Nmap to scan the network for a target with a TCP sequence that is easy to predict.</li>
+                        <li><strong>Desynchronizing the Connection:</strong> A desynchronized state occurs when a connection between the target and host has been established, or is stable with no data transmission, or when the server's sequence number is not equal to the client's acknowledgment number (or vice versa).</li>
+                        <li><strong>Injecting the Attacker's Packet:</strong> Once the attacker has interrupted the connection between the server and target, they can either inject data into the network or actively participate as the man-in-the-middle, passing data between the target and server, while reading and injecting data at will.</li>
+                    </ul>
+                    <p>Session hijacking operates at two levels. <strong>Network-level hijacking</strong> targets the TCP/IP session (packet sniffing/spoofing, TCP sequence prediction) and is mitigated by packet encryption (IPsec, SSL/TLS, SSH). <strong>Application-level hijacking</strong> targets the HTTP user session by obtaining session IDs (cookies, URL parameters, hidden form fields) and includes XSS, CSRF, session fixation, session prediction, and sidejacking.</p>
+                    <h4>Key Concepts</h4>
+                    <ul>
+                        <li><strong>Session:</strong> A semi-permanent interactive connection between two communicating devices (client and server) over a network, maintained via a session ID/token.</li>
+                        <li><strong>Session ID:</strong> A unique token assigned to a user after authentication; identifies authenticated users. Attackers steal or guess it to hijack the session. Carried in cookies, URL parameters, or hidden form fields.</li>
+                        <li><strong>Active Session Hijacking:</strong> Attacker finds an active session and takes it over (impersonates the user). Involves desynchronizing and injecting packets.</li>
+                        <li><strong>Passive Session Hijacking:</strong> Attacker monitors and records all traffic in the session without taking over (sniffing).</li>
+                        <li><strong>Network-Level Session Hijacking:</strong> Hijacks the TCP connection between client and server (TCP/IP session hijacking, MITM). Prevented by packet encryption (IPsec, SSL/TLS, SSH).</li>
+                        <li><strong>Application-Level Session Hijacking:</strong> Gains control of the HTTP user session by obtaining session IDs. Techniques: XSS, CSRF, session fixation, session prediction, sidejacking.</li>
+                        <li><strong>TCP Hijacking:</strong> Exploits TCP sequence numbers to insert packets into an established connection. Phases: tracking the connection, desynchronizing, injecting. Can lead to MITM and DoS. Relies on predictable ISNs; modern OSs use random ISNs.</li>
+                        <li><strong>Man-in-the-Middle (MITM):</strong> Attacker places themselves between client and server, intercepting and possibly modifying traffic in both directions; captures credentials/session tokens.</li>
+                        <li><strong>Denial of Service (DoS):</strong> Flooding the target with requests after sniffing sensitive info, exhausting resources.</li>
+                        <li><strong>XSS (Cross-Site Scripting):</strong> Injection of malicious scripts into trusted web pages; used to steal session cookies/tokens. Types: stored (persistent), reflected (non-persistent), DOM-based. Mitigation: input validation, output encoding, HttpOnly cookies.</li>
+                        <li><strong>CSRF (Cross-Site Request Forgery):</strong> Tricks an authenticated user's browser into sending an unwanted request to a trusted site; the session cookie is sent automatically. Mitigation: CSRF tokens, SameSite cookies, re-authentication for sensitive actions.</li>
+                        <li><strong>Session Fixation:</strong> Attacker forces a known session ID on the victim; after the victim authenticates, the attacker reuses that ID. Mitigation: regenerate session ID on login/authentication, invalidate old IDs.</li>
+                        <li><strong>Session Prediction:</strong> Guessing/brute-forcing predictable session IDs. Mitigation: cryptographically strong random session tokens, sufficient entropy.</li>
+                        <li><strong>Sidejacking:</strong> Stealing a session cookie transmitted over unencrypted HTTP (e.g., on open Wi-Fi) using a packet sniffer (Firesheep). Mitigation: HTTPS for all authenticated traffic, secure cookies.</li>
+                        <li><strong>Session Sniffing:</strong> Capturing session tokens sent in cleartext over HTTP/FTP/Telnet etc.</li>
+                        <li><strong>Session Token Locations:</strong> Cookies (most common), URL query parameters, hidden form fields, HTTP headers.</li>
+                    </ul>
+                    <h4>Tools</h4>
+                    <p><span class="tool-tag">Zed Attack Proxy (ZAP)</span> <span class="tool-tag">bettercap</span> <span class="tool-tag">Hetty</span> <span class="tool-tag">Wireshark</span> <span class="tool-tag">Firesheep</span> <span class="tool-tag">Ettercap</span> <span class="tool-tag">Burp Suite</span></p>
+                    <ul>
+                        <li><strong>ZAP:</strong> Intercepting proxy and web app scanner; traps requests/responses with breakpoints; rewrites traffic; used to hijack sessions and view AJAX calls.</li>
+                        <li><strong>bettercap:</strong> MITM framework; ARP spoofing, HTTP/HTTPS proxy, SSL stripping, credential sniffing; modules: net.probe, net.recon, arp.spoof, http.proxy, net.sniff.</li>
+                        <li><strong>Hetty:</strong> HTTP toolkit for security research; MITM, request editing/replay, proxy logs; alternative to Burp Suite Pro.</li>
+                        <li><strong>Wireshark:</strong> Packet capture/analysis; detects session hijacking via ARP floods and credential extraction (filters like http.request.method == POST).</li>
+                    </ul>
+                    <h4>Key Protocols / Ports</h4>
+                    <table style="width:100%">
+                        <thead><tr><th>Port / Protocol</th><th>Service</th></tr></thead>
+                        <tbody>
+                            <tr><td>80/tcp</td><td>HTTP (cleartext - session tokens at risk)</td></tr>
+                            <tr><td>443/tcp</td><td>HTTPS / TLS (encrypted sessions)</td></tr>
+                            <tr><td>22/tcp</td><td>SSH (encrypted remote access)</td></tr>
+                            <tr><td>8080/tcp</td><td>Intercepting proxy (ZAP / Hetty default)</td></tr>
+                            <tr><td>IPsec</td><td>ESP (protocol 50) / AH (protocol 51) - network-level encryption</td></tr>
+                            <tr><td>SSL/TLS</td><td>Transport encryption for HTTP (HTTPS)</td></tr>
+                            <tr><td>23/tcp</td><td>Telnet (cleartext)</td></tr>
+                            <tr><td>21/tcp</td><td>FTP (cleartext)</td></tr>
+                        </tbody>
+                    </table>
+                    <h4>Defenses</h4>
+                    <ul>
+                        <li><strong>HTTPS everywhere:</strong> Encrypt all traffic containing session tokens; prevents sniffing/sidejacking.</li>
+                        <li><strong>Secure cookies:</strong> Set Secure, HttpOnly, and SameSite attributes on session cookies.</li>
+                        <li><strong>HSTS (HTTP Strict Transport Security):</strong> Forces browsers to use HTTPS, prevents SSL stripping/downgrade.</li>
+                        <li><strong>Network encryption:</strong> IPsec, SSL/TLS, SSH for network-level protection.</li>
+                        <li><strong>Regenerate session ID:</strong> On login and privilege change; prevents session fixation.</li>
+                        <li><strong>Strong session tokens:</strong> High entropy, unpredictable; prevents session prediction.</li>
+                        <li><strong>Short timeouts &amp; logout:</strong> Idle/absolute session expiration; invalidate on logout.</li>
+                        <li><strong>Avoid URL session IDs:</strong> Don't pass session IDs in URLs/query strings; use cookies.</li>
+                        <li><strong>Input validation / output encoding:</strong> Mitigate XSS that steals cookies.</li>
+                        <li><strong>CSRF tokens:</strong> Anti-CSRF tokens and SameSite cookies.</li>
+                        <li><strong>IDS/IPS &amp; monitoring:</strong> Detect ARP floods and anomalous sessions; manual Wireshark analysis.</li>
+                    </ul>
+                    <h4>Exam Tips</h4>
+                    <ul>
+                        <li>Active = take over the session; passive = monitor/record only.</li>
+                        <li>Network-level hijacking = TCP/IP session (encryption prevents it); application-level = HTTP session via session IDs.</li>
+                        <li>TCP hijacking phases: tracking -> desynchronizing -> injecting.</li>
+                        <li>XSS steals session cookies; CSRF forces authenticated actions; fixation reuses a known ID; prediction guesses IDs; sidejacking sniffs cookies over HTTP.</li>
+                        <li>Session fixation fix = regenerate session ID on authentication.</li>
+                        <li>Sidejacking defense = HTTPS + secure cookies; Firesheep is the classic tool.</li>
+                        <li>HSTS prevents SSL stripping (bettercap sslstrip).</li>
+                        <li>Secure + HttpOnly + SameSite cookies are the key cookie defenses.</li>
+                        <li>High volume of ARP requests in Wireshark indicates ARP spoofing/bettercap.</li>
+                        <li>Always obtain proper authorization before performing session hijacking tests.</li>
+                    </ul>
+                    <p><strong>Notes:</strong> Keep the lab tasks below as hands-on practice for these concepts.</p>
+                </div>
+            </section>
 
             <p><strong>Lab Tasks:</strong></p>
             <ul>

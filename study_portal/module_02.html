@@ -27,8 +27,12 @@
         <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
         <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
         <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+        <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+        <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
         <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
     </ul>
+    <button id="viewToggle" class="view-toggle">COMPACT</button>
     <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
 </nav>
 <main class="content-body">
@@ -37,7 +41,66 @@
             <span>CEH v12 - Module 02</span>
             <h2 class="hero-3d">Footprinting and Reconnaissance</h2>
         </div>
-        <p>Reconnaissance collects information about a target, the first step in any attack. Ethical hackers and pen testers must gather enough information about the target before initiating assessments, simulating all steps an attacker follows to understand the security posture. Scope and rules of engagement (RoE) must be agreed with management first. Labs give real-time experience collecting info from open/publicly accessible sources. Target env: Windows 11 (10.10.1.11), Parrot Security (10.10.1.13), Windows Server 2019, etc. Always obtain proper authorization. Objectives: organization info (employees, addresses, contacts, partners, weblinks, web tech, patents, trademarks); network info (domains, sub-domains, network blocks, topologies, routers, firewalls, reachable IPs, Whois, DNS); system info (OS, web server OS, server location, user accounts/passwords). Footprinting is passive (no direct interaction, undetected) or active (direct interaction, target may notice).</p>        <section class="lab-task">
+        <p>Reconnaissance collects information about a target, the first step in any attack. Ethical hackers and pen testers must gather enough information about the target before initiating assessments, simulating all steps an attacker follows to understand the security posture. Scope and rules of engagement (RoE) must be agreed with management first. Labs give real-time experience collecting info from open/publicly accessible sources. Target env: Windows 11 (10.10.1.11), Parrot Security (10.10.1.13), Windows Server 2019, etc. Always obtain proper authorization. Objectives: organization info (employees, addresses, contacts, partners, weblinks, web tech, patents, trademarks); network info (domains, sub-domains, network blocks, topologies, routers, firewalls, reachable IPs, Whois, DNS); system info (OS, web server OS, server location, user accounts/passwords). Footprinting is passive (no direct interaction, undetected) or active (direct interaction, target may notice).</p>
+        <section class="lab-task">
+            <h3>Exam Essentials</h3>
+            <div class="section-card">
+                <span class="tool-tag">Scenario & Objective</span>
+                <p><strong>Scenario:</strong> Reconnaissance is the first step in any attack; ethical hackers and pen testers collect enough information about the target before assessments, simulating attacker steps. Before any assessment, discuss and define the <strong>scope</strong> with management and agree on <strong>Rules of Engagement (RoE)</strong>. Then gather information from open/public sources to build a <strong>blueprint</strong> of the target's security profile.</p>
+                <p><strong>Objective:</strong> Extract organization info (employees, addresses, contacts, partners, weblinks, web tech, patents, trademarks); network info (domains, sub-domains, network blocks, topologies, routers, firewalls, reachable IPs, Whois, DNS); system info (OS, web server OS, server location, user accounts/passwords).</p>
+            </div>
+            <div class="section-card">
+                <span class="tool-tag">Key Concepts & Definitions</span>
+                <ul>
+                    <li><strong>Footprinting / Reconnaissance:</strong> Collecting information about a target network and its environment to evaluate security posture and the risk of publicly accessible information.</li>
+                    <li><strong>Passive Footprinting:</strong> Gathering information without direct interaction; useful when information-gathering must not be detected by the target.</li>
+                    <li><strong>Active Footprinting:</strong> Gathering information with direct interaction; the target may recognize the ongoing process.</li>
+                    <li><strong>Blueprint (footprint):</strong> The unique system profile of the target organization resulting from footprinting.</li>
+                    <li><strong>Scope:</strong> Identifies systems, network, policies/procedures, human resources, and any other component requiring security evaluation.</li>
+                    <li><strong>Rules of Engagement (RoE):</strong> The "do's and don'ts" of the assessment agreed with management.</li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <span class="tool-tag">Overview of Footprinting</span>
+                <p>Footprinting collects information about a target network/environment to evaluate security posture and the risk of publicly accessible information. It is categorized into passive footprinting (no direct interaction, undetected) and active footprinting (direct interaction, target may notice).</p>
+            </div>
+            <div class="section-card">
+                <span class="tool-tag">Key Tools & Purpose</span>
+                <ul>
+                    <li><strong>Netcraft:</strong> Domain/subdomain enumeration and site reports (background, network, hosting history, OS).</li>
+                    <li><strong>theHarvester:</strong> Gathers emails, subdomains, hosts, employee names, open ports, banners from public sources (search engines, PGP, SHODAN).</li>
+                    <li><strong>Sherlock:</strong> Searches many social networking sites for a target username/person and returns profile URLs.</li>
+                    <li><strong>Photon:</strong> Crawls a target URL to collect in/out-of-scope URLs, params, emails, social accounts, files, secret keys, subdomains.</li>
+                    <li><strong>Central Ops:</strong> Free online network scanner for domains/IPs: DNS records, traceroute, nslookup, whois.</li>
+                    <li><strong>Shodan / Censys:</strong> Internet-wide search for publicly accessible devices, OS, ports, locations.</li>
+                    <li><strong>Maltego:</strong> Graph-based link analysis and transforms for DNS, WHOIS, IP, location, personal entities.</li>
+                    <li><strong>Recon-ng:</strong> Web reconnaissance framework with modules and DB interaction for hosts, contacts, subdomains.</li>
+                    <li><strong>FOCA:</strong> Extracts metadata and hidden info from documents (Office, PDF, etc.) via search engines.</li>
+                    <li><strong>OSINT Framework:</strong> Categorized index of OSINT tools/resources for usernames, emails, domains, IPs, social networks.</li>
+                </ul>
+            </div>
+            <div class="section-card">
+                <span class="tool-tag">Exam Tips</span>
+                <ul>
+                    <li>Footprinting is the first phase; it produces a <strong>blueprint</strong> of the target.</li>
+                    <li>Passive footprinting avoids detection; active footprinting may be noticed by the target.</li>
+                    <li>Always define <strong>scope</strong> and agree on <strong>RoE</strong> with management before assessment; get authorization.</li>
+                    <li>Whois queries use TCP port 43; RIRs maintain Whois databases.</li>
+                    <li>Key info categories: Organization, Network, System.</li>
+                    <li>Use multiple sources/tools; results may differ and change over time.</li>
+                    <li>Tools like theHarvester use data sources (baidu, bing, google, linkedin, etc.); specify -d domain, -l limit, -b source.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Practice & Reference</h3>
+            <div class="section-card">
+                <p>The following lab tasks provide hands-on practice and reference commands for footprinting techniques.</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
             <h3>Lab 1 - Perform Footprinting Through Search Engines: Task 1: Gather Information using Advanced Google Hacking Techniques</h3>
             <div class="section-card">
                 <span class="tool-tag">Google Advanced Operators</span>

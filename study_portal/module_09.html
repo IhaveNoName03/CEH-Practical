@@ -27,8 +27,12 @@
             <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
         <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
         <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+        <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+        <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
         <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
         </ul>
+        <button id="viewToggle" class="view-toggle">COMPACT</button>
         <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
     </nav>
     <main class="content-body">
@@ -45,6 +49,72 @@
             <p><strong>Objective:</strong> Use social engineering and related techniques to: sniff user/employee credentials such as employee IDs, names, and email addresses; obtain employees' basic personal details and organizational information; obtain usernames and passwords; perform phishing; detect phishing.</p>
 
             <p><strong>Overview of Social Engineering:</strong> Social engineering is the art of manipulating people to divulge sensitive information that will be used to perform some kind of malicious action. Because social engineering targets human weakness, even organizations with strong security policies are vulnerable to being compromised by attackers. The impact of social engineering attacks on organizations can include economic losses, damage to goodwill, loss of privacy, risk of terrorism, lawsuits and arbitration, and temporary or permanent closure. Vulnerabilities include insufficient security training, unregulated access to information, an organizational structure consisting of several units, and non-existent or lacking security policies. There are three types of social engineering attacks: human-based (impersonation, vishing, eavesdropping), computer-based (phishing, spamming, instant messaging), and mobile-based (publishing malicious apps, repackaging legitimate apps, fake security applications, SMiShing).</p>
+
+            <section class="lab-task">
+                <h3>Exam Essentials: Social Engineering</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Exam Essentials</span>
+                    <h4>Scenario</h4>
+                    <p>Organizations fall victim to social engineering tactics despite having strong security policies and solutions in place. This is because social engineering exploits the most vulnerable link in information system security - employees. Cybercriminals are increasingly using social engineering techniques to target people's weaknesses or play on their good natures. Social engineering can take many forms, including phishing emails, fake sites, and impersonation. If the features of these techniques make them an art, the psychological insights that inform them make them a science. While non-existent or inadequate defense mechanisms in an organization can encourage attackers to use various social engineering techniques to target its employees, the bottom line is that there is no technological defense against social engineering. Organizations must educate employees on how to recognize and respond to these attacks, but only constant vigilance will minimize attackers' chances of success. As an expert ethical hacker and penetration tester, you need to assess the preparedness of your organization or the target of evaluation against social engineering attacks. It is important to note, however, that social engineering primarily requires soft skills. The labs in this module therefore demonstrate several techniques that facilitate or automate certain facets of social engineering attacks.</p>
+                    <h4>Objective</h4>
+                    <p>The objective of the lab is to use social engineering and related techniques to: sniff user/employee credentials such as employee IDs, names, and email addresses; obtain employees' basic personal details and organizational information; obtain usernames and passwords; perform phishing; detect phishing.</p>
+                    <h4>Overview of Social Engineering</h4>
+                    <p>Social engineering is the art of manipulating people to divulge sensitive information that will be used to perform some kind of malicious action. Because social engineering targets human weakness, even organizations with strong security policies are vulnerable to being compromised by attackers. The impact of social engineering attacks on organizations can include economic losses, damage to goodwill, loss of privacy, risk of terrorism, lawsuits and arbitration, and temporary or permanent closure. There are many ways in which companies may be vulnerable to social engineering attacks. These include: insufficient security training; unregulated access to information; an organizational structure consisting of several units; non-existent or lacking security policies. There are three types of social engineering attacks: human-based (impersonation, vishing, eavesdropping), computer-based (phishing, spamming, instant messaging), and mobile-based (publishing malicious apps, repackaging legitimate apps, fake security applications, SMiShing).</p>
+                    <h4>Key Concepts</h4>
+                    <ul>
+                        <li><strong>Social Engineering:</strong> The art of manipulating people to divulge sensitive information used to perform malicious actions; exploits human weakness. Impacts include economic loss, damage to goodwill, loss of privacy, risk of terrorism, lawsuits/arbitration, and temporary or permanent closure. There is no purely technological defense; requires education, policies, and constant vigilance.</li>
+                        <li><strong>Human-based Social Engineering:</strong> Uses direct interaction to gather sensitive information; techniques include impersonation, vishing, and eavesdropping.</li>
+                        <li><strong>Computer-based Social Engineering:</strong> Uses computers to extract sensitive information; techniques include phishing, spamming, and instant messaging.</li>
+                        <li><strong>Mobile-based Social Engineering:</strong> Uses mobile applications to obtain information; techniques include publishing malicious apps, repackaging legitimate apps, using fake security applications, and SMiShing (SMS phishing).</li>
+                        <li><strong>Phishing:</strong> Fraudulent attempt to obtain sensitive information (credentials, financial data) by disguising as a trustworthy entity in electronic communication, usually email. Variants: spear phishing (targeted individuals), whaling (executives), clone phishing (cloned legitimate email/website), and pharming (DNS redirection to a fake site). Credential harvesting via cloned sites is a core phishing technique.</li>
+                        <li><strong>Vishing (Voice Phishing):</strong> Phishing conducted over the telephone or VoIP; attackers impersonate trusted entities (banks, IT support) to extract credentials, OTPs, or PII.</li>
+                        <li><strong>Smishing (SMS Phishing):</strong> Phishing via SMS text messages containing malicious links or requests for information.</li>
+                        <li><strong>Pretexting:</strong> Creating a fabricated scenario (pretext) to engage a victim and elicit information; the attacker assumes a role such as IT support, auditor, or vendor.</li>
+                        <li><strong>Baiting:</strong> Luring victims with a tempting offer (free download, music, USB drop) to trick them into installing malware or revealing information.</li>
+                        <li><strong>Quid Pro Quo:</strong> Offering a service or benefit (technical support, a gift) in exchange for information or access.</li>
+                        <li><strong>Tailgating / Piggybacking:</strong> Physical social engineering where an unauthorized person follows an authorized person through a secured entry. Tailgating occurs without the victim's consent; piggybacking occurs with the victim's consent (e.g., holding the door).</li>
+                        <li><strong>SET (Social-Engineer Toolkit):</strong> Open-source Python-driven framework for social engineering penetration testing. Attack vectors include email, web, and USB; supports spear phishing, Java applet attacks, Metasploit browser exploit, and Credential Harvester/Tabnabbing with Site Cloner. SET is the standard for social engineering penetration tests.</li>
+                        <li><strong>Credential Harvester:</strong> Clones a target website and captures credentials (username/password) submitted to it, displaying them in plain text.</li>
+                        <li><strong>Phishing Detection:</strong> Inspect sender address, URLs, certificates, and domain reputation; use community tools such as Netcraft and PhishTank.</li>
+                        <li><strong>Phishing Simulation / Awareness:</strong> Platforms such as OhPhish launch simulated phishing campaigns to measure employee susceptibility and generate reports.</li>
+                    </ul>
+                    <h4>Tools</h4>
+                    <p><span class="tool-tag">Social-Engineer Toolkit (SET)</span> <span class="tool-tag">Netcraft Browser Extension</span> <span class="tool-tag">PhishTank</span> <span class="tool-tag">OhPhish</span></p>
+                    <ul>
+                        <li><strong>SET:</strong> Python-driven social engineering framework; menu-driven workflow (1 Social-Engineering Attacks, 2 Website Attack Vectors, 3 Credential Harvester Attack Method, 2 Site Cloner) to clone sites and harvest credentials.</li>
+                        <li><strong>Netcraft Extension:</strong> Browser extension providing site risk rating, site rank, first seen, and host info plus a detailed Site Report; blocks suspected phishing sites with a "Suspected Phishing" page (options: Visit anyway / Report mistake).</li>
+                        <li><strong>PhishTank:</strong> Free community clearinghouse for phishing data; anyone can submit, verify, track, and share phishing URLs; provides an open API; returns "Is a phish" for confirmed phishing sites.</li>
+                        <li><strong>OhPhish:</strong> Web-based phishing simulation platform (EC-Council Aware) for launching campaigns (Entice to Click, Send Attachment, Credential Harvesting, Vishing, Smishing), tracking clicks/openers, and generating MIS/executive reports.</li>
+                    </ul>
+                    <h4>Key Indicators (Phishing)</h4>
+                    <ul>
+                        <li>Suspicious or spoofed sender address; lookalike/typosquatted domains.</li>
+                        <li>Urgent, threatening, or too-good-to-be-true language.</li>
+                        <li>Mismatched or hidden hyperlinks (displayed URL differs from actual href).</li>
+                        <li>Requests for credentials, PII, OTPs, or financial information.</li>
+                        <li>Generic salutations and poor grammar/spelling.</li>
+                        <li>Unusual attachments (.exe, .scr, macro-enabled docs, PDFs with links).</li>
+                        <li>Lack of HTTPS or invalid/expired certificate on the landing page.</li>
+                        <li>Recently registered or low-reputation domains (Netcraft Risk Rating).</li>
+                        <li>Unknown senders/numbers in SMS; callers requesting OTPs or PINs (vishing).</li>
+                    </ul>
+                    <h4>Exam Tips</h4>
+                    <ul>
+                        <li>Phishing = email-based; vishing = voice/phone; smishing = SMS.</li>
+                        <li>Spear phishing targets specific individuals; whaling targets executives.</li>
+                        <li>Pharming redirects users via DNS poisoning to a fake site without an email lure.</li>
+                        <li>SET's Site Cloner replicates a site and harvests credentials submitted to it.</li>
+                        <li>Netcraft blocks suspected phishing sites; PhishTank verifies via community reports.</li>
+                        <li>OhPhish is for simulation and awareness training, not for launching real attacks.</li>
+                        <li>Tailgating = without consent; piggybacking = with the victim's consent.</li>
+                        <li>Pretexting = fabricated scenario/role; baiting = lure; quid pro quo = exchange of service for info.</li>
+                        <li>Human-based: impersonation, vishing, eavesdropping; computer-based: phishing, spamming, IM; mobile-based: malicious apps, repackaging, fake security apps, SMiShing.</li>
+                        <li>Defenses: security awareness training, policies, MFA, email/SMS filters, reporting channels, physical access controls (mantraps, turnstiles, badge readers), and never sharing credentials/OTPs.</li>
+                        <li>Always obtain proper authorization before performing social engineering tests.</li>
+                    </ul>
+                    <p><strong>Notes:</strong> Keep the lab tasks below as hands-on practice for these concepts.</p>
+                </div>
+            </section>
 
             <section class="lab-task">
                 <h3>Lab 1 - Perform Social Engineering using Various Techniques: Task 1: Sniff Credentials using the Social-Engineer Toolkit (SET)</h3>

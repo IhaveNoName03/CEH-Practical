@@ -27,8 +27,12 @@
         <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
         <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
         <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+        <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+        <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
         <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
         </ul>
+        <button id="viewToggle" class="view-toggle">COMPACT</button>
         <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
     </nav>
     <main class="content-body">
@@ -39,6 +43,75 @@
             </div>
 
             <p>Malware poses a major security threat to information security. Malware writers explore new attack vectors to exploit vulnerabilities in information systems, leading to sophisticated attacks such as drive-by malware, malvertising, and advanced persistent threats. This module provides first-hand experience with techniques attackers use to write and propagate malware, and teaches how to select security controls to protect information assets from malware threats. Lab tasks span Trojans, viruses, static malware analysis, and dynamic malware analysis. Ensure Windows Defender Firewall is turned off on lab machines, as it blocks and deletes malware as soon as it is executed. Labs use Windows 11 (10.10.1.11), Windows Server 2022 (10.10.1.22), Windows Server 2019 (10.10.1.19), and Windows 11 as attacker.</p>
+
+            <section class="lab-task">
+                <h3>Exam Essentials: Malware Threats</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Exam Essentials</span>
+                    <h4>Scenario</h4>
+                    <p>Malware poses a major security threat to information security. Malware writers explore new attack vectors to exploit vulnerabilities in information systems, leading to sophisticated attacks such as drive-by malware, "maladvertising" (or "malvertising"), and advanced persistent threats. Organizations defend themselves with comprehensive security policies and advanced anti-malware controls, but malware applications increasingly target "lower-hanging fruit" such as unsecured smartphones, mobile applications, social media, and cloud services. Assessing an organization's information system against malware threats is challenging because of the rapidly changing nature of malware, so one must be well-versed in the latest developments and understand the basic functioning of malware to select and implement appropriate controls. Lab activities provide first-hand experience with techniques attackers use to write and propagate malware and teach how to select security controls to protect information assets from malware threats.</p>
+                    <h4>Objective</h4>
+                    <p>Create malware and perform tasks that include, but are not limited to: create a Trojan and exploit a target machine; create a virus to infect the target machine; perform malware analysis to determine the origin, functionality, and potential impact of a given type of malware; detect malware.</p>
+                    <h4>Overview of Malware</h4>
+                    <p>With the help of a malicious application (malware), an attacker gains access to stored passwords on a computer and is able to read personal documents, delete files, display pictures or messages on the screen, slow down computers, steal personal information, send spam, and commit fraud. Malware activities range from simple email advertising to complex identity theft and password stealing. Programmers develop malware to attack browsers and track websites visited, affect system performance, cause hardware failure, steal personal information including contacts, erase valuable information causing substantial data loss, attack additional computer systems directly from a compromised system, and spam inboxes with advertising emails.</p>
+                    <h4>Key Concepts</h4>
+                    <ul>
+                        <li><strong>Trojan Horse:</strong> Malicious code contained inside apparently harmless programming or data. It requires a user action (opening a file, clicking a link) to activate and can grant the attacker unrestricted access, running with the victim's privileges and potentially escalating beyond them. Remote Access Trojans (RATs) such as njRAT and Theef provide remote GUI control, file/process/registry manipulation, remote shell, keylogging, webcam/microphone access, and persistent C2 connections (njRAT default port 5552; Theef port 9871). Crypters such as SwayzCryptor encrypt the binary to evade anti-virus detection (FUD), reducing VirusTotal detections from ~59/69 to only a few while preserving functionality.</li>
+                        <li><strong>Virus:</strong> Malicious code that attaches to a host program and requires a trigger event to activate; it cannot self-start, infect hardware, or transmit via non-executable files. It replicates n times as specified by the attacker and can disable security features, change passwords, rename the computer, and convert itself to a worm. Created in labs with the JPS Virus Maker Tool.</li>
+                        <li><strong>Worm:</strong> A standalone malicious program that independently replicates, executes, and spreads across network connections without human intervention. It is considered a subtype of virus; it consumes computing/network resources and may carry a damaging payload. JPS Virus Maker can convert a virus to a worm (e.g., worm name "fedevi", copy interval 1 second).</li>
+                        <li><strong>Ransomware:</strong> Malware that encrypts a victim's files or data and demands a ransom for the decryption key. It spreads via phishing, exposed services (e.g., RDP), and network shares. Mitigations include offline backups, least privilege, patching, and monitoring tools such as PA File Sight, which detects ransomware activity coming from the network and blocks compromised computers from reaching protected servers.</li>
+                        <li><strong>Static vs. Dynamic Analysis:</strong> Static (code) analysis examines the executable binary without executing it: file fingerprinting, local/online scanning, strings search, packing/obfuscation detection, PE information extraction, dependency identification, and disassembly. Dynamic (behavioral) analysis executes the malware in an isolated sandbox to observe runtime behavior: port, process, registry, service, startup, installation, file/folder, driver, and DNS monitoring. Dynamic analysis requires system baselining and host integrity monitoring and must never be performed on production systems or networks.</li>
+                        <li><strong>PE Structure:</strong> The Portable Executable (PE) format is the executable file format used on Windows (EXE, DLL, SCR, CPL, SYS, etc.). It stores metadata such as creation/modification time, import and export functions, compilation time, linked DLLs, strings, menus, and symbols. A PE contains a DOS header, PE header, optional header, data directories, and section headers (.text, .data, .rdata, etc.). Tools such as PE Explorer view/edit headers, data directories, and sections; Dependency Walker lists dependent modules and imported/exported functions.</li>
+                        <li><strong>Obfuscation / Packing:</strong> Attackers pack or obfuscate executables (compress, encrypt, or modify) to evade detection and complicate reverse engineering. At runtime a small wrapper decompresses the packed file and executes it. Tools such as PEiD and Detect It Easy (DIE) identify the packer/compiler; alternatives include UPX, ASPack, and Macro_Pack. High entropy often indicates packing or encryption.</li>
+                    </ul>
+                    <h4>Tools</h4>
+                    <p><span class="tool-tag">Hybrid Analysis</span> <span class="tool-tag">BinText</span> <span class="tool-tag">PEiD</span> <span class="tool-tag">Detect It Easy (DIE)</span> <span class="tool-tag">PE Explorer</span> <span class="tool-tag">Dependency Walker</span> <span class="tool-tag">IDA</span> <span class="tool-tag">OllyDbg</span> <span class="tool-tag">Ghidra</span></p>
+                    <ul>
+                        <li><strong>Hybrid Analysis:</strong> Free online sandbox that scans suspicious files/URLs and reports a threat score (0-100), SHA hashes, and AV results (CrowdStrike Falcon, MetaDefender). Used with tini.exe (Windows 11 64-bit environment).</li>
+                        <li><strong>BinText:</strong> Text extractor for any file; extracts ANSI (green A), Unicode (red U), and resource (blue R) strings with file/memory positions and resource IDs. Used on face.exe (Klez Virus Live!).</li>
+                        <li><strong>PEiD:</strong> Identifies signatures of 600+ packers, cryptors, and compilers for PE files. Used on face.exe (Klez Virus Live!).</li>
+                        <li><strong>Detect It Easy (DIE):</strong> Determines file type, OS, compiler, linker, and packer via signatures; shows file info (name, size, MD5, SHA1, entropy, entry points). Used on ELF Test File.</li>
+                        <li><strong>PE Explorer:</strong> Views and edits PE files (EXE, DLL, etc.); shows headers info, data directories, and section headers with a mini hex viewer.</li>
+                        <li><strong>Dependency Walker:</strong> Lists dependent modules of an executable and records exported/called functions; detects missing/invalid modules, import/export mismatches, circular dependencies. Used on snoopy.exe (KERNEL32.DLL).</li>
+                        <li><strong>IDA:</strong> Disassembler/debugger that maps binary execution into assembly; supports text view, flow charts, function-call graphs, hex view, structures, and enums. Used on face.exe (plus qwingraph.exe for graphs).</li>
+                        <li><strong>OllyDbg:</strong> Debugger emphasizing binary code analysis; traces registers, procedures, API calls, constants, strings; shows log data, executable modules, memory map, and threads. Used on tini.exe.</li>
+                        <li><strong>Ghidra:</strong> Software reverse engineering (SRE) framework with disassembly, decompilation, debugging, and scripting; analyzes PE files and shows symbol/program trees. Used on face.exe (project "Malware Analysis").</li>
+                    </ul>
+                    <h4>Key Terms</h4>
+                    <ul>
+                        <li><strong>Malware:</strong> Malicious software (viruses, Trojans, worms, ransomware, spyware, rootkits) used to steal data, damage systems, or gain unauthorized access.</li>
+                        <li><strong>RAT (Remote Access Trojan):</strong> Malware providing remote administrative control of a victim machine.</li>
+                        <li><strong>Crypter / FUD:</strong> Tool that encrypts a malicious binary to make it undetectable by anti-virus engines.</li>
+                        <li><strong>Payload:</strong> The malicious action a malware performs (e.g., keylogging, data theft, encryption).</li>
+                        <li><strong>C2 (Command and Control):</strong> Communication channel between attacker and compromised host.</li>
+                        <li><strong>Static Analysis:</strong> Examining code/binary without execution.</li>
+                        <li><strong>Dynamic Analysis:</strong> Executing malware to observe behavior.</li>
+                        <li><strong>PE / ELF:</strong> Portable Executable (Windows) and Executable and Linkable Format (Linux).</li>
+                        <li><strong>Packer / Obfuscation:</strong> Techniques to compress/encrypt executables to evade detection.</li>
+                        <li><strong>Disassembly / Decompilation:</strong> Converting binary code into assembly or higher-level code.</li>
+                        <li><strong>Entropy:</strong> Measure of randomness; high entropy often indicates packing/encryption.</li>
+                        <li><strong>Baselining / Host Integrity Monitoring:</strong> Capturing and comparing system state before and after malware execution.</li>
+                        <li><strong>Threat Score:</strong> Hybrid Analysis metric (0-100) indicating maliciousness.</li>
+                    </ul>
+                    <h4>Exam Tips</h4>
+                    <ul>
+                        <li>Static analysis never executes the sample; dynamic analysis executes it in an isolated sandbox.</li>
+                        <li>Trojans require user action; viruses need a host program and a trigger; worms self-propagate without human intervention.</li>
+                        <li>Crypters reduce AV detections but do not remove malicious functionality; verify with VirusTotal.</li>
+                        <li>PE is the Windows executable format; ELF is the Linux executable format.</li>
+                        <li>PE headers expose imports/exports, entry point, sections, and compilation time; imports reveal what a program can do.</li>
+                        <li>Dependency Walker reveals DLL dependencies and imported functions, helping infer malware capabilities.</li>
+                        <li>Use IDA/Ghidra for disassembly and decompilation; use OllyDbg for runtime debugging.</li>
+                        <li>Always analyze malware on an isolated network with a baseline snapshot; never on production systems.</li>
+                        <li>Ransomware mitigation relies on offline backups, least privilege, patching, and monitoring.</li>
+                        <li>Hybrid Analysis reports a threat score (0-100) plus AV engine results.</li>
+                        <li>High entropy in DIE often indicates packing or encryption.</li>
+                        <li>Strings search can reveal embedded URLs, IP addresses, commands, and other indicators of compromise.</li>
+                        <li>PA File Sight can detect ransomware activity coming from the network and block compromised hosts.</li>
+                    </ul>
+                    <p><strong>Notes:</strong> Keep the lab tasks below as hands-on practice for these concepts.</p>
+                </div>
+            </section>
 
             <section class="lab-task">
                 <h3>Lab 1 - Trojans: Task 1: Gain Control over a Victim Machine using the njRAT RAT Trojan</h3>

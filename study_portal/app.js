@@ -13,7 +13,10 @@
     { id: '09', title: 'Social Engineering', file: 'module_09.html' },
     { id: '10', title: 'Denial-of-Service', file: 'module_10.html' },
     { id: '11', title: 'Session Hijacking', file: 'module_11.html' },
-    { id: '12', title: 'Evading IDS, Firewalls, and Honeypots', file: 'module_12.html' }
+    { id: '12', title: 'Evading IDS, Firewalls, and Honeypots', file: 'module_12.html' },
+    { id: '13', title: 'Hacking Web Servers', file: 'module_13.html' },
+    { id: '14', title: 'Hacking Web Applications', file: 'module_14.html' },
+    { id: '15', title: 'SQL Injection', file: 'module_15.html' }
   ];
 
   const visited = JSON.parse(localStorage.getItem('ceh_visited') || '[]');
@@ -62,6 +65,23 @@
       return url.pathname.split('/').pop() + '?' + url.searchParams.toString();
     } catch (e) { return href; }
   }
+  // Compact view toggle
+  const viewToggle = document.getElementById('viewToggle');
+  if (viewToggle) {
+    const applyView = (compact) => {
+      document.body.classList.toggle('compact', compact);
+      viewToggle.classList.toggle('active', compact);
+      viewToggle.textContent = compact ? 'FULL VIEW' : 'COMPACT';
+      try { localStorage.setItem('ceh_compact', compact ? '1' : '0'); } catch (e) {}
+    };
+    let compact = false;
+    try { compact = localStorage.getItem('ceh_compact') === '1'; } catch (e) {}
+    applyView(compact);
+    viewToggle.addEventListener('click', () => {
+      applyView(!document.body.classList.contains('compact'));
+    });
+  }
+
   document.querySelectorAll('pre').forEach(pre => {
     const btn = document.createElement('button');
     btn.className = 'copy-btn';
@@ -86,11 +106,11 @@
   if (headings.length > 2) {
     const toc = document.createElement('aside');
     toc.className = 'toc';
-    toc.innerHTML = '<div class="toc-title">On this page</div><ul>' +
+    toc.innerHTML = '<details open><summary class="toc-title">On this page</summary><ul>' +
       headings.map(h => {
         if (!h.id) h.id = 'h-' + h.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
         return `<li><a href="#${h.id}">${h.textContent.trim()}</a></li>`;
-      }).join('') + '</ul>';
+      }).join('') + '</ul></details>';
     // Insert as first child of main (contents block)
     if (main && main.firstChild) main.insertBefore(toc, main.firstChild);
     else if (main) main.appendChild(toc);

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 13 - Hacking Web Servers</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+            <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+            <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+            <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+            <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+            <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+            <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+            <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+        <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+        <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
+            <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        </ul>
+        <button id="viewToggle" class="view-toggle">COMPACT</button>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+    <main class="content-body">
+        <div class="window">
+            <div class="module-header">
+                <span>CEH v12 - Module 13</span>
+                <h2 class="hero-3d">Hacking Web Servers</h2>
+            </div>
+
+            <p>Most organizations consider their web presence to be an extension of themselves. Organizations create their web presence on the World Wide Web using websites associated with their business. Most online services are implemented as web applications. Online banking, search engines, email applications, and social networks are just a few examples of such web services. Web content is generated in real-time by a software application running on the server-side. Web servers are a critical component of web infrastructure. A single vulnerability in a web server's configuration may lead to a security breach on websites. This makes web server security critical to the normal functioning of an organization.</p>
+
+            <p><strong>Scenario:</strong> Hackers attack web servers to steal credentials, passwords, and business information. They do this using DoS, DDoS, DNS server hijacking, DNS amplification, directory traversal, Man-in-the-Middle (MITM), sniffing, phishing, website defacement, web server misconfiguration, HTTP response splitting, web cache poisoning, SSH brute force, web server password cracking, and other methods. Attackers can exploit a poorly configured web server with known vulnerabilities to compromise the security of the web application. A leaky server can harm an organization. In the area of web security, despite strong encryption on the browser-server channel, web users still have no assurance about what happens at the other end. Systems are constantly being attacked, so IT security professionals need to be aware of the common attacks on web server applications.</p>
+
+            <p><strong>Objective:</strong> Perform web server hacking and other tasks that include, but are not limited to: footprint a web server using various information-gathering tools and inbuilt commands; enumerate web server information; crack remote passwords.</p>
+
+            <p><strong>Overview of Web Server:</strong> Most people think a web server is just hardware, but a web server also includes software applications. In general, a client initiates the communication process through HTTP requests. When a client wants to access any resource such as web pages, photos, or videos, then the client's browser generates an HTTP request to the web server. Depending on the request, the web server collects the requested information or content from data storage or the application servers and responds to the client's request with an appropriate HTTP response. If a web server cannot find the requested information, then it generates an error message. A penetration (pen) tester or ethical hacker for an organization must provide security to the company's web server, including performing checks on the web server for vulnerabilities, misconfigurations, unpatched security flaws, and improper authentication with external systems.</p>
+
+            <p><strong>Lab Tasks:</strong></p>
+            <ul>
+                <li>Footprint the web server
+                    <ul>
+                        <li>Information gathering using Ghost Eye</li>
+                        <li>Perform web server reconnaissance using Skipfish</li>
+                        <li>Footprint a web server using the httprecon Tool</li>
+                        <li>Footprint a web server using Netcat and Telnet</li>
+                        <li>Enumerate web server information using Nmap Scripting Engine (NSE)</li>
+                        <li>Uniscan web server fingerprinting in Parrot Security</li>
+                    </ul>
+                </li>
+                <li>Perform a web server attack
+                    <ul>
+                        <li>Crack FTP credentials using a Dictionary Attack</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <section class="lab-task">
+                <h3>Exam Essentials: Hacking Web Servers</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Scenario &amp; Objective</span>
+                    <p><strong>Scenario:</strong> An ethical hacker or penetration tester must provide security to the company's web server. This includes performing checks on the web server for vulnerabilities, misconfigurations, unpatched security flaws, and improper authentication with external systems. Web server fingerprinting is an essential task before proceeding to hack or exploit a webserver, because most attacks and exploits are specific to the type and version of the server being used by the target.</p>
+                    <p><strong>Objective:</strong> Footprint a web server using various information-gathering tools and inbuilt commands; enumerate web server information; crack remote passwords. Gather valuable system-level data such as account details, OS, software versions, server names, and database schema details.</p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Overview of Web Server Footprinting</span>
+                    <p>By performing web server footprinting, it is possible to gather valuable system-level data such as account details, OS, software versions, server names, and database schema details. Use Telnet utility to footprint a web server and gather information such as server name, server type, OSes, and applications running. Use footprinting tools such as Netcraft and httprecon to perform web server footprinting. Web server fingerprinting tools can extract information from the target server. Web server fingerprinting is an essential task for any penetration tester. Before proceeding to hack or exploit a webserver, the penetration tester must know the type and version of the webserver as most of the attacks and exploits are specific to the type and version of the server being used by the target.</p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Concepts</span>
+                    <ul>
+                        <li><strong>Web Server:</strong> Includes both hardware and software. A client initiates communication through HTTP requests; the server collects requested content from data storage or application servers and responds with an HTTP response; generates an error message if the requested information cannot be found.</li>
+                        <li><strong>Web Server Footprinting:</strong> Collecting as much information as possible about the target web server and analyzing it to find lapses in current security mechanisms. Reveals remote access capabilities, ports and services, OS, software versions, server names, account details, and database schema details. May involve Internet/newsgroup/bulletin board searches, Whois, and tools (Netcraft, httprecon).</li>
+                        <li><strong>Banner Grabbing:</strong> Probing HTTP servers to determine the <strong>Server</strong> field in the HTTP response header. Performed with Netcat, Telnet, and HTTP methods (e.g., <code>GET / HTTP/1.0</code>). Gathers content type, last modified date, accept ranges, ETag, and server information.</li>
+                        <li><strong>HTTP Methods:</strong> <code>GET</code> (retrieve resource), <code>POST</code> (submit data), <code>HEAD</code> (headers only), <code>PUT</code> (upload/replace resource), <code>DELETE</code> (remove resource), <code>TRACE</code> (echo request; can expose vulnerabilities such as Cross-Site Tracing), <code>OPTIONS</code> (lists allowed methods), <code>CONNECT</code> (tunneling), <code>PATCH</code> (partial update). <code>OPTIONS</code> reveals allowed methods; <code>TRACE</code> may be abused; <code>PUT</code>/<code>DELETE</code> can alter server content if misconfigured.</li>
+                        <li><strong>Web Server Attacks:</strong> DoS/DDoS, DNS server hijacking, DNS amplification, directory traversal, MITM, sniffing, phishing, website defacement, web server misconfiguration, HTTP response splitting, web cache poisoning, SSH brute force, web server password cracking, FTP credential cracking (dictionary attack), and brute-force attacks.</li>
+                        <li><strong>Web Server Fingerprinting Tools:</strong> Ghost Eye (Python 3 info-gathering: Whois, DNS, EtherApe, Nmap port scan, HTTP header grabber, Clickjacking test, Robots.txt scanner, Link grabber, IP location, traceroute); Skipfish (active web app reconnaissance, recursive crawl + dictionary probes, interactive sitemap, security checks); httprecon (advanced fingerprinting: banner grabbing, status code enumeration, header ordering analysis); Netcat and Telnet (banner grabbing); Nmap + NSE (http-enum, hostmap-bfk, http-trace, http-waf-detect); Uniscan (ping, traceroute, nslookup, static/dynamic/stress checks, Bing/Google searches); THC-Hydra (network login cracker for FTP and other protocols).</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Tools</span>
+                    <p><span class="tool-tag">Ghost Eye</span> <span class="tool-tag">Skipfish</span> <span class="tool-tag">httprecon</span> <span class="tool-tag">Netcat</span> <span class="tool-tag">Telnet</span> <span class="tool-tag">Nmap NSE</span> <span class="tool-tag">Uniscan</span> <span class="tool-tag">Hydra (THC-Hydra)</span> <span class="tool-tag">Netcraft</span> <span class="tool-tag">WAMP Server</span> <span class="tool-tag">Firefox</span> <span class="tool-tag">MATE Terminal</span></p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Ports / Protocols</span>
+                    <table style="width:100%">
+                        <thead><tr><th>Port / Protocol</th><th>Service</th></tr></thead>
+                        <tbody>
+                            <tr><td>20/tcp</td><td>FTP data transfer</td></tr>
+                            <tr><td>21/tcp</td><td>FTP (File Transfer Protocol) control</td></tr>
+                            <tr><td>22/tcp</td><td>SSH (Secure Shell)</td></tr>
+                            <tr><td>23/tcp</td><td>Telnet</td></tr>
+                            <tr><td>25/tcp</td><td>SMTP (Simple Mail Transfer Protocol)</td></tr>
+                            <tr><td>53/tcp/udp</td><td>DNS (Domain Name System)</td></tr>
+                            <tr><td>80/tcp</td><td>HTTP (Hypertext Transfer Protocol)</td></tr>
+                            <tr><td>443/tcp</td><td>HTTPS (HTTP over TLS/SSL)</td></tr>
+                            <tr><td>8080/tcp</td><td>HTTP alternate (WAMP/test web server)</td></tr>
+                            <tr><td>3306/tcp</td><td>MySQL (database backend)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Exam Tips</span>
+                    <ul>
+                        <li>Footprinting is the first step of hacking web servers; gather type and version of the web server before exploitation.</li>
+                        <li>Banner grabbing reveals the <strong>Server</strong> field and other HTTP response headers; use Netcat/Telnet with <code>GET / HTTP/1.0</code> followed by two Enter presses.</li>
+                        <li>Ghost Eye menu choices: <strong>3</strong> Whois Lookup, <strong>2</strong> DNS Lookup, <strong>6</strong> Clickjacking Test (on certifiedhacker.com).</li>
+                        <li>Skipfish command: <code>skipfish -o /home/attacker/test -S /usr/share/skipfish/dictionaries/complete.wl http://[IP]:8080</code>; let run ~5 minutes, then Ctrl+C; report in /home/attacker/test/index.html.</li>
+                        <li>httprecon: enter target URL and port 80, click Analyze; observe Get existing (server, e.g., nginx) and GET long request / Fingerprint Details tabs.</li>
+                        <li>Nmap NSE web enumeration: <code>nmap -sV --script=http-enum</code>, <code>nmap --script hostmap-bfk</code>, <code>nmap --script http-trace -d</code>, <code>nmap -p80 --script http-waf-detect</code>.</li>
+                        <li>Uniscan options: <code>-q</code> directory scan, <code>-we</code> file check (robots.txt, sitemap.xml), <code>-d</code> dynamic test; report at /usr/share/uniscan/report/&lt;IP&gt;.html.</li>
+                        <li>FTP credential cracking: first verify port 21 with <code>nmap -p 21</code>, then <code>hydra -L Usernames.txt -P Passwords.txt ftp://&lt;IP&gt;</code>; cracked example Martin / apple.</li>
+                        <li>Hydra syntax: <code>-L</code> username list, <code>-P</code> password list, target <code>ftp://IP</code>.</li>
+                        <li>Always obtain proper authorization; use these techniques only in authorized labs/environments.</li>
+                    </ul>
+                    <p><strong>Notes:</strong> Keep the lab tasks below as hands-on practice for these concepts. Versions/website appearance may differ; process same.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Practice &amp; Reference</h3>
+                <div class="section-card">
+                    <p>The following lab tasks provide hands-on practice and reference commands for web server footprinting and attack techniques.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Footprint the Web Server - Task 1: Information Gathering using Ghost Eye</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Ghost Eye / Python 3 / Parrot Security / MATE Terminal</span>
+                    <p><strong>What/when:</strong> Ghost Eye is an information-gathering tool written in Python 3. To run, Ghost Eye only needs a domain or IP. Ghost Eye can work with any Linux distros if they support Python 3. Ghost Eye gathers information such as Whois lookup, DNS lookup, EtherApe, Nmap port scan, HTTP header grabber, Clickjacking test, Robots.txt scanner, Link grabber, IP location finder, and traceroute. Here it is run on Parrot Security against certifiedhacker.com: perform Whois Lookup (menu option 3), DNS Lookup (option 2), and Clickjacking Test (option 6). Scroll up to observe complete domain information (Domain Name, Registry Domain ID, Registrar WHOIS Server, Registrar URL, Updated Date) and DNS results; the Clickjacking Test reveals the complete architecture of the web server and whether the domain is vulnerable to Clickjacking.</p>
+                    <pre><code># Parrot Security machine
+# login: attacker / toor (password not visible)
+# open MATE Terminal; run as root
+sudo su
+# password: toor
+
+# navigate to Ghost Eye directory
+cd ghost_eye
+
+# install dependencies
+pip3 install -r requirements.txt
+
+# launch Ghost Eye
+python3 ghost_eye.py
+
+# Ghost Eye menu appears
+# Whois Lookup: type 3, press Enter
+# Enter Domain or IP Address: certifiedhacker.com
+# scroll up to observe domain info
+
+# DNS Lookup: type 2, press Enter
+# Enter Domain or IP Address: certifiedhacker.com
+# scroll up to view DNS result
+
+# Clickjacking Test: type 6, press Enter
+# Enter the Domain to test: certifiedhacker.com
+# reveals web server architecture and Clickjacking vulnerability status
+
+# (optional) use other tools: Nmap port scan, HTTP header grabber, Link grabber, Robots.txt scanner
+# close all windows on Parrot Security when done
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Parrot Security to switch to the Parrot Security machine. In the login page, attacker username is selected by default; enter password toor and press Enter. Click the MATE Terminal icon at the top of the Desktop window. If a Question pop-up asks to update the machine, click No. In the terminal, type sudo su and press Enter; type toor in the [sudo] password for attacker field and press Enter (password not visible). Navigate to the Ghost Eye directory with cd ghost_eye. Install dependencies with pip3 install -r requirements.txt. Launch with python3 ghost_eye.py. Perform Whois Lookup by typing 3 and Enter, then certifiedhacker.com and Enter; scroll up to observe complete domain information. Perform DNS Lookup by typing 2 and Enter, then certifiedhacker.com and Enter; scroll up to view results. Perform Clickjacking Test by typing 6 and Enter, then certifiedhacker.com and Enter; Ghost Eye provides the complete architecture of the web server and reveals whether the domain is vulnerable to Clickjacking. Similarly use other available tools (Nmap port scan, HTTP header grabber, link grabber, Robots.txt scanner). Close all open windows on the Parrot Security machine.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Ghost Eye requires Python 3 and a domain or IP.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Footprint the Web Server - Task 2: Perform Web Server Reconnaissance using Skipfish</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Skipfish / Parrot Security / Windows Server 2022 (WAMP) / Firefox</span>
+                    <p><strong>What/when:</strong> Skipfish is an active web application security reconnaissance tool. It prepares an interactive sitemap for the targeted site by carrying out a recursive crawl and dictionary-based probes. The resulting map is then annotated with the output from a number of active (but hopefully non-disruptive) security checks. The final report serves as a foundation for professional web application security assessments. Here the target is the WordPress website http://[IP Address of Windows Server 2022]:8080, with WAMP Server running on Windows Server 2022. Output directory is named test; dictionary file is complete.wl. Let scan run ~5 minutes, then Ctrl+C. Report stored in /home/attacker/test/index.html; open with Firefox. Analyze issues (e.g., SQL query or similar syntax in parameters) and view traces.</p>
+                    <pre><code># Windows Server 2022 machine
+# login: CEH\Administrator / Pa$$w0rd
+# start WAMP Server
+# Type here to search -> wamp -> Wamperserver64 -> Enter
+# wait until WAMP icon turns Green in Notification area
+# leave Windows Server 2022 running
+
+# Parrot Security machine
+# open MATE Terminal; run as root
+sudo su
+# password: toor
+
+# perform security reconnaissance with Skipfish
+skipfish -o /home/attacker/test -S /usr/share/skipfish/dictionaries/complete.wl http://[IP Address of Windows Server 2022]:8080
+# [IP Address of Windows Server 2022] e.g. 10.10.1.22
+
+# press Enter at the tips screen to start
+# let scan run for 5 minutes, then press Ctrl+C to terminate
+
+# view report
+# Places -> Home Folder -> double-click test folder
+# right-click index.html -> Open With -> Firefox
+
+# analyze an issue: click a node under Issue type overview (e.g., SQL query or similar syntax in parameters)
+# click the URL; view PHP version webpage details
+# switch back to first tab; click "show trace" next to URL to examine HTTP trace
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows Server 2022 to switch to the Windows Server 2022 machine; click Ctrl+Alt+Delete; CEH\Administrator is selected by default; click Pa$$w0rd to paste the password and press Enter. Click Type here to search, type wamp, press Enter to launch Wamperserver64. Wait until the WAMP Server icon turns Green in the Notification area; leave Windows Server 2022 running. Click Parrot Security to switch to the Parrot Security machine. Click the MATE Terminal icon to open a Terminal window. Type sudo su and press Enter; type toor in the [sudo] password for attacker field and press Enter (password not visible). Perform security reconnaissance with skipfish -o /home/attacker/test -S /usr/share/skipfish/dictionaries/complete.wl http://[IP Address of Windows Server 2022]:8080. Before beginning the scan, Skipfish displays tips; press Enter to start. Let the scan run for 5 minutes, then press Ctrl+C to terminate. On completion, Skipfish generates a report in the test directory (/home/attacker/). Click Places from the top section and click Home Folder; double-click the test folder. Right-click index.html, hover Open With, click Firefox to view the scan result. The Skipfish crawl result displays a summary overview of document and issue types found. Expand each node for detailed information. Analyze an issue (e.g., SQL query or similar syntax in parameters): click a node under Issue type overview to expand it, observe the URL of the webpage associated with the vulnerability and click it. The PHP version webpage appears with machine details and PHP configuration. Switch back to the first tab and click show trace next to the URL to examine the vulnerability (HTTP trace window). Examine other vulnerabilities and patch them to secure the web server. Close all open windows on both Parrot Security and Windows Server 2022 machines.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Skipfish performs a heavy brute-force attack using complete.wl dictionary.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Footprint the Web Server - Task 3: Footprint a Web Server using the httprecon Tool</h3>
+                <div class="section-card">
+                    <span class="tool-tag">httprecon / Windows 11 / www.certifiedhacker.com</span>
+                    <p><strong>What/when:</strong> httprecon is a tool for advanced web server fingerprinting. It performs banner-grabbing attacks, status code enumeration, and header ordering analysis on its target web server. Web applications can publish information, interact with Internet users, and establish an e-commerce or e-government presence; if an organization is not rigorous in configuring and operating its public website, it may be vulnerable to a variety of security threats. Here httprecon runs on Windows 11 against www.certifiedhacker.com on port 80. Analyze the Get existing tab (server, e.g., nginx), GET long request tab, and Fingerprint Details tab (protocol and version). Attackers use such information to research vulnerabilities in the identified server.</p>
+                    <pre><code># Windows 11 machine
+# login: Admin / Pa$$w0rd
+# click Ctrl+Alt+Delete (or via Resources pane / Commands menu)
+# Networks screen -> Yes
+
+# navigate to httprecon
+# E:\CEH-Tools\CEHv12 Module 13 Hacking Web Servers\Web Server Footprinting Tools\httprecon
+# right-click httprecon.exe -> Run as administrator (double-click to launch)
+# UAC: Yes
+
+# in Main window:
+# Target: website URL = www.certifiedhacker.com
+# Port: 80
+# click Analyze
+
+# observe footprint:
+# Get existing tab -> server (e.g., nginx) used to develop the webpages
+# GET long request tab -> lists all GET requests
+# Fingerprint Details tab -> protocol name and version
+
+# close all open windows on Windows 11 when done
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows 11 to switch to the Windows 11 machine; click Ctrl+Alt+Delete. By default Admin user profile is selected; click Pa$$w0rd to paste the password in the Password field and press Enter. (Alternatively use Ctrl+Alt+Delete under the thumbnail or Commands menu.) Networks screen appears; click Yes to allow discoverability. Navigate to E:\CEH-Tools\CEHv12 Module 13 Hacking Web Servers\Web Server Footprinting Tools\httprecon, right-click httprecon.exe, and from the context menu click Run as administrator (double-click to launch). If a User Account Control pop-up appears, click Yes. Main window of httprecon appears; enter the website URL (here, www.certifiedhacker.com) and select port number 80 in the Target section. Click Analyze to start analyzing the designated website. A footprint of the website appears. Look at the Get existing tab and observe the server (nginx) used to develop the webpages. When attackers obtain this information, they research vulnerabilities present in nginx and try to exploit them. Click the GET long request tab (lists all GET requests), then click the Fingerprint Details tab. The details include the name of the protocol the website is using and its version. By obtaining this information, attackers can manipulate HTTP vulnerabilities to perform malicious activities such as sniffing over the HTTP channel, which might reveal sensitive data such as user credentials. Close all open windows on the Windows 11 machine.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. httprecon performs banner grabbing, status code enumeration, and header ordering analysis.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Footprint the Web Server - Task 4: Footprint a Web Server using Netcat and Telnet</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Netcat / Telnet / Parrot Security / www.moviescope.com</span>
+                    <p><strong>What/when:</strong> Netcat is a networking utility that reads and writes data across network connections using TCP/IP; a reliable back-end tool and network debugging/exploration tool. Telnet is a client-server network protocol providing a login session; it does not encrypt data and lacks an authentication scheme. Telnet helps perform banner-grabbing attacks by probing HTTP servers to determine the Server field in the HTTP response header. Here, on Parrot Security, use Netcat (nc -vv) then Telnet against www.moviescope.com on port 80, sending <code>GET / HTTP/1.0</code> (press Enter twice) to gather content type, last modified date, accept ranges, ETag, and server information.</p>
+                    <pre><code># Parrot Security machine
+# open MATE Terminal; run as root
+sudo su
+# password: toor
+
+# banner grabbing with Netcat
+nc -vv www.moviescope.com 80
+# displays hosting information of the domain
+
+# send HTTP request (press Enter twice after the line)
+GET / HTTP/1.0
+
+# Netcat performs banner grabbing: content type, last modified date, accept ranges, ETag, server info
+
+# clear terminal
+clear
+
+# banner grabbing with Telnet
+telnet www.moviescope.com 80
+# Telnet connects to the domain
+
+# send HTTP request (press Enter twice)
+GET / HTTP/1.0
+
+# Telnet performs banner grabbing: content type, last modified date, accept ranges, ETag, server info
+
+# close terminal window on Parrot Security when done
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Parrot Security to switch to the Parrot Security machine. Click the MATE Terminal icon from the menu bar to launch the terminal. A Parrot Terminal window appears. Type sudo su and press Enter to run programs as root. In the [sudo] password for attacker field, type toor as password and press Enter (password not visible). In the terminal window, type nc -vv www.moviescope.com 80 and press Enter. Once you hit Enter, Netcat displays the hosting information of the provided domain. Now type GET / HTTP/1.0 and press Enter twice. Netcat performs banner grabbing and gathers information such as content type, last modified date, accept ranges, ETag, and server information. In the terminal window, type clear and press Enter to clear the Netcat result. Now perform banner grabbing using Telnet: type telnet www.moviescope.com 80 and press Enter. Telnet connects to the domain. Now type GET / HTTP/1.0 and press Enter twice. Telnet performs banner grabbing and gathers content type, last modified date, accept ranges, ETag, and server information. Close the terminal window on the Parrot Security machine.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Telnet does not encrypt data and lacks authentication; use for banner grabbing only in authorized labs.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Footprint the Web Server - Task 5: Enumerate Web Server Information using Nmap Scripting Engine (NSE)</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Nmap / NSE / Parrot Security / www.goodshopping.com</span>
+                    <p><strong>What/when:</strong> Web applications available on the Internet may have vulnerabilities. Nmap, along with the Nmap Scripting Engine (NSE), can extract a lot of valuable information from the target web server. NSE scripts reveal various useful information about the target web server to an attacker. Here, on Parrot Security, enumerate directories used by web servers and web applications on www.goodshopping.com (nmap -sV --script=http-enum), discover hostnames that resolve the targeted domain (nmap --script hostmap-bfk), perform an HTTP trace (nmap --script http-trace -d), and check whether a WAF/IPS/IDS is configured (nmap -p80 --script http-waf-detect).</p>
+                    <pre><code># Parrot Security machine
+# open MATE Terminal; run as root
+sudo su
+# password: toor
+
+# enumerate directories used by web servers/web applications
+nmap -sV --script=http-enum www.goodshopping.com
+# enumerates and provides output details
+
+# discover hostnames that resolve the targeted domain
+nmap --script hostmap-bfk -script-args hostmap-bfk.prefix=hostmap- www.goodshopping.com
+
+# perform an HTTP trace on the targeted domain
+nmap --script http-trace -d www.goodshopping.com
+# detects a vulnerable server using TRACE method by sending HTTP TRACE request
+# shows whether TRACE method is enabled or not
+
+# check whether WAF/IPS/IDS is configured on the target host/domain
+nmap -p80 --script http-waf-detect www.goodshopping.com
+# scans host and attempts to determine whether a web server is monitored by IPS/IDS/WAF
+# probes target with malicious payloads and detects changes in response code
+
+# close terminal windows on Parrot Security when done
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On to the Parrot Security machine, click the MATE Terminal icon from the menu bar to launch the terminal. A Parrot Terminal window appears. Type sudo su and press Enter to run programs as root. In the [sudo] password for attacker field, type toor as password and press Enter (password not visible). Enumerate the directories used by web servers and web applications: type nmap -sV --script=http-enum [target website] and press Enter (here www.goodshopping.com). This script enumerates and provides output details. The next step is to discover the hostnames that resolve the targeted domain: type nmap --script hostmap-bfk -script-args hostmap-bfk.prefix=hostmap- www.goodshopping.com and press Enter. Perform an HTTP trace on the targeted domain: type nmap --script http-trace -d www.goodshopping.com and press Enter. This script detects a vulnerable server that uses the TRACE method by sending an HTTP TRACE request that shows if the method is enabled or not. Now check whether a Web Application Firewall is configured on the target host or domain: type nmap -p80 --script http-waf-detect www.goodshopping.com and press Enter. This command scans the host and attempts to determine whether a web server is being monitored by an IPS, IDS, or WAF; it probes the target host with malicious payloads and detects changes in the response code. Close the terminal windows on the Parrot Security machine.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. http-enum reveals applications, registries, and records; TRACE detection indicates potential Cross-Site Tracing risk.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Footprint the Web Server - Task 6: Uniscan Web Server Fingerprinting in Parrot Security</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Uniscan / Parrot Security / Windows Server 2022 (WAMP) / Firefox</span>
+                    <p><strong>What/when:</strong> Uniscan is a versatile server fingerprinting tool that not only performs simple commands like ping, traceroute, and nslookup, but also does static, dynamic, and stress checks on a web server. Apart from scanning websites, Uniscan also performs automated Bing and Google searches on provided IPs. Uniscan takes all of this data and combines them into a comprehensive report file for the user. Here WAMP runs on Windows Server 2022 (10.10.1.22); Uniscan runs on Parrot Security against http://10.10.1.22:8080/CEH using -q (directory scan), -we (file check: robots.txt and sitemap.xml), and -d (dynamic scan). View help with -h. Report is saved at /usr/share/uniscan/report/10.10.1.22.html and opened in Firefox.</p>
+                    <pre><code># Windows Server 2022 machine
+# login: CEH\Administrator / Pa$$w0rd
+# start WAMP Server: Type here to search -> wamp -> Wamperserver64 -> Enter
+# wait until WAMP icon turns Green; leave Windows Server 2022 running
+
+# Parrot Security machine
+# open MATE Terminal; run as root
+sudo su
+# password: toor
+
+# display Uniscan help options
+uniscan -h
+
+# directory scan (-q)
+uniscan -u http://10.10.1.22:8080/CEH -q
+# 10.10.1.22 = IP of Windows Server 2022 (may vary)
+# -u target URL; -q scan directories
+# takes ~5 minutes
+
+# file check: robots.txt and sitemap.xml (-we)
+uniscan -u http://10.10.1.22:8080/CEH -we
+# takes ~5 minutes
+
+# dynamic scan (-d): emails, source code disclosures, external hosts, web backdoors
+uniscan -u http://10.10.1.22:8080/CEH -d
+# takes ~18 minutes
+
+# view report
+# Places -> Home Folder -> File System -> usr -> share -> uniscan -> report
+# right-click 10.10.1.22.html -> Open With -> Firefox
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Windows Server 2022 to switch to the Windows Server 2022 machine; click Ctrl+Alt+Delete; CEH\Administrator is selected by default; click Pa$$w0rd to paste the password and press Enter. Click Type here to search, type wamp, press Enter to launch Wamperserver64. Wait until the WAMP Server icon turns Green in the Notification area; leave Windows Server 2022 running. Leave Windows Server 2022 running and switch to the Parrot Security machine. Click Parrot Security, click the MATE Terminal icon from the menu bar to launch the terminal. Type sudo su and press Enter; in the [sudo] password for attacker field type toor and press Enter (password not visible). In the terminal window, type uniscan -h and hit Enter to display help options. First use -q to search directories: type uniscan -u http://10.10.1.22:8080/CEH -q and hit Enter. Here 10.10.1.22 is the IP address of Windows Server 2022 (may vary). Analyze the complete output (~5 minutes). Now run uniscan with -w and -e together for file check (robots.txt and sitemap.xml): type uniscan -u http://10.10.1.22:8080/CEH -we and hit Enter (~5 minutes). Now use dynamic testing with -d: type uniscan -u http://10.10.1.22:8080/CEH -d and hit Enter (~18 minutes); Uniscan performs dynamic tests obtaining email-IDs, source code disclosures, external hosts, web backdoors. Click Places from the top section and click Home Folder. Click File System from the left pane, click usr -> share -> uniscan -> report. Right-click 10.10.1.22.html, hover Open With, click Firefox to view the scan report. The report opens in the browser with all scan details. Close all terminal windows on the Parrot Security machine.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Uniscan combines ping, traceroute, nslookup, static/dynamic/stress checks, and search engine queries into a report.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2: Perform a Web Server Attack - Task 1: Crack FTP Credentials using a Dictionary Attack</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Nmap / ftp / THC-Hydra / Parrot Security / Windows 11 (FTP) / Wordlists</span>
+                    <p><strong>What/when:</strong> A dictionary or wordlist contains thousands of words used by password cracking tools to break into a password-protected system. An attacker may manually guess a password or use automated tools and techniques such as the dictionary method. Most password cracking techniques succeed because of weak or easily guessable passwords. First, find the open FTP port using Nmap, then perform a dictionary attack using THC Hydra. Target: FTP service on Windows 11 (10.10.1.11). Use sample password file Passwords.txt and Usernames.txt from the Wordlists folder (copy to Desktop). Hydra tries combinations and outputs cracked credentials (example Martin / apple). Then log in via ftp, create a directory Hacked, verify on Windows 11 C:\FTP, and explore help/quit.</p>
+                    <pre><code># Parrot Security machine
+# open MATE Terminal; run as root
+sudo su
+# password: toor
+
+# scan target for FTP port (21)
+nmap -p 21 10.10.1.11
+# 10.10.1.11 = IP of Windows 11 (may vary)
+# observe port 21 is open
+
+# check FTP server is hosted (manual attempt)
+ftp 10.10.1.11
+# prompted for credentials; try random usernames/passwords (will fail)
+# close terminal window
+
+# prepare wordlists
+# Places -> Desktop -> navigate to CEHv12 Module 13 Hacking Web Servers folder
+# copy Wordlists folder (Ctrl+C) -> paste on Desktop (Ctrl+V)
+
+# dictionary attack with THC-Hydra
+hydra -L /home/attacker/Desktop/Wordlists/Usernames.txt -P /home/attacker/Desktop/Wordlists/Passwords.txt ftp://10.10.1.11
+# -L username list; -P password list; target ftp://IP
+# Hydra tries combinations; outputs cracked credentials (e.g., Martin / apple)
+# may take some time
+
+# log in with cracked credentials
+ftp 10.10.1.11
+# Username: Martin
+# Password: apple
+# ftp terminal appears
+
+# create a directory remotely
+mkdir Hacked
+
+# verify on Windows 11: navigate to C:\FTP and view "Hacked" directory
+
+# list available FTP commands
+help
+
+# exit FTP terminal
+quit
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Click Parrot Security to switch to the Parrot Security machine. (Use sample password file Passwords.txt containing a list of passwords.) Assume you are an attacker and have observed that FTP service is running on the Windows 11 machine. Perform an Nmap scan on the target machine (Windows 11) to check if the FTP port is open: click the MATE Terminal icon, type sudo su and press Enter, type toor in the [sudo] password for attacker field and press Enter (password not visible). Type nmap -p 21 [IP Address of Windows 11] and press Enter (IP here 10.10.1.11). Observe that port 21 is open. Check if an FTP server is hosted: type ftp [IP Address of Windows 11] and press Enter; you will be prompted to enter user credentials (implies FTP server hosted). Try entering random usernames and passwords in an attempt to gain FTP access (password not visible); you will not be able to log in. Close the terminal window. Now perform a dictionary attack using THC Hydra. Click Places from the top section and click Desktop from the drop-down options. Navigate to the CEHv12 Module 13 Hacking Web Servers folder and copy the Wordlists folder (Ctrl+C). Paste the copied folder (Wordlists) on the Desktop (Ctrl+V); close the window. Click the MATE Terminal icon to open a Terminal window; type sudo su and press Enter; type toor in the [sudo] password for attacker field and press Enter (password not visible). Type hydra -L /home/attacker/Desktop/Wordlists/Usernames.txt -P /home/attacker/Desktop/Wordlists/Passwords.txt ftp://[IP Address of Windows 11] and press Enter (IP here 10.10.1.11). Hydra tries various combinations of usernames and passwords (present in Usernames.txt and Passwords.txt) on the FTP server and outputs cracked usernames and passwords; this might take some time. On completion, cracked credentials appear. Try to log in to the FTP server using one of the cracked combinations; in this lab use Martin's credentials (Martin / apple). Type ftp [IP Address of Windows 11] and press Enter; enter Martin's user credentials to check successful login. An ftp terminal appears. Type mkdir Hacked and press Enter to remotely create a directory named Hacked on the Windows 11 machine through the ftp terminal. Click Windows 11 to switch to the Windows 11 machine and navigate to C:\FTP; view the directory named Hacked. You have successfully gained remote access to the FTP server by obtaining appropriate credentials. Click Parrot Security to switch back. Enter help to view all other commands available through the FTP terminal. On completing the task, enter quit to exit the ftp terminal. Close all open windows on both Parrot Security and Windows 11 machines.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Use cracked credentials only in authorized lab environments. Hydra syntax: -L usernames file, -P passwords file, target ftp://IP.</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+    <script>
+        const body = document.body;
+    const applyTheme = (t) => {
+        if (t === 'dark') body.setAttribute('data-theme', 'dark');
+        else body.removeAttribute('data-theme');
+    };
+    function getTheme() {
+        try {
+            const p = new URLSearchParams(location.search);
+            const u = p.get('theme');
+            if (u === 'dark' || u === 'light') return u;
+        } catch (e) {}
+        try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+    }
+    function syncNavLinks(t) {
+        document.querySelectorAll('a[href]').forEach(a => {
+            try {
+                const url = new URL(a.getAttribute('href'), location.href);
+                if (url.pathname.endsWith('.html')) {
+                    url.searchParams.set('theme', t);
+                    a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                }
+            } catch (e) {}
+        });
+    }
+    const initialTheme = getTheme();
+    applyTheme(initialTheme);
+    syncNavLinks(initialTheme);
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+            applyTheme(newT);
+            try { localStorage.setItem('theme', newT); } catch (e) {}
+            try {
+                const url = new URL(location.href);
+                url.searchParams.set('theme', newT);
+                history.replaceState(null, '', url.toString());
+            } catch (e) {}
+            syncNavLinks(newT);
+        });
+    }
+    const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+            'module_07.html': 'nav-07',
+            'module_08.html': 'nav-08',
+            'module_09.html': 'nav-09',
+            'module_10.html': 'nav-10',
+            'module_11.html': 'nav-11',
+            'module_12.html': 'nav-12',
+            'module_13.html': 'nav-13',
+        'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        document.getElementById(navId).classList.add('active');
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

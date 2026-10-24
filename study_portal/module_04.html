@@ -27,8 +27,12 @@
         <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
         <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
         <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+        <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+        <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
         <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
     </ul>
+    <button id="viewToggle" class="view-toggle">COMPACT</button>
     <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
 </nav>
     <main>
@@ -36,6 +40,61 @@
         <span>CEH v12 - Module 04</span>
         <h2 class="hero-3d">Enumeration</h2>
     </div>
+
+    <section class="lab-task">
+        <h3>Exam Essentials: Enumeration</h3>
+        <div class="section-card">
+            <span class="tool-tag">Exam Essentials</span>
+            <h4>Scenario</h4>
+            <p>With the development of network technologies and applications, network attacks are greatly increasing in both number and severity. Attackers continuously search for service and application vulnerabilities on networks and servers. After reconnaissance and scanning, the next step for an ethical hacker or penetration tester is to probe the target network further by performing enumeration: extracting more details about the network such as lists of computers, usernames, user groups, ports, OSes, machine names, network resources, and services. Enumeration creates an active connection and performs directed queries; it is typically conducted in an intranet environment. Enumeration activities may be illegal depending on organizational policies and local laws, so always acquire proper authorization before performing enumeration.</p>
+            <h4>Objective</h4>
+            <p>Extract information about the target organization including machine names, their OSes, services, and ports; network resources; usernames and user groups; lists of shares on individual hosts; policies and passwords; routing tables; audit and service settings; SNMP and FQDN details.</p>
+            <h4>Overview of Enumeration</h4>
+            <p>Enumeration creates an active connection with the system and performs directed queries to gain more information about the target. It extracts lists of computers, usernames, user groups, ports, OSes, machine names, network resources, and services using various techniques. Enumeration techniques are conducted in an intranet environment. The information gleaned helps identify security vulnerabilities and could enable password attacks to gain unauthorized access to information system resources.</p>
+            <h4>Key Concepts</h4>
+            <ul>
+                <li><strong>NetBIOS Enumeration:</strong> NetBIOS (Network Basic Input Output System) is used by Windows for file and printer sharing. A NetBIOS name is a unique 16-character ASCII name (15 characters device name + 1 service/name record type). NetBIOS runs over TCP/UDP ports 137, 138, 139. Enumeration gathers computers in a domain, shares on hosts, policies, and passwords. Tools: nbtstat, net use, NetBIOS Enumerator, Nmap NSE nbstat.nse.</li>
+                <li><strong>SNMP Enumeration:</strong> SNMP (Simple Network Management Protocol) is an application-layer protocol over UDP that manages routers, hubs, and switches. SNMP agents run on networking devices. Enumeration uses community strings (default often "public") to extract user accounts, devices, ARP/routing tables, interfaces, processes, storage, filesystem, and shares. Tools: snmp-check, SoftPerfect Network Scanner, snmpwalk, Nmap SNMP NSE scripts.</li>
+                <li><strong>LDAP Enumeration:</strong> LDAP (Lightweight Directory Access Protocol) accesses distributed directory services (e.g., Active Directory) over TCP 389 (LDAPS 636). Anonymous queries may leak usernames, addresses, departmental details, and server names. Tools: Active Directory Explorer, Python ldap3, ldapsearch, Nmap ldap-brute.</li>
+                <li><strong>NFS Enumeration:</strong> NFS (Network File System) enables remote file access. Enumeration identifies exported directories and connected clients (IP addresses and shared data). Misconfigurations may allow IP spoofing to access shared files. NFS runs on port 2049 (RPC portmapper 111). Tools: RPCScan, SuperEnum.</li>
+                <li><strong>DNS Enumeration:</strong> DNS enumeration gathers DNS server names, hostnames, machine names, usernames, IP addresses, and aliases. Techniques: zone transfer (AXFR), DNS cache snooping, DNSSEC zone walking. Runs on port 53. Tools: dig, nslookup, DNSRecon, Nmap DNS NSE scripts.</li>
+                <li><strong>SMTP Enumeration:</strong> SMTP (TCP 25, 2525, or 587) enumeration obtains valid users, delivery addresses, and message recipients; also checks open relays and available commands. Tools: Nmap SMTP NSE scripts, smtp-user-enum.</li>
+                <li><strong>RPC / SMB / FTP Enumeration:</strong> RPC enumeration identifies vulnerable services via portmapper; SMB enumeration enables banner grabbing (OS/services versions) and shares; FTP enumeration yields port 21 and running FTP services (bounce, brute force, sniffing). Ports: RPC 111/135, SMB 445, FTP 21. Tools: NetScanTools Pro, Nmap, Enum4linux.</li>
+            </ul>
+            <h4>Tools</h4>
+            <p><span class="tool-tag">Enum4linux</span> <span class="tool-tag">nbtstat</span> <span class="tool-tag">snmpwalk</span> <span class="tool-tag">ldapsearch</span> <span class="tool-tag">dig</span> <span class="tool-tag">smtp-user-enum</span> <span class="tool-tag">Nmap</span> <span class="tool-tag">snmp-check</span> <span class="tool-tag">RPCScan</span> <span class="tool-tag">SuperEnum</span> <span class="tool-tag">DNSRecon</span> <span class="tool-tag">NetBIOS Enumerator</span> <span class="tool-tag">AD Explorer</span> <span class="tool-tag">Global Network Inventory</span> <span class="tool-tag">Advanced IP Scanner</span> <span class="tool-tag">NetScanTools Pro</span></p>
+            <h4>Key Ports / Protocols</h4>
+            <table style="width:100%">
+                <thead><tr><th>Port / Protocol</th><th>Service</th></tr></thead>
+                <tbody>
+                    <tr><td>137/udp</td><td>NetBIOS Name Service</td></tr>
+                    <tr><td>138/udp</td><td>NetBIOS Datagram Service</td></tr>
+                    <tr><td>139/tcp</td><td>NetBIOS Session Service (SMB over NetBIOS)</td></tr>
+                    <tr><td>445/tcp</td><td>SMB (Server Message Block)</td></tr>
+                    <tr><td>161/udp</td><td>SNMP (trap 162/udp)</td></tr>
+                    <tr><td>389/tcp</td><td>LDAP (LDAPS 636/tcp)</td></tr>
+                    <tr><td>111/tcp/udp, 135/tcp</td><td>RPC portmapper / Windows RPC</td></tr>
+                    <tr><td>2049/tcp/udp</td><td>NFS (Network File System)</td></tr>
+                    <tr><td>53/tcp/udp</td><td>DNS (Domain Name System)</td></tr>
+                    <tr><td>25/tcp (587, 2525)</td><td>SMTP (Simple Mail Transfer Protocol)</td></tr>
+                    <tr><td>21/tcp</td><td>FTP (File Transfer Protocol)</td></tr>
+                </tbody>
+            </table>
+            <h4>Exam Tips</h4>
+            <ul>
+                <li>Enumeration creates active connections and directed queries; it is usually performed in an intranet environment.</li>
+                <li>NetBIOS name is 16 characters: 15 for device name + 1 for service/name record type; nbtstat -a shows remote name table, -c shows name cache.</li>
+                <li>SNMP default community string is often "public"; always identify and patch default community strings.</li>
+                <li>LDAP anonymous binds can leak directory objects; LDAP runs on TCP 389.</li>
+                <li>NFS exports may be accessible via IP spoofing if misconfigured; verify port 2049.</li>
+                <li>DNS zone transfers (AXFR) should be restricted; test with dig axfr and nslookup ls -d.</li>
+                <li>SMTP user enumeration uses VRFY/EXPN/RCPT TO; check for open relays.</li>
+                <li>SMB/FTP enumeration provides banners, OS versions, and shares; Enum4linux retrieves users, groups, shares, and password policies.</li>
+                <li>Always obtain proper authorization; enumeration may be illegal.</li>
+            </ul>
+            <p><strong>Notes:</strong> Keep the lab tasks below as hands-on practice for these concepts.</p>
+        </div>
+    </section>
 
     <section class="lab-task">
         <h3>Module 04 - Enumeration (Overview)</h3>

@@ -27,8 +27,12 @@
         <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
         <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
         <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+        <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+        <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
         <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
         </ul>
+        <button id="viewToggle" class="view-toggle">COMPACT</button>
         <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
     </nav>
 
@@ -39,6 +43,55 @@
         </div>
 
         <p>Scanning is extended reconnaissance: identify live hosts, open ports/services, OS details, and configuration lapses to profile the target. Labs use Parrot Security (10.10.1.13), Windows 11 (10.10.1.11), Windows Server 2022 (10.10.1.22), Windows Server 2019 (10.10.1.19), and Ubuntu (10.10.1.9). Always obtain proper authorization.</p>
+
+        <section class="lab-task">
+            <h3>Exam Essentials: Scanning Networks</h3>
+            <div class="section-card">
+                <span class="tool-tag">Exam Essentials</span>
+                <h4>Scenario</h4>
+                <p>After footprinting/reconnaissance, the next step is port and network scanning on the IP addresses obtained earlier to identify an entry point into the target network. Scanning is an extended form of reconnaissance (not the actual intrusion): it gathers live hosts, open ports/services, OS details, and configuration lapses to build a profile of the target organization and select attack strategies.</p>
+                <h4>Objective</h4>
+                <p>Conduct network scanning and port scanning and analyze network vulnerabilities. Network scans are needed to: check live systems and open ports; identify services running on live systems; perform banner grabbing/OS fingerprinting; identify network vulnerabilities.</p>
+                <h4>Overview of Scanning Networks</h4>
+                <p>Network scanning gathers detailed target information using aggressive reconnaissance to discover exploitable communication channels, probe listeners, and track responsive ones. Types of scanning: Port Scanning (lists open ports and services), Network Scanning (lists active hosts and IP addresses), Vulnerability Scanning (shows presence of known weaknesses).</p>
+                <h4>Key Concepts</h4>
+                <ul>
+                    <li><strong>Host Discovery:</strong> Find active/live hosts in a network (ARP, UDP, ICMP ECHO/timestamp/address-mask, TCP SYN/ACK, IP protocol ping). Reduces time vs scanning every port on every IP.</li>
+                    <li><strong>Port Scanning:</strong> Identify open ports and services. TCP scanning (open/stealth/half-open, Xmas, Maimon, ACK probe, connect), UDP, SCTP (INIT, COOKIE ECHO), SSDP and list scanning, IPv6.</li>
+                    <li><strong>OS Fingerprinting:</strong> Determine remote OS via active (crafted packets compared to DB) or passive (TTL/TCP window size, sniffing, error messages) techniques.</li>
+                    <li><strong>Banner Grabbing:</strong> Grab service banners/versions to identify OS and services; active or passive.</li>
+                    <li><strong>IDS/Firewall Evasion:</strong> Bypass security perimeters via packet fragmentation, source routing, source port manipulation, IP address decoy, IP address spoofing, custom packets, randomizing host order, bad checksums, proxy servers, anonymizers.</li>
+                </ul>
+                <h4>Tools</h4>
+                <p><span class="tool-tag">Nmap</span> <span class="tool-tag">Hping3</span> <span class="tool-tag">Unicornscan</span> <span class="tool-tag">Angry IP Scanner</span> <span class="tool-tag">MegaPing</span> <span class="tool-tag">Wireshark</span> <span class="tool-tag">Colasoft Packet Builder</span> (also NetScanTools Pro, sx, Metasploit).</p>
+                <h4>Key Flags / Options</h4>
+                <table style="width:100%">
+                    <thead><tr><th>Flag / Option</th><th>Meaning</th></tr></thead>
+                    <tbody>
+                        <tr><td>-sn</td><td>Disable port scan (host discovery only)</td></tr>
+                        <tr><td>-sS / -sT / -sU</td><td>Stealth SYN / TCP connect / UDP scan</td></tr>
+                        <tr><td>-sV / -O / -A</td><td>Service version / OS / aggressive detection</td></tr>
+                        <tr><td>-f / -mtu</td><td>Fragment packets / set MTU size</td></tr>
+                        <tr><td>-g / --source-port</td><td>Source port manipulation</td></tr>
+                        <tr><td>-D RND:n</td><td>Decoy scan with n random decoys</td></tr>
+                        <tr><td>--spoof-mac 0</td><td>Randomize MAC address</td></tr>
+                        <tr><td>-Pn</td><td>Skip host discovery</td></tr>
+                        <tr><td>-v</td><td>Verbose output</td></tr>
+                    </tbody>
+                </table>
+                <h4>Exam Tips</h4>
+                <ul>
+                    <li>Know the three scan types: port, network, vulnerability scanning.</li>
+                    <li>Memorize TTL signatures: Linux/macOS 64, Windows 128, Cisco/Solaris 255.</li>
+                    <li>Stealth scan (-sS) is half-open and can evade logging/firewalls.</li>
+                    <li>Xmas (-sX), Maimon (-sM), ACK (-sA) scans help map firewall state (filtered vs closed).</li>
+                    <li>Fragmentation, decoys, and source-port manipulation evade IDS/firewall.</li>
+                    <li>Nmap -A enables OS detection, version scanning, script scanning, and traceroute.</li>
+                    <li>Always obtain proper authorization before scanning.</li>
+                </ul>
+                <p><strong>Notes:</strong> Keep the lab tasks below as hands-on practice for these concepts.</p>
+            </div>
+        </section>
 
         <section class="lab-task">
             <h3>Lab 1 - Task 1: Perform Host Discovery using Nmap</h3>

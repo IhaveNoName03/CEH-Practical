@@ -46,7 +46,7 @@ body {
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
-    line-height: 1.6;
+    line-height: 1.75;
     -webkit-font-smoothing: antialiased;
 }
 h1, h2, h3, .module-header h2 { font-family: var(--font); font-weight: 700; }
@@ -188,7 +188,7 @@ main.content-body, main {
 .tool-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 8px 20px var(--accent-glow); }
 .tool-name { color: var(--accent); font-weight: 600; display: block; margin-bottom: 6px; font-size: 1rem; }
 .tool-card p { margin: 0; color: var(--muted); }
-.lab-task { margin-bottom: 40px; }
+.lab-task { margin-bottom: 56px; }
 .lab-task h3 {
     color: var(--text);
     font-size: 1.4rem;
@@ -212,6 +212,8 @@ pre {
     border: 1px solid var(--border);
     color: var(--code-text);
     overflow-x: auto;
+    overflow-y: auto;
+    max-height: 360px;
     font-family: var(--mono);
     font-size: 0.88rem;
     line-height: 1.6;
@@ -239,7 +241,30 @@ a:hover { color: var(--accent); text-decoration: underline; }
 ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 5px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 
-/* ---------- Hamburger toggle (mobile) ---------- */
+/* ---------- View toggle (compact mode) ---------- */
+.view-toggle {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+.view-toggle:hover { color: var(--text); border-color: var(--border-strong); background: var(--bg-soft); }
+.view-toggle.active { color: var(--accent); border-color: var(--accent); background: var(--accent-glow); }
+
+/* Compact mode: hide narrative paragraphs after code blocks */
+body.compact .lab-task > .section-card > p:not(:first-of-type),
+body.compact .section-card > p:not(:first-of-type) { display: none; }
+body.compact pre + p, body.compact pre ~ p { display: none; }
+body.compact .toc { display: none; }
+body.compact .window { padding: 20px 24px; }
+body.compact .lab-task { margin-bottom: 24px; padding: 12px 16px; }
 .nav-toggle {
     display: none;
     background: transparent;
@@ -270,7 +295,11 @@ pre:hover .copy-btn { opacity: 1; }
     border-radius: var(--radius); padding: 16px;
     font-size: 0.85rem; margin-bottom: 24px;
 }
-.toc-title { color: var(--accent); font-weight: 700; margin-bottom: 8px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; }
+.toc details { }
+.toc summary.toc-title { cursor: pointer; list-style: none; user-select: none; color: var(--accent); font-weight: 700; margin-bottom: 8px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; }
+.toc summary.toc-title::-webkit-details-marker { display: none; }
+.toc summary.toc-title::before { content: '▸ '; color: var(--accent); }
+.toc details[open] summary.toc-title::before { content: '▾ '; }
 .toc ul { list-style: none; padding: 0; margin: 0; columns: 2; column-gap: 24px; }
 .toc li { margin: 4px 0; break-inside: avoid; }
 .toc a { color: var(--muted); text-decoration: none; display: block; padding: 2px 0; border-left: 2px solid transparent; padding-left: 8px; }

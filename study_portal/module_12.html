@@ -27,8 +27,12 @@
             <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
             <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
             <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+        <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+        <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
             <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
         </ul>
+        <button id="viewToggle" class="view-toggle">COMPACT</button>
         <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
     </nav>
     <main class="content-body">
@@ -64,6 +68,100 @@
                     </ul>
                 </li>
             </ul>
+
+            <section class="lab-task">
+                <h3>Exam Essentials: Evading IDS, Firewalls, and Honeypots</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Exam Essentials</span>
+                    <h4>Scenario</h4>
+                    <p>The adoption of Internet use throughout the business world has boosted network usage in general. Organizations are using various network security measures such as firewalls, intrusion detection systems (IDS), intrusion prevention systems (IPS), and "honeypots" to protect their networks, which are the preferred targets of hackers for compromising organizations' security. Attackers continue to find new ways to breach network security and attack these targets. As an expert ethical hacker or penetration tester, you must possess sound knowledge of the functions, role, placement, and design implementation of IDS, IPS, firewalls, and honeypots used in the organization, as well as understand the process that the attacker has used to evade the organization's security in order to detect their intrusion attempts. The labs in this module give hands-on experience in auditing a network against IDS and firewall evasion attacks.</p>
+                    <h4>Objective</h4>
+                    <p>The objective of the lab is to evade the IDS and firewall, and perform other tasks that include, but are not limited to: detect intrusion attempts; detect malicious network traffic; detect intruders and their attack weapon; evade firewalls using various evasion techniques.</p>
+                    <h4>Overview of Evading IDS, Firewalls, and Honeypots</h4>
+                    <p>IDSs, which provide an extra layer of security to an organization's infrastructure, are attractive targets for attackers. Attackers implement various IDS evasion techniques to bypass this security mechanism and compromise the infrastructure. Many IDS evasion techniques circumvent detection through multiple methods and can adapt to the best possible method for each system. A firewall operates on a predefined set of rules; using extensive knowledge and skill, an attacker can bypass the firewall by employing various bypassing techniques, tricking the firewall so it does not filter the generated malicious traffic.</p>
+                    <h4>Overview of Intrusion Detection Systems</h4>
+                    <p>Intrusion detection systems monitor both inbound and outbound traffic and continuously inspect data for suspicious activities that may indicate a network or system security breach. The IDS checks traffic for signatures that match known intrusion patterns and signals an alarm when a match is detected. An IDS is generally passive and is used to detect intrusions, while an intrusion prevention system (IPS) is considered an active IDS that not only detects but also prevents intrusions. Main functions: gather and analyze information from within a computer or network to identify possible violations of security policy; act as a "packet sniffer" intercepting packets traveling along communication mediums and protocols; evaluate traffic for suspected intrusions and signal an alarm after detection.</p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Concepts</span>
+                    <h4>IDS vs IPS</h4>
+                    <ul>
+                        <li><strong>IDS (Intrusion Detection System):</strong> Passive sensor that monitors traffic and alerts on suspicious activity; does not block traffic by itself.</li>
+                        <li><strong>IPS (Intrusion Prevention System):</strong> Active, inline "active IDS" that detects and prevents/blocks intrusions in real time.</li>
+                        <li><strong>Placement:</strong> IDS is often out-of-band (mirrored traffic); IPS is inline with traffic flow.</li>
+                    </ul>
+                    <h4>HIDS vs NIDS</h4>
+                    <ul>
+                        <li><strong>HIDS (Host-based IDS):</strong> Monitors a single host (OS logs, file integrity, system calls, application logs); agent installed on the endpoint.</li>
+                        <li><strong>NIDS (Network-based IDS):</strong> Monitors network traffic across a segment/subnet; placed at strategic network points (e.g., Snort).</li>
+                    </ul>
+                    <h4>Signature-based vs Anomaly-based Detection</h4>
+                    <ul>
+                        <li><strong>Signature-based:</strong> Matches traffic against known attack patterns/signatures; fast with low false positives for known attacks but misses zero-day/unknown threats.</li>
+                        <li><strong>Anomaly-based:</strong> Establishes a baseline of normal behavior and flags deviations; can detect unknown attacks but tends to produce more false positives.</li>
+                    </ul>
+                    <h4>Firewall Types</h4>
+                    <ul>
+                        <li><strong>Packet-filtering (stateless):</strong> Filters by IP addresses, ports, and protocols in packet headers; fast but limited inspection.</li>
+                        <li><strong>Stateful inspection:</strong> Tracks connection state and context of active connections.</li>
+                        <li><strong>Application-level proxy (application gateway):</strong> Deep inspection at the application layer; terminates and re-establishes connections.</li>
+                        <li><strong>Circuit-level gateway:</strong> Validates the TCP handshake/session, then relays traffic without deep content inspection.</li>
+                        <li><strong>Next-Generation Firewall (NGFW):</strong> Combines traditional firewall with deep packet inspection, IPS, and application awareness.</li>
+                        <li><strong>Personal/Host firewall:</strong> Software firewall on an endpoint (e.g., ZoneAlarm, Windows Defender Firewall).</li>
+                    </ul>
+                    <h4>IDS/Firewall Evasion Techniques</h4>
+                    <ul>
+                        <li><strong>Fragmentation (tiny fragments):</strong> Split packets into small fragments to evade signature matching; overlapping fragments may bypass reassembly.</li>
+                        <li><strong>Tunneling:</strong> Encapsulate disallowed traffic inside an allowed protocol (HTTP, FTP, ICMP, DNS, SSH) to traverse firewalls/IDS.</li>
+                        <li><strong>Obfuscation:</strong> Encode/encrypt payloads to avoid signature detection.</li>
+                        <li><strong>Polymorphism:</strong> Mutate code/payload while preserving functionality to evade signature-based detection.</li>
+                        <li><strong>Metasploit templates:</strong> Modify the PE template source (template.c) and recompile to reduce antivirus detection counts.</li>
+                        <li><strong>BITSAdmin:</strong> Use Background Intelligent Transfer Service over HTTP to download payloads through firewalls.</li>
+                        <li><strong>HTTP/FTP tunneling:</strong> Tunnel FTP over HTTP (port 80/90) using HTTPort and HTTHost to bypass firewall rules.</li>
+                        <li><strong>Nmap evasion:</strong> Zombie/idle scan, fragmentation, decoys, timing templates, and other options to bypass firewall/IDS filtering.</li>
+                    </ul>
+                    <h4>Firewall Bypassing Techniques (general)</h4>
+                    <ul>
+                        <li>Port scanning, firewalking, banner grabbing, IP address spoofing, source routing, tiny fragments, using an IP address in place of a URL, anonymous surfing sites, proxy servers, ICMP/ACK/HTTP/SSH/DNS tunneling, through external systems, MITM, content-based, and XSS-based bypasses.</li>
+                    </ul>
+                    <h4>Honeypots</h4>
+                    <ul>
+                        <li><strong>Honeypot:</strong> A decoy system that creates a safe environment to capture and interact with unsolicited/attacker traffic; used for research and as an early-warning IDS (e.g., HoneyBOT, a medium-interaction honeypot for Windows).</li>
+                        <li><strong>Honeynet:</strong> A network of honeypots simulating a production network.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Tools</span>
+                    <p><span class="tool-tag">Snort</span> <span class="tool-tag">ZoneAlarm FREE FIREWALL</span> <span class="tool-tag">HoneyBOT</span> <span class="tool-tag">Nmap</span> <span class="tool-tag">Metasploit (msfvenom)</span> <span class="tool-tag">VirusTotal</span> <span class="tool-tag">HTTPort / HTTHost</span> <span class="tool-tag">BITSAdmin</span> <span class="tool-tag">WinPcap</span> <span class="tool-tag">Notepad++ / pluma</span> <span class="tool-tag">i686-w64-mingw32-gcc</span> <span class="tool-tag">Apache (httpd)</span> <span class="tool-tag">telnet / ftp</span> <span class="tool-tag">Windows Defender Firewall</span></p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Terms</span>
+                    <ul>
+                        <li><strong>IDS / IPS / HIDS / NIDS</strong>, <strong>signature</strong>, <strong>anomaly</strong>, <strong>baseline</strong>, <strong>false positive / false negative</strong>, <strong>firewall</strong>, <strong>honeypot / honeynet</strong>, <strong>promiscuous mode</strong>, <strong>fragmentation</strong>, <strong>tunneling</strong>, <strong>obfuscation</strong>, <strong>polymorphism</strong>, <strong>payload</strong>, <strong>PE template</strong>, <strong>BITS</strong>, <strong>HTTPort / HTTHost</strong>, <strong>zombie / idle scan</strong>, <strong>firewalking</strong>, <strong>banner grabbing</strong>, <strong>source routing</strong>, <strong>IP spoofing</strong>.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Exam Tips</span>
+                    <ul>
+                        <li>IDS is passive (detects/alerts); IPS is active (detects and prevents) and is inline.</li>
+                        <li>HIDS protects/monitors a single host; NIDS monitors network traffic across a segment.</li>
+                        <li>Signature-based detection matches known patterns; anomaly-based detects deviations from a baseline.</li>
+                        <li>Firewalls operate on predefined rules; attackers trick them so malicious traffic is not filtered.</li>
+                        <li>Fragmentation (tiny fragments) can evade IDS signature matching by splitting packets.</li>
+                        <li>Tunneling hides disallowed traffic inside allowed protocols (HTTP/FTP/ICMP/DNS/SSH).</li>
+                        <li>Polymorphism and obfuscation mutate/encode payloads to evade signatures and AV.</li>
+                        <li>Metasploit template modification (template.c) can reduce AV detection counts (e.g., 54/70 to 48/71).</li>
+                        <li>BITSAdmin transfers files over HTTP and can bypass firewalls (file lands in C:\\).</li>
+                        <li>HTTPort/HTTHost tunnel FTP over HTTP (port 90) to bypass an outbound port-21 block (connect via 127.0.0.1).</li>
+                        <li>Nmap zombie/idle scan (-sI) can reveal open ports even when the attacker is firewalled.</li>
+                        <li>Snort is an open-source NIDS; can run as sniffer, packet logger, or NIPS; uses rules (snort.conf).</li>
+                        <li>ZoneAlarm blocks sites by adding them to the Blocked zone (Host/Site).</li>
+                        <li>HoneyBOT is a Windows honeypot capturing unsolicited traffic; Ports and Remotes show connections; View Details shows packet logs.</li>
+                        <li>Always obtain proper authorization; evasion techniques are for authorized labs only.</li>
+                    </ul>
+                    <p><strong>Notes:</strong> Keep the lab tasks below as hands-on practice for these concepts.</p>
+                </div>
+            </section>
 
             <section class="lab-task">
                 <h3>Lab 1: Perform Intrusion Detection using Various Tools - Task 1: Detect Intrusions using Snort</h3>

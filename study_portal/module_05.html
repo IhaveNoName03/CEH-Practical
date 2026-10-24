@@ -27,8 +27,12 @@
         <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
         <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
         <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+        <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+        <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
         <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
         </ul>
+        <button id="viewToggle" class="view-toggle">COMPACT</button>
         <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
     </nav>
     <main class="content-body">
@@ -46,6 +50,55 @@
                     <p><strong>Vulnerability databases:</strong> CWE (Common Weakness Enumeration), CVE (Common Vulnerabilities and Exposures), NVD (National Vulnerability Database), and CVSS (Common Vulnerability Scoring System). Scanning approaches: Active Scanning (probes sent) and Passive Scanning (traffic monitored).</p>
                     <p><strong>Lab tasks:</strong> (1) Perform vulnerability research with vulnerability scoring systems and databases (CWE, CVE, NVD). (2) Perform vulnerability assessment using OpenVAS, Nessus, and Nikto.</p>
                     <p><strong>Duration note:</strong> The lab environment shows "1 Hr 45 Min Remaining" for the module; individual scans take about 10-20 minutes.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Exam Essentials</h3>
+                <div class="section-card">
+                    <p><strong>Scenario:</strong> Footprinting and scanning already gathered target details (system name, OS, shared resources, policies/passwords, users/groups). The next step is vulnerability research and vulnerability assessment: discover, measure, and classify security weaknesses such as missing patches, unnecessary services, weak authentication/encryption, configuration errors, and known/publicly reported vulnerabilities before attackers exploit them.</p>
+                    <p><strong>Objective:</strong> Extract information about the target that includes network vulnerabilities; listening IP/TCP/UDP ports and services; application/service configuration errors; OS and application versions; accounts with weak passwords; files/folders with weak permissions; default services to remove; common application security misconfigurations; and systems exposed to known vulnerabilities.</p>
+                    <p><strong>Overview of Vulnerability Analysis:</strong> A vulnerability is a weakness in the design or implementation of a system that can be exploited to compromise its security, often a security loophole allowing an attacker to bypass user authentication. The two main causes are software/hardware misconfiguration and poor programming practices. Vulnerability assessment is an in-depth examination that scans networks for known security weaknesses, recognizes, measures, and classifies security vulnerabilities in systems, networks, and communication channels, and helps secure the network before attackers exploit loopholes. There are two approaches to network vulnerability scanning: Active Scanning (probes sent to the target) and Passive Scanning (traffic monitored without direct interaction).</p>
+
+                    <h4>Key Concepts</h4>
+                    <ul>
+                        <li><strong>CWE (Common Weakness Enumeration):</strong> a category system for software vulnerabilities and weaknesses, used as a baseline for weakness identification, mitigation, and prevention; includes advanced search by research/development/architectural concepts and the CWE Top 25 Most Dangerous Software Weaknesses.</li>
+                        <li><strong>CVE (Common Vulnerabilities and Exposures):</strong> a free, publicly available standardized list/dictionary of identifiers for common software vulnerabilities and exposures; provides a baseline for tool evaluation and enables data exchange for cybersecurity automation.</li>
+                        <li><strong>NVD (National Vulnerability Database):</strong> the U.S. government repository of standards-based vulnerability management data represented using SCAP; includes security checklist references, software flaws, misconfigurations, product names, and impact metrics.</li>
+                        <li><strong>CVSS (Common Vulnerability Scoring System):</strong> provides standardized Base, Temporal, Environmental, and Overall severity metrics for vulnerabilities.</li>
+                        <li><strong>Vulnerability Scanning vs Vulnerability Assessment:</strong> scanning discovers known weaknesses (active probes or passive traffic monitoring); assessment is the broader in-depth examination that recognizes, measures, classifies, and ranks vulnerabilities to guide remediation.</li>
+                    </ul>
+
+                    <h4>Tools</h4>
+                    <ul>
+                        <li><strong>OpenVAS (Greenbone):</strong> comprehensive vulnerability scanning and management framework with 50,000+ Network Vulnerability Tests (NVTs); supports unauthenticated/authenticated testing and many protocols; used to scan a target IP and compare results with the firewall ON vs OFF.</li>
+                        <li><strong>Nessus:</strong> assessment solution for identifying vulnerabilities, configuration issues, and malware across OSes, network devices, databases, web servers, and more; policy-based scanning with authenticated Windows credentials and downloadable HTML reports.</li>
+                        <li><strong>Nikto:</strong> open-source web server scanner testing for 6,700+ potentially dangerous files/programs, 1,250+ outdated server versions, and 270+ version-specific problems; checks configuration issues and CGI directories; supports tuning and report export.</li>
+                    </ul>
+
+                    <h4>CVSS Scoring</h4>
+                    <table>
+                        <thead><tr><th>Severity</th><th>Base Score Range</th></tr></thead>
+                        <tbody>
+                            <tr><td>None</td><td>0.0</td></tr>
+                            <tr><td>Low</td><td>0.1 - 3.9</td></tr>
+                            <tr><td>Medium</td><td>4.0 - 6.9</td></tr>
+                            <tr><td>High</td><td>7.0 - 8.9</td></tr>
+                            <tr><td>Critical</td><td>9.0 - 10.0</td></tr>
+                        </tbody>
+                    </table>
+                    <p><strong>Base Score:</strong> deals with the inherent qualities of a vulnerability and is the metric most relied upon by enterprises. <strong>Temporal Score:</strong> qualities that change over time. <strong>Environmental Score:</strong> qualities specific to the affected user's environment. <strong>Overall Score:</strong> sum total of both CVSS Base Score and CVSS Temporal Score.</p>
+
+                    <h4>Exam Tips</h4>
+                    <ul>
+                        <li>CWE categorizes weaknesses; CVE provides standardized vulnerability IDs; NVD aggregates SCAP-based data and CVSS scores; CVSS measures severity.</li>
+                        <li>Active scanning sends probes to the target; passive scanning monitors traffic without direct interaction.</li>
+                        <li>Vulnerability scanners may return the same results with the firewall ON or OFF, so firewalling alone does not remove underlying vulnerabilities.</li>
+                        <li>Authenticated scanning (e.g., Nessus with Windows credentials) yields deeper configuration and patch-level results.</li>
+                        <li>OpenVAS ships 50,000+ NVTs; Nessus is policy-based with reporting; Nikto focuses on web server/application exposures.</li>
+                        <li>CVE-2021-4034 (pkexec) is revisited in Module 06 System Hacking; CVE-2021-44228 (Log4Shell) in Module 14 Hacking Web Applications.</li>
+                        <li>Base Score ranges: None 0.0, Low 0.1-3.9, Medium 4.0-6.9, High 7.0-8.9, Critical 9.0-10.0.</li>
+                    </ul>
                 </div>
             </section>
 

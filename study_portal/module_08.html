@@ -27,8 +27,12 @@
         <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
         <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
         <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+        <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+        <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
         <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
         </ul>
+        <button id="viewToggle" class="view-toggle">COMPACT</button>
         <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
     </nav>
     <main class="content-body">
@@ -46,7 +50,76 @@
 
             <p><strong>Overview of Network Sniffing:</strong> Sniffing is straightforward in hub-based networks, as traffic on a segment passes through all hosts associated with that segment. Most networks today work on switches. A switch looks at the MAC address associated with each frame and sends data to the required port. A MAC address is a hardware address that uniquely identifies each node of a network. Packet sniffers convert the host NIC to promiscuous mode. Passive Sniffing involves sending no packets; it only captures and monitors packets flowing in the network. Active Sniffing searches for traffic on a switched LAN by actively injecting traffic into the LAN; it also refers to sniffing through a switch. Active sniffing techniques include MAC Flooding, DNS Poisoning, ARP Poisoning, DHCP Attacks (starvation and rogue DHCP server), Switch port stealing, and Spoofing (MAC spoofing, VLAN hopping, STP attacks).</p>
 
-            
+            <section class="lab-task">
+                <h3>Exam Essentials: Sniffing</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Exam Essentials</span>
+                    <h4>Scenario</h4>
+                    <p>Network sniffing can be used to troubleshoot network problems, examine security problems, and debug protocol implementations, but attackers misuse sniffers to capture sensitive data such as login credentials. A packet sniffer can only capture data packets from within a given subnet and cannot sniff packets from another network. Sniffers turn off the filter employed by Ethernet NICs so the host sees other stations' traffic; <strong>promiscuous mode</strong> lets a network device intercept and read each packet in its entirety. An ethical hacker must perform network security assessments, suggest troubleshooting techniques, and detect sniffing attempts.</p>
+                    <h4>Objective</h4>
+                    <p>Perform network sniffing and other tasks that include, but are not limited to: sniff the network; analyze incoming and outgoing packets for any attacks; troubleshoot the network for performance; secure the network from attacks.</p>
+                    <h4>Overview of Network Sniffing</h4>
+                    <p>Sniffing is straightforward in hub-based networks, as traffic on a segment passes through all hosts associated with that segment. Most networks today work on switches. A switch looks at the MAC address associated with each frame and sends data to the required port. A MAC address is a hardware address that uniquely identifies each node of a network. Packet sniffers convert the host NIC to promiscuous mode. <strong>Passive Sniffing</strong> involves sending no packets; it only captures and monitors packets flowing in the network. <strong>Active Sniffing</strong> searches for traffic on a switched LAN by actively injecting traffic into the LAN; it also refers to sniffing through a switch. Active sniffing techniques include MAC Flooding, DNS Poisoning, ARP Poisoning, DHCP Attacks (starvation and rogue DHCP server), Switch port stealing, and Spoofing (MAC spoofing, VLAN hopping, STP attacks).</p>
+                    <h4>Key Concepts</h4>
+                    <ul>
+                        <li><strong>Passive Sniffing:</strong> Sniffing on a hub-based network; sends no packets, only captures/monitors traffic flowing on the segment. Once predominant; switch-based networks mitigate it.</li>
+                        <li><strong>Active Sniffing:</strong> Sniffing on a switched LAN by actively injecting traffic (ARP) into the LAN to capture traffic through a switch.</li>
+                        <li><strong>Promiscuous Mode:</strong> Mode in which a NIC intercepts and reads every packet in its entirety, not just packets addressed to it; sniffers toggle the NIC into this mode.</li>
+                        <li><strong>MAC Flooding:</strong> Floods the switch's CAM table with forged/random MAC entries (e.g., macof ~131,000/min) until full, forcing the switch to behave like a hub so traffic is broadcast and sniffable.</li>
+                        <li><strong>DHCP Starvation:</strong> Floods the DHCP server with many DHCP requests, exhausting the IP lease pool (DoS) so valid users cannot obtain/renew IPs; often followed by a rogue DHCP server. Tools: Yersinia, Hyenae.</li>
+                        <li><strong>ARP Poisoning (ARP Spoofing):</strong> Forges ARP request/reply packets to update victims' ARP caches with the attacker's MAC, redirecting traffic (MITM). Extremely effective on switches. Tools: arpspoof, Cain &amp; Abel, Habu.</li>
+                        <li><strong>Man-in-the-Middle (MITM):</strong> Intrudes into an existing connection, splitting the TCP connection (client-attacker and attacker-server) to read, modify, or insert data; captures credentials (e.g., FTP user/pass).</li>
+                        <li><strong>DNS Poisoning:</strong> Tricks a DNS server into accepting forged information.</li>
+                        <li><strong>Switch Port Stealing:</strong> Floods the switch with forged gratuitous ARP packets with the target MAC as source.</li>
+                        <li><strong>Spoofing Attacks:</strong> MAC spoofing, VLAN hopping, STP attacks to steal sensitive information / evade identity.</li>
+                        <li><strong>MAC Spoofing:</strong> Changing the OS-believed MAC address (TMAC, SMAC, macchanger); hard-coded NIC MAC remains unchanged. Evaluation mode may limit spoofed MAC.</li>
+                        <li><strong>Sniffing Detection:</strong> Sniffers leave no trace (passive). Detection uses Ping method (promiscuous mode), DNS method (traffic increase), ARP method (non-broadcast ARP cached by promiscuous NIC). Nmap NSE sniffer-detect; Wireshark ARP/RARP duplicate-IP detection; Capsa.</li>
+                    </ul>
+                    <h4>Tools</h4>
+                    <p><span class="tool-tag">Wireshark</span> <span class="tool-tag">macof (dsniff)</span> <span class="tool-tag">Yersinia</span> <span class="tool-tag">arpspoof (dsniff)</span> <span class="tool-tag">Cain &amp; Abel</span> <span class="tool-tag">macchanger</span> <span class="tool-tag">TMAC</span> <span class="tool-tag">SMAC</span> <span class="tool-tag">TCPView</span> <span class="tool-tag">CurrPorts</span> <span class="tool-tag">Omnipeek</span> <span class="tool-tag">SteelCentral Packet Analyzer</span> <span class="tool-tag">Capsa</span> <span class="tool-tag">Habu</span> <span class="tool-tag">Nmap (sniffer-detect)</span> <span class="tool-tag">hping3</span></p>
+                    <h4>Vulnerable Protocols (cleartext)</h4>
+                    <p>HTTP, FTP, SMTP, POP, Telnet, IMAP, NNTP — sniffed traffic may contain FTP/Telnet passwords, chat sessions, email/web traffic, DNS traffic.</p>
+                    <h4>Key Protocols / Ports</h4>
+                    <table style="width:100%">
+                        <thead><tr><th>Port / Protocol</th><th>Service</th></tr></thead>
+                        <tbody>
+                            <tr><td>21/tcp</td><td>FTP (File Transfer Protocol)</td></tr>
+                            <tr><td>23/tcp</td><td>Telnet</td></tr>
+                            <tr><td>25/tcp (587)</td><td>SMTP</td></tr>
+                            <tr><td>80/tcp</td><td>HTTP</td></tr>
+                            <tr><td>110/tcp</td><td>POP3</td></tr>
+                            <tr><td>119/tcp</td><td>NNTP</td></tr>
+                            <tr><td>143/tcp</td><td>IMAP</td></tr>
+                            <tr><td>53/tcp/udp</td><td>DNS</td></tr>
+                            <tr><td>67/68 udp</td><td>DHCP (server/client)</td></tr>
+                            <tr><td>2002/tcp</td><td>Remote Packet Capture (rpcapd)</td></tr>
+                        </tbody>
+                    </table>
+                    <h4>Exam Tips</h4>
+                    <ul>
+                        <li>Passive sniffing = hub-based, no packets sent; active sniffing = switched LAN, injects traffic.</li>
+                        <li>Promiscuous mode lets a NIC read all packets on the segment; sniffers toggle it on.</li>
+                        <li>MAC flooding fills the CAM table so the switch acts like a hub (macof ~131,000 entries/min).</li>
+                        <li>DHCP starvation exhausts the lease pool causing DoS; follow with rogue DHCP for MITM.</li>
+                        <li>ARP poisoning forges ARP replies to redirect traffic; key to MITM on switched networks.</li>
+                        <li>MITM splits the TCP connection (client-attacker, attacker-server) to read/modify/insert data.</li>
+                        <li>Sniffers are passive and leave no trace; detect via Ping/DNS/ARP methods or Nmap sniffer-detect (ARP method).</li>
+                        <li>Wireshark display filter <code>http.request.method == POST</code> and Find Packet (string "pwd") extract credentials.</li>
+                        <li>Remote capture uses rpcapd on the victim (port 2002) and Wireshark Manage Interfaces -&gt; Remote.</li>
+                        <li>Prevention: use HTTPS/SSH/VPN, switch security (port security, DHCP snooping, dynamic ARP inspection), disable open switch ports.</li>
+                        <li>Always obtain proper authorization before sniffing.</li>
+                    </ul>
+                    <p><strong>Notes:</strong> Keep the lab tasks below as hands-on practice for these concepts.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Practice &amp; Reference</h3>
+                <div class="section-card">
+                    <p>The following lab tasks provide hands-on practice and reference commands for sniffing techniques.</p>
+                </div>
+            </section>
+
             <section class="lab-task">
                 <h3>Lab 1 - Active Sniffing: Task 1: Perform MAC Flooding using macof</h3>
                 <div class="section-card">

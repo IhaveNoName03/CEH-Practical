@@ -23,7 +23,10 @@ A high-performance, responsive study website for CEH v12 (Certified Ethical Hack
 9. **Module 10:** Denial-of-Service
 10. **Module 11:** Session Hijacking
 11. **Module 12:** Evading IDS, Firewalls, and Honeypots
-12. *Remaining Modules 13-20 (Coming Soon)*
+13. **Module 13:** Hacking Web Servers
+14. **Module 14:** Hacking Web Applications
+15. **Module 15:** SQL Injection
+16. *Remaining Modules 16-20 (Coming Soon)*
 
 ## Setup
 

@@ -27,8 +27,12 @@
         <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
         <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
         <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+        <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+        <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
         <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
         </ul>
+        <button id="viewToggle" class="view-toggle">COMPACT</button>
         <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
     </nav>
     <main class="content-body">
@@ -39,6 +43,97 @@
             </div>
 
             <p>System hacking is the next step after footprinting, scanning, enumeration, and vulnerability analysis. It includes gaining access, escalating privileges, maintaining access, and clearing logs. Labs use Parrot Security (10.10.1.13), Windows 11 (10.10.1.11), Windows Server 2022 (10.10.1.22), Windows Server 2019 (10.10.1.19), and Ubuntu (10.10.1.9). Always obtain proper authorization.</p>
+
+            <section class="lab-task">
+                <h3>Exam Essentials: System Hacking</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Exam Essentials</span>
+                    <h4>Scenario</h4>
+                    <p>Since security and compliance are high priorities for most organizations, attacks on an organization's computer systems take many forms such as spoofing, smurfing, and other Denial-of-Service (DoS) attacks designed to harm or interrupt operational systems. You already gathered information through footprinting, scanning, enumeration, and vulnerability analysis. The next step for an ethical hacker or penetration tester is to perform system hacking on the target system using all information collected in those earlier phases. System hacking helps identify vulnerabilities and security flaws in the target system and predict the effectiveness of additional security measures in strengthening and protecting information resources and systems from attack. The labs in this module provide real-time experience exploiting underlying vulnerabilities in target systems using various online sources and system hacking techniques and tools. System hacking activities may be illegal depending on organizational policies and any laws in effect, so always acquire proper authorization before performing system hacking.</p>
+                    <h4>Objective</h4>
+                    <p>The objective is to monitor a target system remotely and perform tasks that include, but are not limited to: bypassing access controls to gain access to the system (such as password cracking and vulnerability exploitation); acquiring the rights of another user or an admin (privilege escalation); creating and maintaining remote access to the system (executing applications such as trojans, spyware, backdoors, and keyloggers); hiding malicious activities and data theft (executing applications such as rootkits, steganography, etc.); and hiding the evidence of compromise (clearing logs).</p>
+                    <h4>Overview of System Hacking</h4>
+                    <p>In preparation for hacking a system, you must follow a certain methodology: first obtain information during the footprinting, scanning, enumeration, and vulnerability analysis phases, which can be used to exploit the target system. There are four steps in system hacking:</p>
+                    <ul>
+                        <li><strong>Gaining Access:</strong> Use techniques such as cracking passwords and exploiting vulnerabilities to gain access to the target system.</li>
+                        <li><strong>Escalating Privileges:</strong> Exploit known vulnerabilities existing in OSes and software applications to escalate privileges.</li>
+                        <li><strong>Maintaining Access:</strong> Maintain high levels of access to perform malicious activities such as executing malicious applications and stealing, hiding, or tampering with sensitive system files.</li>
+                        <li><strong>Clearing Logs:</strong> Avoid recognition by legitimate system users and remain undetected by wiping out the entries corresponding to malicious activities in the system logs.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Concepts</span>
+                    <h4>Gaining Access</h4>
+                    <ul>
+                        <li><strong>Password attacks:</strong> Online active attacks (Responder LLMNR/NBT-NS/MDNS poisoning captures NTLM hashes from broadcast name-resolution requests); password auditing/cracking (L0phtCrack via dictionary, hybrid, rainbow table, and brute-force; John the Ripper cracks captured hashes).</li>
+                        <li><strong>Exploit research:</strong> Use exploit databases (Exploit-DB, VulDB, MITRE CVE, Vulners, CIRCL CVE Search) to find relevant vulnerabilities based on gathered target info and download exploit code for use with Metasploit; advanced search by type (remote) and platform (Windows_x86-64).</li>
+                        <li><strong>Client-side exploitation:</strong> Generate malicious payloads with msfvenom, host them via Apache, catch Meterpreter sessions with multi/handler; deliver via web share, email attachment, or physical media; establish VNC sessions; run PowerSploit PowerUp.ps1 for privilege checks.</li>
+                        <li><strong>Buffer overflow:</strong> Overflow in vulnserver TRUN command (port 9999): SPIKE fuzzing to find the vulnerable function, generate patterns and find the offset, overwrite EIP, identify bad characters, find an unprotected module (essfunc.dll) and JMP ESP, inject shellcode, and obtain a reverse shell.</li>
+                        <li><strong>Remote access tools:</strong> Armitage (Metasploit GUI with PostgreSQL, Nmap scan, payload generation, Meterpreter interaction, file browsing, screenshots, VNC); Ninja Jonin (listener/agent model to control machines behind NAT/firewall/proxy).</li>
+                    </ul>
+                    <h4>Privilege Escalation</h4>
+                    <ul>
+                        <li><strong>Forms:</strong> Horizontal (access resources of a user with similar permissions) and vertical (gain access to resources/functions of a higher-privileged user such as an administrator).</li>
+                        <li><strong>Assessment tools:</strong> BeRoot and GhostPack Seatbelt run configuration assessments (services, permissions, kernel version, architecture, WebClient vulnerabilities, privileges) to find misconfigurations.</li>
+                        <li><strong>UAC bypass:</strong> bypassuac_fodhelper (FodHelper registry key) followed by getsystem -t 1 (named-pipe impersonation) to escalate from normal user to NT AUTHORITY\SYSTEM.</li>
+                        <li><strong>Credential dumping:</strong> Mimikatz via Meterpreter kiwi extension (load kiwi): lsa_dump_sam, lsa_dump_secrets, password_change using an NTLM hash; supports pass-the-hash and lateral movement.</li>
+                        <li><strong>Linux privilege escalation:</strong> pkexec CVE-2021-4034 (PwnKit) escalates a standard user to root without credentials.</li>
+                        <li><strong>Sticky Keys:</strong> Replace sethc.exe with cmd.exe at the lock screen; pressing Shift 5 times opens a SYSTEM command prompt for unauthenticated privileged access.</li>
+                        <li><strong>Post-exploitation:</strong> Meterpreter enumeration and manipulation (sysinfo, ipconfig, getuid, pwd, ls, cat, timestomp MACE attributes, cd, search, keyscan_start/dump, idletime, shell, services, firewall, installed software, CPU, users/SIDs, reboot).</li>
+                    </ul>
+                    <h4>Maintaining Access</h4>
+                    <ul>
+                        <li><strong>Surveillance/spyware:</strong> Power Spy and Spytech SpyAgent monitor user activity in stealth mode, logging keystrokes, screenshots, websites, applications, and events; unhide via hotkeys.</li>
+                        <li><strong>NTFS Alternate Data Streams (ADS):</strong> Hide malicious files inside another file's alternate stream; file size unchanged; execute via symbolic links.</li>
+                        <li><strong>Steganography:</strong> White-space steganography (Snow) hides data in trailing spaces/tabs; image steganography (OpenStego, StegOnline) hides data in images using LSB and password-based encryption.</li>
+                        <li><strong>Persistence:</strong> Abuse boot/logon autostart (startup folder), WMI event subscriptions (Install-Persistence on startup trigger), and Active Directory objects (AdminSDHolder ACL granting GenericAll, then adding the user to Domain Admins).</li>
+                        <li><strong>Covert channels:</strong> Covert_TCP manipulates TCP/IP header fields to send data one byte at a time, bypassing firewalls/IDS/IPS/proxies; tcpdump may capture nothing while Wireshark shows TCP packets.</li>
+                    </ul>
+                    <h4>Clearing Logs</h4>
+                    <ul>
+                        <li><strong>Audit policies:</strong> auditpol /get, /set, and /clear /y to view, enable, and clear Windows audit settings.</li>
+                        <li><strong>Event logs:</strong> Clear_Event_Viewer_Logs.bat, wevtutil el/cl (system/application/security), and Cipher /w:C: to overwrite deleted files (0x00, 0xFF, random).</li>
+                        <li><strong>Linux logs:</strong> Disable/clear BASH history (export HISTSIZE=0, history -c, history -w), shred ~/.bash_history, empty the file.</li>
+                        <li><strong>Hiding artifacts:</strong> attrib +h +s +r to hide folders; net user ... /active:no to hide accounts; dot-prefixed files on Linux; CCleaner and other privacy tools (BleachBit, DBAN, Wipe, Privacy Eraser).</li>
+                        <li><strong>Anti-forensics:</strong> timestomp to modify MACE (modified, accessed, created, entry) attributes of files.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Tools</span>
+                    <p><span class="tool-tag">Responder</span> <span class="tool-tag">John the Ripper</span> <span class="tool-tag">L0phtCrack 7</span> <span class="tool-tag">Exploit-DB</span> <span class="tool-tag">Metasploit (msfvenom/msfconsole/Meterpreter)</span> <span class="tool-tag">Armitage</span> <span class="tool-tag">Ninja Jonin</span> <span class="tool-tag">PowerUp (PowerSploit)</span> <span class="tool-tag">Mimikatz (Kiwi)</span> <span class="tool-tag">BeRoot</span> <span class="tool-tag">Seatbelt</span> <span class="tool-tag">PowerView</span> <span class="tool-tag">Immunity Debugger / mona</span> <span class="tool-tag">SPIKE</span> <span class="tool-tag">OpenStego / StegOnline</span> <span class="tool-tag">Snow</span> <span class="tool-tag">CCleaner</span> <span class="tool-tag">auditpol / wevtutil / Cipher</span></p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Techniques</span>
+                    <ul>
+                        <li><strong>LLMNR/NBT-NS poisoning:</strong> Responder spoofs requested servers on broadcast name-resolution requests and captures NTLM username/password hashes; default responds only to SMB File Server Service requests.</li>
+                        <li><strong>Payload delivery:</strong> msfvenom generates reverse TCP payloads; Apache hosts them; multi/handler catches sessions; payload can be delivered via email or physical media.</li>
+                        <li><strong>Buffer overflow exploitation:</strong> Fuzz with SPIKE, find offset with pattern_create/offset, control EIP, find bad chars, locate JMP ESP in an unprotected DLL, inject shellcode, get reverse shell via netcat.</li>
+                        <li><strong>UAC bypass + getsystem:</strong> bypassuac_fodhelper then named-pipe impersonation yields NT AUTHORITY\SYSTEM.</li>
+                        <li><strong>Hash dumping and password change:</strong> load kiwi; lsa_dump_sam/lsa_dump_secrets; password_change using an NTLM hash.</li>
+                        <li><strong>Steganography:</strong> Snow whitespace encoding, OpenStego/StegOnline LSB image hiding, NTFS ADS.</li>
+                        <li><strong>Persistence:</strong> Startup folder, WMI subscriptions, AdminSDHolder ACL, Sticky Keys.</li>
+                        <li><strong>Covert channel:</strong> Covert_TCP embeds data in TCP/IP header fields.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Exam Tips</span>
+                    <ul>
+                        <li>System hacking has four phases: gaining access, escalating privileges, maintaining access, and clearing logs.</li>
+                        <li>LLMNR and NBT-NS are enabled by default in Windows; Responder captures NTLM hashes that can be cracked with John the Ripper.</li>
+                        <li>Metasploit flow: msfvenom payload -&gt; host/share -&gt; multi/handler listener -&gt; victim executes -&gt; Meterpreter session.</li>
+                        <li>getsystem -t 1 uses named-pipe impersonation (in-memory admin) to escalate privileges.</li>
+                        <li>bypassuac_fodhelper bypasses UAC via the FodHelper registry key; UAC must be bypassed before getsystem in these labs.</li>
+                        <li>Mimikatz (kiwi) extracts credentials from memory; lsa_dump_sam returns NTLM hashes of all users.</li>
+                        <li>PowerUp checks for misconfigurations such as unquoted service paths, weak service permissions, and registry autoruns.</li>
+                        <li>Steganography hides data without changing the visible content; ADS hides data without changing file size.</li>
+                        <li>Clearing tracks includes disabling auditing (auditpol /clear /y), clearing event logs (wevtutil cl), shredding history, and timestomping MACE attributes.</li>
+                        <li>Buffer overflow key terms: EIP, offset, bad characters, JMP ESP, shellcode, return address.</li>
+                        <li>Persistence mechanisms include startup folders, WMI event subscriptions, AdminSDHolder, and Sticky Keys.</li>
+                        <li>Always obtain proper authorization; system hacking may be illegal without it.</li>
+                    </ul>
+                    <p><strong>Notes:</strong> Keep the lab tasks below as hands-on practice for these concepts.</p>
+                </div>
+            </section>
 
             <section class="lab-task">
                 <h3>Part 1 - Gaining Access: Task 1: Perform Active Online Attack to Crack the System's Password using Responder</h3>
