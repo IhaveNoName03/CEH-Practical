@@ -65,19 +65,55 @@
   }
   const navEl = document.querySelector('nav');
   const navToggle = document.getElementById('navToggle');
+
+  // Build modern sidebar navigation
+  if (!document.querySelector('.sidebar')) {
+    const overlay = document.createElement('div');
+    overlay.className = 'sidebar-overlay';
+    overlay.addEventListener('click', () => document.body.classList.remove('sidebar-open'));
+    document.body.appendChild(overlay);
+
+    const sidebar = document.createElement('aside');
+    sidebar.className = 'sidebar';
+    const title = document.createElement('div');
+    title.className = 'sidebar-title';
+    title.textContent = 'MODULES';
+    sidebar.appendChild(title);
+
+    const homeLink = document.createElement('a');
+    homeLink.href = 'index.html';
+    homeLink.innerHTML = '<span class="mod-num">HM</span><span class="mod-title">Home</span>';
+    if ((location.pathname.split('/').pop() || 'index.html') === 'index.html') homeLink.classList.add('active');
+    sidebar.appendChild(homeLink);
+
+    MODULES.forEach(m => {
+      const a = document.createElement('a');
+      a.href = m.file;
+      a.innerHTML = `<span class="mod-num">${m.id}</span><span class="mod-title">${m.title}</span>`;
+      const page = location.pathname.split('/').pop() || 'index.html';
+      if (page === m.file) a.classList.add('active');
+      sidebar.appendChild(a);
+    });
+
+    const cheatLink = document.createElement('a');
+    cheatLink.href = 'cheat_sheet.html';
+    cheatLink.innerHTML = '<span class="mod-num">CS</span><span class="mod-title">Cheat Sheet</span>';
+    if ((location.pathname.split('/').pop() || '') === 'cheat_sheet.html') cheatLink.classList.add('active');
+    sidebar.appendChild(cheatLink);
+
+    sidebar.addEventListener('click', (e) => {
+      if (e.target.closest('a')) document.body.classList.remove('sidebar-open');
+    });
+
+    document.body.appendChild(sidebar);
+  }
+
+  // Hamburger toggles sidebar drawer (mobile)
   if (navToggle && navEl) {
     navToggle.addEventListener('click', () => {
-      const open = navEl.classList.toggle('nav-open');
+      const open = document.body.classList.toggle('sidebar-open');
       navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       navToggle.textContent = open ? '✕' : '☰';
-    });
-    // Close menu when a link is clicked
-    document.querySelectorAll('#navMenu a').forEach(a => {
-      a.addEventListener('click', () => {
-        navEl.classList.remove('nav-open');
-        navToggle.setAttribute('aria-expanded', 'false');
-        navToggle.textContent = '☰';
-      });
     });
   }
 
