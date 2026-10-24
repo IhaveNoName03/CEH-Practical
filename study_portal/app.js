@@ -16,8 +16,13 @@
     { id: '12', title: 'Evading IDS, Firewalls, and Honeypots', file: 'module_12.html' },
     { id: '13', title: 'Hacking Web Servers', file: 'module_13.html' },
     { id: '14', title: 'Hacking Web Applications', file: 'module_14.html' },
-    { id: '15', title: 'SQL Injection', file: 'module_15.html' }
-  ];
+    { id: '15', title: 'SQL Injection', file: 'module_15.html' },
+    { id: '16', title: 'Hacking Wireless Networks', file: 'module_16.html' },
+    { id: '17', title: 'Hacking Mobile Platforms', file: 'module_17.html' },
+    { id: '18', title: 'IoT and OT Hacking', file: 'module_18.html' },
+    { id: '19', title: 'Cloud Computing', file: 'module_19.html' },
+    { id: '20', title: 'Cryptography', file: 'module_20.html' }
+    ];
 
   const visited = JSON.parse(localStorage.getItem('ceh_visited') || '[]');
   function markVisited() {

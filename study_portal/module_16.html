@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 16 - Hacking Wireless Networks</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+    <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+            <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+            <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+            <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+            <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+            <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+            <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+            <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+            <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+            <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
+            <li><a href="module_16.html" id="nav-16">MOD_16_WIRELESS</a></li>
+        <li><a href="module_17.html" id="nav-17">MOD_17_MOBILE</a></li>
+        <li><a href="module_18.html" id="nav-18">MOD_18_IOT</a></li>
+        <li><a href="module_19.html" id="nav-19">MOD_19_CLOUD</a></li>
+        <li><a href="module_20.html" id="nav-20">MOD_20_CRYPTO</a></li>
+            <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        </ul>
+        <button id="viewToggle" class="view-toggle">COMPACT</button>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+    <main class="content-body">
+        <div class="window">
+            <div class="module-header">
+                <span>CEH v12 - Module 16</span>
+                <h2 class="hero-3d">Hacking Wireless Networks</h2>
+            </div>
+
+            <p>Wireless networking is revolutionizing the way people work and play. A wireless local area network (WLAN) is an unbounded data communication system, based on the IEEE 802.11 standard, which uses radio frequency technology to communicate with devices and obtain data. This network frees the user from complicated and multiple wired connections. With the need for a physical connection or cable removed, individuals are able to use networks in new ways, and data has become ever more portable and accessible.</p>
+
+            <p>Although wireless networking technology is becoming increasingly popular, because of its convenience, it has many security issues, some of which do not exist in wired networks. By nature, wirelessly transferred data packets are airborne and available to anyone with the ability to intercept and decode them. For example, several reports have demonstrated the weaknesses in the Wired Equivalent Privacy (WEP) security algorithm, specified in the 802.11x standard, which is designed to encrypt wireless data.</p>
+
+            <p><strong>Scenario:</strong> As an ethical hacker or penetration tester (pen tester), you must have sound knowledge of wireless concepts, wireless encryption, and related threats in order to protect your company's wireless network from unauthorized access and attacks. You should determine critical sources, risks, or vulnerabilities associated with your organization's wireless network, and then check whether the current security system is able to protect the network against all possible attacks.</p>
+
+            <p><strong>Objective:</strong> The objective of the lab is to protect the target wireless network from unauthorized access. To do so, you will perform various tasks that include, but are not limited to: Wi-Fi Packet Analysis; Crack WEP and WPA2 Wi-Fi networks.</p>
+
+            <p><strong>Overview of Wireless Networking:</strong> In wireless networks, communication takes place through radio wave transmission, which usually takes place at the physical layer of the network structure. Wireless network types include: extension to a wired network (wired network extended by access points between wired network and wireless devices); multiple access points (multiple APs connect computers wirelessly); LAN-to-LAN wireless network (hardware APs interconnect with other hardware APs); 3G/4G hotspot (a mobile device shares cellular data wirelessly with Wi-Fi-enabled devices such as MP3 players, notebooks, tablets, cameras, PDAs, and netbooks).</p>
+
+            <p><strong>Lab Tasks:</strong></p>
+            <ul>
+                <li>Perform wireless traffic analysis
+                    <ul>
+                        <li>Wi-Fi packet analysis using Wireshark</li>
+                    </ul>
+                </li>
+                <li>Perform wireless attacks
+                    <ul>
+                        <li>Crack a WEP network using Aircrack-ng</li>
+                        <li>Crack a WPA2 network using Aircrack-ng</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <section class="lab-task">
+                <h3>Exam Essentials: Hacking Wireless Networks</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Scenario &amp; Objective</span>
+                    <p><strong>Scenario:</strong> Wireless networking is revolutionizing the way people work and play. A WLAN is an unbounded data communication system based on IEEE 802.11 using radio frequency technology. Because wireless data packets are airborne, they are available to anyone who can intercept and decode them. WEP (Wired Equivalent Privacy), specified in the 802.11x standard, has demonstrated weaknesses. As a pen tester you must have sound knowledge of wireless concepts, encryption, and threats to protect your company's wireless network from unauthorized access and attacks, determine critical sources/risks/vulnerabilities, and verify the current security system protects against all possible attacks.</p>
+                    <p><strong>Objective:</strong> Protect the target wireless network from unauthorized access by performing Wi-Fi packet analysis and cracking WEP and WPA2 Wi-Fi networks.</p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Overview of Wireless Networking &amp; Traffic Analysis</span>
+                    <p>Wireless communication occurs at the physical layer via radio waves. Network types: extension to a wired network, multiple access points, LAN-to-LAN wireless, and 3G/4G hotspots. Wireless traffic analysis determines the appropriate strategy for a successful attack. Wi-Fi protocols are unique at Layer 2, and traffic over the air is not serialized, making it easy to sniff and analyze wireless packets. You can use various Wi-Fi packet-sniffing tools to capture and analyze target network traffic, revealing broadcasted SSID, presence of multiple APs, possibility of recovering SSIDs, authentication method, and WLAN encryption algorithms. Wi-Fi attacks include: fragmentation, MAC spoofing, disassociation, deauthentication, man-in-the-middle, wireless ARP poisoning, rogue access points, evil twin, and Wi-Jacking.</p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Concepts</span>
+                    <ul>
+                        <li><strong>WLAN / 802.11:</strong> Wireless local area network based on IEEE 802.11; uses radio frequency; unbounded medium.</li>
+                        <li><strong>SSID (Service Set Identifier):</strong> The network name broadcast by the access point; identifies the wireless network.</li>
+                        <li><strong>BSSID:</strong> The MAC address of the access point (or client in ad-hoc); uniquely identifies an AP.</li>
+                        <li><strong>ESSID (Extended SSID):</strong> Same SSID shared across multiple access points in an extended service set.</li>
+                        <li><strong>Monitor mode:</strong> Wireless adapter mode that captures all 802.11 frames on a channel, not just those destined for the host.</li>
+                        <li><strong>Radiotap header:</strong> Metadata prepended to captured frames: protocol, encryption, frame length, MAC addresses, channel, signal strength.</li>
+                        <li><strong>802.11 frame types:</strong> Management (beacon, probe, auth, deauth, assoc), control (RTS/CTS/ACK), and data frames.</li>
+                        <li><strong>WEP (Wired Equivalent Privacy):</strong> Uses RC4 stream cipher with a 24-bit IV; 40/104-bit keys; IV reuse and weak key scheduling make it crackable.</li>
+                        <li><strong>WPA (Wi-Fi Protected Access):</strong> Interim fix using TKIP (RC4-based) with per-packet key mixing and MIC; stronger than WEP but still legacy.</li>
+                        <li><strong>WPA2:</strong> Mandatory CCMP (AES-128) encryption; two modes: WPA2-Personal (PSK) and WPA2-Enterprise (802.1X/EAP); crackable via captured 4-way handshake + wordlist.</li>
+                        <li><strong>WPA3:</strong> Uses SAE (Simultaneous Authentication of Equals) for stronger password-based auth; forward secrecy; resistant to offline dictionary attacks.</li>
+                        <li><strong>WPS (Wi-Fi Protected Setup):</strong> Simplifies joining via PIN/push-button; PIN brute-force vulnerability can leak the WPA/WPA2 passphrase.</li>
+                        <li><strong>Rogue access point:</strong> Unauthorized AP installed on a network, not managed by the administrator.</li>
+                        <li><strong>Evil twin:</strong> Fraudulent AP that imitates a legitimate network name (SSID) to trick clients.</li>
+                        <li><strong>Deauthentication attack:</strong> Flooding station(s) with forged deauthentication frames to disconnect users from an AP.</li>
+                        <li><strong>Disassociation attack:</strong> Destroying connectivity between an AP and client.</li>
+                        <li><strong>Fragmentation attack:</strong> Obtains 1500 bytes of PRGA (pseudo random generation algorithm) from fragmented packets.</li>
+                        <li><strong>MAC spoofing:</strong> Changing the attacker's MAC to an authenticated user's to bypass MAC filtering.</li>
+                        <li><strong>Wireless ARP poisoning:</strong> Corrupting the ARP cache to associate the attacker's MAC with the target host.</li>
+                        <li><strong>Man-in-the-middle:</strong> Intercepting/altering traffic between two computers.</li>
+                        <li><strong>Wi-Jacking:</strong> Method to gain access to many wireless networks.</li>
+                        <li><strong>WPA handshake (4-way):</strong> Captured during client association; used for offline passphrase cracking.</li>
+                        <li><strong>PRGA:</strong> Pseudo random generation algorithm data recovered via fragmentation; used to forge packets.</li>
+                        <li><strong>Aircrack-ng suite:</strong> airmon-ng (enable monitor mode), airodump-ng (capture/handshake), aireplay-ng (inject/deauth), aircrack-ng (crack WEP/WPA/WPA2).</li>
+                        <li><strong>Npcap:</strong> Windows packet capture library integrated with Wireshark for WLAN traffic analysis.</li>
+                        <li><strong>Wordlist:</strong> Dictionary file used for WPA/WPA2 passphrase cracking (e.g., password.txt).</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Tools</span>
+                    <p><span class="tool-tag">Wireshark</span> <span class="tool-tag">Aircrack-ng</span> <span class="tool-tag">airmon-ng</span> <span class="tool-tag">airodump-ng</span> <span class="tool-tag">aireplay-ng</span> <span class="tool-tag">aircrack-ng</span> <span class="tool-tag">Npcap</span> <span class="tool-tag">AirMagnet WiFi Analyzer PRO</span> <span class="tool-tag">SteelCentral Packet Analyzer</span> <span class="tool-tag">Omnipeek</span> <span class="tool-tag">CommView for Wi-Fi</span> <span class="tool-tag">Capsa</span> <span class="tool-tag">Elcomsoft Wireless Security Auditor</span> <span class="tool-tag">Portable Penetrator</span> <span class="tool-tag">WepCrackGui</span> <span class="tool-tag">Pyrit</span> <span class="tool-tag">WepAttack</span> <span class="tool-tag">Parrot Security</span> <span class="tool-tag">Windows 11</span></p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Protocols / Ports</span>
+                    <ul>
+                        <li><strong>IEEE 802.11 a/b/g/n/ac/ax:</strong> Wireless LAN standards (2.4 GHz, 5 GHz, 6 GHz).</li>
+                        <li><strong>Channels:</strong> 2.4 GHz non-overlapping channels 1, 6, 11.</li>
+                        <li><strong>WEP:</strong> RC4 stream cipher; 24-bit IV.</li>
+                        <li><strong>WPA:</strong> TKIP (RC4-based) with MIC.</li>
+                        <li><strong>WPA2:</strong> CCMP (AES-128) in counter mode.</li>
+                        <li><strong>WPA3:</strong> SAE (Dragonfly key exchange).</li>
+                        <li><strong>802.1X / EAP:</strong> Enterprise authentication framework.</li>
+                        <li><strong>RADIUS:</strong> UDP 1812 (authentication), UDP 1813 (accounting).</li>
+                        <li><strong>DHCP:</strong> UDP 67 (server), UDP 68 (client).</li>
+                        <li><strong>ARP:</strong> Layer 2 address resolution (no port).</li>
+                        <li><strong>HTTP/HTTPS:</strong> Router admin interfaces on TCP 80/443.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Commands</span>
+                    <pre><code># Wireshark: open captured file
+# File -> Open -> E:\CEH-Tools\CEHv12 Module 16 Hacking Wireless Networks\Sample Captures\WEPcrack-01.cap
+# filter: 802.11 / wlan / eapol
+
+# Aircrack-ng suite (monitor mode + capture + injection)
+airmon-ng start wlan0
+airodump-ng wlan0mon
+aireplay-ng --deauth 0 -a &lt;BSSID&gt; wlan0mon
+
+# Crack WEP (sample capture)
+aircrack-ng '/home/attacker/Desktop/Sample Captures/WEPcrack-01.cap'
+
+# Crack WPA2 (sample capture)
+aircrack-ng -a2 -b 20:E5:2A:E4:38:00 -w /home/attacker/Desktop/Wordlist/password.txt '/home/attacker/Desktop/Sample Captures/WPA2crack-01.cap'
+# -a 2 = WPA technique; -b = target BSSID; -w = wordlist path
+
+# Common airodump-ng handshake capture
+airodump-ng -c &lt;channel&gt; --bssid &lt;BSSID&gt; -w handshake wlan0mon</code></pre>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Defenses</span>
+                    <ul>
+                        <li>Change the default SSID before connecting the router to the access point; avoid default names.</li>
+                        <li>Disable SSID broadcast where appropriate and do not use DHCP auto-assignment for wireless clients.</li>
+                        <li>Use WPA2 (CCMP/AES) or WPA3 (SAE) with a strong, long passphrase; avoid WEP and WPA/TKIP.</li>
+                        <li>Disable WPS (PIN) to prevent brute-force passphrase recovery.</li>
+                        <li>Apply MAC filtering only as a minor layer (bypassable via MAC spoofing); not a primary defense.</li>
+                        <li>Deploy WIDS/WIPS to detect rogue access points and evil twins.</li>
+                        <li>Segment guest networks and restrict access to internal resources.</li>
+                        <li>Keep firmware updated; disable remote administration; use strong admin credentials.</li>
+                        <li>Monitor for deauthentication floods, rogue APs, and unusual handshake captures.</li>
+                        <li>Educate users on connecting only to trusted SSIDs; verify certificate-based Enterprise auth.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Exam Tips</span>
+                    <ul>
+                        <li>WEP uses RC4 with a 24-bit IV; IV reuse and weak key scheduling make it crackable with enough packets.</li>
+                        <li>WPA2 handshake is captured during client association and cracked offline with a wordlist.</li>
+                        <li>aircrack-ng: -a 2 selects WPA technique; -b specifies target BSSID; -w specifies wordlist path.</li>
+                        <li>Lab BSSID: 20:E5:2A:E4:38:00; lab WPA2 password: password1.</li>
+                        <li>airmon-ng enables monitor mode (airmon-ng start wlan0); airodump-ng captures traffic/handshakes.</li>
+                        <li>aireplay-ng performs injection/deauth (aireplay-ng --deauth 0 -a &lt;BSSID&gt; wlan0mon).</li>
+                        <li>Wireshark: 802.11 indicates wireless packets; Radiotap header reveals protocol, encryption, MACs, channel.</li>
+                        <li>Monitor mode captures all frames on a channel; promiscuous mode only captures frames for the host.</li>
+                        <li>Rogue AP is unauthorized; evil twin imitates a legitimate SSID.</li>
+                        <li>Deauthentication floods deauth frames to disconnect clients; disassociation destroys AP-client connectivity.</li>
+                        <li>Fragmentation attack recovers 1500 bytes of PRGA.</li>
+                        <li>WPS PIN brute force can leak the WPA/WPA2 passphrase.</li>
+                        <li>WPA3 uses SAE and is resistant to offline dictionary attacks.</li>
+                        <li>Npcap is required for Wireshark WLAN capture/analysis on Windows.</li>
+                        <li>Other analyzers: AirMagnet, SteelCentral, Omnipeek, CommView, Capsa; other crackers: Elcomsoft, Pyrit, WepAttack.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Always obtain proper authorization; use these techniques only in authorized labs/environments.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Perform Wireless Traffic Analysis - Task 1: Wi-Fi Packet Analysis using Wireshark</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Wireshark / Npcap / Windows 11 / Sample Captures (WEPcrack-01.cap, WPA2crack-01.cap)</span>
+                    <p><strong>What/when:</strong> Analyze captured Wi-Fi packets with Wireshark. A live wireless adapter is not available in the iLabs environment, so a sample capture file (WEPcrack-01.cap) is used. Determines broadcasted SSID, multiple APs, recoverable SSIDs, authentication method, and WLAN encryption algorithms. Windows 11 machine.</p>
+                    <pre><code># Windows 11 machine
+# login: Admin / Pa$$w0rd ; Networks: Yes
+# (if Welcome to Windows wizard appears, click Continue; in Sign in with Microsoft wizard, click Cancel)
+
+# Open Wireshark
+# click search icon on Desktop -> type wire -> Wireshark -> open
+# Wireshark Network Analyzer window appears
+
+# Open capture file
+# menu bar: File -> Open
+# Wireshark: Open Capture File window -> navigate to E:\CEH-Tools\CEHv12 Module 16 Hacking Wireless Networks\Sample Captures
+# select WEPcrack-01.cap -> Open
+# WEPcrack-01.cap opens showing packet details; packets otherwise masked as Ethernet now show 802.11
+
+# 802.11 protocol indicates wireless packets
+# Radiotap header fields reveal protocols, encryption, frame length, MAC addresses, etc.
+
+# Use Filter field to narrow packet search (passwords on HTTP, session hijacking, etc.)
+
+# Similarly analyze WPA2crack-01.cap for WPA packets
+
+# Other Wi-Fi analyzers: AirMagnet WiFi Analyzer PRO, SteelCentral Packet Analyzer, Omnipeek, CommView for Wi-Fi, Capsa Portable Network Analyzer
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 login Admin/Pa$$w0rd, Networks Yes. Open Wireshark via search. File -> Open -> navigate to Sample Captures -> select WEPcrack-01.cap -> Open. Observe 802.11 wireless packets and Radiotap headers. Use Filter field to narrow search. Similarly analyze WPA2crack-01.cap. Close all windows; document findings.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Npcap enables WLAN capture on Windows. Other analyzers: AirMagnet, SteelCentral, Omnipeek, CommView, Capsa.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2: Perform Wireless Attacks - Task 1: Crack a WEP network using Aircrack-ng</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Aircrack-ng / airmon-ng / airodump-ng / aireplay-ng / aircrack-ng / Parrot Security / Sample Captures (WEPcrack-01.cap)</span>
+                    <p><strong>What/when:</strong> Use the Aircrack-ng suite to crack WEP encryption. A live wireless adapter is not available in iLabs, so sample capture WEPcrack-01.cap is used. Cracks the WEP key of CEHLabs. Attacker on Parrot Security.</p>
+                    <pre><code># Parrot Security machine
+# login: attacker / toor
+# (if update prompt appears, click No)
+
+# Desktop: navigate to Places -> Desktop
+# open CEHv12 Module 16 Hacking Wireless Networks folder
+# copy Sample Captures and Wordlist folders (select both -> Ctrl+C)
+# navigate to Desktop -> Ctrl+V to paste (Sample Captures and Wordlist)
+# close Desktop window
+
+# Open terminal
+# click MATE Terminal icon at top of Desktop
+# Parrot Terminal window appears
+sudo su
+# [sudo] password for attacker: toor (not visible)
+# root prompt
+
+# Crack WEP key from sample capture
+aircrack-ng '/home/attacker/Desktop/Sample Captures/WEPcrack-01.cap'
+# aircrack-ng cracks the WEP key of CEHLabs and displays it
+
+# In real-life attacks, use this key to connect to the AP, then scan/vuln-analyze/exploit
+
+# Close all open windows; document acquired information
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security; login attacker/toor. Copy Sample Captures and Wordlist folders from CEHv12 Module 16 folder to Desktop. Open MATE Terminal; sudo su; toor. Run aircrack-ng on WEPcrack-01.cap; observe WEP key of CEHLabs. Close windows; document findings.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Other tools: Elcomsoft Wireless Security Auditor, Portable Penetrator, WepCrackGui, Pyrit, WepAttack.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2: Perform Wireless Attacks - Task 2: Crack a WPA2 Network using Aircrack-ng</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Aircrack-ng / WPA2-PSK / Parrot Security / Sample Captures (WPA2crack-01.cap) / Wordlist (password.txt)</span>
+                    <p><strong>What/when:</strong> Use Aircrack-ng to crack a WPA2 network. Configure access point router (CEHLabs) to WPA2-PSK with password password1. A live adapter is unavailable, so sample capture WPA2crack-01.cap is used. Attacker on Parrot Security.</p>
+                    <pre><code># Configure AP router (CEHLabs) to WPA2-PSK (Pre-Shared Key) mode
+# navigate to router default IP; change auth mode from WPA to WPA2-PSK; password: password1
+
+# Parrot Security machine
+# ensure Sample Captures and Wordlist folders present at /home/attacker/Desktop
+# if not, copy them from CEHv12 Module 16 Hacking Wireless Networks folder on Desktop
+
+# Open terminal
+# click MATE Terminal icon
+sudo su
+# [sudo] password for attacker: toor (not visible)
+
+# Crack WPA2 from sample capture
+aircrack-ng -a2 -b 20:E5:2A:E4:38:00 -w /home/attacker/Desktop/Wordlist/password.txt '/home/attacker/Desktop/Sample Captures/WPA2crack-01.cap'
+# -a 2 = WPA technique
+# -b = target BSSID (20:E5:2A:E4:38:00)
+# -w = wordlist path
+
+# Result: WPA handshake packet captured with airodump-ng; password cracked and shown next to KEY FOUND!
+# If password is complex, aircrack-ng takes a long time
+
+# Other tools: Elcomsoft Wireless Security Auditor, Portable Penetrator, WepCrackGui, Pyrit, WepAttack
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Configure AP router CEHLabs to WPA2-PSK with password password1. Ensure Sample Captures and Wordlist present on Desktop. Open MATE Terminal; sudo su; toor. Run aircrack-ng -a2 -b 20:E5:2A:E4:38:00 -w .../password.txt .../WPA2crack-01.cap. Observe KEY FOUND! with password. Close windows; document findings.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. If password is complex, cracking takes a long time.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Practice &amp; Reference</h3>
+                <div class="section-card">
+                    <p>The lab tasks above provide hands-on practice and reference commands for wireless traffic analysis (Wireshark .cap analysis, Radiotap/802.11) and wireless attacks (Aircrack-ng WEP/WPA2 cracking, monitor mode, deauth, handshake capture, wordlists).</p>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script>
+        const body = document.body;
+        const applyTheme = (t) => {
+            if (t === 'dark') body.setAttribute('data-theme', 'dark');
+            else body.removeAttribute('data-theme');
+        };
+        function getTheme() {
+            try {
+                const p = new URLSearchParams(location.search);
+                const u = p.get('theme');
+                if (u === 'dark' || u === 'light') return u;
+            } catch (e) {}
+            try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+        }
+        function syncNavLinks(t) {
+            document.querySelectorAll('a[href]').forEach(a => {
+                try {
+                    const url = new URL(a.getAttribute('href'), location.href);
+                    if (url.pathname.endsWith('.html')) {
+                        url.searchParams.set('theme', t);
+                        a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                    }
+                } catch (e) {}
+            });
+        }
+        const initialTheme = getTheme();
+        applyTheme(initialTheme);
+        syncNavLinks(initialTheme);
+        const toggle = document.getElementById('themeToggle');
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+                applyTheme(newT);
+                try { localStorage.setItem('theme', newT); } catch (e) {}
+                try {
+                    const url = new URL(location.href);
+                    url.searchParams.set('theme', newT);
+                    history.replaceState(null, '', url.toString());
+                } catch (e) {}
+                syncNavLinks(newT);
+            });
+        }
+        const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+            'module_07.html': 'nav-07',
+            'module_08.html': 'nav-08',
+            'module_09.html': 'nav-09',
+            'module_10.html': 'nav-10',
+            'module_11.html': 'nav-11',
+            'module_12.html': 'nav-12',
+            'module_13.html': 'nav-13',
+            'module_14.html': 'nav-14',
+            'module_15.html': 'nav-15',
+            'module_16.html': 'nav-16',
+            'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        document.getElementById(navId).classList.add('active');
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

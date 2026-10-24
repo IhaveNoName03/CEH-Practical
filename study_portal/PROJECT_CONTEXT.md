@@ -97,6 +97,11 @@ write_file("study_portal/module_0X.html", generate_page("Module X", MOD_X_CONTEN
 - `/module_13.html`: Hacking Web Servers.
 - `/module_14.html`: Hacking Web Applications.
 - `/module_15.html`: SQL Injection.
+- `/module_16.html`: Hacking Wireless Networks.
+- `/module_17.html`: Hacking Mobile Platforms.
+- `/module_18.html`: IoT and OT Hacking.
+- `/module_19.html`: Cloud Computing.
+- `/module_20.html`: Cryptography.
 - `cheat_sheet.html`: Consolidated command reference across all modules.
 - `/style.css`: Global Design System.
 - `/README.md`: Public-facing repo documentation.
@@ -118,10 +123,7 @@ write_file("study_portal/module_0X.html", generate_page("Module X", MOD_X_CONTEN
 | `.content-body` | Main content area container |
 
 ## 9. Future Roadmap
-1. Continue ingesting remaining modules (16-20).
-2. Implement search functionality using a simple JSON index in the future.
-3. Optimize CSS for mobile responsiveness.
-4. Improve command block copy-to-clipboard functionality.
+1. All 19 modules (02-20) complete. Future: search index, mobile optimization, copy-to-clipboard improvements.
 
 ---
 *End of Context Document.*

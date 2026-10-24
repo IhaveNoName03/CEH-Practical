@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 18 - IoT and OT Hacking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+    <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+            <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+            <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+            <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+            <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+            <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+            <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+            <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+            <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+            <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
+            <li><a href="module_16.html" id="nav-16">MOD_16_WIRELESS</a></li>
+            <li><a href="module_17.html" id="nav-17">MOD_17_MOBILE</a></li>
+            <li><a href="module_18.html" id="nav-18">MOD_18_IOT</a></li>
+            <li><a href="module_19.html" id="nav-19">MOD_19_CLOUD</a></li>
+        <li><a href="module_20.html" id="nav-20">MOD_20_CRYPTO</a></li>
+        <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        </ul>
+        <button id="viewToggle" class="view-toggle">COMPACT</button>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+    <main class="content-body">
+        <div class="window">
+            <div class="module-header">
+                <span>CEH v12 - Module 18</span>
+                <h2 class="hero-3d">IoT and OT Hacking</h2>
+            </div>
+
+            <p>The significant development of the paradigm of the Internet of Things (IoT) is contributing to the proliferation of devices in daily life. From smart homes to automated healthcare applications, IoT is ubiquitous. However, despite the potential of IoT to make our lives easier and more comfortable, we cannot underestimate its vulnerability to cyber-attacks. IoT devices lack basic security, which makes them prone to various cyber-attacks.</p>
+
+            <p>The objective of a hacker in exploiting IoT devices is to gain unauthorized access to users' devices and data. A hacker can use compromised IoT devices to build an army of botnets, which, in turn, is used to launch DDoS attacks. Owing to a lack of security policies, smart devices are easy targets for hackers who can compromise these devices to spy on users' activities, misuse sensitive information (such as patients' health records), install ransomware to block access to the devices, monitor victims' activities using CCTV cameras, commit credit-card-related fraud, gain access to users' homes, or recruit the devices in an army of botnets to carry out DDoS attacks.</p>
+
+            <p><strong>Scenario:</strong> As an ethical hacker or penetration tester (pen tester), you must have sound knowledge of hacking IoT and OT platforms using various tools and techniques. The labs in this module will provide you with real-time experience in performing footprinting and analyzing traffic between IoT and OT devices.</p>
+
+            <p><strong>Objective:</strong> The objective of the lab is to perform IoT and OT platform hacking and other tasks that include, but are not limited to: performing IoT and OT device footprinting; capturing and analyzing traffic between IoT devices.</p>
+
+            <p><strong>Overview of IoT and OT Hacking:</strong> Using the IoT and OT hacking methodology, an attacker acquires information using techniques such as information gathering, attack surface area identification, and vulnerability scanning, and uses such information to hack the target device and network. The phases of IoT and OT device hacking are: Information gathering; Vulnerability scanning; Launch attacks; Gain remote access; Maintain access.</p>
+
+            <p><strong>Lab Tasks:</strong></p>
+            <ul>
+                <li>Perform footprinting using various footprinting techniques
+                    <ul>
+                        <li>Gather information using online footprinting tools</li>
+                    </ul>
+                </li>
+                <li>Capture and analyze IoT device traffic
+                    <ul>
+                        <li>Capture and analyze IoT traffic using Wireshark</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <section class="lab-task">
+                <h3>Exam Essentials: IoT and OT Hacking</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Scenario &amp; Objective</span>
+                    <p><strong>Scenario:</strong> The significant development of IoT is contributing to the proliferation of devices in daily life, from smart homes to automated healthcare. IoT devices lack basic security, making them prone to cyber-attacks. Hackers exploit IoT devices to gain unauthorized access to users' devices and data, build botnets for DDoS, spy on users, misuse sensitive information such as health records, install ransomware, monitor victims via CCTV, commit credit-card fraud, or gain access to homes. OT (Operational Technology) systems control physical processes (SCADA, PLCs, HMIs) and are often legacy, fragile, and safety-critical. As an ethical hacker and pen tester, you must have sound knowledge of hacking IoT and OT platforms using various tools and techniques; the labs provide real-time experience in footprinting and analyzing traffic between IoT/OT devices.</p>
+                    <p><strong>Objective:</strong> Perform IoT and OT platform hacking: (1) IoT/OT device footprinting; (2) capturing and analyzing traffic between IoT devices.</p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Overview of IoT and OT Hacking</span>
+                    <p>Using the IoT/OT hacking methodology, an attacker acquires information via information gathering, attack surface area identification, and vulnerability scanning, then uses it to hack the target device and network. Phases: Information gathering; Vulnerability scanning; Launch attacks; Gain remote access; Maintain access. Many IoT devices (e.g., security cameras) host web interfaces over insecure HTTP instead of HTTPS and use default factory credentials, allowing interception of all traffic; attackers can use Wireshark to intercept traffic and decrypt Wi-Fi keys. Footprinting collects IP address, protocols (MQTT, ModBus, ZigBee, BLE, 5G, IPv6LoWPAN), open ports, device type, geolocation, manufacturing number, manufacturer, FCC ID, banners, certification.</p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Concepts</span>
+                    <ul>
+                        <li><strong>IoT (Internet of Things):</strong> Network of physical devices embedded with sensors/software that collect and exchange data over the Internet.</li>
+                        <li><strong>OT (Operational Technology):</strong> Hardware/software that monitors and controls physical processes, devices, and infrastructure (SCADA, ICS, PLCs, HMIs, RTUs).</li>
+                        <li><strong>IoT Architecture:</strong> Perception layer (sensors/actuators), network layer (gateways, protocols, connectivity), application layer (cloud, apps, data processing).</li>
+                        <li><strong>ICS (Industrial Control Systems):</strong> Umbrella term for control systems used in industrial production (SCADA, DCS, PLC-based systems).</li>
+                        <li><strong>SCADA (Supervisory Control and Data Acquisition):</strong> System that monitors and controls industrial processes across geographically distributed sites.</li>
+                        <li><strong>PLC (Programmable Logic Controller):</strong> Ruggedized industrial computer for automation of electromechanical processes.</li>
+                        <li><strong>RTU (Remote Terminal Unit):</strong> Microprocessor-controlled device interfacing objects in the physical world to a SCADA system.</li>
+                        <li><strong>HMI (Human-Machine Interface):</strong> Dashboard/operator screen for monitoring and controlling industrial processes.</li>
+                        <li><strong>DCS (Distributed Control System):</strong> Control system for a plant/process with distributed controllers.</li>
+                        <li><strong>MQTT (Message Queuing Telemetry Transport):</strong> Lightweight publish/subscribe messaging protocol for M2M/IoT; small code footprint, low bandwidth; broker + topics; QoS 0/1/2.</li>
+                        <li><strong>MQTT Broker:</strong> Central server that receives published messages and routes them to subscribers (e.g., Bevywise MQTTRoute).</li>
+                        <li><strong>MQTT Topics:</strong> UTF-8 hierarchical strings (forward slashes) used to route messages; e.g., High_Tempe.</li>
+                        <li><strong>MQTT QoS:</strong> 0 = at most once; 1 = at least once; 2 = exactly once.</li>
+                        <li><strong>MQTT Retain Flag:</strong> If 1, broker stores last message for future subscribers matching the topic.</li>
+                        <li><strong>DUP Flag:</strong> 0 = first attempt; 1 = possible retransmission of PUBLISH.</li>
+                        <li><strong>CoAP (Constrained Application Protocol):</strong> REST-like protocol for constrained devices; runs over UDP; DTLS for security.</li>
+                        <li><strong>Modbus:</strong> Industrial protocol; Modbus TCP on port 502; function codes read/write coils/registers; no built-in security.</li>
+                        <li><strong>DNP3 (Distributed Network Protocol 3):</strong> Protocol for utilities (power/water); TCP/UDP 20000; supports secure authentication.</li>
+                        <li><strong>OPC UA:</strong> Platform-independent industrial interoperability standard; port 4840.</li>
+                        <li><strong>BACnet:</strong> Building automation and control network protocol; UDP 47808.</li>
+                        <li><strong>Zigbee:</strong> Low-power wireless mesh (IEEE 802.15.4) at 2.4 GHz.</li>
+                        <li><strong>BLE (Bluetooth Low Energy):</strong> Short-range low-power wireless for IoT wearables/sensors.</li>
+                        <li><strong>6LoWPAN:</strong> IPv6 over Low-Power Wireless Personal Area Networks.</li>
+                        <li><strong>Footprinting:</strong> Gathering IP, hostname, ISP, location, banners, device type, manufacturer, FCC ID, certification, protocols, open ports.</li>
+                        <li><strong>Shodan:</strong> Search engine for Internet-connected devices; filters by port, country, city, org, product, os.</li>
+                        <li><strong>Google Hacking (Dorking):</strong> Advanced search operators to find exposed sensitive IoT/SCADA resources (intitle:, inurl:, filetype:, site:).</li>
+                        <li><strong>Whois Lookup:</strong> Retrieves domain registration/contact info for protocol-standard organizations (e.g., oasis-open.org for MQTT).</li>
+                        <li><strong>IoT Attacks:</strong> Botnets (Mirai), DDoS, device hijacking, eavesdropping, firmware tampering, default credentials, insecure HTTP, MQTT topic injection/replay, unauthorized command injection.</li>
+                        <li><strong>OT Security:</strong> Network segmentation, air-gapping, ICS patching, monitoring, least privilege, physical security, anomaly detection.</li>
+                        <li><strong>MQTT Publish Message:</strong> Carries Topic Name, Message/Payload, Msg Len, Topic Length, Header Flags.</li>
+                        <li><strong>PUBREL (Publish Release):</strong> Response to PUBREC in QoS 2 flow.</li>
+                        <li><strong>PUBCOMP (Publish Complete):</strong> Response to PUBREL; completes QoS 2 exchange.</li>
+                        <li><strong>PUBREC (Publish Received):</strong> Acknowledgement of PUBLISH in QoS 2 flow.</li>
+                        <li><strong>PINGREQ/PINGRESP:</strong> Keep-alive messages between client and broker.</li>
+                        <li><strong>PUBACK:</strong> Acknowledgement for QoS 1 PUBLISH.</li>
+                        <li><strong>FCC ID:</strong> Device certification identifier searchable for manufacturer/regulatory info.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Tools</span>
+                    <p><span class="tool-tag">Shodan</span> <span class="tool-tag">Nmap</span> <span class="tool-tag">Wireshark</span> <span class="tool-tag">IoTSeeker</span> <span class="tool-tag">Bevywise MQTTRoute (Broker)</span> <span class="tool-tag">Bevywise IoT Simulator</span> <span class="tool-tag">MQTT Explorer</span> <span class="tool-tag">Modbus Poll/Slave</span> <span class="tool-tag">PLCScan</span> <span class="tool-tag">Conpot</span> <span class="tool-tag">Metasploit</span> <span class="tool-tag">Searchsploit</span> <span class="tool-tag">Nmap NSE scripts</span> <span class="tool-tag">IoT Inspector</span> <span class="tool-tag">Binwalk</span> <span class="tool-tag">Firmwalker</span> <span class="tool-tag">Whois</span> <span class="tool-tag">Exploit-DB</span> <span class="tool-tag">Google Hacking DB</span> <span class="tool-tag">Mozilla Firefox</span> <span class="tool-tag">Chrome</span> <span class="tool-tag">Microsoft Edge</span> <span class="tool-tag">Windows 11</span> <span class="tool-tag">Windows Server 2019</span> <span class="tool-tag">Windows Server 2022</span></p>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Protocols / Ports</span>
+                    <ul>
+                        <li><strong>MQTT (plain):</strong> TCP 1883 (default; defined by IANA as MQTT over TCP).</li>
+                        <li><strong>MQTT (TLS):</strong> TCP 8883 (MQTTS).</li>
+                        <li><strong>MQTT-SN:</strong> UDP 1883 (for sensor networks).</li>
+                        <li><strong>CoAP:</strong> UDP 5683 (plain), UDP 5684 (DTLS).</li>
+                        <li><strong>Modbus TCP:</strong> TCP 502.</li>
+                        <li><strong>DNP3:</strong> TCP/UDP 20000.</li>
+                        <li><strong>OPC UA:</strong> TCP 4840.</li>
+                        <li><strong>BACnet/IP:</strong> UDP 47808.</li>
+                        <li><strong>HTTP/HTTPS:</strong> TCP 80 / 443 (device web interfaces).</li>
+                        <li><strong>RTSP:</strong> TCP 554 (IP cameras/media).</li>
+                        <li><strong>SSH:</strong> TCP 22; <strong>Telnet:</strong> TCP 23; <strong>FTP:</strong> TCP 21.</li>
+                        <li><strong>SNMP:</strong> UDP 161/162.</li>
+                        <li><strong>AMQP:</strong> TCP 5671/5672; <strong>XMPP:</strong> TCP 5222.</li>
+                        <li><strong>KNX/IP:</strong> UDP 3671; <strong>EnOcean:</strong> sub-GHz.</li>
+                        <li><strong>Zigbee:</strong> IEEE 802.15.4, 2.4 GHz (channels 11-26).</li>
+                        <li><strong>BLE:</strong> 2.4 GHz ISM band.</li>
+                        <li><strong>LoRaWAN:</strong> 868/915 MHz ISM bands.</li>
+                        <li><strong>Bevywise MQTTRoute web UI:</strong> HTTP TCP 8080 (localhost).</li>
+                        <li><strong>Bevywise IoT Simulator web UI:</strong> HTTP TCP 9000 (localhost).</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Key Commands</span>
+                    <pre><code># Footprinting / online sources
+# Whois
+# https://www.whois.com/whois/  -> search www.oasis-open.org
+
+# Exploit-DB Google Hacking Database
+# https://www.exploit-db.com/google-hacking-database  -> search SCADA
+
+# Google dorks
+"login" intitle:"scada login"
+intitle:"index of" scada
+
+# Shodan
+# https://account.shodan.io/login
+port:1883
+port:502
+"Schneider Electric"
+SCADA Country:"US"
+
+# IoT/OT protocol scanning with Nmap
+nmap -sV -p 1883,8883,502,20000,5683,5684,4840,47808,554,80,443,22,23,21 &lt;target&gt;
+nmap --script mqtt-subscribe -p 1883 &lt;target&gt;
+nmap --script modbus-discover -p 502 &lt;target&gt;
+nmap --script dnp3-info -p 20000 &lt;target&gt;
+nmap --script coap-discovery -p 5683 &lt;target&gt;
+nmap --script http-default-accounts -p 80,443 &lt;target&gt;
+
+# Wireshark display filters
+mqtt
+coap
+modbus
+dnp3
+http
+tcp.port == 1883
+
+# Bevywise IoT Simulator / Broker
+http://127.0.0.1:9000/setnetwork?network=HEALTH_CARE
+http://localhost:8080
+
+# Firmware analysis
+binwalk -e firmware.bin
+strings firmware.bin | grep -i password</code></pre>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Defenses</span>
+                    <ul>
+                        <li>Change default credentials on all IoT/OT devices; enforce strong, unique passwords.</li>
+                        <li>Disable insecure services (Telnet, FTP, HTTP admin) and require HTTPS/SSH/TLS.</li>
+                        <li>Segment OT networks from IT and the Internet; use firewalls, DMZ, and unidirectional gateways (data diodes).</li>
+                        <li>Air-gap critical OT where feasible; monitor any bridging connections.</li>
+                        <li>Encrypt IoT traffic (MQTTS 8883, CoAP DTLS 5684, TLS for HTTP) and authenticate clients/brokers.</li>
+                        <li>Apply least privilege to MQTT topics and broker ACLs; disable anonymous access.</li>
+                        <li>Patch firmware and OT software; maintain an asset inventory and vulnerability management.</li>
+                        <li>Monitor network traffic with Wireshark/IDS for anomalous MQTT/Modbus/DNP3 commands.</li>
+                        <li>Disable unnecessary ports and services; harden device configurations.</li>
+                        <li>Use device certificates and mutual TLS for device identity.</li>
+                        <li>Physical security for PLCs/HMIs/RTUs; restrict USB and console access.</li>
+                        <li>Back up configurations and plan incident response for OT environments.</li>
+                        <li>Register/track FCC IDs and vendor advisories; avoid exposing devices to Shodan (no public IPs).</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <span class="tool-tag">Exam Tips</span>
+                    <ul>
+                        <li>MQTT default port is 1883 (TCP); secure MQTT (MQTTS) uses 8883.</li>
+                        <li>Modbus TCP uses port 502; DNP3 uses port 20000; CoAP uses UDP 5683 (DTLS 5684).</li>
+                        <li>OPC UA uses 4840; BACnet uses UDP 47808.</li>
+                        <li>Shodan query for MQTT: port:1883; for Modbus/SCADA: port:502; Schneider Electric systems: "Schneider Electric"; US SCADA: SCADA Country:"US".</li>
+                        <li>Whois lookup on www.oasis-open.org reveals info about the MQTT v5.0 standard publisher.</li>
+                        <li>Google dork for SCADA logins: "login" intitle:"scada login"; exposed directories: intitle:"index of" scada.</li>
+                        <li>MQTT is publish/subscribe; broker routes messages to subscribers by topic; QoS 0/1/2.</li>
+                        <li>Wireshark filter for MQTT traffic: mqtt; expand TCP, MQ Telemetry Transport Protocol, Header Flags to see Msg Len, Topic, Message.</li>
+                        <li>PUBREL responds to PUBREC; PUBCOMP responds to PUBREL (QoS 2 handshake).</li>
+                        <li>IoT devices often use default credentials and insecure HTTP, making interception easy.</li>
+                        <li>Bevywise MQTTRoute broker runs on Windows Server 2019 and listens on TCP 1883; web UI on http://localhost:8080.</li>
+                        <li>Bevywise IoT Simulator runs on Windows Server 2022; web UI on http://127.0.0.1:9000; broker IP set to 10.10.1.19.</li>
+                        <li>Client machine IP in lab: 10.10.1.22; device TS1 (Temperature_Sensor); topic High_Tempe; QoS 1; message "Alert for High Temperature".</li>
+                        <li>Lab machines: Windows 11 (Admin/Pa$$w0rd), Windows Server 2019 (Administrator/Pa$$w0rd), Windows Server 2022 (CEH\Administrator/Pa$$w0rd).</li>
+                        <li>IoT footprinting gathers protocols like MQTT, Modbus, ZigBee, BLE, 5G, IPv6LoWPAN, open ports, geolocation, manufacturer, FCC ID.</li>
+                        <li>OT systems prioritize availability/safety; patching and scanning must be done carefully.</li>
+                        <li>IoTSeeker and Nmap NSE scripts (mqtt-subscribe, modbus-discover, dnp3-info, coap-discovery) aid discovery.</li>
+                    </ul>
+                </div>
+                <div class="section-card">
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Always obtain proper authorization; use these techniques only in authorized labs/environments.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 1: Perform Footprinting using Various Footprinting Techniques - Task 1: Gather Information using Online Footprinting Tools</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Windows 11 / Mozilla Firefox / Whois / Exploit-DB / Google / Shodan / MQTT (port 1883) / Modbus (port 502) / SCADA</span>
+                    <p><strong>What/when:</strong> Perform footprinting on target IoT and OT devices using online tools (Whois, advanced Google hacking, Shodan). Gather IP address, protocols (MQTT, Modbus, ZigBee, BLE, 5G, IPv6LoWPAN), open ports, device type, geolocation, manufacturing number, manufacturer, FCC ID, banners, certification. This task focuses on footprinting the MQTT protocol; you may choose another protocol/device. Windows 11 machine.</p>
+                    <pre><code># Windows 11 machine
+# login: Admin / Pa$$w0rd ; Networks: Yes
+# if Welcome to Windows wizard appears, click Continue
+# in Sign in with Microsoft wizard, click Cancel
+
+# Launch Mozilla Firefox
+# click search icon on Desktop -> type fire -> Mozilla Firefox -> open
+
+# Whois domain lookup (MQTT standard publisher)
+# address bar: https://www.whois.com/whois/ -> Enter
+# search field: www.oasis-open.org -> click SEARCH
+# review: Domain Information, Registrant Contact, Raw Whois Data
+# (Oasis published MQTT v5.0; track modifications/version changes)
+
+# Exploit-DB Google Hacking Database
+# new tab: https://www.exploit-db.com/google-hacking-database -> Enter
+# Quick Search field: SCADA -> Enter
+# review Google dorks related to SCADA
+
+# Advanced Google hacking
+# new tab: https://www.google.com -> Enter
+# search field: "login" intitle:"scada login" -> Google Search
+# click a result (e.g., SCADA :: seamtec SCADA login ::)
+# (brute-force credentials in login form to gain access)
+# optional: intitle:"index of" scada  (exposed SCADA directories)
+
+# Shodan (device search engine)
+# new tab: https://account.shodan.io/login -> Enter
+# enter username and password -> click Login
+# (register if no account; if Firefox save-login prompt, click Don't Save)
+# Shodan main page: type port:1883 -> Enter   (default MQTT port; IANA-defined MQTT over TCP)
+# click any IP to view detailed info (Ports, Services, Hostnames, ASN)
+# additional filters:
+port:502
+"Schneider Electric"
+SCADA Country:"US"
+
+# Using Shodan, obtain details of SCADA systems used in water treatment, nuclear, HVAC, electrical transmission, home heating, etc.
+
+# Close all open windows; document all acquired information</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> Windows 11 login Admin/Pa$$w0rd, Networks Yes. Launch Firefox. Whois lookup on www.oasis-open.org; review domain/registrant/raw data. Open Exploit-DB Google Hacking Database; search SCADA; note dorks. Google search "login" intitle:"scada login"; click a SCADA login page. Open Shodan login; authenticate or register. Search port:1883; click an IP for details. Try filters port:502, "Schneider Electric", SCADA Country:"US". Close windows and document findings.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Shodan requires an account. Use only in authorized labs/environments.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Lab 2: Capture and Analyze IoT Device Traffic - Task 1: Capture and Analyze IoT Traffic using Wireshark</h3>
+                <div class="section-card">
+                    <span class="tool-tag">Windows Server 2019 / Windows Server 2022 / Bevywise MQTTRoute (Broker) / Bevywise IoT Simulator / Wireshark / MQTT (port 1883) / Chrome / Edge</span>
+                    <p><strong>What/when:</strong> Capture and analyze traffic between virtual IoT devices and an MQTT broker using Wireshark. Install Bevywise MQTTRoute broker on Windows Server 2019 (TCP 1883) and Bevywise IoT Simulator on Windows Server 2022, create a virtual IoT network (CEH_FINANCE_NETWORK) with device TS1 (Temperature_Sensor), subscribe to topic High_Tempe, send "Alert for High Temperature" from the broker, and analyze MQTT packets in Wireshark. Windows Server 2019 + Windows Server 2022 machines.</p>
+                    <pre><code># --- Install MQTT Broker on Windows Server 2019 ---
+# click Windows Server 2019 thumbnail -> Ctrl+Alt+Delete
+# login: Administrator / Pa$$w0rd  (if network screen, click Yes)
+
+# navigate to Z:\CEH-Tools\CEHv12 Module 18 IoT and OT Hacking\Bevywise IoT Simulator
+# double-click Bevywise_MQTTRoute_Win_64.exe
+# Open File - Security Warning -> click Run
+# Setup - MQTTRoute 2.0 -> select "I accept the agreement" -> Next
+# Destination Location -> keep default -> Next
+# click Install -> Finish (ensure "Launch Bevywise_MQTTRoute_Win_64" checked)
+# MQTTRoute executes; command prompt shows TCP port 1883
+# leave Bevywise MQTT running
+
+# --- Install IoT Simulator on Windows Server 2022 ---
+# click Windows Server 2022 thumbnail -> Ctrl+Alt+Delete
+# login: CEH\Administrator / Pa$$w0rd  (if network screen, click Yes)
+
+# navigate to Z:\CEH-Tools\CEHv12 Module 18 IoT and OT Hacking\Bevywise IoT Simulator
+# double-click Bevywise_IoTSimulator_Win_64.exe
+# Open File - Security Warning -> click Run
+# Setup-IoTSimulator 2.1 -> select "I accept the agreement" -> Next
+# keep default destination -> Next
+# Ready to install -> click Install -> Finish
+
+# launch simulator: C:\Bevywise\IotSimulator\bin -> double-click runsimulator.bat
+# if "How do you want to open this?" -> select Microsoft Edge -> OK
+# URL opens: http://127.0.0.1:9000/setnetwork?network=HEALTH_CARE
+# (if URL opens directly in Edge, continue)
+# web interface shows default network HEALTH_CARE and devices
+
+# --- Create virtual IoT network and device ---
+# menu icon -> +New Network
+# Create New Network popup: name CEH_FINANCE_NETWORK, description -> Create
+# Simulator Settings: Broker IP Address = 10.10.1.19 (Windows Server 2019 IP)
+# keep default settings -> Save -> Yes (Configuration Saved -> OK)
+
+# Add blank Device
+# Create New Device popup: name Temperature_Sensor, Device Id TS1, Description -> Save
+# device added to CEH_FINANCE_NETWORK
+
+# Start Network: click red circular icon (top right) -> turns green when connected
+# connection established between network/devices and MQTT broker
+
+# --- Verify connection on broker (Windows Server 2019) ---
+# switch to Windows Server 2019
+# MQTTRoute (still running) shows connection request from 10.10.1.22 for device TS1
+
+# --- Create Subscribe command (Windows Server 2022) ---
+# switch back to Windows Server 2022
+# click Plus icon (top right) -> Subscribe to Command
+# Subscribe for command - TS1 popup:
+#   Subscribe on: On start
+#   Topic: High_Tempe
+#   QoS: 1 (At least once)
+#   click Save
+# scroll down -> topic appears under "Subscribe to Commands"
+
+# --- Capture traffic with Wireshark (Windows Server 2022) ---
+# minimize Edge browser
+# search: wireshark -> open Wireshark
+# select Ethernet interface (the one with IP 10.10.1.22)
+# (skip software update if prompted)
+# click Start Wireshark (shark icon) to start capture; leave running
+# leave IoT simulator running; switch to Windows Server 2019
+
+# --- Send command from broker (Windows Server 2019) ---
+# minimize all apps; open Chrome; type http://localhost:8080 -> Enter
+# (do not use Internet Explorer)
+# MQTTRoute Sign in page -> keep default credentials -> click SIGN IN
+# navigate to Devices menu -> connected device TS1 visible in left pane
+# Command Send section:
+#   Topic: High_Tempe
+#   message: Alert for High Temperature
+#   click Send -> alert popup -> click OK
+# message sent to device via topic
+
+# --- Verify on client (Windows Server 2022) ---
+# maximize Edge browser; expand arrow under Temperature_Sensor -> Device Log
+# observe alert message "Alert for High Temperature"
+
+# --- Analyze MQTT packets in Wireshark ---
+# switch to Wireshark capture window
+# filter field: mqtt -> Enter  (show only MQTT packets)
+# select a Publish Message packet in Packet List pane
+# Packet Details pane -> expand Transmission Control Protocol, MQ Telemetry Transport Protocol, Header Flags
+# observe: Msg Len, Topic Length, Topic, Message
+# (Publish Message reveals message sent by MQTT client to broker)
+
+# select a Publish Release packet
+# expand TCP, MQ Telemetry Transport Protocol, Header Flags
+# observe: Msg Len, Message Type, Message Identifier
+# (PUBREL is response to PUBREC)
+
+# select a Publish Complete packet
+# expand TCP, MQ Telemetry Transport Protocol, Header Flags
+# observe: Msg Len, Message Identifier
+# (PUBCOMP is response to PUBREL)
+
+# select a Publish Received packet
+# expand TCP, MQ Telemetry Transport Protocol, Header Flags
+# observe: Message Type, Msg Len, Message Identifier
+
+# similarly select Ping Request, Ping Response, Publish Ack packets and observe details
+
+# Close all open windows; document all acquired information</code></pre>
+                    <p><strong>Key procedural steps / narrative:</strong> On Windows Server 2019, install and launch Bevywise MQTTRoute broker (port 1883); leave running. On Windows Server 2022, install and launch Bevywise IoT Simulator; open http://127.0.0.1:9000/setnetwork?network=HEALTH_CARE. Create network CEH_FINANCE_NETWORK with broker IP 10.10.1.19; add device Temperature_Sensor (TS1); start network (red->green). Verify connection request on broker from 10.10.1.22. Create Subscribe command for TS1: On start, topic High_Tempe, QoS 1. On client, start Wireshark on Ethernet (10.10.1.22). On server, open Chrome http://localhost:8080, sign in, Devices menu, send command High_Tempe "Alert for High Temperature". On client, verify alert in Device Log. In Wireshark filter mqtt; inspect Publish Message, PUBREL, PUBCOMP, PUBREC, Ping Request/Response, PUBACK packets and their fields. Close windows; document findings.</p>
+                    <p><strong>Notes:</strong> Versions/website appearance may differ; process same. Ensure the selected interface has IP 10.10.1.22. If software update popup appears, skip. Do not use Internet Explorer for http://localhost:8080.</p>
+                </div>
+            </section>
+
+            <section class="lab-task">
+                <h3>Practice &amp; Reference</h3>
+                <div class="section-card">
+                    <p>The lab tasks above provide hands-on practice and reference commands for IoT/OT footprinting (Whois, Google dorking, Shodan filters, port/protocol discovery) and IoT traffic capture/analysis (Bevywise MQTTRoute broker + IoT Simulator, virtual devices, MQTT publish/subscribe, Wireshark mqtt filter, PUB/PING packet inspection).</p>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script>
+        const body = document.body;
+        const applyTheme = (t) => {
+            if (t === 'dark') body.setAttribute('data-theme', 'dark');
+            else body.removeAttribute('data-theme');
+        };
+        function getTheme() {
+            try {
+                const p = new URLSearchParams(location.search);
+                const u = p.get('theme');
+                if (u === 'dark' || u === 'light') return u;
+            } catch (e) {}
+            try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+        }
+        function syncNavLinks(t) {
+            document.querySelectorAll('a[href]').forEach(a => {
+                try {
+                    const url = new URL(a.getAttribute('href'), location.href);
+                    if (url.pathname.endsWith('.html')) {
+                        url.searchParams.set('theme', t);
+                        a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                    }
+                } catch (e) {}
+            });
+        }
+        const initialTheme = getTheme();
+        applyTheme(initialTheme);
+        syncNavLinks(initialTheme);
+        const toggle = document.getElementById('themeToggle');
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+                applyTheme(newT);
+                try { localStorage.setItem('theme', newT); } catch (e) {}
+                try {
+                    const url = new URL(location.href);
+                    url.searchParams.set('theme', newT);
+                    history.replaceState(null, '', url.toString());
+                } catch (e) {}
+                syncNavLinks(newT);
+            });
+        }
+        const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+            'module_07.html': 'nav-07',
+            'module_08.html': 'nav-08',
+            'module_09.html': 'nav-09',
+            'module_10.html': 'nav-10',
+            'module_11.html': 'nav-11',
+            'module_12.html': 'nav-12',
+            'module_13.html': 'nav-13',
+            'module_14.html': 'nav-14',
+            'module_15.html': 'nav-15',
+            'module_16.html': 'nav-16',
+            'module_17.html': 'nav-17',
+            'module_18.html': 'nav-18',
+            'module_19.html': 'nav-19',
+            'module_20.html': 'nav-20',
+            'cheat_sheet.html': 'nav-cheat'
+        };
+        const navId = navMap[path] || 'nav-index';
+        document.getElementById(navId).classList.add('active');
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

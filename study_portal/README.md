@@ -26,7 +26,12 @@ A high-performance, responsive study website for CEH v12 (Certified Ethical Hack
 13. **Module 13:** Hacking Web Servers
 14. **Module 14:** Hacking Web Applications
 15. **Module 15:** SQL Injection
-16. *Remaining Modules 16-20 (Coming Soon)*
+16. **Module 16:** Hacking Wireless Networks
+17. **Module 17:** Hacking Mobile Platforms
+18. **Module 18:** IoT and OT Hacking
+19. **Module 19:** Cloud Computing
+20. **Module 20:** Cryptography
+21. *All 19 modules (02-20) complete.*
 
 ## Setup
 
