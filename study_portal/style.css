@@ -47,7 +47,7 @@ body {
     color: var(--text);
     min-height: 100vh;
     line-height: 1.75;
-    -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing: auto;
 }
 h1, h2, h3, .module-header h2 { font-family: var(--font); font-weight: 700; }
 
@@ -361,7 +361,34 @@ body.sidebar-open .sidebar-overlay { display: block; }
     .nav-toggle { display: inline-flex !important; align-items: center; }
 }
 
-/* ---------- Shared app components ---------- */
+/* ---------- Cheat sheet exam filter bar ---------- */
+.cs-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    position: sticky;
+    top: 72px;
+    z-index: 70;
+    backdrop-filter: blur(8px);
+}
+.cs-pill {
+    background: var(--bg-elev);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.cs-pill:hover { color: var(--text); border-color: var(--border-strong); }
+.cs-pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 .copy-btn {
     position: absolute; top: 8px; right: 8px;
     background: var(--bg-soft); color: var(--muted);
@@ -450,54 +477,44 @@ pre:hover .copy-btn { opacity: 1; }
     main.content-body, main { padding: 12px 8px; }
     .window { padding: 12px 8px; }
 }
-/* ---------- 3D enhancements ---------- */
-:root {
-    --perspective: 1200px;
-}
-body { perspective: var(--perspective); }
 
-/* 3D depth on main containers */
+/* ---------- 3D enhancements (blur-free) ---------- */
+:root { --perspective: 900px; }
+
 .window {
-    transform-style: preserve-3d;
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.05);
 }
 .window:hover {
-    transform: translateY(-4px) rotateX(1deg);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.25), 0 8px 20px rgba(0,0,0,0.15);
+    transform: perspective(var(--perspective)) translateY(-4px) rotateX(1.2deg);
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.14), 0 8px 20px rgba(15, 23, 42, 0.08);
 }
 
-/* 3D tilt on cards */
 .tool-card, .section-card, .lab-task {
-    transform-style: preserve-3d;
-    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-    will-change: transform;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
 }
 .tool-card:hover, .section-card:hover, .lab-task:hover {
-    transform: translateY(-6px) rotateX(4deg) rotateY(-2deg) scale(1.01);
-    box-shadow: 0 18px 40px rgba(0,0,0,0.22), 0 6px 12px rgba(0,0,0,0.12);
+    transform: perspective(var(--perspective)) translateY(-5px) rotateX(3deg) rotateY(-1.5deg) scale(1.005);
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.14), 0 6px 14px rgba(15, 23, 42, 0.08);
 }
 
-/* 3D floating hero title */
 .hero-3d {
     display: inline-block;
-    transform-style: preserve-3d;
     animation: float3d 4s ease-in-out infinite;
 }
 @keyframes float3d {
-    0%, 100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
-    25% { transform: translateY(-8px) rotateX(2deg) rotateY(4deg); }
-    50% { transform: translateY(-4px) rotateX(-1deg) rotateY(-3deg); }
-    75% { transform: translateY(-10px) rotateX(1deg) rotateY(2deg); }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
 }
 
-/* 3D rotating cube (decorative) */
 .cube-3d {
     width: 70px; height: 70px;
     position: relative;
     transform-style: preserve-3d;
     animation: spin3d 6s linear infinite;
     margin: 0 auto 20px;
-    filter: drop-shadow(0 0 8px var(--accent));
+    filter: drop-shadow(0 0 10px var(--accent));
 }
 .cube-3d .face {
     position: absolute;
@@ -521,37 +538,33 @@ body { perspective: var(--perspective); }
     to   { transform: rotateX(360deg) rotateY(360deg); }
 }
 
-/* 3D button press */
-.theme-toggle, .nav-toggle, .copy-btn, .mod-nav-btn {
-    transform-style: preserve-3d;
+.theme-toggle, .copy-btn, .mod-nav-btn {
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.theme-toggle:active, .nav-toggle:active, .copy-btn:active, .mod-nav-btn:active {
+.theme-toggle:active, .copy-btn:active, .mod-nav-btn:active {
     transform: translateY(2px) scale(0.97);
 }
 
-/* 3D nav active indicator */
-nav ul li a.active {
-    transform: translateZ(4px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+.sidebar a.active {
+    box-shadow: 0 4px 12px var(--accent-glow);
 }
 
-/* parallax-ish depth on header */
-nav {
-    transform-style: preserve-3d;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-}
-
-/* 3D code block */
 pre {
-    transform-style: preserve-3d;
-    transition: transform 0.3s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
 }
 pre:hover {
-    transform: translateZ(6px) rotateX(1deg);
+    transform: perspective(var(--perspective)) translateZ(4px) rotateX(0.8deg);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14);
 }
 
-/* Reduced motion respect */
+.sidebar { box-shadow: 4px 0 24px rgba(15, 23, 42, 0.08); }
+nav { box-shadow: 0 4px 20px rgba(15, 23, 42, 0.1); }
+
+.elevated {
+    box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 4px 12px rgba(15,23,42,0.06), 0 12px 32px rgba(15,23,42,0.08);
+}
+
 @media (prefers-reduced-motion: reduce) {
     .hero-3d, .cube-3d, .window, .tool-card, .section-card, .lab-task, pre {
         animation: none !important;
@@ -560,7 +573,6 @@ pre:hover {
     }
 }
 
-/* Mobile: disable heavy 3D transforms for performance */
 @media (max-width: 700px) {
     .tool-card:hover, .section-card:hover, .lab-task:hover,
     .window:hover, pre:hover {
@@ -568,14 +580,27 @@ pre:hover {
     }
     .cube-3d { width: 44px; height: 44px; }
     .cube-3d .face { width: 44px; height: 44px; }
-    .cube-3d .front, .cube-3d .back, .cube-3d .right,
-    .cube-3d .left, .cube-3d .top, .cube-3d .bottom {
-        transform-origin: center;
-    }
     .cube-3d .front  { transform: translateZ(22px); }
     .cube-3d .back   { transform: rotateY(180deg) translateZ(22px); }
     .cube-3d .right  { transform: rotateY(90deg) translateZ(22px); }
     .cube-3d .left   { transform: rotateY(-90deg) translateZ(22px); }
     .cube-3d .top    { transform: rotateX(90deg) translateZ(22px); }
     .cube-3d .bottom { transform: rotateX(-90deg) translateZ(22px); }
+}
+
+body {
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+    text-rendering: auto;
+}
+
+
+/* ---------- Print (exam cheat sheet) ---------- */
+@media print {
+    nav, .sidebar, .sidebar-overlay, .cs-filter-bar, .back-to-top, .copy-btn, .view-toggle { display: none !important; }
+    main.content-body, main { margin-left: 0 !important; padding: 0 !important; }
+    body { background: #fff !important; color: #000 !important; }
+    .window, .section-card, .lab-task { box-shadow: none !important; border: 1px solid #ccc; break-inside: avoid; }
+    pre { max-height: none !important; border: 1px solid #ccc; background: #f5f5f5 !important; color: #000 !important; }
+    a { color: #000 !important; text-decoration: none; }
 }

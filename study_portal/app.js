@@ -142,8 +142,10 @@
       viewToggle.textContent = compact ? 'FULL VIEW' : 'COMPACT';
       try { localStorage.setItem('ceh_compact', compact ? '1' : '0'); } catch (e) {}
     };
-    let compact = false;
-    try { compact = localStorage.getItem('ceh_compact') === '1'; } catch (e) {}
+    let compact = true;
+    try { const stored = localStorage.getItem('ceh_compact'); if (stored !== null) compact = stored === '1'; } catch (e) {}
+    const isCheatSheet = (location.pathname.split('/').pop() || '') === 'cheat_sheet.html';
+    if (isCheatSheet) compact = false;
     applyView(compact);
     viewToggle.addEventListener('click', () => {
       applyView(!document.body.classList.contains('compact'));
@@ -238,11 +240,31 @@
     btt.classList.toggle('visible', window.scrollY > 400);
   });
 
+  const isCheat = (location.pathname.split('/').pop() || '') === 'cheat_sheet.html';
+
   // Search
   const searchInput = document.getElementById('globalSearch');
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       const q = e.target.value.trim().toLowerCase();
+      if (isCheat) {
+        // Filter code blocks on the cheat sheet
+        const sections = document.querySelectorAll('main .lab-task');
+        sections.forEach(sec => {
+          const blocks = sec.querySelectorAll('pre');
+          let any = false;
+          blocks.forEach(pre => {
+            const p = pre.previousElementSibling;
+            const hay = ((p ? p.textContent : '') + ' ' + pre.textContent).toLowerCase();
+            const match = !q || hay.includes(q);
+            pre.style.display = match ? '' : 'none';
+            if (p && p.tagName === 'P') p.style.display = match ? '' : 'none';
+            if (match) any = true;
+          });
+          sec.style.display = (q && !any) ? 'none' : '';
+        });
+        return;
+      }
       const overlay = document.getElementById('searchResults');
       if (!overlay) return;
       if (!q) { overlay.innerHTML = ''; overlay.classList.remove('open'); return; }
@@ -252,12 +274,54 @@
         : '<div class="sr-empty">No modules match.</div>';
       overlay.classList.add('open');
     });
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.search-wrap')) {
-        const overlay = document.getElementById('searchResults');
-        if (overlay) overlay.classList.remove('open');
-      }
-    });
+    if (!isCheat) {
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-wrap')) {
+          const overlay = document.getElementById('searchResults');
+          if (overlay) overlay.classList.remove('open');
+        }
+      });
+    }
+  }
+
+  // Cheat-sheet exam mode: phase filter pills + print
+  if (isCheat) {
+    const mainEl = document.querySelector('main.content-body, main');
+    const firstSec = mainEl ? mainEl.querySelector('.lab-task') : null;
+    if (mainEl && firstSec) {
+      const bar = document.createElement('div');
+      bar.className = 'cs-filter-bar';
+      const phases = [
+        { label: 'All', ids: null },
+        { label: 'Recon', ids: ['02','03','04'] },
+        { label: 'Vuln', ids: ['05'] },
+        { label: 'Attacks', ids: ['06','07','08','09','10'] },
+        { label: 'Advanced', ids: ['11','12','13','14','15','16','17','18','19','20'] },
+      ];
+      phases.forEach((ph, i) => {
+        const b = document.createElement('button');
+        b.className = 'cs-pill' + (i === 0 ? ' active' : '');
+        b.textContent = ph.label;
+        b.addEventListener('click', () => {
+          bar.querySelectorAll('.cs-pill').forEach(x => x.classList.remove('active'));
+          b.classList.add('active');
+          document.querySelectorAll('main .lab-task').forEach(sec => {
+            const h = sec.querySelector('h3');
+            const m = h ? h.textContent.match(/Module\s+(\d+)/) : null;
+            const id = m ? m[1].padStart(2,'0') : '';
+            const show = !ph.ids || ph.ids.includes(id);
+            sec.style.display = show ? '' : 'none';
+          });
+        });
+        bar.appendChild(b);
+      });
+      const printBtn = document.createElement('button');
+      printBtn.className = 'cs-pill';
+      printBtn.textContent = 'Print';
+      printBtn.addEventListener('click', () => window.print());
+      bar.appendChild(printBtn);
+      firstSec.parentNode.insertBefore(bar, firstSec);
+    }
   }
 
   // Progress on index
