@@ -176,7 +176,7 @@
   if (headings.length > 2) {
     const toc = document.createElement('aside');
     toc.className = 'toc';
-    toc.innerHTML = '<details open><summary class="toc-title">On this page</summary><ul>' +
+    toc.innerHTML = '<details><summary class="toc-title">On this page</summary><ul>' +
       headings.map(h => {
         if (!h.id) h.id = 'h-' + h.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
         return `<li><a href="#${h.id}">${h.textContent.trim()}</a></li>`;
@@ -284,44 +284,9 @@
     }
   }
 
-  // Cheat-sheet exam mode: phase filter pills + print
+  // Cheat-sheet exam mode: (filter pills removed for cleaner top; search still filters)
   if (isCheat) {
-    const mainEl = document.querySelector('main.content-body, main');
-    const firstSec = mainEl ? mainEl.querySelector('.lab-task') : null;
-    if (mainEl && firstSec) {
-      const bar = document.createElement('div');
-      bar.className = 'cs-filter-bar';
-      const phases = [
-        { label: 'All', ids: null },
-        { label: 'Recon', ids: ['02','03','04'] },
-        { label: 'Vuln', ids: ['05'] },
-        { label: 'Attacks', ids: ['06','07','08','09','10'] },
-        { label: 'Advanced', ids: ['11','12','13','14','15','16','17','18','19','20'] },
-      ];
-      phases.forEach((ph, i) => {
-        const b = document.createElement('button');
-        b.className = 'cs-pill' + (i === 0 ? ' active' : '');
-        b.textContent = ph.label;
-        b.addEventListener('click', () => {
-          bar.querySelectorAll('.cs-pill').forEach(x => x.classList.remove('active'));
-          b.classList.add('active');
-          document.querySelectorAll('main .lab-task').forEach(sec => {
-            const h = sec.querySelector('h3');
-            const m = h ? h.textContent.match(/Module\s+(\d+)/) : null;
-            const id = m ? m[1].padStart(2,'0') : '';
-            const show = !ph.ids || ph.ids.includes(id);
-            sec.style.display = show ? '' : 'none';
-          });
-        });
-        bar.appendChild(b);
-      });
-      const printBtn = document.createElement('button');
-      printBtn.className = 'cs-pill';
-      printBtn.textContent = 'Print';
-      printBtn.addEventListener('click', () => window.print());
-      bar.appendChild(printBtn);
-      firstSec.parentNode.insertBefore(bar, firstSec);
-    }
+    // nothing extra at top
   }
 
   // Progress on index
