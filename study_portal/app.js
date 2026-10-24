@@ -243,6 +243,20 @@
   const isCheat = (location.pathname.split('/').pop() || '') === 'cheat_sheet.html';
   if (isCheat) document.body.classList.add('cs-page');
 
+  // Dim comment lines inside cheat-sheet code blocks so commands stand out
+  if (isCheat) {
+    document.querySelectorAll('main .section-card pre').forEach(pre => {
+      const lines = pre.innerHTML.split('\n');
+      pre.innerHTML = lines.map(line => {
+        const stripped = line.replace(/<[^>]*>/g, '').trim();
+        if (stripped.startsWith('#')) {
+          return '<span class="cs-comment">' + line + '</span>';
+        }
+        return line;
+      }).join('\n');
+    });
+  }
+
   // Search
   const searchInput = document.getElementById('globalSearch');
   if (searchInput) {
