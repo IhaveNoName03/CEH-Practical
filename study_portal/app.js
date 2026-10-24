@@ -241,6 +241,7 @@
   });
 
   const isCheat = (location.pathname.split('/').pop() || '') === 'cheat_sheet.html';
+  if (isCheat) document.body.classList.add('cs-page');
 
   // Search
   const searchInput = document.getElementById('globalSearch');

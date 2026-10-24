@@ -649,7 +649,75 @@ pre {
 
 /* Crisp text */
 body {
+    background-color: var(--bg);
+    background-image:
+        linear-gradient(30deg, rgba(37,99,235,0.04) 12%, transparent 12.5%, transparent 87%, rgba(37,99,235,0.04) 87.5%, rgba(37,99,235,0.04)),
+        linear-gradient(150deg, rgba(37,99,235,0.04) 12%, transparent 12.5%, transparent 87%, rgba(37,99,235,0.04) 87.5%, rgba(37,99,235,0.04)),
+        linear-gradient(30deg, rgba(37,99,235,0.04) 12%, transparent 12.5%, transparent 87%, rgba(37,99,235,0.04) 87.5%, rgba(37,99,235,0.04)),
+        linear-gradient(150deg, rgba(37,99,235,0.04) 12%, transparent 12.5%, transparent 87%, rgba(37,99,235,0.04) 87.5%, rgba(37,99,235,0.04)),
+        linear-gradient(60deg, rgba(8,145,178,0.03) 25%, transparent 25.5%, transparent 75%, rgba(8,145,178,0.03) 75%, rgba(8,145,178,0.03)),
+        linear-gradient(60deg, rgba(8,145,178,0.03) 25%, transparent 25.5%, transparent 75%, rgba(8,145,178,0.03) 75%, rgba(8,145,178,0.03));
+    background-size: 80px 140px;
+    background-attachment: fixed;
+    background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+}
+
+/* ---------- Cheat sheet formatting (less crowded) ---------- */
+.cs-page main .lab-task { margin-bottom: 48px; }
+.cs-page main .lab-task h3 {
+    position: sticky;
+    top: 72px;
+    background: var(--bg-elev);
+    padding: 10px 16px;
+    margin: 0 0 16px;
+    border-left: 4px solid var(--accent);
+    border-radius: 6px;
+    z-index: 60;
+    box-shadow: 0 2px 8px rgba(15,23,42,0.06);
+}
+.cs-page main .section-card {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+.cs-page main .section-card > p {
+    margin: 20px 0 6px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--border);
+}
+.cs-page main .section-card > p:first-child {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+}
+.cs-page main .section-card > pre {
+    margin-bottom: 8px;
+}
+
+/* Crisp text */
+body {
     -webkit-font-smoothing: auto;
     -moz-osx-font-smoothing: auto;
     text-rendering: auto;
 }
+
+/* ---------- Isometric decorative stack ---------- */
+.iso-stack {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 24px;
+    transform: rotateX(60deg) rotateZ(-45deg);
+    transform-style: preserve-3d;
+}
+.iso-layer {
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    opacity: 0.85;
+    box-shadow: 0 8px 24px rgba(37,99,235,0.25);
+}
+.iso-layer:nth-child(1) { transform: translateZ(0px); opacity: 0.4; }
+.iso-layer:nth-child(2) { transform: translateZ(18px); opacity: 0.65; }
+.iso-layer:nth-child(3) { transform: translateZ(36px); opacity: 0.9; }
