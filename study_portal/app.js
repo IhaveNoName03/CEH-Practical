@@ -102,9 +102,23 @@
     sidebar.appendChild(cheatLink);
 
     sidebar.addEventListener('click', (e) => {
-      if (e.target.closest('a')) document.body.classList.remove('sidebar-open');
+      if (e.target.closest('a')) {
+        document.body.classList.remove('sidebar-open');
+        document.body.style.overflow = '';
+        if (navToggle) { navToggle.setAttribute('aria-expanded','false'); navToggle.textContent = '☰'; }
+      }
     });
 
+    // On mobile, move the search box into the sidebar drawer to declutter the top bar
+    if (window.innerWidth <= 900) {
+      const sw = document.querySelector('.search-wrap');
+      if (sw) {
+        const wrap = document.createElement('div');
+        wrap.className = 'sidebar-search';
+        wrap.appendChild(sw);
+        sidebar.insertBefore(wrap, sidebar.firstChild);
+      }
+    }
     document.body.appendChild(sidebar);
   }
 
@@ -114,8 +128,17 @@
       const open = document.body.classList.toggle('sidebar-open');
       navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       navToggle.textContent = open ? '✕' : '☰';
+      document.body.style.overflow = open ? 'hidden' : '';
     });
   }
+  // Close drawer on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.body.classList.contains('sidebar-open')) {
+      document.body.classList.remove('sidebar-open');
+      if (navToggle) { navToggle.setAttribute('aria-expanded','false'); navToggle.textContent = '☰'; }
+      document.body.style.overflow = '';
+    }
+  });
 
   // Theme propagation across pages (URL param)
   function currentTheme() {

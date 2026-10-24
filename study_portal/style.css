@@ -803,3 +803,69 @@ a:hover { color: var(--accent); }
 
 /* Selection color */
 ::selection { background: var(--accent); color: #fff; }
+
+/* ---------- Mobile navbar improvements ---------- */
+@media (max-width: 900px) {
+    nav {
+        flex-wrap: wrap;
+        padding: 10px 14px;
+        gap: 10px;
+        position: sticky;
+    }
+    nav h1 { font-size: 1rem; flex: 1; min-width: 0; }
+    .nav-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        min-height: 44px;
+        font-size: 1.4rem;
+        order: 0;
+    }
+    /* Hide less-essential controls on mobile to reduce crowding */
+    .view-toggle { display: none !important; }
+    .search-wrap { width: 100%; order: 3; }
+    #globalSearch { width: 100%; font-size: 16px; /* prevent iOS zoom */ }
+    .theme-toggle {
+        order: 2;
+        min-height: 40px;
+        padding: 8px 12px;
+        font-size: 0.75rem;
+    }
+    /* Sidebar drawer: full-height, scrollable, with safe area */
+    .sidebar {
+        top: 0;
+        height: 100vh;
+        height: 100dvh;
+        padding-top: 72px;
+        width: 82vw;
+        max-width: 300px;
+        box-shadow: 4px 0 24px rgba(0,0,0,0.25);
+    }
+    /* Overlay blocks scroll */
+    body.sidebar-open { overflow: hidden; }
+    /* Close affordance inside drawer */
+    .sidebar::before {
+        content: "✕  Close";
+        position: absolute;
+        top: 12px;
+        right: 14px;
+        font-size: 0.75rem;
+        color: var(--muted);
+        pointer-events: none;
+    }
+}
+@media (max-width: 480px) {
+    nav { padding: 8px 12px; gap: 8px; }
+    nav h1 { font-size: 0.9rem; }
+    #globalSearch { font-size: 16px; padding: 10px 12px; }
+    .theme-toggle { font-size: 0.7rem; padding: 6px 10px; }
+}
+
+/* Hide top search on mobile (moved into sidebar drawer) */
+@media (max-width: 900px) {
+    nav .search-wrap { display: none !important; }
+    .sidebar-search { padding: 0 4px 12px; }
+    .sidebar-search .search-wrap { width: 100%; position: relative; }
+    .sidebar-search input { width: 100%; font-size: 16px; padding: 10px 12px; }
+}
