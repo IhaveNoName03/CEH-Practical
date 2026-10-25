@@ -1,0 +1,12 @@
+{
+  "name": "CEH v12 Study Portal",
+  "short_name": "CEH Portal",
+  "description": "CEH v12 technical study portal: modules 02-20 and cheat sheet.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "icons": [
+    { "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='32' fill='%232563eb'/%3E%3Ctext x='96' y='132' font-size='108' text-anchor='middle' fill='white' font-family='monospace' font-weight='bold'%3EC%3C/text%3E%3C/svg%3E", "sizes": "192x192", "type": "image/svg+xml" }
+  ]
+}

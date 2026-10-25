@@ -63,6 +63,36 @@
     if (themeBtn) navEl2.insertBefore(sel, themeBtn);
     else navEl2.appendChild(sel);
   }
+  // Inject favicon + theme-color meta (works on all pages without editing HTML)
+  (function() {
+    const mk = (name, content, attr='name') => {
+      if (document.querySelector(`meta[${attr}="${name}"]`)) return;
+      const m = document.createElement('meta'); m.setAttribute(attr, name); m.content = content; document.head.appendChild(m);
+    };
+    mk('theme-color', '#2563eb');
+    mk('description', 'CEH v12 technical study portal: modules 02-20, cheat sheet, labs.');
+    // manifest link
+    if (!document.querySelector('link[rel="manifest"]')) {
+      const ml = document.createElement('link'); ml.rel = 'manifest'; ml.href = 'manifest.json'; document.head.appendChild(ml);
+    }
+    // favicon (inline SVG data URL)
+    if (!document.querySelector('link[rel="icon"]')) {
+      const l = document.createElement('link'); l.rel = 'icon';
+      l.href = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#2563eb"/><text x="16" y="22" font-size="18" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="bold">C</text></svg>');
+      document.head.appendChild(l);
+    }
+  })();
+
+  // Skip-to-content link for accessibility
+  const skip = document.createElement('a');
+  skip.href = '#main-content';
+  skip.className = 'skip-link';
+  skip.textContent = 'Skip to content';
+  document.body.insertBefore(skip, document.body.firstChild);
+  // ensure main has id
+  const mainEl = document.querySelector('main.content-body, main');
+  if (mainEl && !mainEl.id) mainEl.id = 'main-content';
+
   const navEl = document.querySelector('nav');
   const navToggle = document.getElementById('navToggle');
 
@@ -140,7 +170,24 @@
     }
   });
 
-  // Theme propagation across pages (URL param)
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    const tag = (e.target && e.target.tagName) || '';
+    const typing = tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable;
+    if (e.key === '/' && !typing) {
+      e.preventDefault();
+      const si = document.getElementById('globalSearch');
+      if (si) { si.focus(); si.select(); }
+    }
+    if (e.key === 't' && !typing) {
+      const tt = document.getElementById('themeToggle');
+      if (tt) tt.click();
+    }
+    if (e.key === 'c' && !typing && !isCheat) {
+      const vt = document.getElementById('viewToggle');
+      if (vt) vt.click();
+    }
+  });
   function currentTheme() {
     try {
       const p = new URLSearchParams(location.search);
@@ -327,7 +374,22 @@
     // nothing extra at top
   }
 
-  // Progress on index
+  // Mark visited module cards on index
+  if ((location.pathname.split('/').pop() || 'index.html') === 'index.html') {
+    document.querySelectorAll('.tool-card').forEach(card => {
+      const href = card.getAttribute('href') || '';
+      const mod = MODULES.find(m => m.file === href);
+      if (mod && visited.includes(mod.id)) {
+        card.classList.add('visited');
+        if (!card.querySelector('.visited-badge')) {
+          const b = document.createElement('span');
+          b.className = 'visited-badge';
+          b.textContent = '✓';
+          card.appendChild(b);
+        }
+      }
+    });
+  }
   const progressEl = document.getElementById('progressFill');
   if (progressEl) {
     const pct = Math.round((visited.length / MODULES.length) * 100);
@@ -336,3 +398,10 @@
     if (label) label.textContent = `${visited.length} / ${MODULES.length} modules visited (${pct}%)`;
   }
 })();
+
+// Register service worker for offline use (PWA)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
