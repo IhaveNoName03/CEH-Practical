@@ -230,7 +230,8 @@
       const code = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText;
       navigator.clipboard.writeText(code).then(() => {
         btn.textContent = 'Copied!';
-        setTimeout(() => (btn.textContent = 'Copy'), 1400);
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1400);
       }).catch(() => {
         btn.textContent = 'Failed';
         setTimeout(() => (btn.textContent = 'Copy'), 1400);

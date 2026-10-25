@@ -918,3 +918,58 @@ a:hover { color: var(--accent); }
     font-size: 0.7rem; font-weight: 800;
     box-shadow: 0 2px 6px var(--accent-glow);
 }
+
+/* ---------- Rubbery / elastic feel ---------- */
+.theme-toggle, .copy-btn, .nav-toggle, .mod-nav-btn, .cs-pill, .view-toggle, .back-to-top {
+    transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    will-change: transform;
+}
+.theme-toggle:hover, .copy-btn:hover, .nav-toggle:hover, .mod-nav-btn:hover, .cs-pill:hover, .view-toggle:hover, .back-to-top:hover {
+    transform: scale(1.06) translateY(-1px);
+}
+.theme-toggle:active, .copy-btn:active, .nav-toggle:active, .mod-nav-btn:active, .cs-pill:active, .view-toggle:active, .back-to-top:active {
+    transform: scale(0.92);
+    transition-duration: 0.12s;
+}
+
+/* Cards: no hover transform (avoids jitter); elastic only on press of inner controls */
+
+/* Sidebar drawer: spring slide */
+.sidebar {
+    transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+/* Overlay fade */
+.sidebar-overlay {
+    transition: opacity 0.25s ease;
+}
+
+/* Progress bar fill: elastic grow */
+#progressFill {
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Visited badge: pop-in */
+.visited-badge {
+    animation: badgePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes badgePop {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+}
+
+/* Reduced motion: disable elastic transforms */
+@media (prefers-reduced-motion: reduce) {
+    .theme-toggle, .copy-btn, .nav-toggle, .mod-nav-btn, .cs-pill, .view-toggle, .back-to-top,
+    .window, .section-card, .tool-card, .lab-task, .sidebar, #progressFill {
+        transition: none !important;
+        animation: none !important;
+        transform: none !important;
+    }
+}
+
+.copy-btn.copied {
+    transform: scale(1.15);
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
