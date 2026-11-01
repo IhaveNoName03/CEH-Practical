@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exam Day Checklist — CEH Practical</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+    <h2>CEH Practical</h2>
+    <a href="index.html" id="nav-index">Home</a>
+    <a href="cheat_sheet.html" id="nav-cheat">Cheat Sheet</a>
+    <a href="practice.html" id="nav-practice">Practice Lab</a>
+    <a href="exam_checklist.html" id="nav-checklist" class="active">Exam Checklist</a>
+    <hr>
+    <a href="module_02.html" id="nav-02">MOD_02_SCAN</a>
+    <a href="module_03.html" id="nav-03">MOD_03_ENUM</a>
+    <a href="module_04.html" id="nav-04">MOD_04_VULN</a>
+    <a href="module_05.html" id="nav-05">MOD_05_SYS</a>
+    <a href="module_06.html" id="nav-06">MOD_06_MALWARE</a>
+    <a href="module_07.html" id="nav-07">MOD_07_SNIFF</a>
+    <a href="module_08.html" id="nav-08">MOD_08_SOCIAL</a>
+    <a href="module_09.html" id="nav-09">MOD_09_DOS</a>
+    <a href="module_10.html" id="nav-10">MOD_10_SESSION</a>
+    <a href="module_11.html" id="nav-11">MOD_11_EVATION</a>
+    <a href="module_12.html" id="nav-12">MOD_12_HACKING</a>
+    <a href="module_13.html" id="nav-13">MOD_13_WEB</a>
+    <a href="module_14.html" id="nav-14">MOD_14_WIRELESS</a>
+    <a href="module_15.html" id="nav-15">MOD_15_MOBILE</a>
+    <a href="module_16.html" id="nav-16">MOD_16_IOT</a>
+    <a href="module_17.html" id="nav-17">MOD_17_CLOUD</a>
+    <a href="module_18.html" id="nav-18">MOD_18_CRYPTO</a>
+    <a href="module_19.html" id="nav-19">MOD_19_REPORT</a>
+    <a href="module_20.html" id="nav-20">MOD_20_CRYPTO</a>
+</nav>
+<main>
+<div class="window">
+    <div class="module-header">
+        <span>CEH Practical Exam — Day Of</span>
+        <h2>Exam Day Checklist</h2>
+    </div>
+    <p>Run through this checklist the morning of the exam. Check off each item as you go. Progress saves in your browser.</p>
+
+    <div class="lab-task">
+        <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">1. Verify VM boots</h3>
+        <p>Start ParrotSec/Kali VM. Confirm network adapter is in NAT or Bridged mode as required. Test internet connectivity: <code>ping 8.8.8.8</code></p>
+    </div>
+
+    <div class="lab-task">
+        <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">2. Verify tools are installed</h3>
+        <p>Run: <code>nmap --version; sqlmap --version; hydra -h 2>&1 | head -1; metasploit-framework; wireshark --version; aircrack-ng --help 2>&1 | head -1; john --version; hashcat --version</code></p>
+    </div>
+
+    <div class="lab-task">
+        <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">3. Verify wordlists exist</h3>
+        <p>Check: <code>ls /usr/share/wordlists/rockyou.txt; ls ~/ctf/wordlists/SecLists 2>/dev/null || ls /usr/share/seclists 2>/dev/null</code>. If missing, download: <code>wget https://github.com/danielmiessler/SecLists/archive/master.zip</code></p>
+    </div>
+
+    <div class="lab-task">
+        <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">4. Verify browser & Burp Suite</h3>
+        <p>Open Firefox/Chromium. Verify Burp Suite launches and proxy is configured (127.0.0.1:8080). Test: browse to any site with proxy on.</p>
+    </div>
+
+    <div class="lab-task">
+        <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">5. Verify Python & pip tools</h3>
+        <p>Run: <code>python3 -c "import requests, bs4, scapy; print('OK')"; pip3 list | grep -i -E 'scapy|requests|beautifulsoup'</code></p>
+    </div>
+
+    <div class="lab-task">
+        <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">6. Verify network connectivity to exam subnet</h3>
+        <p>Ping the exam gateway: <code>ping 10.10.10.1</code> (adjust to your exam subnet). Verify you can reach target IPs.</p>
+    </div>
+
+    <div class="lab-task">
+        <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">7. Open this study portal</h3>
+        <p>Keep the study portal open in a browser tab for quick reference. Bookmark: cheat_sheet.html, practice.html, module_13 (web), module_12 (system hacking).</p>
+    </div>
+
+    <div class="lab-task">
+        <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">8. Note-taking setup</h3>
+        <p>Open a text editor (nano/vim/gedit) for recording answers. Create a file: <code>~/exam_notes.txt</code>. Format: <code>Q1: answer | Q2: answer | ...</code></p>
+    </div>
+
+    <div class="lab-task">
+        <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">9. Screenshot tool ready</h3>
+        <p>Verify screenshot capability: <code>gnome-screenshot -a</code> or <code>scrot -s</code>. Some questions require proof screenshots.</p>
+    </div>
+
+    <div class="lab-task">
+        <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">10. Time management plan</h3>
+        <p>6 hours / 20 questions = ~18 min per question. If stuck > 20 min, skip and move on. Mark skipped questions for review. Leave 30 min at end for review.</p>
+    </div>
+
+    <div class="lab-task">
+        <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">11. Common pitfalls to avoid</h3>
+        <p>- Don't forget to URL-encode payloads for web tests<br>
+        - Check both GET and POST parameters<br>
+        - Try default credentials first (admin/admin, root/toor)<br>
+        - Use <code>--batch</code> flag with sqlmap to avoid interactive prompts<br>
+        - Save all evidence (screenshots, command output) before moving on<br>
+        - Read the question carefully — answer format matters (IP, count, hash, etc.)</p>
+    </div>
+
+    <div class="lab-task">
+        <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">12. Post-exam cleanup</h3>
+        <p>Save all notes and screenshots. Verify all 20 answers are recorded. Submit before time runs out.</p>
+    </div>
+
+    <div style="margin-top:20px;padding:12px;border:1px solid var(--border);border-radius:8px;background:var(--bg-elev);">
+        <strong>Progress:</strong> <span id="practiceProgress">0</span> / <span id="practiceTotal">0</span> items checked
+    </div>
+</div>
+</main>
+<script src="app.js"></script>
+<script>
+    const checks = document.querySelectorAll('.task-check');
+    const totalEl = document.getElementById('practiceTotal');
+    const progEl = document.getElementById('practiceProgress');
+    if (totalEl) totalEl.textContent = checks.length;
+    window.saveProgress = function() {
+        const state = Array.from(checks).map(c => c.checked);
+        try { localStorage.setItem('ceh_exam_checklist', JSON.stringify(state)); } catch (e) {}
+        if (progEl) progEl.textContent = state.filter(Boolean).length;
+    };
+    try {
+        const saved = JSON.parse(localStorage.getItem('ceh_exam_checklist') || '[]');
+        checks.forEach((c, i) => { if (saved[i]) c.checked = true; });
+        if (progEl) progEl.textContent = saved.filter(Boolean).length;
+    } catch (e) {}
+</script>
+</body>
+</html>
