@@ -1,8 +1,10 @@
-const CACHE = 'ceh-portal-v1';
+const CACHE = 'ceh-portal-v2';
 const ASSETS = [
   './',
   './index.html',
   './cheat_sheet.html',
+  './practice.html',
+  './exam_checklist.html',
   './module_02.html',
   './module_03.html',
   './module_04.html',
