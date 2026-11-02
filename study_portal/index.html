@@ -16,6 +16,7 @@
         <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
     <ul id="navMenu">
             <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="domain_guide.html" id="nav-domain">DOMAIN_GUIDE</a></li>
             <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
             <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
             <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
@@ -79,6 +80,10 @@
                 <a href="practice.html" class="tool-card" style="text-decoration:none; grid-column: 1 / -1; background: linear-gradient(135deg, var(--accent-glow), var(--bg-elev)); border-color: var(--accent);">
                     <span class="tool-name" style="font-size:1.2rem;">★ Practice Lab — 45 Hands-on Challenges</span>
                     <p>Tutor materials: 20 patterns + 24 exam-style challenges with commands, inputs and answers. Search, progress tracking, difficulty badges.</p>
+                </a>
+                <a href="domain_guide.html" class="tool-card" style="text-decoration:none; grid-column: 1 / -1; background: linear-gradient(135deg, var(--accent-glow), var(--bg-elev)); border-color: var(--accent);">
+                    <span class="tool-name" style="font-size:1.2rem;">★ Domain Guide — What to Do per Exam Domain</span>
+                    <p>9 blueprint domains ranked by weight. For each domain: scenario, exact steps, tools, and what to look for in the answer. The "what to do" playbook for exam day.</p>
                 </a>
                 <a href="exam_checklist.html" class="tool-card" style="text-decoration:none">
                    <span class="tool-name">Exam Day Checklist</span>
@@ -219,7 +224,8 @@
         'module_08.html': 'nav-08',
         'module_09.html': 'nav-09',
         'module_10.html': 'nav-10',
-        'cheat_sheet.html': 'nav-cheat'
+        'cheat_sheet.html': 'nav-cheat',
+            'domain_guide.html': 'nav-domain'
         };
         const navId = navMap[path] || 'nav-index';
         document.getElementById(navId).classList.add('active');

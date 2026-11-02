@@ -16,6 +16,7 @@
         <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
     <ul id="navMenu">
             <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="domain_guide.html" id="nav-domain">DOMAIN_GUIDE</a></li>
             <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
             <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
             <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
@@ -366,7 +367,8 @@ aircrack-ng -a2 -b 20:E5:2A:E4:38:00 -w /home/attacker/Desktop/Wordlist/password
             'module_14.html': 'nav-14',
             'module_15.html': 'nav-15',
             'module_16.html': 'nav-16',
-            'cheat_sheet.html': 'nav-cheat'
+            'cheat_sheet.html': 'nav-cheat',
+            'domain_guide.html': 'nav-domain'
         };
         const navId = navMap[path] || 'nav-index';
         document.getElementById(navId).classList.add('active');

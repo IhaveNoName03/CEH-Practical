@@ -16,6 +16,7 @@
         <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
     <ul id="navMenu">
             <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
+            <li><a href="domain_guide.html" id="nav-domain">DOMAIN_GUIDE</a></li>
             <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
             <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
             <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
@@ -775,7 +776,8 @@ python3 poc.py --userip 10.10.1.13 --webport 8000 --lport 9001
             'module_12.html': 'nav-12',
             'module_13.html': 'nav-13',
             'module_14.html': 'nav-14',
-        'cheat_sheet.html': 'nav-cheat'
+        'cheat_sheet.html': 'nav-cheat',
+            'domain_guide.html': 'nav-domain'
         };
         const navId = navMap[path] || 'nav-index';
         document.getElementById(navId).classList.add('active');
