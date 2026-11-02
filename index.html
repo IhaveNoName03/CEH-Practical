@@ -2,12 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>CEH v12 Technical Study Portal</title>
-  <meta http-equiv="refresh" content="0; url=study_portal/index.html">
-  <link rel="canonical" href="study_portal/index.html">
-  <script>window.location.replace("study_portal/index.html");</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEH v12 Study Portal — Home</title>
+  <link rel="stylesheet" href="study_portal/style.css">
 </head>
 <body>
-  <p>Redirecting to the <a href="study_portal/index.html">CEH v12 study portal</a>…</p>
+  <nav>
+    <h1>[MISSION_CONTROL]</h1>
+    <ul style="display:flex; gap:16px; list-style:none; margin:0; padding:0; flex-wrap:wrap;">
+      <li><a href="study_portal/index.html" id="nav-index">ROADMAP</a></li>
+      <li><a href="study_portal/cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
+      <li><a href="study_portal/practice.html" id="nav-practice">PRACTICE_LAB</a></li>
+      <li><a href="study_portal/exam_checklist.html" id="nav-checklist">EXAM_CHECKLIST</a></li>
+    </ul>
+    <button id="themeToggle" class="theme-toggle">SWITCH_MODE</button>
+  </nav>
+  <main class="content-body">
+    <div class="window index-hero-bg">
+      <div class="module-header">
+        <span>CEH v12 — STUDY PORTAL</span>
+        <h2>Roadmap &amp; Progress</h2>
+      </div>
+      <p>Choose where to start. Everything is available offline after the first load.</p>
+      <div class="tool-grid" style="margin-top:24px;">
+        <a href="study_portal/index.html" class="tool-card" style="text-decoration:none;">
+          <span class="tool-name">Roadmap</span>
+          <p>Module dashboard with progress tracking across all 19 modules.</p>
+        </a>
+        <a href="study_portal/cheat_sheet.html" class="tool-card" style="text-decoration:none; grid-column: 1 / -1; background: linear-gradient(135deg, var(--accent-glow), var(--bg-elev)); border-color: var(--accent);">
+          <span class="tool-name" style="font-size:1.2rem;">★ Cheat Sheet — Quick Reference</span>
+          <p>All commands across all modules, copy-paste ready.</p>
+        </a>
+        <a href="study_portal/practice.html" class="tool-card" style="text-decoration:none;">
+          <span class="tool-name">Practice Lab</span>
+          <p>45 hands-on challenges with search and progress tracking.</p>
+        </a>
+        <a href="study_portal/exam_checklist.html" class="tool-card" style="text-decoration:none;">
+          <span class="tool-name">Exam Checklist</span>
+          <p>12-point pre-exam verification with progress tracking.</p>
+        </a>
+      </div>
+    </div>
+  </main>
 </body>
 </html>
