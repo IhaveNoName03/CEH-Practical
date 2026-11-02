@@ -409,7 +409,14 @@
 // Register service worker for offline use (PWA)
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      // Auto-reload when a new service worker takes control
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        window.location.reload();
+      });
+      // Check for updates periodically
+      reg.update().catch(() => {});
+    }).catch(() => {});
   });
 }
 
