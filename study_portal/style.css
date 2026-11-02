@@ -1012,7 +1012,8 @@ main .lab-task details code {
     font-size: 0.85rem;
 }
 
-/* === Print-friendly === */
+.proc-steps { margin: 8px 0 16px; padding: 10px 14px; border-left: 3px solid var(--accent); background: var(--bg-elev); border-radius: 0 6px 6px 0; font-size: 0.9rem; line-height: 1.5; color: var(--text); }
+.proc-steps strong { color: var(--accent); }
 @media print {
     .sidebar, nav, .copy-btn, #backToTop, .theme-toggle, button, input {
         display: none !important;
