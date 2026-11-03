@@ -2,80 +2,41 @@
 (function () {
   'use strict';
 
-  const MODULES = [
-    { id: '02', title: 'Footprinting and Reconnaissance', file: 'module_02.html' },
-    { id: '03', title: 'Scanning Networks', file: 'module_03.html' },
-    { id: '04', title: 'Enumeration', file: 'module_04.html' },
-    { id: '05', title: 'Vulnerability Analysis', file: 'module_05.html' },
-    { id: '06', title: 'System Hacking', file: 'module_06.html' },
-    { id: '07', title: 'Malware Threats', file: 'module_07.html' },
-    { id: '08', title: 'Sniffing', file: 'module_08.html' },
-    { id: '09', title: 'Social Engineering', file: 'module_09.html' },
-    { id: '10', title: 'Denial-of-Service', file: 'module_10.html' },
-    { id: '11', title: 'Session Hijacking', file: 'module_11.html' },
-    { id: '12', title: 'Evading IDS, Firewalls, and Honeypots', file: 'module_12.html' },
-    { id: '13', title: 'Hacking Web Servers', file: 'module_13.html' },
-    { id: '14', title: 'Hacking Web Applications', file: 'module_14.html' },
-    { id: '15', title: 'SQL Injection', file: 'module_15.html' },
-    { id: '16', title: 'Hacking Wireless Networks', file: 'module_16.html' },
-    { id: '17', title: 'Hacking Mobile Platforms', file: 'module_17.html' },
-    { id: '18', title: 'IoT and OT Hacking', file: 'module_18.html' },
-    { id: '19', title: 'Cloud Computing', file: 'module_19.html' },
-    { id: '20', title: 'Cryptography', file: 'module_20.html' }
-    ];
+  const PAGES = [
+    { id: 'HM', title: 'Home', file: 'index.html' },
+    { id: 'DG', title: 'Domain Guide', file: 'domain_guide.html' },
+    { id: 'CS', title: 'Cheat Sheet', file: 'cheat_sheet.html' },
+    { id: 'PL', title: 'Practice Lab', file: 'practice.html' },
+    { id: 'EC', title: 'Exam Checklist', file: 'exam_checklist.html' }
+  ];
 
-  const visited = JSON.parse(localStorage.getItem('ceh_visited') || '[]');
-  function markVisited() {
-    const page = location.pathname.split('/').pop();
-    const mod = MODULES.find(m => m.file === page);
-    if (mod && !visited.includes(mod.id)) {
-      visited.push(mod.id);
-      localStorage.setItem('ceh_visited', JSON.stringify(visited));
-    }
+  function currentTheme() {
+    try {
+      const p = new URLSearchParams(location.search);
+      const u = p.get('theme');
+      if (u === 'dark' || u === 'light') return u;
+    } catch (e) {}
+    try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
   }
-  markVisited();
+  function withTheme(href) {
+    try {
+      const url = new URL(href, location.href);
+      url.searchParams.set('theme', currentTheme());
+      return url.pathname.split('/').pop() + '?' + url.searchParams.toString();
+    } catch (e) { return href; }
+  }
 
-  // Module navigation dropdown (replaces crowded module list)
-  const navEl2 = document.querySelector('nav');
-  if (navEl2 && !document.getElementById('moduleSelect')) {
-    const sel = document.createElement('select');
-    sel.id = 'moduleSelect';
-    sel.className = 'module-select';
-    sel.setAttribute('aria-label', 'Navigate to module');
-    const opts = [{ value: 'index.html', label: 'Home' }];
-    MODULES.forEach(m => opts.push({ value: m.file, label: m.id + ' ' + m.title }));
-    opts.push({ value: 'cheat_sheet.html', label: 'Cheat Sheet' });
-    opts.forEach(o => {
-      const opt = document.createElement('option');
-      opt.value = o.value;
-      opt.textContent = o.label;
-      sel.appendChild(opt);
-    });
-    const page = location.pathname.split('/').pop() || 'index.html';
-    sel.value = page;
-    sel.addEventListener('change', () => {
-      const t = (typeof currentTheme === 'function') ? currentTheme() : (localStorage.getItem('theme') || 'light');
-      const url = sel.value + (t ? ('?theme=' + t) : '');
-      window.location.href = url;
-    });
-    // insert before theme toggle
-    const themeBtn = document.getElementById('themeToggle');
-    if (themeBtn) navEl2.insertBefore(sel, themeBtn);
-    else navEl2.appendChild(sel);
-  }
-  // Inject favicon + theme-color meta (works on all pages without editing HTML)
+  // Inject favicon + theme-color meta
   (function() {
     const mk = (name, content, attr='name') => {
       if (document.querySelector(`meta[${attr}="${name}"]`)) return;
       const m = document.createElement('meta'); m.setAttribute(attr, name); m.content = content; document.head.appendChild(m);
     };
     mk('theme-color', '#2563eb');
-    mk('description', 'CEH v12 technical study portal: modules 02-20, cheat sheet, labs.');
-    // manifest link
+    mk('description', 'CEH v12 technical study portal: domain guide, cheat sheet, labs, exam checklist.');
     if (!document.querySelector('link[rel="manifest"]')) {
       const ml = document.createElement('link'); ml.rel = 'manifest'; ml.href = 'manifest.json'; document.head.appendChild(ml);
     }
-    // favicon (inline SVG data URL)
     if (!document.querySelector('link[rel="icon"]')) {
       const l = document.createElement('link'); l.rel = 'icon';
       l.href = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="#2563eb"/><text x="16" y="22" font-size="18" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="bold">C</text></svg>');
@@ -83,20 +44,19 @@
     }
   })();
 
-  // Skip-to-content link for accessibility
+  // Skip-to-content link
   const skip = document.createElement('a');
   skip.href = '#main-content';
   skip.className = 'skip-link';
   skip.textContent = 'Skip to content';
   document.body.insertBefore(skip, document.body.firstChild);
-  // ensure main has id
   const mainEl = document.querySelector('main.content-body, main');
   if (mainEl && !mainEl.id) mainEl.id = 'main-content';
 
   const navEl = document.querySelector('nav');
   const navToggle = document.getElementById('navToggle');
 
-  // Build modern sidebar navigation
+  // Build sidebar navigation
   if (!document.querySelector('.sidebar')) {
     const overlay = document.createElement('div');
     overlay.className = 'sidebar-overlay';
@@ -107,41 +67,17 @@
     sidebar.className = 'sidebar';
     const title = document.createElement('div');
     title.className = 'sidebar-title';
-    title.textContent = 'MODULES';
+    title.textContent = 'PAGES';
     sidebar.appendChild(title);
 
-    const homeLink = document.createElement('a');
-    homeLink.href = 'index.html';
-    homeLink.innerHTML = '<span class="mod-num">HM</span><span class="mod-title">Home</span>';
-    if ((location.pathname.split('/').pop() || 'index.html') === 'index.html') homeLink.classList.add('active');
-    sidebar.appendChild(homeLink);
-
-    const domainLink = document.createElement('a');
-    domainLink.href = 'domain_guide.html';
-    domainLink.innerHTML = '<span class="mod-num">DG</span><span class="mod-title">Domain Guide</span>';
-    if ((location.pathname.split('/').pop() || '') === 'domain_guide.html') domainLink.classList.add('active');
-    sidebar.appendChild(domainLink);
-
-    MODULES.forEach(m => {
+    PAGES.forEach(p => {
       const a = document.createElement('a');
-      a.href = m.file;
-      a.innerHTML = `<span class="mod-num">${m.id}</span><span class="mod-title">${m.title}</span>`;
+      a.href = p.file;
+      a.innerHTML = `<span class="mod-num">${p.id}</span><span class="mod-title">${p.title}</span>`;
       const page = location.pathname.split('/').pop() || 'index.html';
-      if (page === m.file) a.classList.add('active');
+      if (page === p.file) a.classList.add('active');
       sidebar.appendChild(a);
     });
-
-    const cheatLink = document.createElement('a');
-    cheatLink.href = 'cheat_sheet.html';
-    cheatLink.innerHTML = '<span class="mod-num">CS</span><span class="mod-title">Cheat Sheet</span>';
-    if ((location.pathname.split('/').pop() || '') === 'cheat_sheet.html') cheatLink.classList.add('active');
-    sidebar.appendChild(cheatLink);
-
-    const practiceLink = document.createElement('a');
-    practiceLink.href = 'practice.html';
-    practiceLink.innerHTML = '<span class="mod-num">PL</span><span class="mod-title">Practice Lab</span>';
-    if ((location.pathname.split('/').pop() || '') === 'practice.html') practiceLink.classList.add('active');
-    sidebar.appendChild(practiceLink);
 
     sidebar.addEventListener('click', (e) => {
       if (e.target.closest('a')) {
@@ -151,7 +87,6 @@
       }
     });
 
-    // On mobile, move the search box into the sidebar drawer to declutter the top bar
     if (window.innerWidth <= 900) {
       const sw = document.querySelector('.search-wrap');
       if (sw) {
@@ -164,7 +99,7 @@
     document.body.appendChild(sidebar);
   }
 
-  // Hamburger toggles sidebar drawer (mobile)
+  // Hamburger toggles sidebar drawer
   if (navToggle && navEl) {
     navToggle.addEventListener('click', () => {
       const open = document.body.classList.toggle('sidebar-open');
@@ -173,7 +108,6 @@
       document.body.style.overflow = open ? 'hidden' : '';
     });
   }
-  // Close drawer on Escape
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && document.body.classList.contains('sidebar-open')) {
       document.body.classList.remove('sidebar-open');
@@ -195,26 +129,8 @@
       const tt = document.getElementById('themeToggle');
       if (tt) tt.click();
     }
-    if (e.key === 'c' && !typing && !isCheat) {
-      const vt = document.getElementById('viewToggle');
-      if (vt) vt.click();
-    }
   });
-  function currentTheme() {
-    try {
-      const p = new URLSearchParams(location.search);
-      const u = p.get('theme');
-      if (u === 'dark' || u === 'light') return u;
-    } catch (e) {}
-    try { return localStorage.getItem('theme') || 'light'; } catch (e) { return 'light'; }
-  }
-  function withTheme(href) {
-    try {
-      const url = new URL(href, location.href);
-      url.searchParams.set('theme', currentTheme());
-      return url.pathname.split('/').pop() + '?' + url.searchParams.toString();
-    } catch (e) { return href; }
-  }
+
   // Compact view toggle
   const viewToggle = document.getElementById('viewToggle');
   if (viewToggle) {
@@ -264,23 +180,8 @@
         if (!h.id) h.id = 'h-' + h.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
         return `<li><a href="#${h.id}">${h.textContent.trim()}</a></li>`;
       }).join('') + '</ul></details>';
-    // Insert as first child of main (contents block)
     if (main && main.firstChild) main.insertBefore(toc, main.firstChild);
     else if (main) main.appendChild(toc);
-  }
-
-  // Prev / Next navigation
-  if (main) {
-    const page = location.pathname.split('/').pop();
-    const idx = MODULES.findIndex(m => m.file === page);
-    if (idx >= 0) {
-      const nav = document.createElement('div');
-      nav.className = 'mod-nav';
-      const prev = idx > 0 ? `<a class="mod-nav-btn" href="${withTheme(MODULES[idx-1].file)}">← Module ${MODULES[idx-1].id}</a>` : '<span></span>';
-      const next = idx < MODULES.length - 1 ? `<a class="mod-nav-btn" href="${withTheme(MODULES[idx+1].file)}">Module ${MODULES[idx+1].id} →</a>` : '<span></span>';
-      nav.innerHTML = prev + next;
-      main.appendChild(nav);
-    }
   }
 
   // Reveal on scroll
@@ -292,7 +193,6 @@
     });
   }, { rootMargin: '0px 0px -5% 0px', threshold: 0 });
   revealTargets.forEach(el => revealObs.observe(el));
-  // Fallback: ensure nothing stays invisible if observer doesn't fire
   setTimeout(() => {
     document.querySelectorAll('.reveal:not(.visible)').forEach(el => el.classList.add('visible'));
   }, 800);
@@ -300,7 +200,6 @@
   // Active TOC highlighting
   const tocLinks = document.querySelectorAll('.toc a');
   if (tocLinks.length) {
-    const headingEls = headings;
     const activeObs = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -310,7 +209,7 @@
         }
       });
     }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
-    headingEls.forEach(h => activeObs.observe(h));
+    headings.forEach(h => activeObs.observe(h));
   }
 
   // Back to top
@@ -326,7 +225,7 @@
   const isCheat = (location.pathname.split('/').pop() || '') === 'cheat_sheet.html';
   if (isCheat) document.body.classList.add('cs-page');
 
-  // Dim comment lines inside cheat-sheet code blocks so commands stand out
+  // Dim comment lines inside cheat-sheet code blocks
   if (isCheat) {
     document.querySelectorAll('main .section-card pre').forEach(pre => {
       const lines = pre.innerHTML.split('\n');
@@ -346,7 +245,6 @@
     searchInput.addEventListener('input', (e) => {
       const q = e.target.value.trim().toLowerCase();
       if (isCheat) {
-        // Filter code blocks on the cheat sheet
         const sections = document.querySelectorAll('main .lab-task');
         sections.forEach(sec => {
           const blocks = sec.querySelectorAll('pre');
@@ -366,10 +264,10 @@
       const overlay = document.getElementById('searchResults');
       if (!overlay) return;
       if (!q) { overlay.innerHTML = ''; overlay.classList.remove('open'); return; }
-      const hits = MODULES.filter(m => m.title.toLowerCase().includes(q) || m.id.includes(q));
+      const hits = PAGES.filter(p => p.title.toLowerCase().includes(q) || p.id.toLowerCase().includes(q));
       overlay.innerHTML = hits.length
-        ? hits.map(m => `<a href="${withTheme(m.file)}"><span class="sr-id">${m.id}</span> ${m.title}</a>`).join('')
-        : '<div class="sr-empty">No modules match.</div>';
+        ? hits.map(p => `<a href="${withTheme(p.file)}"><span class="sr-id">${p.id}</span> ${p.title}</a>`).join('')
+        : '<div class="sr-empty">No pages match.</div>';
       overlay.classList.add('open');
     });
     if (!isCheat) {
@@ -382,33 +280,18 @@
     }
   }
 
-  // Cheat-sheet exam mode: (filter pills removed for cleaner top; search still filters)
-  if (isCheat) {
-    // nothing extra at top
-  }
-
-  // Mark visited module cards on index
-  if ((location.pathname.split('/').pop() || 'index.html') === 'index.html') {
-    document.querySelectorAll('.tool-card').forEach(card => {
-      const href = card.getAttribute('href') || '';
-      const mod = MODULES.find(m => m.file === href);
-      if (mod && visited.includes(mod.id)) {
-        card.classList.add('visited');
-        if (!card.querySelector('.visited-badge')) {
-          const b = document.createElement('span');
-          b.className = 'visited-badge';
-          b.textContent = '✓';
-          card.appendChild(b);
-        }
-      }
-    });
-  }
-  const progressEl = document.getElementById('progressFill');
-  if (progressEl) {
-    const pct = Math.round((visited.length / MODULES.length) * 100);
-    progressEl.style.width = pct + '%';
-    const label = document.getElementById('progressLabel');
-    if (label) label.textContent = `${visited.length} / ${MODULES.length} modules visited (${pct}%)`;
+  // Reading time
+  const mainRT = document.querySelector('main, .content, .module-content');
+  if (mainRT) {
+    const words = mainRT.textContent.trim().split(/\s+/).length;
+    const mins = Math.max(1, Math.ceil(words / 200));
+    const header = document.querySelector('.module-header h2, h1, .page-title');
+    if (header) {
+      const badge = document.createElement('span');
+      badge.style.cssText = 'font-size:0.75rem;color:var(--muted);font-weight:400;margin-left:12px;';
+      badge.textContent = `~${mins} min read`;
+      header.appendChild(badge);
+    }
   }
 })();
 
@@ -416,80 +299,10 @@
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js').then(reg => {
-      // Auto-reload when a new service worker takes control
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         window.location.reload();
       });
-      // Check for updates periodically
       reg.update().catch(() => {});
     }).catch(() => {});
   });
 }
-
-// === Copy-to-clipboard on code blocks ===
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('pre').forEach(block => {
-        // Skip inline code that's too short or already has a button
-        if (block.querySelector('.copy-btn')) return;
-        const text = block.textContent.trim();
-        if (text.length < 5) return;
-        const btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.style.cssText = 'position:absolute;top:4px;right:4px;padding:2px 8px;font-size:0.7rem;border:1px solid var(--border);border-radius:4px;background:var(--bg-elev);color:var(--text);cursor:pointer;opacity:0.7;transition:opacity 0.2s;';
-        btn.onmouseenter = () => btn.style.opacity = '1';
-        btn.onmouseleave = () => btn.style.opacity = '0.7';
-        btn.onclick = async (e) => {
-            e.stopPropagation();
-            try {
-                await navigator.clipboard.writeText(text);
-                btn.textContent = 'Copied!';
-                setTimeout(() => btn.textContent = 'Copy', 1500);
-            } catch (err) {
-                btn.textContent = 'Failed';
-                setTimeout(() => btn.textContent = 'Copy', 1500);
-            }
-        };
-        // Make parent relative if not already
-        const parent = block.parentElement;
-        if (parent && getComputedStyle(parent).position === 'static') {
-            parent.style.position = 'relative';
-        }
-        block.style.position = 'relative';
-        block.appendChild(btn);
-    });
-});
-
-// === Reading time estimate ===
-document.addEventListener('DOMContentLoaded', () => {
-    const main = document.querySelector('main, .content, .module-content');
-    if (!main) return;
-    const words = main.textContent.trim().split(/\s+/).length;
-    const mins = Math.max(1, Math.ceil(words / 200));
-    const header = document.querySelector('.module-header h2, h1, .page-title');
-    if (header) {
-        const badge = document.createElement('span');
-        badge.style.cssText = 'font-size:0.75rem;color:var(--muted);font-weight:400;margin-left:12px;';
-        badge.textContent = `~${mins} min read`;
-        header.appendChild(badge);
-    }
-});
-
-// === Global search in sidebar ===
-document.addEventListener('DOMContentLoaded', () => {
-    const sidebar = document.querySelector('.sidebar, nav.sidebar, #sidebar');
-    if (!sidebar) return;
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = 'Search modules...';
-    input.style.cssText = 'width:100%;padding:6px 10px;margin:8px 0;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);font-size:0.85rem;';
-    sidebar.insertBefore(input, sidebar.firstChild);
-    const links = Array.from(sidebar.querySelectorAll('a'));
-    input.addEventListener('input', (e) => {
-        const q = e.target.value.trim().toLowerCase();
-        links.forEach(a => {
-            const text = a.textContent.toLowerCase();
-            a.style.display = (!q || text.includes(q)) ? '' : 'none';
-        });
-    });
-});

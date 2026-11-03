@@ -1,7 +1,7 @@
 {
   "name": "CEH v12 Study Portal",
   "short_name": "CEH Portal",
-  "description": "CEH v12 technical study portal: modules 02-20 and cheat sheet.",
+  "description": "CEH v12 technical study portal: domain guide, cheat sheet, practice lab, exam checklist.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f8fafc",

@@ -17,25 +17,6 @@
     <ul id="navMenu">
         <li><a href="index.html" id="nav-index">ROOT_ROADMAP</a></li>
             <li><a href="domain_guide.html" id="nav-domain">DOMAIN_GUIDE</a></li>
-        <li><a href="module_02.html" id="nav-02">MOD_02_RECON</a></li>
-        <li><a href="module_03.html" id="nav-03">MOD_03_SCAN</a></li>
-        <li><a href="module_04.html" id="nav-04">MOD_04_ENUM</a></li>
-        <li><a href="module_05.html" id="nav-05">MOD_05_VULN</a></li>
-        <li><a href="module_06.html" id="nav-06">MOD_06_SYS</a></li>
-        <li><a href="module_07.html" id="nav-07">MOD_07_MAL</a></li>
-        <li><a href="module_08.html" id="nav-08">MOD_08_SNIFF</a></li>
-        <li><a href="module_09.html" id="nav-09">MOD_09_SE</a></li>
-        <li><a href="module_10.html" id="nav-10">MOD_10_DOS</a></li>
-        <li><a href="module_11.html" id="nav-11">MOD_11_SESS</a></li>
-        <li><a href="module_12.html" id="nav-12">MOD_12_EVADE</a></li>
-        <li><a href="module_13.html" id="nav-13">MOD_13_WEBSRV</a></li>
-        <li><a href="module_14.html" id="nav-14">MOD_14_WEBAPP</a></li>
-        <li><a href="module_15.html" id="nav-15">MOD_15_SQLI</a></li>
-        <li><a href="module_16.html" id="nav-16">MOD_16_WIRELESS</a></li>
-        <li><a href="module_17.html" id="nav-17">MOD_17_MOBILE</a></li>
-        <li><a href="module_18.html" id="nav-18">MOD_18_IOT</a></li>
-        <li><a href="module_19.html" id="nav-19">MOD_19_CLOUD</a></li>
-        <li><a href="module_20.html" id="nav-20">MOD_20_CRYPTO</a></li>
         <li><a href="cheat_sheet.html" id="nav-cheat">CHEAT_SHEET</a></li>
         <li><a href="practice.html" id="nav-practice">PRACTICE_LAB</a></li>
         <li><a href="exam_checklist.html" id="nav-checklist">EXAM_CHECKLIST</a></li>
@@ -46,11 +27,11 @@
 <main class="content-body">
     <div class="window">
         <div class="module-header">
-            <span>CEH Practical Lab — Tutor Materials</span>
+            <span>CEH Practical Lab — Hands-on Challenges</span>
             <h2>45 Hands-on Challenges</h2>
         </div>
         <p>Safety: run active scanning, web tests and password auditing ONLY against systems you own or are explicitly authorized to test. The 192.0.2.0/24 addresses are documentation placeholders.</p>
-        <p>Workflow: read question, run command, capture evidence, verify answer. Inputs are in student_inputs/ (from tutor zip).</p>
+        <p>Workflow: read question, run command, capture evidence, verify answer.</p>
         <button class="cs-toggle-all" onclick="toggleAllPractice(this)">Collapse all</button>
         <input type="text" id="practiceSearch" placeholder="Filter tasks..." style="margin: 8px 0; padding: 6px 10px; width: 100%; max-width: 300px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text);">
         <details style="margin:12px 0;"><summary style="cursor:pointer;color:var(--accent);font-weight:700;">Quick jump to tasks (45)</summary>
@@ -279,7 +260,7 @@ binwalk -e embedded_archive.bin</code></pre>
 
     <div class="window">
         <div class="module-header"><span>Local Web Lab</span><h2>Practice Server</h2></div>
-        <p>Run the tutor-provided local web app for patterns 08-10:</p>
+        <p>Run the local web app for patterns 08-10:</p>
         <pre><code>python3 local_web_lab/server.py   # 127.0.0.1:8080
 gobuster dir -u http://127.0.0.1:8080 -w /usr/share/wordlists/dirb/common.txt
 curl -i http://127.0.0.1:8080/</code></pre>
@@ -458,7 +439,7 @@ set payload windows/meterpreter/reverse_tcp
         </div>
         <div class="lab-task" id="task-49">
             <h3><input type="checkbox" class="task-check" onchange="saveProgress()" style="margin-right:8px;vertical-align:middle;">Load Balancer Identification <span style="font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:8px;">[Easy · 10min]</span></h3>
-            <p><strong>Scenario:</strong> Identify the load balancing service used by eccouncil.org by examining DNS/HTTP headers.</p>
+            <p><strong>Scenario:</strong> Identify the load balancing service used by a target website by examining DNS/HTTP headers.</p>
             <pre><code>dig eccouncil.org
 nslookup eccouncil.org
 curl -I https://eccouncil.org | grep -i &#x27;server\|via\|cf-&#x27;</code></pre>

@@ -1,4 +1,4 @@
-const CACHE = 'ceh-portal-v5';
+const CACHE = 'ceh-portal-v6';
 const ASSETS = [
   './',
   './index.html',
@@ -6,25 +6,6 @@ const ASSETS = [
   './practice.html',
   './exam_checklist.html',
   './domain_guide.html',
-  './module_02.html',
-  './module_03.html',
-  './module_04.html',
-  './module_05.html',
-  './module_06.html',
-  './module_07.html',
-  './module_08.html',
-  './module_09.html',
-  './module_10.html',
-  './module_11.html',
-  './module_12.html',
-  './module_13.html',
-  './module_14.html',
-  './module_15.html',
-  './module_16.html',
-  './module_17.html',
-  './module_18.html',
-  './module_19.html',
-  './module_20.html',
   './style.css',
   './app.js',
   './manifest.json'
