@@ -13,29 +13,16 @@ A high-performance, responsive study website for CEH v12 (Certified Ethical Hack
 - **Print-Friendly:** `@media print` CSS for offline study.
 - **203 Step-by-Step Guides:** Detailed procedural steps for 203 command blocks in the cheat sheet.
 
-## Modules Included
+## Content
 
-1. **Module 02:** Footprinting and Reconnaissance
-2. **Module 03:** Scanning Networks
-3. **Module 04:** Enumeration
-4. **Module 05:** Vulnerability Analysis
-5. **Module 06:** System Hacking
-6. **Module 07:** Malware Threats
-7. **Module 08:** Sniffing
-8. **Module 09:** Social Engineering
-9. **Module 10:** Denial-of-Service
-10. **Module 11:** Session Hijacking
-11. **Module 12:** Evading IDS, Firewalls, and Honeypots
-12. **Module 13:** Hacking Web Servers
-13. **Module 14:** Hacking Web Applications
-14. **Module 15:** SQL Injection
-15. **Module 16:** Hacking Wireless Networks
-16. **Module 17:** Hacking Mobile Platforms
-17. **Module 18:** IoT and OT Hacking
-18. **Module 19:** Cloud Computing
-19. **Module 20:** Cryptography
-20. **Practice Lab:** 45 hands-on challenges (20 tutor patterns + 24 exam-style)
-21. **Exam Checklist:** 12-point pre-exam verification
+The portal is organized around the CEH Practical exam blueprint:
+
+- **Domain Guide:** 9 exam domains ranked by weight, with scenario, exact steps, tools, and what to look for.
+- **Cheat Sheet:** Consolidated command reference across all topics with step-by-step explanations.
+- **Practice Lab:** 45 hands-on challenges (20 tutor patterns + 24 exam-style) with search and progress tracking.
+- **Exam Checklist:** 12-point pre-exam verification with progress tracking.
+
+Topics covered: Footprinting/Recon, Scanning, Enumeration, Vulnerability Analysis, System Hacking, Malware, Sniffing, Social Engineering, DoS, Session Hijacking, Evasion, Web Servers, Web Apps, SQLi, Wireless, Mobile, IoT/OT, Cloud, Cryptography.
 
 ## Setup
 
@@ -50,7 +37,7 @@ cd study_portal
 ## Structure
 
 - `index.html`: Roadmap and progress dashboard.
-- `module_XX.html`: Detailed module-specific technical content.
+- `domain_guide.html`: Domain-based study guide (9 exam domains).
 - `cheat_sheet.html`: Consolidated command reference with step-by-step explanations.
 - `practice.html`: 45 hands-on practice challenges with search, progress tracking, difficulty badges.
 - `exam_checklist.html`: 12-point pre-exam verification checklist.
