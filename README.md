@@ -208,10 +208,14 @@ creds_all                           # All credentials
 | Page | Description |
 |------|-------------|
 | `index.html` | Roadmap and progress dashboard |
-| `module_02.html` - `module_20.html` | Module-specific technical content |
+| `domain_guide.html` | Domain-based study guide (9 exam domains) |
 | `cheat_sheet.html` | Consolidated command reference with step-by-step explanations |
 | `practice.html` | 45 hands-on practice challenges |
 | `exam_checklist.html` | 12-point pre-exam verification checklist |
+
+## AI Usage
+
+This portal was built with the assistance of an AI coding agent (Hermes Agent). AI was used to generate module content from raw lab notes, assemble HTML pages, write CSS/JS, and iterate on design. All commands and techniques were reviewed for accuracy; verify against official CEH materials before relying on them in a real exam or engagement.
 
 ## License
 
